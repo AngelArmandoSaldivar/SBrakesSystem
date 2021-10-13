@@ -1,0 +1,180 @@
+var tabla;
+
+//funcion que se ejecuta al inicio
+function init(){
+   mostrarform(false);
+   listar();
+
+   $("#formulario").on("submit",function(e){
+   	guardaryeditar(e);
+   })
+
+   //cargamos los items al select categoria
+   $.post("../ajax/articulo.php?op=selectCategoria", function(r){	
+   	$("#idcategoria").html(r);
+   	$("#idcategoria").selectpicker('refresh');
+   });
+
+    //cargamos los items al select proveedor
+	$.post("../ajax/ingreso.php?op=selectProveedor", function(r){
+		$("#idproveedor").html(r);
+		$('#idproveedor').selectpicker('refresh');
+	});
+}
+
+//funcion limpiar
+function limpiar(){
+	$("#idarticulo").val("");
+	$("#idcategoria").val("");
+	$("#codigo").val("");
+	$("#stock").val("");
+	$("#descripcion").val("");
+	$("#fmsi").val("");
+	$("#marca").val("");
+	$("#publico").val("");
+	$("#taller").val("");
+	$("#credito_taller").val("");
+	$("#mayoreo").val("");
+	$("#costo").val("");	
+	$("#idproveedor").val("");
+	$("#pasillo").val("");
+	$("#unidades").val("");
+	$("#barcode").val("");
+	$("#print").hide();	
+}
+
+//funcion mostrar formulario
+function mostrarform(flag){
+	limpiar();
+	if(flag){
+		$("#listadoregistros").hide();
+		$("#formularioregistros").show();
+		$("#btnGuardar").prop("disabled",false);
+		$("#btnagregar").hide();
+	}else{
+		$("#listadoregistros").show();
+		$("#formularioregistros").hide();
+		$("#btnagregar").show();
+	}
+}
+
+//cancelar form
+function cancelarform(){
+	limpiar();
+	mostrarform(false);
+}
+
+//funcion listar
+function listar(){
+	tabla=$('#tbllistado').dataTable({
+		"aProcessing": true,//activamos el procedimiento del datatable
+		"aServerSide": true,//paginacion y filrado realizados por el server
+		dom: 'Bfrtip',//definimos los elementos del control de la tabla
+		buttons: [
+                  'copyHtml5',
+                  'excelHtml5',
+                  'csvHtml5',
+                  'pdf'
+		],
+		"ajax":
+		{
+			url:'../ajax/articulo.php?op=listar',
+			type: "get",
+			dataType : "json",
+			error:function(e){
+				console.log(e.responseText);
+			}
+		},
+		"bDestroy":true,
+		"iDisplayLength":20,//paginacion
+		"order":[[0,"desc"]]//ordenar (columna, orden)
+	}).DataTable();
+}
+
+//funcion para guardaryeditar
+function guardaryeditar(e){
+	console.log($("#idarticulo").val());
+	e.preventDefault();//no se activara la accion predeterminada 
+	$("#btnGuardar").prop("disabled",true);
+	var formData=new FormData($("#formulario")[0]);
+
+	$.ajax({
+		url: "../ajax/articulo.php?op=guardaryeditar",
+		type: "POST",
+		data: formData,
+		contentType: false,
+		processData: false,
+
+		success: function(datos){
+			bootbox.alert(datos);
+			mostrarform(false);
+			tabla.ajax.reload();
+		}
+	});
+
+	limpiar();
+}
+
+function mostrar(idarticulo){
+	$.post("../ajax/articulo.php?op=mostrar",{idarticulo : idarticulo},
+		function(data,status)
+		{
+			data=JSON.parse(data);
+			mostrarform(true);
+			$("#idcategoria").val(data.idcategoria);
+			$("#idcategoria").selectpicker('refresh');
+			$("#idproveedor").val(data.idproveedor);
+			$("#idproveedor").selectpicker('refresh');
+			$("#codigo").val(data.codigo);
+			$("#fmsi").val(data.fmsi);
+			$("#marca").val(data.marca);
+			$("#unidades").val(data.unidades);
+			$("#pasillo").val(data.pasillo);
+			$("#nombre").val(data.nombre);
+			$("#stock").val(data.stock);
+			$("#costo").val(data.costo);
+			$("#publico").val(data.publico);
+			$("#taller").val(data.taller);
+			$("#credito_taller").val(data.credito_taller);
+			$("#mayoreo").val(data.mayoreo);
+			$("#descripcion").val(data.descripcion);
+			$("#barcode").val(data.barcode);
+			$("#idarticulo").val(data.idarticulo);			
+		})
+}
+
+
+//funcion para desactivar
+function desactivar(idarticulo){
+	bootbox.confirm("¿Esta seguro de desactivar este dato?", function(result){
+		if (result) {
+			$.post("../ajax/articulo.php?op=desactivar", {idarticulo : idarticulo}, function(e){
+				bootbox.alert(e);
+				tabla.ajax.reload();
+			});
+		}
+	})
+}
+
+function activar(idarticulo){
+	bootbox.confirm("¿Esta seguro de activar este dato?" , function(result){
+		if (result) {
+			$.post("../ajax/articulo.php?op=activar" , {idarticulo : idarticulo}, function(e){
+				bootbox.alert(e);
+				tabla.ajax.reload();
+			});
+		}
+	})
+}
+
+function generarbarcode(){
+	codigo_barras=$("#barcode").val();	
+	JsBarcode("#barras",codigo_barras);
+	$("#print").show();
+}
+
+function imprimir(){
+	$("#print").printArea();
+}
+
+init();
