@@ -142,10 +142,9 @@ function guardaryeditar(e){
      limpiar();
 }
 
-function mostrar(idingreso){
-	console.log(idingreso);
+function mostrar(idingreso){	
 	$.post("../ajax/ingreso.php?op=mostrar",{idingreso : idingreso},
-		function(data,status){
+		function(data,status){			
 			data=JSON.parse(data);
 			mostrarform(true);
 
@@ -153,7 +152,8 @@ function mostrar(idingreso){
 			$("#idproveedor").selectpicker('refresh');
 			$("#tipo_comprobante").val(data.tipo_comprobante);
 			$("#tipo_comprobante").selectpicker('refresh');
-			$("#serie_comprobante").val(data.serie_comprobante);			
+			$("#serie_comprobante").val(data.serie_comprobante);
+			$("#num_comprobante").val(data.num_comprobante);			
 			$("#fecha_hora").val(data.fecha);
 			$("#impuesto").val(data.impuesto);
 			$("#idingreso").val(data.idingreso);
@@ -249,7 +249,7 @@ function calcularTotales(){
 	for (var i = 0; i < sub.length; i++) {
 		total += document.getElementsByName("subtotal")[i].value;
 	}
-	$("#total").html("S/." + total);
+	$("#total").html("$ " + total);
 	$("#total_compra").val(total);
 	evaluar();
 }

@@ -19,7 +19,7 @@ return $query;
 
 	}
 
-	function ejecutarConsultaSimpleFila($sql){
+function ejecutarConsultaSimpleFila($sql){
 global $conexion;
 $query=$conexion->query($sql);
 $row=$query->fetch_assoc();
