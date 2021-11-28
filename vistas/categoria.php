@@ -28,24 +28,15 @@ if ($_SESSION['almacen']==1) {
 </div>
 <!--box-header-->
 <!--centro-->
+
 <div class="panel-body table-responsive" id="listadoregistros">
-  <table id="tbllistado" class="table table-striped table-bordered table-condensed table-hover">
-    <thead>
-      <th>Opciones</th>
-      <th>Nombre</th>
-      <th>Descripcion</th>
-      <th>Estado</th>
-    </thead>
-    <tbody>
-    </tbody>
-    <tfoot>
-       <th>Opciones</th>
-      <th>Nombre</th>
-      <th>Descripcion</th>
-      <th>Estado</th>
-    </tfoot>   
-  </table>
+  <section>
+    <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px"></center>
+  </section>
+  <section id="tabla_resultado"></section>
 </div>
+
+
 <div class="panel-body" style="height: 400px;" id="formularioregistros">
   <form action="" name="formulario" id="formulario" method="POST">
     <div class="form-group col-lg-6 col-md-6 col-xs-12">
@@ -80,7 +71,7 @@ if ($_SESSION['almacen']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/categoria.js"></script>
+ <script src="scripts/categorias.js"></script>
  <?php 
 }
 

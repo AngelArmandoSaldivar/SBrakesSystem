@@ -39,31 +39,32 @@ function cancelarform(){
 }
 
 //funcion listar
-function listar(){
-	tabla=$('#tbllistado').dataTable({
-		"aProcessing": true,//activamos el procedimiento del datatable
-		"aServerSide": true,//paginacion y filrado realizados por el server
-		dom: 'Bfrtip',//definimos los elementos del control de la tabla
-		buttons: [
-                  'copyHtml5',
-                  'excelHtml5',
-                  'csvHtml5',
-                  'pdf'
-		],
-		"ajax":
-		{
-			url:'../ajax/categoria.php?op=listar',
-			type: "get",
-			dataType : "json",
-			error:function(e){
-				console.log(e.responseText);
-			}
-		},
-		"bDestroy":true,
-		"iDisplayLength":5,//paginacion
-		"order":[[0,"desc"]]//ordenar (columna, orden)
-	}).DataTable();
+function obtener_registros(categorias){	
+	$.ajax({
+		url : '../ajax/categoria.php?op=listar',
+		type : 'POST',
+		dataType : 'html',
+		data : { categorias: categorias },
+	})
+	.done(function(resultado){
+		$("#tabla_resultado").html(resultado);
+	})
 }
+
+$(document).on('keyup', '#busqueda', function()
+{
+	var valorBusqueda=$(this).val();
+	
+	if (valorBusqueda!="")
+	{
+		obtener_registros(valorBusqueda);
+	}
+	else
+	{
+		obtener_registros();
+	}
+});
+
 //funcion para guardaryeditar
 function guardaryeditar(e){
      e.preventDefault();//no se activara la accion predeterminada 

@@ -1,4 +1,4 @@
- <?php 
+<?php 
 require_once "../modelos/Permiso.php";
 
 $categoria=new Permiso();

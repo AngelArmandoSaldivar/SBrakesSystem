@@ -14,6 +14,12 @@ function init(){
 $.post("../ajax/usuario.php?op=permisos&id=", function(r){
 	$("#permisos").html(r);
 });
+
+//cargamos los items al select sucursal
+$.post("../ajax/usuario.php?op=selectSucursal", function(r){
+	$("#idsucursal").html(r);
+	$('#idsucursal').selectpicker('refresh');
+});
 }
 
 //funcion limpiar
@@ -29,6 +35,7 @@ function limpiar(){
 	$("#imagenmuestra").attr("src","");
 	$("#imagenactual").val("");
 	$("#idusuario").val("");
+	$("#idsucursal").val("");
 }
 
 //funcion mostrar formulario
@@ -111,6 +118,8 @@ function mostrar(idusuario){
 			$("#nombre").val(data.nombre);
             $("#tipo_documento").val(data.tipo_documento);
             $("#tipo_documento").selectpicker('refresh');
+			$("#idsucursal").selectpicker('refresh');
+			$("#idsucursal").val(data.idsucursal);
             $("#num_documento").val(data.num_documento);
             $("#direccion").val(data.direccion);
             $("#telefono").val(data.telefono);

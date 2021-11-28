@@ -10,15 +10,15 @@ public function __construct(){
 }
 
 //metodo insertar regiustro
-public function insertar($tipo_persona,$nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email){
-	$sql="INSERT INTO persona (tipo_persona,nombre,tipo_documento,num_documento,direccion,telefono,email) VALUES ('$tipo_persona','$nombre','$tipo_documento','$num_documento','$direccion','$telefono','$email')";
+public function insertar($tipo_persona,$nombre,$tipo_documento,$tipo_precio,$num_documento,$direccion,$telefono,$email){
+	$sql="INSERT INTO persona (tipo_persona,nombre,tipo_documento,tipo_precio,num_documento,direccion,telefono,email) VALUES ('$tipo_persona','$nombre','$tipo_documento','$tipo_precio','$num_documento','$direccion','$telefono','$email')";
 	return ejecutarConsulta($sql);
 }
 
 
 
-public function editar($idpersona,$tipo_persona,$nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email){
-	$sql="UPDATE persona SET tipo_persona='$tipo_persona', nombre='$nombre',tipo_documento='$tipo_documento',num_documento='$num_documento',direccion='$direccion',telefono='$telefono',email='$email' 
+public function editar($idpersona,$tipo_persona,$nombre,$tipo_documento,$tipo_precio,$num_documento,$direccion,$telefono,$email){
+	$sql="UPDATE persona SET tipo_persona='$tipo_persona', nombre='$nombre',tipo_documento='$tipo_documento',tipo_precio='$tipo_precio',num_documento='$num_documento',direccion='$direccion',telefono='$telefono',email='$email' 
 	WHERE idpersona='$idpersona'";
 	return ejecutarConsulta($sql);
 }

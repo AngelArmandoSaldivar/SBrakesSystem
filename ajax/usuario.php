@@ -15,31 +15,23 @@ $cargo=isset($_POST["cargo"])? limpiarCadena($_POST["cargo"]):"";
 $login=isset($_POST["login"])? limpiarCadena($_POST["login"]):"";
 $clave=isset($_POST["clave"])? limpiarCadena($_POST["clave"]):"";
 $imagen=isset($_POST["imagen"])? limpiarCadena($_POST["imagen"]):"";
+$idsucursal=isset($_POST["idsucursal"])? limpiarCadena($_POST["idsucursal"]):"";
+
 
 switch ($_GET["op"]) {
-	case 'guardaryeditar':
-
-	if (!file_exists($_FILES['imagen']['tmp_name'])|| !is_uploaded_file($_FILES['imagen']['tmp_name'])) {
-		$imagen=$_POST["imagenactual"];
-	}else{
-		$ext=explode(".", $_FILES["imagen"]["name"]);
-		if ($_FILES['imagen']['type']=="image/jpg" || $_FILES['imagen']['type']=="image/jpeg" || $_FILES['imagen']['type']=="image/png") {
-			$imagen=round(microtime(true)).'.'. end($ext);
-			move_uploaded_file($_FILES["imagen"]["tmp_name"], "../files/usuarios/".$imagen);
-		}
-	}
+	case 'guardaryeditar':	
 
 	//Hash SHA256 para la contraseña
 	$clavehash=hash("SHA256", $clave);
 	if (empty($idusuario)) {
-		$rspta=$usuario->insertar($nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clavehash,$imagen,$_POST['permiso']);
+		$rspta=$usuario->insertar($nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clavehash,$_POST['permiso'], $idsucursal);
 		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar todos los datos del usuario";
 	}else{
-		$rspta=$usuario->editar($idusuario,$nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clavehash,$imagen,$_POST['permiso']);
-		echo $rspta ? "Datos actualizados correctamente" : "No se pudo actualizar los datos";
-	}
-	break;
+		$rspta=$usuario->editar($idusuario,$nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clavehash,$_POST['permiso'], $idsucursal);
+		echo "Sucursal: '$idsucursal'";
 	
+	}
+	break;	
 
 	case 'desactivar':
 	$rspta=$usuario->desactivar($idusuario);
@@ -69,8 +61,7 @@ switch ($_GET["op"]) {
 			"4"=>$reg->telefono,
 			"5"=>$reg->email,
 			"6"=>$reg->login,
-			"7"=>"<img src='../files/usuarios/".$reg->imagen."' height='50px' width='50px'>",
-			"8"=>($reg->condicion)?'<span class="label bg-green">Activado</span>':'<span class="label bg-red">Desactivado</span>'
+			"7"=>($reg->condicion)?'<span class="label bg-green">Activado</span>':'<span class="label bg-red">Desactivado</span>'
 		);
 	}
 
@@ -78,7 +69,7 @@ switch ($_GET["op"]) {
              "sEcho"=>1,//info para datatables
              "iTotalRecords"=>count($data),//enviamos el total de registros al datatable
              "iTotalDisplayRecords"=>count($data),//enviamos el total de registros a visualizar
-             "aaData"=>$data); 
+             "aaData"=>$data);
 	echo json_encode($results);
 	break;
 
@@ -87,7 +78,7 @@ switch ($_GET["op"]) {
 	require_once "../modelos/Permiso.php";
 	$permiso=new Permiso();
 	$rspta=$permiso->listar();
-//obtener permisos asigandos
+	//obtener permisos asigandos
 	$id=$_GET['id'];
 	$marcados=$usuario->listarmarcados($id);
 	$valores=array();
@@ -118,8 +109,8 @@ switch ($_GET["op"]) {
 		# Declaramos la variables de sesion
 		$_SESSION['idusuario']=$fetch->idusuario;
 		$_SESSION['nombre']=$fetch->nombre;
-		$_SESSION['imagen']=$fetch->imagen;
 		$_SESSION['login']=$fetch->login;
+		$_SESSION['idsucursal']=$fetch->idsucursal;
 
 		//obtenemos los permisos
 		$marcados=$usuario->listarmarcados($fetch->idusuario);
@@ -156,9 +147,16 @@ switch ($_GET["op"]) {
 	header("Location: ../index.php");
 	break;
 
-	
+	case 'selectSucursal':
+			require_once "../modelos/Sucursal.php";
+			$sucursal = new Sucursal();
 
+			$rspta = $sucursal->listar();
 
+			while ($reg = $rspta->fetch_object()) {
+				echo '<option value='.$reg->idsucursal.'>'.$reg->nombre.'</option>';
+			}
+		break;
 	
 }
 ?>

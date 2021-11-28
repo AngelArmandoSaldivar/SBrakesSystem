@@ -176,7 +176,7 @@ if ($_SESSION['compras']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/ingresos1.js"></script>
+ <script src="scripts/ingresos.js"></script>
  <?php 
 }
 

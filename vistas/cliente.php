@@ -26,26 +26,10 @@ if ($_SESSION['ventas']==1) {
 <!--box-header-->
 <!--centro-->
 <div class="panel-body table-responsive" id="listadoregistros">
-  <table id="tbllistado" class="table table-striped table-bordered table-condensed table-hover">
-    <thead>
-      <th>Opciones</th>
-      <th>Nombre</th>
-      <th>Documento</th>
-      <th>Numero</th>
-      <th>Telefono</th>
-      <th>Email</th>
-    </thead>
-    <tbody>
-    </tbody>
-    <tfoot>
-      <th>Opciones</th>
-      <th>Nombre</th>
-      <th>Documento</th>
-      <th>Numero</th>
-      <th>Telefono</th>
-      <th>Email</th>
-    </tfoot>   
-  </table>
+  <section>
+    <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px"></center>
+  </section><br><br>
+  <section id="tabla_resultado"></section>
 </div>
 <div class="panel-body" style="height: 400px;" id="formularioregistros">
   <form action="" name="formulario" id="formulario" method="POST">
@@ -57,11 +41,11 @@ if ($_SESSION['ventas']==1) {
     </div>
      <div class="form-group col-lg-6 col-md-6 col-xs-12">
       <label for="">Tipo Dcumento</label>
-     <select class="form-control select-picker" name="tipo_documento" id="tipo_documento" required>
-       <option value="DNI">DNI</option>
-       <option value="RUC">RUC</option>
-       <option value="CEDULA">CEDULA</option>
-     </select>
+      <select class="form-control select-picker" name="tipo_documento" id="tipo_documento" required>
+        <option value="DNI">DNI</option>
+        <option value="RUC">RUC</option>
+        <option value="CEDULA">CEDULA</option>
+      </select>
     </div>
      <div class="form-group col-lg-6 col-md-6 col-xs-12">
       <label for="">Número Documento</label>
@@ -79,9 +63,17 @@ if ($_SESSION['ventas']==1) {
       <label for="">Email</label>
       <input class="form-control" type="email" name="email" id="email" maxlength="50" placeholder="Email">
     </div>
+    <div class="form-group col-lg-6 col-md-6 col-xs-12">
+      <label for="">Tipo de precio(*): </label>
+     <select name="tipo_precio" id="tipo_precio" class="form-control selectpicker" required>     
+       <option value="publico">Publico</option>
+       <option value="taller">Taller</option>
+       <option value="credito_taller">Crédito Taller</option>
+       <option value="mayoreo">Mayoreo</option>
+     </select><br><br>
     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-      <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i>  Guardar</button>
 
+      <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i>  Guardar</button>
       <button class="btn btn-danger" onclick="cancelarform()" type="button"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
     </div>
   </form>

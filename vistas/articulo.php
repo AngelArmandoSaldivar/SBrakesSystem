@@ -8,7 +8,7 @@ if (!isset($_SESSION['nombre'])) {
 
 require 'header.php';
 if ($_SESSION['almacen']==1) {
- ?>
+ ?> 
     <div class="content-wrapper">
     <!-- Main content -->
     <section class="content">
@@ -24,43 +24,15 @@ if ($_SESSION['almacen']==1) {
   </div>
 </div>
 <!--box-header-->
-<!--centro-->
-<div class="panel-body table-responsive" id="listadoregistros">
-  <table id="tbllistado" class="table table-striped table-bordered table-condensed table-hover" style="">
-    <thead>      
-      <th>Clave</th>
-      <th>Fmsi</th>
-      <th>Línea</th>
-      <th>Marca</th>
-      <th>Descripcion</th>
-      <th>Costo</th>
-      <th>Publico Mostrador</th>
-      <th>Taller</th>
-      <th>Credito Taller</th>
-      <th>Mayoreo</th>
-      <th>Stock</th>      
-      <th>Estado</th>
-      <th>Opciones</th>
-    </thead>
-    <tbody>
-    </tbody>
-    <tfoot>       
-      <th>Clave</th>
-      <th>Fmsi</th>
-      <th>Línea</th>
-      <th>Marca</th>
-      <th>Descripcion</th>
-      <th>Costo</th>
-      <th>Publico Mostrador</th>
-      <th>Taller</th>
-      <th>Credito Taller</th>
-      <th>Mayoreo</th>
-      <th>Stock</th>
-      <th>Estado</th>
-      <th>Opciones</th>
-    </tfoot>   
-  </table>
+
+
+<div class="table-responsive" id="table-search">
+  <section>
+    <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px"></center>
+  </section>
+  <section id="tabla_resultado"></section>
 </div>
+
 <div class="panel-body" id="formularioregistros">
   <form action="" name="formulario" id="formulario" method="POST">
 
@@ -76,7 +48,7 @@ if ($_SESSION['almacen']==1) {
     <!--CLAVE DEL PRODUCTO-->
     <div class="form-group col-lg-4 col-md-6 col-xs-12">
       <label for="">Fmsi(*):</label>
-      <input class="form-control" type="text" name="fmsi" id="fmsi" maxlength="100" placeholder="Fmsi" required>
+      <input class="form-control" type="text" name="fmsi" id="fmsi" maxlength="100" placeholder="Fmsi">
     </div>
 
 
@@ -96,7 +68,7 @@ if ($_SESSION['almacen']==1) {
     <!--PROVEEDOR DEL PRODUCTO-->
     <div class="form-group col-lg-6 col-md-8 col-xs-12">
       <label for="">Proveedor(*):</label>
-      <select name="idproveedor" id="idproveedor" class="form-control selectpicker" data-live-search="true" required>        
+      <select name="idproveedor" id="idproveedor" class="form-control selectpicker" data-live-search="true" required>
       </select>
     </div>    
 
@@ -184,7 +156,8 @@ require 'footer.php'
  ?>
  <script src="../public/js/JsBarcode.all.min.js"></script>
  <script src="../public/js/jquery.PrintArea.js"></script>
- <script src="scripts/articulo.js"></script>
+ <script src="scripts/articulos.js"></script>
+ <!-- <script src="consulta.js"></script> -->
 
  <?php 
 }

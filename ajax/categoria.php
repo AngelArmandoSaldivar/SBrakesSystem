@@ -34,23 +34,38 @@ switch ($_GET["op"]) {
 		break;
 
     case 'listar':
-		$rspta=$categoria->listar();
-		$data=Array();
-
-		while ($reg=$rspta->fetch_object()) {
-			$data[]=array(
-            "0"=>($reg->condicion)?'<button class="btn btn-warning btn-xs" onclick="mostrar('.$reg->idcategoria.')"><i class="fa fa-pencil"></i></button>'.' '.'<button class="btn btn-danger btn-xs" onclick="desactivar('.$reg->idcategoria.')"><i class="fa fa-close"></i></button>':'<button class="btn btn-warning btn-xs" onclick="mostrar('.$reg->idcategoria.')"><i class="fa fa-pencil"></i></button>'.' '.'<button class="btn btn-primary btn-xs" onclick="activar('.$reg->idcategoria.')"><i class="fa fa-check"></i></button>',
-            "1"=>$reg->nombre,
-            "2"=>$reg->descripcion,
-            "3"=>($reg->condicion)?'<span class="label bg-green">Activado</span>':'<span class="label bg-red">Desactivado</span>'
-              );
-		}
-		$results=array(
-             "sEcho"=>1,//info para datatables
-             "iTotalRecords"=>count($data),//enviamos el total de registros al datatable
-             "iTotalDisplayRecords"=>count($data),//enviamos el total de registros a visualizar
-             "aaData"=>$data); 
-		echo json_encode($results);
+		$consulta=" SELECT * FROM categoria LIMIT 0";
+			$termino= "";
+			if(isset($_POST['categorias']))
+			{
+				$termino=$conexion->real_escape_string($_POST['categorias']);
+				$consulta="SELECT * FROM categoria WHERE
+				nombre LIKE '%".$termino."%' OR
+				descripcion LIKE '%".$termino."%'";
+			}
+			$consultaBD=$conexion->query($consulta);
+			if($consultaBD->num_rows>=1){
+				echo "				
+				<table class='responsive-table table table-hover table-bordered' style='font-size:12px'>
+					<thead class='table-light'>
+						<tr>
+							<th class='bg-info' scope='col'>Categoria</th>
+							<th class='bg-info' scope='col'>Descripcion</th>
+						</tr>
+					</thead>
+				<tbody>";
+				while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){
+							echo "<tr>
+								<td>".$fila['nombre']."</td>
+								<td>".$fila['descripcion']."</td>
+								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idcategoria"].")'><i class='fa fa-pencil'></i></button> <button class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idcategoria"].")')><i class='fa fa-close'></i></button><button class='btn btn-primary btn-xs' onclick='activar(".$fila["idcategoria"].")'><i class='fa fa-check'></i></button></td>					
+							</tr>";
+					}
+				echo "</tbody>
+				</table>";
+			}else{
+				echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";				
+			}
 		break;
 }
  ?>

@@ -1,9 +1,9 @@
 <?php 
 require_once "../modelos/Ingreso.php";
-if (strlen(session_id())<1) 
+if (!isset($_SESSION["nombre"])){
+	$ingreso=new Ingreso();
 	session_start();
-
-$ingreso=new Ingreso();
+	$idsucursal = $_SESSION['idsucursal'];
 
 $idingreso=isset($_POST["idingreso"])? limpiarCadena($_POST["idingreso"]):"";
 $idproveedor=isset($_POST["idproveedor"])? limpiarCadena($_POST["idproveedor"]):"";
@@ -16,9 +16,10 @@ $total_compra=isset($_POST["total_compra"])? limpiarCadena($_POST["total_compra"
 
 
 switch ($_GET["op"]) {
+
 	case 'guardaryeditar':
 	if (empty($idingreso)) {
-		$rspta=$ingreso->insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_comprobante,$fecha_hora,$impuesto,$total_compra,$_POST["idarticulo"],$_POST["cantidad"],$_POST["precio_compra"],$_POST["precio_venta"]);
+		$rspta=$ingreso->insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_comprobante,$fecha_hora,$impuesto,$total_compra,$_POST["idarticulo"],$_POST["cantidad"],$_POST["precio_compra"],$_POST["precio_venta"], $idsucursal);
 		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
 	}else{
         
@@ -76,15 +77,17 @@ switch ($_GET["op"]) {
 		$data=Array();
 
 		while ($reg=$rspta->fetch_object()) {
-			$data[]=array(
-            "0"=>($reg->estado=='Aceptado')?'<button class="btn btn-warning btn-xs" onclick="mostrar('.$reg->idingreso.')"><i class="fa fa-eye"></i></button>'.' '.'<button class="btn btn-danger btn-xs" onclick="anular('.$reg->idingreso.')"><i class="fa fa-close"></i></button>':'<button class="btn btn-warning btn-xs" onclick="mostrar('.$reg->idingreso.')"><i class="fa fa-eye"></i></button>',
-            "1"=>$reg->fecha,
-            "2"=>$reg->proveedor,
-            "3"=>$reg->usuario,
-            "4"=>$reg->tipo_comprobante,
-            "5"=>$reg->total_compra,
-            "6"=>($reg->estado=='Aceptado')?'<span class="label bg-green">Aceptado</span>':'<span class="label bg-red">Anulado</span>'
-              );
+			if($reg->idsucursal == $idsucursal) {
+				$data[]=array(
+				"0"=>($reg->estado=='Aceptado')?'<button class="btn btn-warning btn-xs" onclick="mostrar('.$reg->idingreso.')"><i class="fa fa-eye"></i></button>'.' '.'<button class="btn btn-danger btn-xs" onclick="anular('.$reg->idingreso.')"><i class="fa fa-close"></i></button>':'<button class="btn btn-warning btn-xs" onclick="mostrar('.$reg->idingreso.')"><i class="fa fa-eye"></i></button>',
+				"1"=>$reg->fecha,
+				"2"=>$reg->proveedor,
+				"3"=>$reg->usuario,
+				"4"=>$reg->tipo_comprobante,
+				"5"=>$reg->total_compra,
+				"6"=>($reg->estado=='Aceptado')?'<span class="label bg-green">Aceptado</span>':'<span class="label bg-red">Anulado</span>'
+				);
+			}
 		}
 		$results=array(
              "sEcho"=>1,//info para datatables
@@ -113,17 +116,19 @@ switch ($_GET["op"]) {
 			$data=Array();
 
 			while ($reg=$rspta->fetch_object()) {
-				$data[]=array(
-				"0"=>'<button class="btn btn-warning" onclick="agregarDetalle('.$reg->idarticulo.',\''.$reg->codigo.'\')"><span class="fa fa-plus"></span></button>',
-				"1"=>$reg->codigo,
-				"2"=>$reg->idcategoria,				
-				"3"=>$reg->marca,
-				"4"=>$reg->descripcion,
-				"5"=>$reg->publico,
-				"6"=>$reg->taller,
-				"7"=>$reg->credito_taller,
-				"8"=>$reg->mayoreo,
-				);
+				if($reg->idsucursal == $idsucursal) {
+					$data[]=array(
+					"0"=>'<button class="btn btn-warning" onclick="agregarDetalle('.$reg->idarticulo.',\''.$reg->codigo.'\')"><span class="fa fa-plus"></span></button>',
+					"1"=>$reg->codigo,
+					"2"=>$reg->idcategoria,
+					"3"=>$reg->marca,
+					"4"=>$reg->descripcion,
+					"5"=>$reg->publico,
+					"6"=>$reg->taller,
+					"7"=>$reg->credito_taller,
+					"8"=>$reg->mayoreo,
+					);
+				}
 			}
 			$results=array(
 				"sEcho"=>1,//info para datatables
@@ -133,5 +138,6 @@ switch ($_GET["op"]) {
 			echo json_encode($results);
 
 		break;
+}
 }
  ?>

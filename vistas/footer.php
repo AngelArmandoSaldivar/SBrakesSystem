@@ -1,4 +1,4 @@
-  <footer class="main-footer">
+<footer class="main-footer">
     <div class="pull-right hidden-xs">
       <b>Version</b> 1.0.1
     </div>
@@ -18,7 +18,7 @@
 <script src="../public/datatables/buttons.colVis.min.js"></script>
 <script src="../public/datatables/buttons.html5.min.js"></script>
 <script src="../public/datatables/dataTables.buttons.min.js"></script>
-<script src="../public/datatables/jquery.dataTables.min.js"></script>
+<!-- <script src="../public/datatables/jquery.dataTables.min.js"></script> -->
 <script src="../public/datatables/jszip.min.js"></script>
 
 <script src="../public/datatables/pdfmake.min.js"></script>
