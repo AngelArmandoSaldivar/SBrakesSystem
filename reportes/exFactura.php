@@ -16,11 +16,11 @@ require('Factura.php');
 //establecemos los datos de la empresa
 $logo="logo.png";
 $ext_logo="png";
-$empresa="Tecnology Center S.A.C.";
+$empresa="BrakeOne";
 $documento="1074528547";
-$direccion="Calle los alpes 120";
+$direccion="Calle Portales";
 $telefono="958524158";
-$email="angelinos257@gmail.com";
+$email="brakeone@gmail.com";
 
 //obtenemos los datos de la cabecera de la venta actual
 require_once "../modelos/Venta.php";
@@ -31,7 +31,7 @@ $rsptav=$venta->ventacabecera($_GET["id"]);
 $regv=$rsptav->fetch_object();
 
 //configuracion de la factura
-$pdf = new PDF_Invoice('p','mm','A4');
+$pdf = new PDF('p','mm','A4');
 $pdf->AddPage();
 
 //enviamos datos de la empresa al metodo addSociete de la clase factura
@@ -39,9 +39,9 @@ $pdf->addSociete(utf8_decode($empresa),
                  $documento."\n".
                  utf8_decode("Direccion: "). utf8_decode($direccion)."\n".
                  utf8_decode("Telefono: ").$telefono."\n".
-                 "Email: ".$email,$logo,$ext_logo);
+                 "Email: ".$email,$logo);
 
-$pdf->fact_dev("$regv->tipo_comprobante ","$regv->serie_comprobante- $regv->num_comprobante");
+$pdf->fact_dev("$regv->tipo_comprobante ","$regv->idventa");
 $pdf->temporaire( "" );
 $pdf->addDate($regv->fecha);
 
@@ -51,6 +51,10 @@ $pdf->addClientAdresse(utf8_decode($regv->cliente),
                        $regv->tipo_documento.": ".$regv->num_documento, 
                        "Email: ".$regv->email, 
                        "Telefono: ".$regv->telefono);
+                       
+$header = array('Clave', 'Concepto', 'Cantidad', 'Precio');
+$data = $pdf->LoadData('paises.txt');
+$pdf->ImprovedTable($header,$data);
 
 //establecemos las columnas que va tener lña seccion donde mostramos los detalles de la venta
 $cols=array( "CODIGO"=>23,
@@ -59,15 +63,15 @@ $cols=array( "CODIGO"=>23,
 	         "P.U."=>25,
 	         "DSCTO"=>20,
 	         "SUBTOTAL"=>22);
-$pdf->addCols( $cols);
+// $pdf->addCols( $cols);
 $cols=array( "CODIGO"=>"L",
              "DESCRIPCION"=>"L",
              "CANTIDAD"=>"C",
              "P.U."=>"R",
              "DSCTO"=>"R",
              "SUBTOTAL"=>"C" );
-$pdf->addLineFormat( $cols);
-$pdf->addLineFormat($cols); 
+// $pdf->addLineFormat( $cols);
+// $pdf->addLineFormat($cols); 
 
 //actualizamos el valor de la coordenada "y" quie sera la ubicacion desde donde empecemos a mostrar los datos 
 $y=85;
@@ -82,8 +86,8 @@ while($regd=$rsptad->fetch_object()){
                  "P.U."=>"$regd->precio_venta",
                  "DSCTO"=>"$regd->descuento",
                  "SUBTOTAL"=>"$regd->subtotal");
-  $size = $pdf->addLine( $y, $line );
-  $y += $size +2;
+  // $size = $pdf->addLine( $y, $line );
+  // $y += $size +2;
 
 }  
 

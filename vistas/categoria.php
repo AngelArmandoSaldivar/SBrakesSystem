@@ -32,10 +32,9 @@ if ($_SESSION['almacen']==1) {
 <div class="panel-body table-responsive" id="listadoregistros">
   <section>
     <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px"></center>
-  </section>
+  </section><br><br>
   <section id="tabla_resultado"></section>
 </div>
-
 
 <div class="panel-body" style="height: 400px;" id="formularioregistros">
   <form action="" name="formulario" id="formulario" method="POST">

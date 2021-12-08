@@ -12,128 +12,127 @@ require 'header.php';
 if ($_SESSION['ventas']==1) {
 
  ?>
-    <div class="content-wrapper">
-    <!-- Main content -->
-    <section class="content">
+<div class="content-wrapper">
+      <!-- Main content -->
+  <section class="content">
+        <!-- Default box -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box">
+          <div class="box-header with-border">
+            <h1 class="box-title">Ventas <button class="btn btn-success" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
+          <div class="box-tools pull-right"></div>
+          <div class="panel-body table-responsive" id="listadoregistros">
+            <section>
+              <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px"></center><br><br>
+            </section>            
+            <section id="tabla_resultado"></section>
+          </div>          
+          <div class="panel-body" style="height: 400px;" id="formularioregistros">
+            <form action="" name="formulario" id="formulario" method="POST">
+              <div class="form-group col-lg-8 col-md-8 col-xs-12">
+                <label for="">Cliente(*):</label>
+                <input class="form-control" type="hidden" name="idventa" id="idventa">
+                <select name="idcliente" id="idcliente" class="form-control selectpicker" data-live-search="true" required>                  
+                </select>
+              </div>
 
-      <!-- Default box -->
-      <div class="row">
-        <div class="col-md-12">
-          <div class="box">
-            <div class="box-header with-border">
-              <h1 class="box-title">Ventas <button class="btn btn-success" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
-            <div class="box-tools pull-right"></div>                
-            <div class="panel-body table-responsive" id="listadoregistros">
-              <section>
-                <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px"></center><br><br>
-              </section>
-              <section id="tabla_resultado"></section>
-            </div>
-            <div class="panel-body" style="height: 400px;" id="formularioregistros">
-              <form action="" name="formulario" id="formulario" method="POST">
-                <div class="form-group col-lg-8 col-md-8 col-xs-12">
-                  <label for="">Cliente(*):</label>
-                  <input class="form-control" type="hidden" name="idventa" id="idventa">
-                  <select name="idcliente" id="idcliente" class="form-control selectpicker" data-live-search="true" required>                  
+              <div class="form-group col-lg-4 col-md-4 col-xs-12">
+                <label for="">Fecha(*): </label>
+                <input class="form-control" type="date" name="fecha_hora" id="fecha_hora" required>
+              </div>  
+
+              <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                <label for="">Tipo Comprobante(*): </label>
+                  <select name="tipo_comprobante" id="tipo_comprobante" class="form-control selectpicker" required>                    
+                    <option value="Factura">Factura</option>
+                    <option value="Ticket">Ticket</option>
                   </select>
+              </div>
+              <div class="form-group col-lg-2 col-md-2 col-xs-6">
+                <label for="">Impuesto: </label>
+                <input class="form-control" type="text" name="impuesto" id="impuesto">
+              </div>
+              <div class="form-group col-lg-8 col-md-6 col-xs-12">
+                <label for="">Forma de pago(*): </label>
+                  <select name="forma_pago" id="forma_pago" class="form-control selectpicker" required>                    
+                    <option value="Cheque">CHEQUE</option>
+                    <option value="Tarjeta">TARJETA</option>
+                    <option value="Efectivo">EFECTIVO</option>
+                    <option value="Deposito">DEPÓSITO</option>
+                    <option value="Tarjeta">TARJETA</option>
+                    <option value="Transferencia">TRASFERENCIA</option>
+                    <option value="American Express">AMERICAN EXPRESS</option>
+                  </select>
+              </div>
+              <div class="form-group col-lg-6 col-md-3 col-sm-6 col-xs-12">
+                <a data-toggle="modal" href="#myModal">
+                  <button id="btnAgregarArt" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Articulos</button>
+                </a>
+              </div>
+              <div class="form-group col-lg-12 col-md-12 col-xs-12">         
+                <div class="panel-body table-responsive">
+                <table id="detalles" class="table table-striped table-bordered table-condensed table-hover">
+                  <thead style="background-color:#A9D0F5">
+                    <th>Opciones</th>
+                    <th>Código</th>
+                    <th>Clave</th>
+                    <th>Fmsi</th>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
+                    <th>Precio Venta</th>
+                    <th>Descuento</th>
+                    <th>Subtotal</th>
+                  </thead>
+                  <tfoot>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>TOTAL</th>
+                    <th><h5 id="total">$ 0.00</h5><input type="hidden" name="total_venta" id="total_venta"></th>
+                  </tfoot>
+                  <tbody>                
+                  </tbody>
+                </table>
                 </div>
-
-                <div class="form-group col-lg-4 col-md-4 col-xs-12">
-                  <label for="">Fecha(*): </label>
-                  <input class="form-control" type="date" name="fecha_hora" id="fecha_hora" required>
-                </div>  
-
-                <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                  <label for="">Tipo Comprobante(*): </label>
-                    <select name="tipo_comprobante" id="tipo_comprobante" class="form-control selectpicker" required>
-                      <option value="Boleta">Boleta</option>
-                      <option value="Factura">Factura</option>
-                      <option value="Ticket">Ticket</option>
-                    </select>
-                </div>
-
-                <div class="form-group col-lg-2 col-md-2 col-xs-6">
-                  <label for="">Serie: </label>
-                  <input class="form-control" type="text" name="serie_comprobante" id="serie_comprobante" maxlength="7" placeholder="Serie">
-                </div>
-
-                <div class="form-group col-lg-2 col-md-2 col-xs-6">
-                  <label for="">Número: </label>
-                  <input class="form-control" type="text" name="num_comprobante" id="num_comprobante" maxlength="10" placeholder="Número" required>
-                </div>
-
-                <div class="form-group col-lg-2 col-md-2 col-xs-6">
-                  <label for="">Impuesto: </label>
-                  <input class="form-control" type="text" name="impuesto" id="impuesto">
-                </div>
-
-                <div class="form-group col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                  <!-- <a data-toggle="modal" href="#myModal">
-                    <button id="btnAgregarArt" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Articulos</button>
-                  </a> -->
-                </div>
-
-                <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                  <div>
-                    <section>
-                      <center><input class="form-control me-2" type="text" name="busquedaProduct" id="busquedaProduct" placeholder="Buscar..." style="width:250px"></center><br><br>
-                    </section>
-                    <section id="tabla_resultadoProducto"> </section>
-                  </div>
-
-                  <table id="detalles" class="table table-striped table-bordered table-condensed table-hover">
-                    <thead style="background-color:#A9D0F5">
-                      <th>Opciones</th>
-                      <th>Articulo</th>
-                      <th>Cantidad</th>
-                      <th>Precio Venta</th>
-                      <th>Descuento</th>
-                      <th>Subtotal</th>
-                    </thead>
-                    <tfoot>
-                      <th>TOTAL</th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th><h4 id="total">$ 0.00</h4><input type="hidden" name="total_venta" id="total_venta"></th>
-                    </tfoot>
-                    <tbody>                
-                    </tbody>
-                  </table>
-                </div>
-                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                  <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i>  Guardar</button>
-                  <button class="btn btn-danger" onclick="cancelarform()" type="button" id="btnCancelar"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
-                </div>
-              </form>
-            </div>
-          </div>
+              </div>
+              <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i>  Guardar</button>
+                <button class="btn btn-danger" onclick="cancelarform()" type="button" id="btnCancelar"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
+              </div>
+            </form>
+          </div> 
+      </div>
+    </div>  
+        
+  </section>
+</div>
+  <!--Modal-->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 95% !important;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Seleccione un Articulo</h4>
+        </div>
+        <div class="modal-body">
+        <div class="panel-body table-responsive">
+          <section>
+            <center><input class="form-control me-2" type="text" name="busquedaProduct" id="busquedaProduct" placeholder="Buscar..." style="width:250px"></center><br><br>
+          </section>
+          <section id="tabla_resultadoProducto"> </section>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
         </div>
       </div>
     </div>
-  </section>
-</div>
-
-  <!--Modal-->
-  <!-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width: 95% !important;">
-      <div class="modal-content"> <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> -->
-    <!-- <div class="modal-dialog" style="width: 95% !important;">
-      <div class="modal-content"> -->
-        <!-- <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Seleccione un Articulo</h4>
-        </div> -->
-        <!-- <div class="modal-body"> -->         
-        <!-- </div> -->
-        <!-- <div class="modal-footer">
-          <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
-        </div> -->
-      <!-- </div>
-    </div>
-    
-  </div> -->
+  </div>
   <!-- fin Modal-->
 <?php 
 }else{
@@ -142,7 +141,7 @@ if ($_SESSION['ventas']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/venta.js"></script>
+ <script src="scripts/ventas.js"></script> 
  <?php 
 }
 

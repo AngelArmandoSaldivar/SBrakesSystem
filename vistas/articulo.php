@@ -29,7 +29,7 @@ if ($_SESSION['almacen']==1) {
 <div class="table-responsive" id="table-search">
   <section>
     <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px"></center>
-  </section>
+  </section><br><br>
   <section id="tabla_resultado"></section>
 </div>
 
@@ -156,7 +156,7 @@ require 'footer.php'
  ?>
  <script src="../public/js/JsBarcode.all.min.js"></script>
  <script src="../public/js/jquery.PrintArea.js"></script>
- <script src="scripts/articulos.js"></script>
+ <script src="scripts/articulo.js"></script>
  <!-- <script src="consulta.js"></script> -->
 
  <?php 

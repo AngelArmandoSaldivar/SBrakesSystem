@@ -5,7 +5,7 @@ if (strlen(session_id())<1)
   session_start();
 
 if (!isset($_SESSION['nombre'])) {
-  echo "debe ingresar al sistema correctamente para vosualizar el reporte";
+  echo "debe ingresar al sistema correctamente para visualizar el reporte";
 }else{
 
 if ($_SESSION['ventas']==1) {
@@ -30,11 +30,12 @@ $rspta = $venta->ventacabecera($_GET["id"]);
 $reg=$rspta->fetch_object();
 
 //establecemos los datos de la empresa
-$empresa = "Tecnology S.A.C.";
-$documento = "102589524";
-$direccion = "calle los alpes 120";
-$telefono = "854715648";
-$email = "angelinos257@gmail.com";
+$calle = "SARATOGA 313-C";
+$colonia = "COL. PORTALES NORTE";
+$direccion = "ALCALDIA BENITO JUAREZ";
+$cp = "CDMX C.P. 03303";
+$phone1 = "Tel: (55) 7653-6116 / (55) 68402850";
+$phone = "Tel: (55) 52733450 / (55) 43834342";
 	 ?>
 <div class="zona_impresion">
 	<!--codigo imprimir-->
@@ -43,41 +44,45 @@ $email = "angelinos257@gmail.com";
 		<tr>
 			<td align="center">
 				<!--mostramos los datos de la empresa en el doc HTML-->
-				.::<strong> <?php echo $empresa; ?></strong>::.<br>
-				<?php echo $documento; ?><br>
-				<?php echo $direccion . '-'.$telefono; ?><br>
+				<strong> <img src="../files/images/BrakeOneBrembo.png" alt="BrakeOne" style="width: 280px;"></strong><br><br>
+				<?php echo $calle; ?><br>
+				<?php echo $colonia; ?><br>
+				<?php echo $direccion; ?><br>
+				<?php echo $cp; ?><br>
+				<?php echo $phone1; ?><br>
+				<?php echo $phone; ?><br>
 			</td>
 		</tr>
 		<tr>
-			<td align="center"><?php echo $reg->fecha; ?></td>
-		</tr>
-		<tr> 
-			<td align="center"></td>
-		</tr>
+	</table>
+
+	<div style="text-align:center;">
+		<h4>TICKET SIN VALOR FISCAL</h4>
+	</div>
+
+	<table border="0" align="center" width="300px">
 		<tr>
-			<!--mostramos los datos del cliente -->
-			<td>Cliente: <?php echo $reg->cliente; ?>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<?php echo $reg->tipo_documento.": ".$reg->num_documento; ?>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				N° de venta: <?php echo $reg->serie_comprobante." - ".$reg->num_comprobante; ?>
-			</td>
+			<td  align="left"><b>Folio: </b><?php echo $reg->idventa; ?></td><p> <b></b> </p><p></p>
+			<td align="right"><b>Fecha: </b><?php echo $reg->fecha; ?></td>
 		</tr>
 	</table>
-	<br>
-
+	<br><br>
+	<div style="margin-left:10px;">
+		<b>	Cliente: </b><?php echo $reg->cliente; ?>
+	</div><br>
+	<div style="margin-left:10px;">
+		<b>	Tel. </b><?php echo $reg->telefono; ?>
+	</div><br>
+	<div style="margin-left:10px;">
+		<b>	Dirección. </b><?php echo $reg->direccion; ?>
+	</div>
+	<br>	
 	<!--mostramos lod detalles de la venta -->
 
 	<table border="0" align="center" width="300px">
 		<tr>
 			<td>CANT.</td>
-			<td>DESCRIPCION</td>
+			<td>CONCEPTO</td>
 			<td align="right">IMPORTE</td>
 		</tr>
 		<tr>
@@ -87,35 +92,37 @@ $email = "angelinos257@gmail.com";
 		$rsptad = $venta->ventadetalles($_GET["id"]);
 		$cantidad=0;
 		while ($regd = $rsptad->fetch_object()) {
+			$descripcion = substr($regd->descripcion, 0,30);
 		 	echo "<tr>";
 		 	echo "<td>".$regd->cantidad."</td>";
-		 	echo "<td>".$regd->articulo."</td>";
-		 	echo "<td align='right'>S/. ".$regd->subtotal."</td>";
+		 	echo "<td>".$descripcion."...</td>";
+		 	echo "<td align='right'>$ ".number_format($regd->subtotal)."</td>";
 		 	echo "</tr>";
 		 	$cantidad+=$regd->cantidad;
 		 } 
 
 		 ?>
 		 <!--mostramos los totales de la venta-->
-		<tr>
-			<td>&nbsp;</td>
-			<td align="right"><b>TOTAL:</b></td>
-			<td align="right"><b>S/. <?php echo $reg->total_venta; ?></b></td>
-		</tr>
-		<tr>
+		 <tr><td><br></td></tr>
+		 <tr>
 			<td colspan="3">N° de articulos: <?php echo $cantidad; ?> </td>
 		</tr>
+		<tr>
+			<td></td>
+			<td align="right"><b>TOTAL:</b></td>
+			<td align="right"><b>$ <?php echo number_format($reg->total_venta); ?></b></td>
+		</tr>		
 		<tr>
 			<td colspan="3">&nbsp;</td>
 		</tr>
 		<tr>
-			<td colspan="3" align="center">¡Gracias por su compra!</td>
+			<td colspan="3" align="center">Aviso de privacidad / Terminos y condiciones en:</td>
 		</tr>
 		<tr>
-			<td colspan="3" align="center">AngshelinoWeb</td>
+			<td colspan="3" align="center">www.brakeone.mx</td>
 		</tr>
 		<tr>
-			<td colspan="3" align="center">Arequipa - Peru</td>
+			<td colspan="3" align="center"> <img src="../files/images/QR.jpeg" alt="" style="width:150px;"> </td>
 		</tr>
 	</table>
 	<br>

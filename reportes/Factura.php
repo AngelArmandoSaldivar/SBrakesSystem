@@ -1,5 +1,5 @@
 <?php
-require('../fpdf181/fpdf.php');
+require('../fpdf21/fpdf.php');
 define('EURO', chr(128) );
 define('EURO_VAL', 6.55957 );
 
@@ -32,7 +32,7 @@ define('EURO_VAL', 6.55957 );
 //  function addTVAs( $params, $tab_tva, $invoice )
 //  function temporaire( $texte )
 
-class PDF_Invoice extends FPDF
+class PDF extends FPDF
 {
 // private variables
 var $colonnes;
@@ -136,12 +136,12 @@ function sizeOfText( $texte, $largeur )
 }
 
 // Company
-function addSociete( $nom, $adresse, $logo, $ext_logo  )
+function addSociete( $nom, $adresse, $logo  )
 {
     $x1 = 30;
     $y1 = 4;
     //Positionnement en bas
-    $this->Image($logo, 5 , 3 , 25 , $ext_logo);
+    //$this->Image($logo, 5 , 3 , 25 , $ext_logo);
     $this->SetXY( $x1, $y1 );
     $this->SetFont('Arial','B',12);
     $length = $this->GetStringWidth( $nom );
@@ -153,7 +153,15 @@ function addSociete( $nom, $adresse, $logo, $ext_logo  )
     $lignes = $this->sizeOfText( $adresse, $length) ;
     $this->MultiCell($length, 4, $adresse);
 }
-
+function LoadData($file)
+{
+    // Leer las líneas del fichero
+    $lines = file($file);
+    $data = array();
+    foreach($lines as $line)
+        $data[] = explode(';',trim($line));
+    return $data;
+}
 // Label and number of invoice/estimate
 function fact_dev( $libelle, $num )
 {
@@ -277,6 +285,27 @@ function addClientAdresse( $cliente, $domicilio ,$num_documento, $email, $telefo
 
 }
 
+function ImprovedTable($header, $data)
+{
+    // Anchuras de las columnas
+    $w = array(40, 35, 45, 40);
+    // Cabeceras
+    for($i=0;$i<count($header);$i++)
+        $this->Cell($w[$i],7,$header[$i],1,0,'C');
+    $this->Ln();
+    // Datos
+    foreach($data as $row)
+    {
+        $this->Cell($w[0],6,$row[0],'LR');
+        $this->Cell($w[1],6,$row[1],'LR');
+        $this->Cell($w[2],6,number_format($row[2]),'LR',0,'R');
+        $this->Cell($w[3],6,number_format($row[3]),'LR',0,'R');        
+        $this->Ln();
+    }
+    // Línea de cierre
+    $this->Cell(array_sum($w),0,'','T');
+}
+
 // Mode of payment
 function addReglement( $mode )
 {
@@ -356,7 +385,7 @@ function addCols( $tab )
     $this->Line( $r1, $y1+6, $r1+$r2, $y1+6);
     $colX = $r1;
     $colonnes = $tab;
-    while ( list( $lib, $pos ) = each ($tab) )
+    while ( list( $lib, $pos ) = array_keys($tab) )
     {
         $this->SetXY( $colX, $y1+2 );
         $this->Cell( $pos, 1, $lib, 0, 0, "C");
@@ -369,61 +398,14 @@ function addLineFormat( $tab )
 {
     global $format, $colonnes;
     
-    while ( list( $lib, $pos ) = each ($colonnes) )
+    while ( list( $lib, $pos ) = array_keys($colonnes))
     {
         if ( isset( $tab["$lib"] ) )
             $format[ $lib ] = $tab["$lib"];
     }
 }
 
-function lineVert( $tab )
-{
-    global $colonnes;
 
-    reset( $colonnes );
-    $maxSize=0;
-    while ( list( $lib, $pos ) = each ($colonnes) )
-    {
-        $texte = $tab[ $lib ];
-        $longCell  = $pos -2;
-        $size = $this->sizeOfText( $texte, $longCell );
-        if ($size > $maxSize)
-            $maxSize = $size;
-    }
-    return $maxSize;
-}
-
-// add a line to the invoice/estimate
-/*    $ligne = array( "REFERENCE"    => $prod["ref"],
-                      "DESIGNATION"  => $libelle,
-                      "QUANTITE"     => sprintf( "%.2F", $prod["qte"]) ,
-                      "P.U. HT"      => sprintf( "%.2F", $prod["px_unit"]),
-                      "MONTANT H.T." => sprintf ( "%.2F", $prod["qte"] * $prod["px_unit"]) ,
-                      "TVA"          => $prod["tva"] );
-*/
-function addLine( $ligne, $tab )
-{
-    global $colonnes, $format;
-
-    $ordonnee     = 10;
-    $maxSize      = $ligne;
-
-    reset( $colonnes );
-    while ( list( $lib, $pos ) = each ($colonnes) )
-    {
-        $longCell  = $pos -2;
-        $texte     = $tab[ $lib ];
-        $length    = $this->GetStringWidth( $texte );
-        $tailleTexte = $this->sizeOfText( $texte, $length );
-        $formText  = $format[ $lib ];
-        $this->SetXY( $ordonnee, $ligne-1);
-        $this->MultiCell( $longCell, 4 , $texte, 0, $formText);
-        if ( $maxSize < ($this->GetY()  ) )
-            $maxSize = $this->GetY() ;
-        $ordonnee += $pos;
-    }
-    return ( $maxSize - $ligne );
-}
 
 function addRemarque($remarque)
 {
@@ -476,25 +458,6 @@ function addCadreEurosFrancs($impuesto)
     $this->Cell(20,4, "TOTAL A PAGAR", 0, 0, "C");
 }
 
-// remplit les cadres TVA / Totaux et la remarque
-// params  = array( "RemiseGlobale" => [0|1],
-//                      "remise_tva"     => [1|2...],  // {la remise s'applique sur ce code TVA}
-//                      "remise"         => value,     // {montant de la remise}
-//                      "remise_percent" => percent,   // {pourcentage de remise sur ce montant de TVA}
-//                  "FraisPort"     => [0|1],
-//                      "portTTC"        => value,     // montant des frais de ports TTC
-//                                                     // par defaut la TVA = 19.6 %
-//                      "portHT"         => value,     // montant des frais de ports HT
-//                      "portTVA"        => tva_value, // valeur de la TVA a appliquer sur le montant HT
-//                  "AccompteExige" => [0|1],
-//                      "accompte"         => value    // montant de l'acompte (TTC)
-//                      "accompte_percent" => percent  // pourcentage d'acompte (TTC)
-//                  "Remarque" => "texte"              // texte
-// tab_tva = array( "1"       => 19.6,
-//                  "2"       => 5.5, ... );
-// invoice = array( "px_unit" => value,
-//                  "qte"     => qte,
-//                  "tva"     => code_tva );
 function addTVAs( $impuesto, $total_venta, $simbolo )
 {
     $this->SetFont('Arial','',8);

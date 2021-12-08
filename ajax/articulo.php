@@ -86,7 +86,7 @@ if(!isset($_SESSION["nombre"])) {
 			// 	"iTotalDisplayRecords"=>count($data),//enviamos el total de registros a visualizar
 			// 	"aaData"=>$data); 
 			// echo json_encode($results);			
-			$consulta=" SELECT * FROM articulo LIMIT 0";
+			$consulta=" SELECT * FROM articulo LIMIT 20";
 			$termino= "";
 			if(isset($_POST['articulos']))
 			{
@@ -94,7 +94,7 @@ if(!isset($_SESSION["nombre"])) {
 				$consulta="SELECT * FROM articulo WHERE
 				codigo LIKE '%".$termino."%' OR
 				fmsi LIKE '%".$termino."%' OR
-				descripcion LIKE '%".$termino."%'";
+				descripcion LIKE '%".$termino."%' LIMIT 20";
 			}
 			$consultaBD=$conexion->query($consulta);
 			if($consultaBD->num_rows>=1){

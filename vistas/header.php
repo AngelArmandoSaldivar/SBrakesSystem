@@ -28,6 +28,10 @@ if (strlen(session_id())<1)
 <link rel="stylesheet" href="../public/datatables/responsive.dataTables.min.css">
 <link rel="stylesheet" href="../public/css/bootstrap-select.min.css">
 
+  <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.css">
+	<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>	  
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -51,14 +55,13 @@ if (strlen(session_id())<1)
         <ul class="nav navbar-nav">
 
           <li class="dropdown user user-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="../files/usuarios/<?php echo $_SESSION['imagen']; ?>" class="user-image" alt="User Image">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">              
               <span class="hidden-xs"><?php echo $_SESSION['nombre']; ?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
-              <li class="user-header">
-                <img src="../files/usuarios/<?php echo $_SESSION['imagen']; ?>" class="img-circle" alt="User Image">
+              <li class="user-header">  
+              <span class="hidden-xs"><?php echo $_SESSION['nombre']; ?></span>             
               </li>
               <!-- Menu Footer-->
               <li class="user-footer">

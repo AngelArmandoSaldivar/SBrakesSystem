@@ -34,14 +34,14 @@ switch ($_GET["op"]) {
 		break;
 
     case 'listar':
-		$consulta=" SELECT * FROM categoria LIMIT 0";
+		$consulta=" SELECT * FROM categoria LIMIT 20";
 			$termino= "";
 			if(isset($_POST['categorias']))
 			{
 				$termino=$conexion->real_escape_string($_POST['categorias']);
 				$consulta="SELECT * FROM categoria WHERE
 				nombre LIKE '%".$termino."%' OR
-				descripcion LIKE '%".$termino."%'";
+				descripcion LIKE '%".$termino."%' LIMIT 20";
 			}
 			$consultaBD=$conexion->query($consulta);
 			if($consultaBD->num_rows>=1){
@@ -51,6 +51,7 @@ switch ($_GET["op"]) {
 						<tr>
 							<th class='bg-info' scope='col'>Categoria</th>
 							<th class='bg-info' scope='col'>Descripcion</th>
+							<th class='bg-info' scope='col'>Acciones</th>
 						</tr>
 					</thead>
 				<tbody>";

@@ -1,9 +1,10 @@
 var tabla;
 
 //funcion que se ejecuta al inicio
-function init(){
+function init(){	
    mostrarform(false);
    listar();
+   obtener_registros();
 
    $("#formulario").on("submit",function(e){
    	guardaryeditar(e);
@@ -14,7 +15,7 @@ function init(){
 function limpiar(){
 	$("#idcategoria").val("");
 	$("#nombre").val("");
-	$("#descripcion").val("");
+	$("#descripcion").val("");	
 }
 
 //funcion mostrar formulario
@@ -24,12 +25,13 @@ function mostrarform(flag){
 		$("#listadoregistros").hide();
 		$("#formularioregistros").show();
 		$("#btnGuardar").prop("disabled",false);
-		$("#btnagregar").hide();
+		$("#btnagregar").hide();		
 	}else{
 		$("#listadoregistros").show();
 		$("#formularioregistros").hide();
 		$("#btnagregar").show();
-	}
+		
+	}	
 }
 
 //cancelar form
@@ -39,7 +41,7 @@ function cancelarform(){
 }
 
 //funcion listar
-function obtener_registros(categorias){	
+function obtener_registros(categorias){
 	$.ajax({
 		url : '../ajax/categoria.php?op=listar',
 		type : 'POST',
