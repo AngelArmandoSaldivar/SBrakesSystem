@@ -72,7 +72,7 @@ if ($_SESSION['escritorio']==1) {
   <div class="small-box bg-aqua">
     <div class="inner">
       <h4 style="font-size: 17px;">
-        <strong>S/. <?php echo $totalc; ?> </strong>
+        <strong>$<?php echo $totalc; ?> </strong>
       </h4>
       <p>Compras</p>
     </div>
@@ -86,7 +86,7 @@ if ($_SESSION['escritorio']==1) {
   <div class="small-box bg-green">
     <div class="inner">
       <h4 style="font-size: 17px;">
-        <strong>S/. <?php echo $totalv; ?> </strong>
+        <strong>$<?php echo $totalv; ?> </strong>
       </h4>
       <p>Ventas</p>
     </div>
@@ -144,7 +144,7 @@ var compras = new Chart(ctx, {
     data: {
         labels: [<?php echo $fechasc ?>],
         datasets: [{
-            label: '# Compras en S/. de los últimos 10 dias',
+            label: '# Compras en $ de los últimos 10 dias',
             data: [<?php echo $totalesc ?>],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -189,7 +189,7 @@ var ventas = new Chart(ctx, {
     data: {
         labels: [<?php echo $fechasv ?>],
         datasets: [{
-            label: '# Ventas en S/. de los últimos 12 meses',
+            label: '# Ventas en $ de los últimos 12 meses',
             data: [<?php echo $totalesv ?>],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',

@@ -38,25 +38,88 @@ if(!isset($_SESSION["nombre"])) {
 			break;
 
 		case 'listarp':
-			$rspta=$persona->listarp();
-			$data=Array();
+			// $rspta=$persona->listarp();
+			// $data=Array();
 
-			while ($reg=$rspta->fetch_object()) {
-				$data[]=array(
-				"0"=>'<button class="btn btn-warning btn-xs" onclick="mostrar('.$reg->idpersona.')"><i class="fa fa-pencil"></i></button>'.' '.'<button class="btn btn-danger btn-xs" onclick="eliminar('.$reg->idpersona.')"><i class="fa fa-trash"></i></button>',
-				"1"=>$reg->nombre,
-				"2"=>$reg->tipo_documento,
-				"3"=>$reg->num_documento,
-				"4"=>$reg->telefono,
-				"5"=>$reg->email
-				);
+			// while ($reg=$rspta->fetch_object()) {
+			// 	$data[]=array(
+			// 	"0"=>'<button class="btn btn-warning btn-xs" onclick="mostrar('.$reg->idpersona.')"><i class="fa fa-pencil"></i></button>'.' '.'<button class="btn btn-danger btn-xs" onclick="eliminar('.$reg->idpersona.')"><i class="fa fa-trash"></i></button>',
+			// 	"1"=>$reg->nombre,
+			// 	"2"=>$reg->tipo_documento,
+			// 	"3"=>$reg->num_documento,
+			// 	"4"=>$reg->telefono,
+			// 	"5"=>$reg->email
+			// 	);
+			// }
+			// $results=array(
+			// 	"sEcho"=>1,//info para datatables
+			// 	"iTotalRecords"=>count($data),//enviamos el total de registros al datatable
+			// 	"iTotalDisplayRecords"=>count($data),//enviamos el total de registros a visualizar
+			// 	"aaData"=>$data); 
+			// echo json_encode($results);
+
+			$consulta="SELECT * FROM persona WHERE tipo_persona='Proveedor' LIMIT 40";
+			$termino= "";
+			if(isset($_POST['personas']))
+			{
+				$termino=$conexion->real_escape_string($_POST['personas']);
+				$consulta="SELECT * FROM persona
+				WHERE 
+				nombre LIKE '%".$termino."%' OR
+				direccion LIKE '%".$termino."%' OR
+				telefono LIKE '%".$termino."%' OR
+				email LIKE '%".$termino."%'
+				AND tipo_persona='Proveedor' LIMIT 40";
 			}
-			$results=array(
-				"sEcho"=>1,//info para datatables
-				"iTotalRecords"=>count($data),//enviamos el total de registros al datatable
-				"iTotalDisplayRecords"=>count($data),//enviamos el total de registros a visualizar
-				"aaData"=>$data); 
-			echo json_encode($results);
+			$consultaBD=$conexion->query($consulta);
+			if($consultaBD->num_rows>=1){
+				echo "
+				<table class='responsive-table table table-hover table-bordered' style='font-size:12px' id='example'>
+					<thead class='table-light'>
+						<tr>
+							<th class='bg-info' scope='col'>Acciones</th>
+							<th class='bg-info' scope='col'>Nombre</th>
+							<th class='bg-info' scope='col'>Documento</th>
+							<th class='bg-info' scope='col'>Telefono</th>
+							<th class='bg-info' scope='col'>Email</th>
+							<th class='bg-info' scope='col'>Direccion</th>
+						</tr>
+					</thead>
+				<tbody>";
+				
+				while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){
+							
+							$ventas_pagina = 3;
+							$paginas = 13;
+
+							echo "<tr>
+								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idpersona"].")'><i class='fa fa-eye'></i></button>								
+								<button class='btn btn-danger btn-xs' onclick='eliminar(".$fila["idpersona"].")'><i class='fa fa-trash'></i></button>
+								<td>".$fila['nombre']."</td>
+								<td>".$fila['tipo_documento']."</td>
+								<td>".$fila['telefono']."</td>
+								<td><p>".$fila['email']."</td>
+								<td><p>".$fila['direccion']."</td>
+							</tr>
+							";					
+				}
+				echo "</tbody>
+				<tfoot>
+					<tr>					
+					<th class='bg-info' scope='col'>Acciones</th>
+					<th class='bg-info' scope='col'>Nombre</th>
+					<th class='bg-info' scope='col'>Documento</th>
+					<th class='bg-info' scope='col'>Telefono</th>
+					<th class='bg-info' scope='col'>Email</th>
+					<th class='bg-info' scope='col'>Direccion</th>
+					</tr>
+				</tfoot>
+				</table>";
+			}else{
+				echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";
+				echo "<img src='../files/img/products_brembo.jpg'>";
+			}
+
 			break;
 
 			case 'listarc':

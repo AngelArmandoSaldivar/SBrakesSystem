@@ -1,21 +1,24 @@
 var tabla;
 
 //funcion que se ejecuta al inicio
-function init(){	
+function init(){
    mostrarform(false);
-   listar();
    obtener_registros();
 
    $("#formulario").on("submit",function(e){
    	guardaryeditar(e);
-   })
+   });
 }
 
 //funcion limpiar
 function limpiar(){
-	$("#idcategoria").val("");
+
 	$("#nombre").val("");
-	$("#descripcion").val("");	
+	$("#num_documento").val("");
+	$("#direccion").val("");
+	$("#telefono").val("");
+	$("#email").val("");
+	$("#idpersona").val("");
 }
 
 //funcion mostrar formulario
@@ -25,13 +28,12 @@ function mostrarform(flag){
 		$("#listadoregistros").hide();
 		$("#formularioregistros").show();
 		$("#btnGuardar").prop("disabled",false);
-		$("#btnagregar").hide();		
+		$("#btnagregar").hide();
 	}else{
 		$("#listadoregistros").show();
 		$("#formularioregistros").hide();
 		$("#btnagregar").show();
-		
-	}	
+	}
 }
 
 //cancelar form
@@ -40,21 +42,20 @@ function cancelarform(){
 	mostrarform(false);
 }
 
-//funcion listar
-function obtener_registros(categorias){
+function obtener_registros(personas){
 	$.ajax({
-		url : '../ajax/categoria.php?op=listar',
+		url : '../ajax/persona.php?op=listarp',
 		type : 'POST',
 		dataType : 'html',
-		data : { categorias: categorias },
-	})
+		data : { personas: personas },
+	}
+	)
 	.done(function(resultado){
 		$("#tabla_resultado").html(resultado);
 	})
 }
 
-$(document).on('keyup', '#busqueda', function()
-{
+$(document).on('keyup', '#busqueda', function(){
 	var valorBusqueda=$(this).val();
 	
 	if (valorBusqueda!="")
@@ -74,7 +75,7 @@ function guardaryeditar(e){
      var formData=new FormData($("#formulario")[0]);
 
      $.ajax({
-     	url: "../ajax/categoria.php?op=guardaryeditar",
+     	url: "../ajax/persona.php?op=guardaryeditar",
      	type: "POST",
      	data: formData,
      	contentType: false,
@@ -90,25 +91,31 @@ function guardaryeditar(e){
      limpiar();
 }
 
-function mostrar(idcategoria){
-	$.post("../ajax/categoria.php?op=mostrar",{idcategoria : idcategoria},
+function mostrar(idpersona){
+	$.post("../ajax/persona.php?op=mostrar",{idpersona : idpersona},
 		function(data,status)
 		{
 			data=JSON.parse(data);
 			mostrarform(true);
 
 			$("#nombre").val(data.nombre);
-			$("#descripcion").val(data.descripcion);
-			$("#idcategoria").val(data.idcategoria);
+			$("#tipo_documento").val(data.tipo_documento);
+			$("#tipo_documento").selectpicker('refresh');
+			$("#num_documento").val(data.num_documento);
+			$("#direccion").val(data.direccion);
+			$("#telefono").val(data.telefono);
+			$("#email").val(data.email);
+			$("#idpersona").val(data.idpersona);
 		})
 }
 
 
 //funcion para desactivar
-function desactivar(idcategoria){
-	bootbox.confirm("¿Esta seguro de desactivar este dato?", function(result){
+function eliminar(idpersona){
+	bootbox.confirm("¿Esta seguro de eliminar este dato?", function(result){
 		if (result) {
-			$.post("../ajax/categoria.php?op=desactivar", {idcategoria : idcategoria}, function(e){
+
+			$.post("../ajax/persona.php?op=eliminar", {idpersona : idpersona }, function(e){
 				bootbox.alert(e);
 				tabla.ajax.reload();
 			});
@@ -116,15 +123,5 @@ function desactivar(idcategoria){
 	})
 }
 
-function activar(idcategoria){
-	bootbox.confirm("¿Esta seguro de activar este dato?" , function(result){
-		if (result) {
-			$.post("../ajax/categoria.php?op=activar" , {idcategoria : idcategoria}, function(e){
-				bootbox.alert(e);
-				tabla.ajax.reload();
-			});
-		}
-	})
-}
 
 init();

@@ -24,14 +24,14 @@ switch ($_GET["op"]) {
 	}
 		break;
 
-		case 'cobrar':	
+		case 'cobrar':
 		$rspta=$venta->cobrarVenta($idventa);
 		echo $rspta ? "Cobro exitoso" : "No se pudo cobrar la venta";				
 		break;
 
 	case 'anular':
 		$rspta=$venta->anular($idventa);
-		echo $rspta ? "Venta anulada correctamente" : "No se pudo anular la venta";		
+		echo $rspta ? "Venta anulada correctamente" : "No se pudo anular la venta";
 		break;
 	
 	case 'mostrar':
@@ -75,7 +75,7 @@ switch ($_GET["op"]) {
 
     case 'listar':
 	
-		$consulta="SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE estado='Aceptado' ORDER BY v.idventa DESC LIMIT 20";
+		$consulta="SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE estado='Aceptado' ORDER BY v.idventa DESC LIMIT 40";
 			$termino= "";
 			if(isset($_POST['ventas']))
 			{
@@ -85,8 +85,8 @@ switch ($_GET["op"]) {
 				tipo_comprobante LIKE '%".$termino."%' OR
 				v.idventa LIKE '%".$termino."%' OR
 				p.nombre LIKE '%".$termino."%' OR
-				u.nombre LIKE '%".$termino."%' OR
-				AND estado='Aceptado' LIMIT 20";
+				u.nombre LIKE '%".$termino."%'
+				AND estado='Aceptado' LIMIT 40";
 			}
 			$consultaBD=$conexion->query($consulta);
 			if($consultaBD->num_rows>=1){
@@ -102,12 +102,10 @@ switch ($_GET["op"]) {
 							<th class='bg-info' scope='col'>Vendedor</th>
 							<th class='bg-info' scope='col'>Pagado</th>
 							<th class='bg-info' scope='col'>Falta por pagar</th>
-							<th class='bg-info' scope='col'>Total</th>							
+							<th class='bg-info' scope='col'>Total</th>
 						</tr>
 					</thead>
-				<tbody>";
-
-				echo "Hola";
+				<tbody>";				
 				while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){
 					if($fila["idsucursal"] == $idsucursal && $fila["estado"] == 'Aceptado' && $fila["status"] == "NORMAL") {
 							if ($fila["tipo_comprobante"]=='Ticket') {
@@ -137,6 +135,19 @@ switch ($_GET["op"]) {
 					}
 				}
 				echo "</tbody>
+				<tfoot>
+					<tr>
+					<th class='bg-info' scope='col'>Acciones</th>
+							<th class='bg-info' scope='col'>Folio</th>
+							<th class='bg-info' scope='col'>Salida</th>
+							<th class='bg-info' scope='col'>Estatus</th>
+							<th class='bg-info' scope='col'>Cliente</th>
+							<th class='bg-info' scope='col'>Vendedor</th>
+							<th class='bg-info' scope='col'>Pagado</th>
+							<th class='bg-info' scope='col'>Falta por pagar</th>
+							<th class='bg-info' scope='col'>Total</th>
+					</tr>
+				</tfoot>
 				</table>";
 			}else{
 				echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";
@@ -157,7 +168,7 @@ switch ($_GET["op"]) {
 
 			case 'listarProductos':
 	
-				$consulta="SELECT * FROM articulo LIMIT 20";
+				$consulta="SELECT * FROM articulo LIMIT 40";
 					$termino= "";
 					if(isset($_POST['productos']))
 					{
@@ -167,7 +178,7 @@ switch ($_GET["op"]) {
 						codigo LIKE '%".$termino."%' OR
 						fmsi LIKE '%".$termino."%' OR
 						descripcion LIKE '%".$termino."%' OR
-						marca LIKE '%".$termino."%' LIMIT 20";
+						marca LIKE '%".$termino."%' LIMIT 40";
 					}
 					$consultaBD=$conexion->query($consulta);
 					if($consultaBD->num_rows>=1){
@@ -210,16 +221,31 @@ switch ($_GET["op"]) {
 										<td><p>$ ".$creditoMiles."</p></td>
 										<td><p>$ ".$mayoreoMiles."</p></td>
 										<td><p>".$fila["stock"]." pz</p></td>										
-										<td><button class='btn btn-warning' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\" )'><span class='fa fa-plus'></span></button></td>					
+										<td><button class='btn btn-warning' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\" )'><span class='fa fa-plus'></span></button></td>
 									</tr>";
 							}
 						}
 						echo "</tbody>
+						<tfoot>
+							<tr>								
+								<th class='bg-info' scope='col'>Clave</th>
+								<th class='bg-info' scope='col'>FMSI</th>
+								<th class='bg-info' scope='col'>Marca</th>
+								<th class='bg-info' scope='col'>Descripción</th>
+								<th class='bg-info' scope='col'>Costo</th>
+								<th class='bg-info' scope='col'>Publico Mostrador</th>
+								<th class='bg-info' scope='col'>Taller</th>
+								<th class='bg-info' scope='col'>Crédito Taller</th>
+								<th class='bg-info' scope='col'>Mayoreo</th>
+								<th class='bg-info' scope='col'>Stock</th>									
+								<th class='bg-info' scope='col'>Acciones</th>
+							</tr>
+						</tfoot>
 						</table>";
 					}else{
 						echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";						
 						echo "<br><br>";
 					}
-				break;			
+				break;
 }
  ?>

@@ -49,28 +49,90 @@ switch ($_GET["op"]) {
 	break;
 
 	case 'listar':
-	$rspta=$usuario->listar();
-	$data=Array();
+	// $rspta=$usuario->listar();
+	// $data=Array();
 
-	while ($reg=$rspta->fetch_object()) {
-		$data[]=array(
-			"0"=>($reg->condicion)?'<button class="btn btn-warning btn-xs" onclick="mostrar('.$reg->idusuario.')"><i class="fa fa-pencil"></i></button>'.' '.'<button class="btn btn-danger btn-xs" onclick="desactivar('.$reg->idusuario.')"><i class="fa fa-close"></i></button>':'<button class="btn btn-warning btn-xs" onclick="mostrar('.$reg->idusuario.')"><i class="fa fa-pencil"></i></button>'.' '.'<button class="btn btn-primary btn-xs" onclick="activar('.$reg->idusuario.')"><i class="fa fa-check"></i></button>',
-			"1"=>$reg->nombre,
-			"2"=>$reg->tipo_documento,
-			"3"=>$reg->num_documento,
-			"4"=>$reg->telefono,
-			"5"=>$reg->email,
-			"6"=>$reg->login,
-			"7"=>($reg->condicion)?'<span class="label bg-green">Activado</span>':'<span class="label bg-red">Desactivado</span>'
-		);
-	}
+	// while ($reg=$rspta->fetch_object()) {
+	// 	$data[]=array(
+	// 		"0"=>($reg->condicion)?'<button class="btn btn-warning btn-xs" onclick="mostrar('.$reg->idusuario.')"><i class="fa fa-pencil"></i></button>'.' '.'<button class="btn btn-danger btn-xs" onclick="desactivar('.$reg->idusuario.')"><i class="fa fa-close"></i></button>':'<button class="btn btn-warning btn-xs" onclick="mostrar('.$reg->idusuario.')"><i class="fa fa-pencil"></i></button>'.' '.'<button class="btn btn-primary btn-xs" onclick="activar('.$reg->idusuario.')"><i class="fa fa-check"></i></button>',
+	// 		"1"=>$reg->nombre,
+	// 		"2"=>$reg->tipo_documento,
+	// 		"3"=>$reg->num_documento,
+	// 		"4"=>$reg->telefono,
+	// 		"5"=>$reg->email,
+	// 		"6"=>$reg->login,
+	// 		"7"=>($reg->condicion)?'<span class="label bg-green">Activado</span>':'<span class="label bg-red">Desactivado</span>'
+	// 	);
+	// }
 
-	$results=array(
-             "sEcho"=>1,//info para datatables
-             "iTotalRecords"=>count($data),//enviamos el total de registros al datatable
-             "iTotalDisplayRecords"=>count($data),//enviamos el total de registros a visualizar
-             "aaData"=>$data);
-	echo json_encode($results);
+	// $results=array(
+    //          "sEcho"=>1,//info para datatables
+    //          "iTotalRecords"=>count($data),//enviamos el total de registros al datatable
+    //          "iTotalDisplayRecords"=>count($data),//enviamos el total de registros a visualizar
+    //          "aaData"=>$data);
+	// echo json_encode($results);
+
+	$consulta="SELECT * FROM usuario LIMIT 40";
+			$termino= "";
+			if(isset($_POST['usuarios']))
+			{
+				$termino=$conexion->real_escape_string($_POST['usuarios']);
+				$consulta="SELECT * FROM usuario
+				WHERE
+				nombre LIKE '%".$termino."%' OR
+				tipo_documento LIKE '%".$termino."%' OR
+				direccion LIKE '%".$termino."%' OR
+				email LIKE '%".$termino."%' OR
+				telefono LIKE '%".$termino."%' OR
+				login LIKE '%".$termino."%'
+				LIMIT 40";
+			}
+			$consultaBD=$conexion->query($consulta);
+			if($consultaBD->num_rows>=1){
+				echo "
+				<table class='responsive-table table table-hover table-bordered' style='font-size:12px' id='example'>
+					<thead class='table-light'>
+						<tr>
+							<th class='bg-info' scope='col'>Acciones</th>
+							<th class='bg-info' scope='col'>Nombre</th>
+							<th class='bg-info' scope='col'>Documento</th>
+							<th class='bg-info' scope='col'>Telefono</th>
+							<th class='bg-info' scope='col'>Email</th>
+							<th class='bg-info' scope='col'>Usuario</th>
+							<th class='bg-info' scope='col'>Status</th>
+						</tr>
+					</thead>
+				<tbody>";				
+				while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){
+							echo "<tr>
+								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idusuario"].")'><i class='fa fa-eye'></i></button> <button class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idusuario"].")'><i class='fa fa-close'></i></button>
+								<button class='btn btn-primary btn-xs' onclick='activar(".$fila["idusuario"].")'><i class='fa fa-check'></i></button>
+								<td>".$fila['nombre']."</td>
+								<td>".$fila['tipo_documento']."</td>
+								<td>".$fila['telefono']."</td>
+								<td><p>".$fila['email']."</td>
+								<td><p>".$fila['login']."</td>
+								<td><p>".$fila["condicion"]."</td>							
+							</tr>
+							";
+				}
+				echo "</tbody>
+				<tfoot>
+					<tr>
+						<th class='bg-info' scope='col'>Acciones</th>
+						<th class='bg-info' scope='col'>Nombre</th>
+						<th class='bg-info' scope='col'>Documento</th>
+						<th class='bg-info' scope='col'>Telefono</th>
+						<th class='bg-info' scope='col'>Email</th>
+						<th class='bg-info' scope='col'>Usuario</th>
+						<th class='bg-info' scope='col'>Status</th>
+					</tr>
+				</tfoot>
+				</table>";
+			}else{
+				echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";
+				echo "<img src='../files/img/products_brembo.jpg'>";
+			}
 	break;
 
 	case 'permisos':
@@ -128,6 +190,7 @@ switch ($_GET["op"]) {
 		in_array(2, $valores)?$_SESSION['almacen']=1:$_SESSION['almacen']=0;
 		in_array(3, $valores)?$_SESSION['compras']=1:$_SESSION['compras']=0;
 		in_array(4, $valores)?$_SESSION['ventas']=1:$_SESSION['ventas']=0;
+		in_array(4, $valores)?$_SESSION['servicios']=1:$_SESSION['servicios']=0;
 		in_array(5, $valores)?$_SESSION['acceso']=1:$_SESSION['acceso']=0;
 		in_array(6, $valores)?$_SESSION['consultac']=1:$_SESSION['consultac']=0;
 		in_array(7, $valores)?$_SESSION['consultav']=1:$_SESSION['consultav']=0;

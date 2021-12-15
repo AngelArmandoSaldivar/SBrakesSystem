@@ -3,7 +3,8 @@ var tabla;
 //funcion que se ejecuta al inicio
 function init(){
    mostrarform(false);
-   listar();
+   obtener_registros();
+   obtener_registrosProductos();
 
    $("#formulario").on("submit",function(e){
    	guardaryeditar(e);
@@ -47,9 +48,8 @@ function mostrarform(flag){
 	if(flag){
 		$("#listadoregistros").hide();
 		$("#formularioregistros").show();
-		//$("#btnGuardar").prop("disabled",false);
-		$("#btnagregar").hide();
-		listarArticulos();
+		$("#btnGuardar").prop("disabled",false);
+		$("#btnagregar").hide();		
 
 		$("#btnGuardar").hide();
 		$("#btnCancelar").show();
@@ -70,55 +70,61 @@ function cancelarform(){
 	mostrarform(false);
 }
 
-//funcion listar
-function listar(){
-	tabla=$('#tbllistado').dataTable({
-		"aProcessing": true,//activamos el procedimiento del datatable
-		"aServerSide": true,//paginacion y filrado realizados por el server
-		dom: 'Bfrtip',//definimos los elementos del control de la tabla
-		buttons: [
-                  'copyHtml5',
-                  'excelHtml5',
-                  'csvHtml5',
-                  'pdf'
-		],
-		"ajax":
-		{
-			url:'../ajax/ingreso.php?op=listar',
-			type: "get",
-			dataType : "json",
-			error:function(e){
-				console.log(e.responseText);
-			}
-		},
-		"bDestroy":true,
-		"iDisplayLength":5,//paginacion
-		"order":[[0,"desc"]]//ordenar (columna, orden)
-	}).DataTable();
+//funcion listar REGISTROS INGRESOS CREADOS
+function obtener_registros(ingresos){
+	$.ajax({
+		url : '../ajax/ingreso.php?op=listar',
+		type : 'POST',
+		dataType : 'html',
+		data : { ingresos: ingresos },
+	}
+	)
+	.done(function(resultado){
+		$("#tabla_resultado").html(resultado);
+	})
 }
 
-function listarArticulos(){
-	tabla=$('#tblarticulos').dataTable({
-		"aProcessing": true,//activamos el procedimiento del datatable
-		"aServerSide": true,//paginacion y filrado realizados por el server
-		dom: 'Bfrtip',//definimos los elementos del control de la tabla
-		buttons: [
+$(document).on('keyup', '#busqueda', function(){
+	var valorBusqueda=$(this).val();
+	
+	if (valorBusqueda!="")
+	{
+		obtener_registros(valorBusqueda);
+	}
+	else
+	{
+		obtener_registros();
+	}
+});
 
-		],
-		"ajax":
-		{
-			url:'../ajax/ingreso.php?op=listarArticulos',
-			type: "get",
-			dataType : "json",
-			error:function(e){
-				console.log(e.responseText);
-			}
-		},
-		"bDestroy":true,
-		"iDisplayLength":50,//paginacion
-		"order":[[0,"desc"]]//ordenar (columna, orden)
-	}).DataTable();
+function obtener_registrosProductos(productos){
+	$.ajax({
+		url : '../ajax/ingreso.php?op=listarArticulos',
+		type : 'POST',
+		dataType : 'html',
+		data : { productos: productos },
+	})
+	.done(function(resultado){
+		$("#tabla_resultadoProducto").html(resultado);
+	})
 }
+
+
+
+$(document).on('keyup', '#busquedaProduct', function(){
+	var valorBusqueda=$(this).val();
+	
+	if (valorBusqueda!="")
+	{
+		obtener_registrosProductos(valorBusqueda);
+	}
+	else
+	{
+		obtener_registrosProductos();
+	}
+});
+
+
 //funcion para guardaryeditar
 function guardaryeditar(e){
      e.preventDefault();//no se activara la accion predeterminada 
@@ -135,7 +141,7 @@ function guardaryeditar(e){
      	success: function(datos){
      		bootbox.alert(datos);
      		mostrarform(false);
-     		listar();
+     		obtener_registros();
      	}
      });
 
@@ -153,7 +159,6 @@ function mostrar(idingreso){
 			$("#tipo_comprobante").val(data.tipo_comprobante);
 			$("#tipo_comprobante").selectpicker('refresh');
 			$("#serie_comprobante").val(data.serie_comprobante);
-			$("#num_comprobante").val(data.num_comprobante);			
 			$("#fecha_hora").val(data.fecha);
 			$("#impuesto").val(data.impuesto);
 			$("#idingreso").val(data.idingreso);
@@ -183,7 +188,7 @@ function anular(idingreso){
 }
 
 //declaramos variables necesarias para trabajar con las compras y sus detalles
-var impuesto=18;
+var impuesto=0;
 var cont=0;
 var detalles=0;
 
@@ -192,27 +197,26 @@ $("#tipo_comprobante").change(marcarImpuesto);
 
 function marcarImpuesto(){
 	var tipo_comprobante=$("#tipo_comprobante option:selected").text();
-	if (tipo_comprobante=='Factura') {
+	if (tipo_comprobante=='Factura'	) {
 		$("#impuesto").val(impuesto);
-	}else{
-		$("#impuesto").val("0");
 	}
 }
 
-function agregarDetalle(idarticulo,articulo){
-	var cantidad=1;
-	var precio_compra=$("#costo");
-	var precio_venta=$("#publico");
+function agregarDetalle(idarticulo,articulo,fmsi, descripcion,costo){
+	var cantidad=1;	
+	var descuento = 0;
 
 	if (idarticulo!="") {
-		var subtotal=cantidad*precio_compra;
 		var fila='<tr class="filas" id="fila'+cont+'">'+
-        '<td><button type="button" class="btn btn-danger" onclick="eliminarDetalle('+cont+')">X</button></td>'+
-        '<td><input type="hidden" name="idarticulo[]" value="'+idarticulo+'">'+articulo+'</td>'+
-        '<td><input type="number" name="cantidad[]" id="cantidad[]" value="'+cantidad+'"></td>'+
-        '<td><input type="number" name="precio_compra[]" id="precio_compra[]" value="'+precio_compra+'"></td>'+
-        '<td><input type="number" name="precio_venta[]" value="'+precio_venta+'"></td>'+
-        '<td><span id="subtotal'+cont+'" name="subtotal">'+subtotal+'</span></td>'+
+        '<td><button style="width: 40px;" type="button" class="btn btn-danger" onclick="eliminarDetalle('+cont+')">X</button></td>'+
+        '<td><input type="hidden" name="idarticulo[]" value="'+idarticulo+'">'+idarticulo+'</td>'+
+		'<td><input type="hidden" name="clave[]" value="'+articulo+'">'+articulo+'</td>'+
+		'<td><input type="hidden" name="fmsi[]" id="fmsi[]" value="'+fmsi+'">'+fmsi+'</td>'+
+		'<td><textarea class="form-control" id="descripcion[]" name="descripcion[]"rows="3" style="width: 150px;" value="'+descripcion+'">'+descripcion+'</textarea></td>'+
+        '<td><input style="width: 55px;" type="number" name="cantidad[]" id="cantidad[]" value="'+cantidad+'"></td>'+
+        '<td><input style="width: 70px;" type="number" name="precio_compra[]" id="precio_compra[]" value="'+costo+'"></td>'+
+        '<td><input style="width: 70px;" type="number" name="descuento[]" value="'+descuento+'"></td>'+
+        '<td><span id="subtotal'+cont+'" name="subtotal">'+costo*cantidad+'</span></td>'+
         '<td><button type="button" onclick="modificarSubtotales()" class="btn btn-info"><i class="fa fa-refresh"></i></button></td>'+
 		'</tr>';
 		cont++;
@@ -240,6 +244,7 @@ function modificarSubtotales(){
 	}
 
 	calcularTotales();
+
 }
 
 function calcularTotales(){
@@ -252,6 +257,7 @@ function calcularTotales(){
 	$("#total").html("$ " + total);
 	$("#total_compra").val(total);
 	evaluar();
+	
 }
 
 function evaluar(){

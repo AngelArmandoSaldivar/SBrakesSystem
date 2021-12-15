@@ -50,8 +50,7 @@ if ($_SESSION['consultav']==1) {
       <th>Fecha</th>
       <th>Usuario</th>
       <th>Cliente</th>
-      <th>Comprobante</th>
-      <th>Número</th>
+      <th>Comprobante</th>      
       <th>Total Ventas</th>
       <th>Impuesto</th>
       <th>Estado</th>
@@ -62,8 +61,7 @@ if ($_SESSION['consultav']==1) {
       <th>Fecha</th>
       <th>Usuario</th>
       <th>Proveedor</th>
-      <th>Comprobante</th>
-      <th>Número</th>
+      <th>Comprobante</th>      
       <th>Total Compra</th>
       <th>Impuesto</th>
       <th>Estado</th>
@@ -87,7 +85,7 @@ if ($_SESSION['consultav']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/ventasfechacliente.js"></script>
+ <script src="scripts/ventasfechaclientes.js"></script>
  <?php 
 }
 

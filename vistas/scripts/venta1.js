@@ -1,23 +1,19 @@
 var tabla;
 
-// $(document).ready(function() {
-// 	$('#example').dataTable();
-// } );
-
 //funcion que se ejecuta al inicio
 function init(){
    mostrarform(false);
 //    mostrarFormCobro(false);
    obtener_registros();
-   obtener_registrosProductos();   
+   obtener_registrosProductos();
 
    $("#formulario").on("submit",function(e){
    	guardaryeditar(e);
    });
 
-   $("#formularioCobrar").on("submit",function(e){
-	cobrar(e);
-	});
+//    $("#formularioCobrar").on("submit",function(e){
+// 	cobrar(e);
+// 	});
 
    //cargamos los items al select cliente
    $.post("../ajax/venta.php?op=selectCliente", function(r){
@@ -53,12 +49,13 @@ function limpiar(){
 //funcion mostrar formulario
 function mostrarform(flag){
 	limpiar();
-	if(flag){
-		console.log("Flag: ", flag);
+	if(flag){		
 		$("#listadoregistros").hide();
 		$("#formularioregistros").show();
 		$("#btnGuardar").prop("disabled",false);
 		$("#btnagregar").hide();
+		obtener_registros();
+
 		$("#btnGuardar").hide();
 		$("#btnCancelar").show();
 		detalles=0;
@@ -92,13 +89,13 @@ function mostrarform(flag){
 function cancelarform(){
 	limpiar();
 	mostrarform(false);
-	// mostrarFormCobro(false);
+	location.replace("venta.php");
 }
 
 function obtener_registros(ventas){	
 	$.ajax({
 		url : '../ajax/venta.php?op=listar',
-		type : 'GET',
+		type : 'POST',
 		dataType : 'html',
 		data : { ventas: ventas },
 	}
@@ -129,7 +126,7 @@ function obtener_registrosProductos(productos){
 		data : { productos: productos },
 	})
 	.done(function(resultado){
-		$("#tabla_resultadoProducto").html(resultado).DataTable();
+		$("#tabla_resultadoProducto").html(resultado);
 	})
 }
 
@@ -185,8 +182,7 @@ function mostrar(idventa){
 			$("#forma_pago").val(data.forma_pago).prop("disabled", true);
 			$("#forma_pago").selectpicker('refresh');	
 			$("#fecha_hora").val(data.fecha).prop("disabled", true);
-			$("#impuesto").val(data.impuesto).prop("disabled", true);			
-			// $("#impuesto").prop("disabled",false);	
+			$("#impuesto").val(data.impuesto).prop("disabled", true);
 			$("#idventa").val(data.idventa);
 			
 			//ocultar y mostrar los botones
@@ -204,15 +200,14 @@ function mostrar(idventa){
 //funcion para desactivar
 function anular(idventa){
 	bootbox.confirm("¿Esta seguro de desactivar este dato?", function(result){
-		
 		if (result) {
 			$.post("../ajax/venta.php?op=anular", {idventa : idventa}, function(e){
 				bootbox.alert(e);
-				tabla.ajax.reload();
+				// tabla.ajax.reload();
+				obtener_registros();
 			});
 		}
-	})
-	
+	})	
 }
 function cobrar(idventa) {
 

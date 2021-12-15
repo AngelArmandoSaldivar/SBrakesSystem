@@ -1,52 +1,61 @@
 <?php 
-require_once "../modelos/Ingreso.php";
-if (!isset($_SESSION["nombre"])){
-	$ingreso=new Ingreso();
-	session_start();
+require_once "../modelos/Servicios.php";
+if (strlen(session_id())<1) 
+	session_start();	
 	$idsucursal = $_SESSION['idsucursal'];
 
-$idingreso=isset($_POST["idingreso"])? limpiarCadena($_POST["idingreso"]):"";
-$idproveedor=isset($_POST["idproveedor"])? limpiarCadena($_POST["idproveedor"]):"";
+$servicio = new Servicios();
+
+$idservicio=isset($_POST["idservicio"])? limpiarCadena($_POST["idservicio"]):"";
+$idcliente=isset($_POST["idcliente"])? limpiarCadena($_POST["idcliente"]):"";
 $idusuario=$_SESSION["idusuario"];
 $tipo_comprobante=isset($_POST["tipo_comprobante"])? limpiarCadena($_POST["tipo_comprobante"]):"";
-$serie_comprobante=isset($_POST["serie_comprobante"])? limpiarCadena($_POST["serie_comprobante"]):"";
 $fecha_hora=isset($_POST["fecha_hora"])? limpiarCadena($_POST["fecha_hora"]):"";
 $impuesto=isset($_POST["impuesto"])? limpiarCadena($_POST["impuesto"]):"";
-$total_compra=isset($_POST["total_compra"])? limpiarCadena($_POST["total_compra"]):"";
-
+$forma_pago=isset($_POST["forma_pago"])? limpiarCadena($_POST["forma_pago"]):"";
+$total_servicio=isset($_POST["total_servicio"])? limpiarCadena($_POST["total_servicio"]):"";
+$marca=isset($_POST["marca"])? limpiarCadena($_POST["marca"]):"";
+$modelo=isset($_POST["modelo"])? limpiarCadena($_POST["modelo"]):"";
+$ano=isset($_POST["ano"])? limpiarCadena($_POST["ano"]):"";
+$color=isset($_POST["color"])? limpiarCadena($_POST["color"]):"";
+$kms=isset($_POST["kms"])? limpiarCadena($_POST["kms"]):"";
 
 switch ($_GET["op"]) {
-
 	case 'guardaryeditar':
-	if (empty($idingreso)) {
-		$rspta=$ingreso->insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_comprobante,$fecha_hora,$impuesto,$total_compra,$_POST["idarticulo"],$_POST["clave"],$_POST["fmsi"],$_POST["descripcion"],$_POST["cantidad"],$_POST["precio_compra"], $idsucursal);	
+	if (empty($idservicio)) {
+		$rspta=$servicio->insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$forma_pago,$total_servicio,$marca, $modelo, $ano, $color, $kms, $_POST["idarticulo"],$_POST["clave"],$_POST["fmsi"],$_POST["descripcion"],$_POST["cantidad"],$_POST["precio_servicio"],$_POST["descuento"], $idsucursal);
 		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
 	}else{
-        
 	}
 		break;
 
+		case 'cobrar':
+		$rspta=$servicio->cobrarServicio($idservicio);
+		echo $rspta ? "Cobro exitoso" : "No se pudo cobrar el servicio";
+		break;
+
 	case 'anular':
-		$rspta=$ingreso->anular($idingreso);
-		echo $rspta ? "Ingreso anulado correctamente" : "No se pudo anular el ingreso";
+		$rspta=$servicio->anular($idservicio);
+		echo $rspta ? "Servicio anulado correctamente" : "No se pudo anular el servicio";
 		break;
 	
 	case 'mostrar':
-		$rspta=$ingreso->mostrar($idingreso);
+		$rspta=$servicio->mostrar($idservicio);
 		echo json_encode($rspta);
-		break;
+	break;
 
 	case 'listarDetalle':
-		//recibimos el idingreso
+		//recibimos el idventa
 		$id=$_GET['id'];
 
-		$rspta=$ingreso->listarDetalle($id);
+		$rspta=$servicio->listarDetalle($id);
 		$total=0;
 		echo ' <thead style="background-color:#A9D0F5">
         <th>Opciones</th>
         <th>Articulo</th>
         <th>Cantidad</th>
-        <th>Precio Compra</th>        
+        <th>Precio Venta</th>
+        <th>Descuento</th>
         <th>Subtotal</th>
        </thead>';
 		while ($reg=$rspta->fetch_object()) {
@@ -54,57 +63,36 @@ switch ($_GET["op"]) {
 			<td></td>
 			<td>'.$reg->codigo.'</td>
 			<td>'.$reg->cantidad.'</td>
-			<td>'.$reg->precio_compra.'</td>			
-			<td>'.$reg->precio_compra*$reg->cantidad.'</td>
-			<td></td>
-			</tr>';
-			$total=$total+($reg->precio_compra*$reg->cantidad);
+			<td>'.$reg->precio_servicio.'</td>
+			<td>'.$reg->descuento.'</td>
+			<td>'.$reg->subtotal.'</td></tr>';
+			$total=$total+($reg->precio_servicio*$reg->cantidad-$reg->descuento);
 		}
 		echo '<tfoot>
          <th>TOTAL</th>
          <th></th>
          <th></th>
-         <th></th>         
-         <th><h4 id="total">$ '.$total.'</h4><input type="hidden" name="total_compra" id="total_compra"></th>
+         <th></th>
+         <th></th>
+         <th><h4 id="total">$ '.$total.'</h4><input type="hidden" name="total_servicio" id="total_servicio"></th>
        </tfoot>';
 		break;
 
     case 'listar':
-		// $rspta=$ingreso->listar();
-		// $data=Array();
-
-		// while ($reg=$rspta->fetch_object()) {
-		// 	if($reg->idsucursal == $idsucursal) {
-		// 		$data[]=array(
-		// 		"0"=>($reg->estado=='Aceptado')?'<button class="btn btn-warning btn-xs" onclick="mostrar('.$reg->idingreso.')"><i class="fa fa-eye"></i></button>'.' '.'<button class="btn btn-danger btn-xs" onclick="anular('.$reg->idingreso.')"><i class="fa fa-close"></i></button>':'<button class="btn btn-warning btn-xs" onclick="mostrar('.$reg->idingreso.')"><i class="fa fa-eye"></i></button>',
-		// 		"1"=>$reg->fecha,
-		// 		"2"=>$reg->proveedor,
-		// 		"3"=>$reg->usuario,
-		// 		"4"=>$reg->tipo_comprobante,
-		// 		"5"=>$reg->total_compra,
-		// 		"6"=>($reg->estado=='Aceptado')?'<span class="label bg-green">Aceptado</span>':'<span class="label bg-red">Anulado</span>'
-		// 		);
-		// 	}
-		// }
-		// $results=array(
-        //      "sEcho"=>1,//info para datatables
-        //      "iTotalRecords"=>count($data),//enviamos el total de registros al datatable
-        //      "iTotalDisplayRecords"=>count($data),//enviamos el total de registros a visualizar
-        //      "aaData"=>$data); 
-		// echo json_encode($results);
-
-		$consulta="SELECT i.idsucursal, i.idingreso,DATE(i.fecha_hora) as fecha,i.idproveedor,p.nombre as proveedor,u.idusuario,u.nombre as usuario, i.tipo_comprobante,i.serie_comprobante,i.total_compra,i.impuesto,i.estado FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario WHERE estado='Aceptado' ORDER BY i.idingreso DESC LIMIT 40";
+	
+		$consulta="SELECT v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE estado='Aceptado' ORDER BY v.idservicio DESC LIMIT 40";
 			$termino= "";
-			if(isset($_POST['ingresos']))
+			if(isset($_POST['servicios']))
 			{
-				$termino=$conexion->real_escape_string($_POST['ingresos']);
-				$consulta="SELECT i.idsucursal, i.idingreso,DATE(i.fecha_hora) as fecha,i.idproveedor,p.nombre as proveedor,u.idusuario,u.nombre as usuario, i.tipo_comprobante,i.serie_comprobante,i.total_compra,i.impuesto,i.estado FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario
+				$termino=$conexion->real_escape_string($_POST['servicios']);
+				$consulta="SELECT v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario
 				WHERE 
 				tipo_comprobante LIKE '%".$termino."%' OR
-				p.nombre LIKE '%".$termino."%' OR
-				i.idingreso LIKE '%".$termino."%' OR
-				p.idpersona LIKE '%".$termino."%' OR
-				u.nombre LIKE '%".$termino."%'
+				v.idservicio LIKE '%".$termino."%' OR
+				p.nombre LIKE '%".$termino."%' OR				
+                v.modelo LIKE '%".$termino."%' OR
+                v.marca LIKE '%".$termino."%' OR
+                v.ano LIKE '%".$termino."%'
 				AND estado='Aceptado' LIMIT 40";
 			}
 			$consultaBD=$conexion->query($consulta);
@@ -115,73 +103,79 @@ switch ($_GET["op"]) {
 						<tr>
 							<th class='bg-info' scope='col'>Acciones</th>
 							<th class='bg-info' scope='col'>Folio</th>
-							<th class='bg-info' scope='col'>Entrada</th>
+							<th class='bg-info' scope='col'>Salida</th>
 							<th class='bg-info' scope='col'>Estatus</th>
-							<th class='bg-info' scope='col'>Proveedor</th>
-							<th class='bg-info' scope='col'>Usuario</th>
+							<th class='bg-info' scope='col'>Cliente</th>
+							<th class='bg-info' scope='col'>Vendedor</th>
+							<th class='bg-info' scope='col'>Pagado</th>
+							<th class='bg-info' scope='col'>Auto</th>
 							<th class='bg-info' scope='col'>Total</th>
 						</tr>
 					</thead>
-				<tbody>";
-
+				<tbody>";				
 				while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){
-					if($fila["idsucursal"] == $idsucursal) {
+					if($fila["idsucursal"] == $idsucursal && $fila["estado"] == 'Aceptado' && $fila["status"] == "NORMAL") {
 							if ($fila["tipo_comprobante"]=='Ticket') {
 								$url='../reportes/exTicket.php?id=';
 							}else{
-								$url='../reportes/exFactura.php?id=';
+								$url='../reportes/exFacturaServicio.php?id=';
 							}
-							$miles = number_format($fila['total_compra']);
+							$miles = number_format($fila['total_servicio']);
 							
 							$ventas_pagina = 3;
 							$paginas = 13;
 
 							echo "<tr>
-								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idingreso"].")'><i class='fa fa-eye'></i></button> <button class='btn btn-danger btn-xs' onclick='anular(".$fila["idingreso"].")'><i class='fa fa-close'></i></button>
-								<button class='btn btn-default btn-xs' onclick='cobrar(".$fila["idingreso"].")'><i class='fa fa-credit-card'></i></button>
-								<a target='_blank' href='".$url.$fila["idingreso"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-file'></i></button></a></td>								
-								<td>".$fila['idingreso']."</td>
+								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button> <button class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
+								<button class='btn btn-default btn-xs' onclick='cobrar(".$fila["idservicio"].")'><i class='fa fa-credit-card'></i></button>
+								<a target='_blank' href='".$url.$fila["idservicio"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-file'></i></button></a></td>								
+								<td>".$fila['idservicio']."</td>
 								<td>".$fila['fecha']."</td>
 								<td>".$fila['estado']."</td>
-								<td><p>".$fila['proveedor']."</td>
+								<td><p>".$fila['cliente']."</td>
 								<td><p>".$fila['usuario']."</td>
-								<td><p>$ ".$fila["total_compra"]."</td>								
+								<td><p>$ ".$fila["pagado"]."</td>
+								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
+								<td><p>$ ".$miles."</td>								
 							</tr>
 							";
 					}
 				}
 				echo "</tbody>
 				<tfoot>
-					<tr>						
-						<th class='bg-info' scope='col'>Acciones</th>
-						<th class='bg-info' scope='col'>Folio</th>
-						<th class='bg-info' scope='col'>Entrada</th>
-						<th class='bg-info' scope='col'>Estatus</th>
-						<th class='bg-info' scope='col'>Proveedor</th>
-						<th class='bg-info' scope='col'>Usuario</th>
-						<th class='bg-info' scope='col'>Total</th>
+					<tr>
+					<th class='bg-info' scope='col'>Acciones</th>
+							<th class='bg-info' scope='col'>Folio</th>
+							<th class='bg-info' scope='col'>Salida</th>
+							<th class='bg-info' scope='col'>Estatus</th>
+							<th class='bg-info' scope='col'>Cliente</th>
+							<th class='bg-info' scope='col'>Vendedor</th>
+							<th class='bg-info' scope='col'>Pagado</th>
+							<th class='bg-info' scope='col'>Auto</th>
+							<th class='bg-info' scope='col'>Total</th>
 					</tr>
 				</tfoot>
 				</table>";
 			}else{
-				echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";
+				echo "<center><h4>No hemos encotrado el servicio (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";
+				echo "<img src='../files/img/products_brembo.jpg'>";
 			}
-
 		break;
 
-		case 'selectProveedor':
+		case 'selectCliente':
 			require_once "../modelos/Persona.php";
 			$persona = new Persona();
 
-			$rspta = $persona->listarp();
+			$rspta = $persona->listarc();
 
 			while ($reg = $rspta->fetch_object()) {
 				echo '<option value='.$reg->idpersona.'>'.$reg->nombre.'</option>';
 			}
-		break;
+			break;
 
-		case 'listarArticulos':
-			$consulta="SELECT * FROM articulo LIMIT 40";
+			case 'listarProductos':
+	
+				$consulta="SELECT * FROM articulo LIMIT 40";
 					$termino= "";
 					if(isset($_POST['productos']))
 					{
@@ -221,7 +215,7 @@ switch ($_GET["op"]) {
 							$mayoreoMiles = number_format($fila['mayoreo']);
 							$descrip = $fila['descripcion'];
 							$delit = substr($descrip, 0,30);
-							$tipo_precio = "costo";
+							$tipo_precio = "publico";
 							if($fila["idsucursal"] == $idsucursal) {
 									echo "<tr>
 										<td>".$fila['codigo']."</td>
@@ -259,8 +253,6 @@ switch ($_GET["op"]) {
 						echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";						
 						echo "<br><br>";
 					}
-
-		break;
-}
+				break;
 }
  ?>

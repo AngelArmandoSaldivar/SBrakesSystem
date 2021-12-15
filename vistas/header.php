@@ -147,6 +147,22 @@ if ($_SESSION['ventas']==1) {
 }
         ?>
 
+<?php 
+if ($_SESSION['servicios']==1) {
+  echo '<li class="treeview">
+          <a href="#">
+            <i class="fa fa-wrench"></i> <span>Servicios</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="servicio.php"><i class="fa fa-circle-o"></i> servicios</a></li>            
+          </ul>
+        </li>';
+}
+        ?>
+
                              <?php 
 if ($_SESSION['acceso']==1) {
   echo '  <li class="treeview">

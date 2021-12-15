@@ -28,36 +28,19 @@ if ($_SESSION['compras']==1) {
 </div>
 <!--box-header-->
 <!--centro-->
-<div class="panel-body table-responsive" id="listadoregistros">
-  <table id="tbllistado" class="table table-striped table-bordered table-condensed table-hover">
-    <thead>
-      <th>Opciones</th>
-      <th>Fecha</th>
-      <th>Proveedor</th>
-      <th>Vendedor</th>
-      <th>Documento</th>      
-      <th>Total Compra</th>
-      <th>Estado</th>
-    </thead>
-    <tbody>
-    </tbody>
-    <tfoot>
-      <th>Opciones</th>
-      <th>Fecha</th>
-      <th>Proveedor</th>
-      <th>Vendedor</th>
-      <th>Documento</th>      
-      <th>Total Compra</th>
-      <th>Estado</th>
-    </tfoot>   
-  </table>
+<div class="panel-body table-responsive" id="listadoregistros">  
+    <section>
+      <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px"></center><br><br>
+    </section>            
+    <section id="tabla_resultado"></section>
 </div>
 <div class="panel-body" style="height: 400px;" id="formularioregistros">
   <form action="" name="formulario" id="formulario" method="POST">
     <div class="form-group col-lg-8 col-md-8 col-xs-12">
       <label for="">Proveedor(*):</label>
       <input class="form-control" type="hidden" name="idingreso" id="idingreso">
-      <select name="idproveedor" id="idproveedor" class="form-control selectpicker" data-live-search="true" required>        
+      <select name="idproveedor" id="idproveedor" class="form-control selectpicker" data-live-search="true" required>
+        
       </select>
     </div>
       <div class="form-group col-lg-4 col-md-4 col-xs-12">
@@ -67,16 +50,13 @@ if ($_SESSION['compras']==1) {
      <div class="form-group col-lg-6 col-md-6 col-xs-12">
       <label for="">Tipo Comprobante(*): </label>
      <select name="tipo_comprobante" id="tipo_comprobante" class="form-control selectpicker" required>
-       <option value="Boleta">Boleta</option>
        <option value="Factura">Factura</option>
-       <option value="Ticket">Ticket</option>
      </select>
     </div>
-     <div class="form-group col-lg-4 col-md-2 col-xs-6">
-      <label for="">Factura: </label>
-      <input class="form-control" type="text" name="serie_comprobante" id="serie_comprobante" maxlength="7" placeholder="Factura">
+     <div class="form-group col-lg-2 col-md-2 col-xs-6">
+      <label for="">Serie: </label>
+      <input class="form-control" type="text" name="serie_comprobante" id="serie_comprobante" maxlength="7" placeholder="Serie" required>
     </div>
-     
     <div class="form-group col-lg-2 col-md-2 col-xs-6">
       <label for="">Impuesto: </label>
       <input class="form-control" type="text" name="impuesto" id="impuesto">
@@ -87,27 +67,32 @@ if ($_SESSION['compras']==1) {
      </a>
     </div>
 <div class="form-group col-lg-12 col-md-12 col-xs-12">
-     <table id="detalles" class="table table-striped table-bordered table-condensed table-hover">
-       <thead style="background-color:#A9D0F5">
-        <th>Opciones</th>
-        <th>Articulo</th>
-        <th>Cantidad</th>
-        <th>Precio Compra</th>
-        <th>Precio Venta</th>
-        <th>Subtotal</th>
-       </thead>
-       <tfoot>
-         <th>TOTAL</th>
-         <th></th>
-         <th></th>
-         <th></th>
-         <th></th>
-         <th><h4 id="total">$0.00</h4><input type="hidden" name="total_compra" id="total_compra"></th>
-       </tfoot>
-       <tbody>
-         
-       </tbody>
-     </table>
+<table id="detalles" class="table table-striped table-bordered table-condensed table-hover">
+  <thead style="background-color:#A9D0F5">
+    <th>Opciones</th>
+    <th>Código</th>
+    <th>Clave</th>
+    <th>Fmsi</th>
+    <th>Descripción</th>
+    <th>Cantidad</th>
+    <th>Precio Compra</th>
+    <th>Descuento</th>
+    <th>Subtotal</th>
+  </thead>
+  <tfoot>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th>TOTAL</th>
+    <th><h5 id="total">$ 0.00</h5><input type="hidden" name="total_compra" id="total_compra"></th>
+  </tfoot>
+  <tbody>                
+  </tbody>
+</table>
     </div>
     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
       <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i>  Guardar</button>
@@ -127,40 +112,21 @@ if ($_SESSION['compras']==1) {
 
   <!--Modal-->
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width: 80% !important;">
+    <div class="modal-dialog" style="width: 95% !important;">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           <h4 class="modal-title">Seleccione un Articulo</h4>
         </div>
         <div class="modal-body">
-          <table id="tblarticulos" class="table table-striped table-bordered table-condensed table-hover">
-            <thead>
-              <th>Opciones</th>
-              <th>Clave</th>
-              <th>Fmsi</th>              
-              <th>Marca</th>
-              <th>Descripción</th>              
-              <th>Público</th>
-              <th>Taller</th>
-              <th>Credito Taller</th>
-              <th>Mayoreo</th>
-            </thead>
-            <tbody>
-              
-            </tbody>
-            <tfoot>
-            <th>Opciones</th>
-              <th>Clave</th>
-              <th>Fmsi</th>              
-              <th>Marca</th>
-              <th>Descripción</th>              
-              <th>Público</th>
-              <th>Taller</th>
-              <th>Credito Taller</th>
-              <th>Mayoreo</th>
-            </tfoot>
-          </table>
+        <div class="modal-body">
+          <div class="panel-body table-responsive">
+            <section>
+              <center><input class="form-control me-2" type="text" name="busquedaProduct" id="busquedaProduct" placeholder="Buscar..." style="width:250px"></center><br><br>
+            </section>
+            <section id="tabla_resultadoProducto"> </section>
+          </div>
+        </div>
         </div>
         <div class="modal-footer">
           <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>

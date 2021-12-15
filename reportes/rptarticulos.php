@@ -5,7 +5,7 @@ if (strlen(session_id())<1)
   session_start();
 
 if (!isset($_SESSION['nombre'])) {
-  echo "debe ingresar al sistema correctamente para vosualizar el reporte";
+  echo "debe ingresar al sistema correctamente para visualizar el reporte";
 }else{
 
 if ($_SESSION['almacen']==1) {

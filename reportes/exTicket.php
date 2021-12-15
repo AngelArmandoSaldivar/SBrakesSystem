@@ -15,7 +15,7 @@ if ($_SESSION['ventas']==1) {
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-	<link rel="stylesheet" href="../public/css/ticket.css">
+	<link rel="stylesheet" href="../public/css/tickets.css">
 </head>
 <body onload="window.print();">
 	<?php 
@@ -42,7 +42,7 @@ $phone = "Tel: (55) 52733450 / (55) 43834342";
 	<br>
 	<table border="0" align="center" width="300px">
 		<tr>
-			<td align="center">
+			<td align="center" style="font-size:12px;">
 				<!--mostramos los datos de la empresa en el doc HTML-->
 				<strong> <img src="../files/images/BrakeOneBrembo.png" alt="BrakeOne" style="width: 280px;"></strong><br><br>
 				<?php echo $calle; ?><br>
@@ -56,46 +56,50 @@ $phone = "Tel: (55) 52733450 / (55) 43834342";
 		<tr>
 	</table>
 
-	<div style="text-align:center;">
-		<h4>TICKET SIN VALOR FISCAL</h4>
+	<div style="text-align:center; font-family:Calibri;">
+		<h3>TICKET SIN VALOR FISCAL</h3>
 	</div>
 
-	<table border="0" align="center" width="300px">
+	<table border="0" align="center" width="250px">
 		<tr>
-			<td  align="left"><b>Folio: </b><?php echo $reg->idventa; ?></td><p> <b></b> </p><p></p>
-			<td align="right"><b>Fecha: </b><?php echo $reg->fecha; ?></td>
+			<td  align="left" style="font-size:12px;"><b>Folio: </b><?php echo $reg->idventa; ?></td>
+			<td align="right" style="font-size:12px;"><b>Fecha: </b><?php echo $reg->fecha; ?></td>
 		</tr>
 	</table>
 	<br><br>
-	<div style="margin-left:10px;">
-		<b>	Cliente: </b><?php echo $reg->cliente; ?>
-	</div><br>
-	<div style="margin-left:10px;">
-		<b>	Tel. </b><?php echo $reg->telefono; ?>
-	</div><br>
-	<div style="margin-left:10px;">
-		<b>	Dirección. </b><?php echo $reg->direccion; ?>
-	</div>
+
+	<table border="0" align="center" width="260px">
+			<td  align="left" style="font-size:12px;"><b>Cliente: </b><?php echo $reg->cliente; ?></td>
+	</table>
+	<table border="0" align="center" width="260px">
+			<td  align="left" style="font-size:12px;"><b>Tel. </b><?php echo $reg->telefono; ?></td>
+	</table>
+
+	<table border="0" align="center" width="260px">
+			<td  align="left" style="font-size:12px;"><b>Dirección: </b><?php echo $reg->direccion; ?></td>
+	</table>
+
+	<br>
 	<br>	
 	<!--mostramos lod detalles de la venta -->
 
-	<table border="0" align="center" width="300px">
+	<table border="0" align="center" width="260px" style="font-size: 12px;">
 		<tr>
 			<td>CANT.</td>
 			<td>CONCEPTO</td>
 			<td align="right">IMPORTE</td>
 		</tr>
 		<tr>
-			<td colspan="3">=============================================</td>
+			<td colspan="3">===========================================</td>
 		</tr>
 		<?php
 		$rsptad = $venta->ventadetalles($_GET["id"]);
 		$cantidad=0;
 		while ($regd = $rsptad->fetch_object()) {
-			$descripcion = substr($regd->descripcion, 0,30);
+			$descripcion = substr($regd->descripcion, 0,40);
 		 	echo "<tr>";
 		 	echo "<td>".$regd->cantidad."</td>";
-		 	echo "<td>".$descripcion."...</td>";
+		 	echo "<td>".$regd->clave." ".$descripcion."...</td>";
 		 	echo "<td align='right'>$ ".number_format($regd->subtotal)."</td>";
 		 	echo "</tr>";
 		 	$cantidad+=$regd->cantidad;
@@ -105,7 +109,7 @@ $phone = "Tel: (55) 52733450 / (55) 43834342";
 		 <!--mostramos los totales de la venta-->
 		 <tr><td><br></td></tr>
 		 <tr>
-			<td colspan="3">N° de articulos: <?php echo $cantidad; ?> </td>
+			<td colspan="3" style="font-size:15px;">N° de articulos: <?php echo $cantidad; ?> </td>
 		</tr>
 		<tr>
 			<td></td>
@@ -116,13 +120,19 @@ $phone = "Tel: (55) 52733450 / (55) 43834342";
 			<td colspan="3">&nbsp;</td>
 		</tr>
 		<tr>
+			<td colspan="3" align="justify">SOLO SE PODRA HACER CAMBIO FISICO DEL PRODUCTO EN CASO DE DEFECTO DE FABRICA.
+				NO MALTRATE EL EMPAQUE NI LA MERCANCIA. <br><br>
+				RECOMENDACIÓN: NO ABUSE DE LOS FRENOS DURANTE LOS PRIMEROS 200 A 300 KMS.
+			</td>
+		</tr><br>
+		<tr>
 			<td colspan="3" align="center">Aviso de privacidad / Terminos y condiciones en:</td>
 		</tr>
 		<tr>
 			<td colspan="3" align="center">www.brakeone.mx</td>
 		</tr>
 		<tr>
-			<td colspan="3" align="center"> <img src="../files/images/QR.jpeg" alt="" style="width:150px;"> </td>
+			<td colspan="3" align="center"> <img src="../files/images/QR.jpeg" alt="" style="width:180px;"> </td>
 		</tr>
 	</table>
 	<br>

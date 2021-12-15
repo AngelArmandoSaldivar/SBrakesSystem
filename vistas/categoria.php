@@ -70,7 +70,7 @@ if ($_SESSION['almacen']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/categorias.js"></script>
+ <script src="scripts/categoria.js"></script>
  <?php 
 }
 

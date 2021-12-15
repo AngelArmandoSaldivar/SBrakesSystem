@@ -10,7 +10,7 @@ public function __construct(){
 }
 
 //metodo insertar registro
-public function insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_comprobante,$fecha_hora,$impuesto,$total_compra,$idarticulo,$cantidad,$precio_compra,$precio_venta, $idsucursal){
+public function insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_comprobante,$fecha_hora,$impuesto,$total_compra,$idarticulo,$clave,$fmsi,$descripcion,$cantidad,$precio_compra, $idsucursal){
 	$sql="INSERT INTO ingreso (idproveedor,idusuario,tipo_comprobante,serie_comprobante,fecha_hora,impuesto,total_compra,tipoMov,estado, idsucursal) VALUES ('$idproveedor','$idusuario','$tipo_comprobante','$serie_comprobante','$fecha_hora','$impuesto','$total_compra','RECEPCIÓN','Aceptado', '$idsucursal')";
 	//return ejecutarConsulta($sql);
 	 $idingresonew=ejecutarConsulta_retornarID($sql);
@@ -18,8 +18,7 @@ public function insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_compro
 	 $sw=true;
 	 while ($num_elementos < count($idarticulo)) {
 
-	 	$sql_detalle="INSERT INTO detalle_ingreso (idingreso,idproveedor,idusuario,serie_comprobante,tipo_comprobante,idarticulo,cantidad,precio_compra,precio_venta, tipoMov) VALUES('$idingresonew','$idproveedor','$idusuario','$serie_comprobante','$tipo_comprobante','$idarticulo[$num_elementos]','$cantidad[$num_elementos]','$precio_compra[$num_elementos]','$precio_venta[$num_elementos]', 'RECEPCIÓN')";
-
+	 	$sql_detalle="INSERT INTO detalle_ingreso (idingreso,idproveedor,idusuario,serie_comprobante,tipo_comprobante,idarticulo,clave,fmsi,descripcion,cantidad,precio_compra,tipoMov) VALUES('$idingresonew','$idproveedor','$idusuario','$serie_comprobante','$tipo_comprobante','$idarticulo[$num_elementos]','$clave[$num_elementos]','$fmsi[$num_elementos]','$descripcion[$num_elementos]','$cantidad[$num_elementos]','$precio_compra[$num_elementos]','RECEPCIÓN')";		
 	 	ejecutarConsulta($sql_detalle) or $sw=false;
 
 	 	$num_elementos=$num_elementos+1;
@@ -28,8 +27,33 @@ public function insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_compro
 }
 
 public function anular($idingreso){
-	$sql="UPDATE ingreso SET estado='Anulado' WHERE idingreso='$idingreso'";	
-	return ejecutarConsulta($sql);
+	$num_elementos=0;
+	 $sw=true;
+		
+		$sqlIdArticulo = "SELECT idarticulo, idingreso,cantidad FROM detalle_ingreso WHERE idingreso='$idingreso'";
+		$sqlIdArticulo2 = ejecutarConsulta($sqlIdArticulo);
+
+		while ($reg=$sqlIdArticulo2->fetch_object()) {
+			//SELECT OLD STOCK ARTICULO
+			$sqlOldStock = "SELECT * FROM articulo WHERE idarticulo='$reg->idarticulo'";
+			echo $reg->cantidad."<br>";
+			$sqlOldStock2 = ejecutarConsulta($sqlOldStock);
+			while($reg2 = $sqlOldStock2->fetch_object()) {						
+				$restar = $reg2->stock - $reg->cantidad;
+				// echo "PRODUCTO: ".$reg2->codigo. " NEW STOCK: ".$sum."<br>";
+				//UPDATE NEW STOCK ARTICULO
+				$sql_update_articulo = "UPDATE articulo SET stock='$restar' WHERE idarticulo='$reg->idarticulo'";
+				ejecutarConsulta($sql_update_articulo);
+			}
+		}
+
+		$stateIngreso = "UPDATE ingreso SET estado='Anulado' WHERE idingreso='$idingreso'";
+		ejecutarConsulta($stateIngreso);
+
+		$stateDetalle = "UPDATE detalle_ingreso SET estado='1' WHERE idingreso='$idingreso'";
+		ejecutarConsulta($stateDetalle);
+
+	 return $sw;
 }
 
 
@@ -40,7 +64,7 @@ public function mostrar($idingreso){
 }
 
 public function listarDetalle($idingreso){
-	$sql="SELECT di.idingreso,di.idarticulo,a.codigo,di.precio_compra,di.precio_venta FROM detalle_ingreso di INNER JOIN articulo a ON di.idarticulo=a.idarticulo WHERE di.idingreso='$idingreso'";
+	$sql="SELECT di.idingreso,di.idarticulo,a.codigo,di.precio_compra, di.cantidad FROM detalle_ingreso di INNER JOIN articulo a ON di.idarticulo=a.idarticulo WHERE di.idingreso='$idingreso'";
 	return ejecutarConsulta($sql);
 }
 

@@ -31,9 +31,38 @@ public function cobrarVenta($idventa){
 	return ejecutarConsulta($sql);
 }
 
+// public function anular($idventa){
+// 	$sql="UPDATE venta SET estado='Anulado' WHERE idventa='$idventa'";
+// 	return ejecutarConsulta($sql);
+// }
+
 public function anular($idventa){
-	$sql="UPDATE venta SET estado='Anulado' WHERE idventa='$idventa'";
-	return ejecutarConsulta($sql);
+	$num_elementos=0;
+	 $sw=true;
+		
+		$sqlIdArticulo = "SELECT idarticulo, idventa,cantidad FROM detalle_venta WHERE idventa='$idventa'";
+		$sqlIdArticulo2 = ejecutarConsulta($sqlIdArticulo);
+
+		while ($reg=$sqlIdArticulo2->fetch_object()) {
+			//SELECT OLD STOCK ARTICULO
+			$sqlOldStock = "SELECT * FROM articulo WHERE idarticulo='$reg->idarticulo'";
+			$sqlOldStock2 = ejecutarConsulta($sqlOldStock);
+			while($reg2 = $sqlOldStock2->fetch_object()) {				
+				$sum = $reg->cantidad + $reg2->stock;
+				// echo "PRODUCTO: ".$reg2->codigo. " NEW STOCK: ".$sum."<br>";
+				//UPDATE NEW STOCK ARTICULO
+				$sql_update_articulo = "UPDATE articulo SET stock='$sum' WHERE idarticulo='$reg->idarticulo'";
+				ejecutarConsulta($sql_update_articulo);
+			}			
+		}
+
+		$stateSell = "UPDATE venta SET estado='Anulado' WHERE idventa='$idventa'";
+		ejecutarConsulta($stateSell);
+
+		$stateDetalle = "UPDATE detalle_venta SET estado='1' WHERE idventa='$idventa'";
+		ejecutarConsulta($stateDetalle);
+
+	 return $sw;
 }
 
 
@@ -62,10 +91,9 @@ public function ventacabecera($idventa){
 }
 
 public function ventadetalles($idventa){
-	$sql="SELECT a.codigo AS articulo, a.codigo, d.cantidad,d.fmsi, d.descripcion, d.precio_venta, d.descuento, (d.cantidad*d.precio_venta-d.descuento) AS subtotal FROM detalle_venta d INNER JOIN articulo a ON d.idarticulo=a.idarticulo WHERE d.idventa='$idventa'";
-         return ejecutarConsulta($sql);
+	$sql="SELECT a.codigo AS articulo, a.codigo, d.cantidad,d.fmsi, d.descripcion, d.precio_venta, d.descuento, d.clave, (d.cantidad*d.precio_venta-d.descuento) AS subtotal FROM detalle_venta d INNER JOIN articulo a ON d.idarticulo=a.idarticulo WHERE d.idventa='$idventa'";
+    	return ejecutarConsulta($sql);
 }
-
 
 }
 

@@ -3,7 +3,7 @@ var tabla;
 //funcion que se ejecuta al inicio
 function init(){
    mostrarform(false);
-   listar();
+   obtener_registros();
 
    $("#formulario").on("submit",function(e){
    	guardaryeditar(e);
@@ -59,32 +59,33 @@ function cancelarform(){
 	mostrarform(false);
 }
 
-//funcion listar
-function listar(){
-	tabla=$('#tbllistado').dataTable({
-		"aProcessing": true,//activamos el procedimiento del datatable
-		"aServerSide": true,//paginacion y filrado realizados por el server
-		dom: 'Bfrtip',//definimos los elementos del control de la tabla
-		buttons: [
-                  'copyHtml5',
-                  'excelHtml5',
-                  'csvHtml5',
-                  'pdf'
-		],
-		"ajax":
-		{
-			url:'../ajax/usuario.php?op=listar',
-			type: "get",
-			dataType : "json",
-			error:function(e){
-				console.log(e.responseText);
-			}
-		},
-		"bDestroy":true,
-		"iDisplayLength":5,//paginacion
-		"order":[[0,"desc"]]//ordenar (columna, orden)
-	}).DataTable();
+//funcion listar registros
+function obtener_registros(usuarios){	
+	$.ajax({
+		url : '../ajax/usuario.php?op=listar',
+		type : 'POST',
+		dataType : 'html',
+		data : { usuarios: usuarios },
+	}
+	)
+	.done(function(resultado){
+		$("#tabla_resultado").html(resultado);
+	})
 }
+
+$(document).on('keyup', '#busqueda', function(){
+	var valorBusqueda=$(this).val();
+	
+	if (valorBusqueda!="")
+	{
+		obtener_registros(valorBusqueda);
+	}
+	else
+	{
+		obtener_registros();
+	}
+});
+
 //funcion para guardaryeditar
 function guardaryeditar(e){
      e.preventDefault();//no se activara la accion predeterminada 
@@ -157,7 +158,7 @@ function activar(idusuario){
 		if (result) {
 			$.post("../ajax/usuario.php?op=activar", {idusuario : idusuario}, function(e){
 				bootbox.alert(e);
-				tabla.ajax.reload();
+				// tabla.ajax.reload();
 			});
 		}
 	})

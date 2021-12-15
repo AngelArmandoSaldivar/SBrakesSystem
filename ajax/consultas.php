@@ -47,10 +47,9 @@ switch ($_GET["op"]) {
             "1"=>$reg->usuario,
             "2"=>$reg->cliente,
             "3"=>$reg->tipo_comprobante,
-            "4"=>$reg->serie_comprobante.' '.$reg->num_comprobante,
-            "5"=>$reg->total_venta,
-            "6"=>$reg->impuesto,
-            "7"=>($reg->estado=='Aceptado')?'<span class="label bg-green">Aceptado</span>':'<span class="label bg-red">Anulado</span>'
+            "4"=>$reg->total_venta,
+            "5"=>$reg->impuesto,
+            "6"=>($reg->estado=='Aceptado')?'<span class="label bg-green">Aceptado</span>':'<span class="label bg-red">Anulado</span>'
               );
         }
         $results=array(

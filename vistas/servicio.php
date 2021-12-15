@@ -9,7 +9,7 @@ if (!isset($_SESSION['nombre'])) {
 
 require 'header.php';
 
-if ($_SESSION['ventas']==1) {
+if ($_SESSION['servicios']==1) {
 
  ?>
 <div class="content-wrapper">
@@ -20,7 +20,7 @@ if ($_SESSION['ventas']==1) {
       <div class="col-md-12">
         <div class="box">
           <div class="box-header with-border">
-            <h1 class="box-title">Ventas <button class="btn btn-success" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
+            <h1 class="box-title">Servicios <button class="btn btn-success" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
           <div class="box-tools pull-right"></div>          
           <div class="panel-body table-responsive" id="listadoregistros">
             <section>
@@ -53,7 +53,7 @@ if ($_SESSION['ventas']==1) {
                 <label for="">Impuesto: </label>
                 <input class="form-control" type="text" name="impuesto" id="impuesto">
               </div>
-              <div class="form-group col-lg-8 col-md-6 col-xs-12">
+              <div class="form-group col-lg-4 col-md-6 col-xs-12">
                 <label for="">Forma de pago(*): </label>
                   <select name="forma_pago" id="forma_pago" class="form-control selectpicker" required>                    
                     <option value="Cheque">CHEQUE</option>
@@ -65,6 +65,31 @@ if ($_SESSION['ventas']==1) {
                     <option value="American Express">AMERICAN EXPRESS</option>
                   </select>
               </div>
+              <div class="form-group col-lg-12 col-md-6 col-xs-12">
+                    <center><h4 aling="center">Información de auto</h4></center>
+              </div>
+
+              <div class="form-group col-lg-3 col-md-2 col-xs-6">
+                <label for="">Marca: </label>
+                <input class="form-control" type="text" name="marca" id="marca" placeholder="Marca">
+              </div>
+              <div class="form-group col-lg-3 col-md-2 col-xs-6">
+                <label for="">Modelo: </label>
+                <input class="form-control" type="text" name="modelo" id="modelo"  placeholder="Modelo">
+              </div>
+              <div class="form-group col-lg-2 col-md-2 col-xs-6">
+                <label for="">Año: </label>
+                <input class="form-control" type="number" name="ano" id="ano" min="1000"  placeholder="yyyy">
+              </div>
+              <div class="form-group col-lg-2 col-md-2 col-xs-6">
+                <label for="">Color: </label>
+                <input class="form-control" type="text" name="color" id="color"  placeholder="Color">
+              </div>
+              <div class="form-group col-lg-2 col-md-2 col-xs-6">
+                <label for="">Kms: </label>
+                <input class="form-control" type="number" name="kms" id="kms" min="1"  placeholder="Kms">
+              </div>
+
               <div class="form-group col-lg-6 col-md-3 col-sm-6 col-xs-12">
                 <a data-toggle="modal" href="#myModal">
                   <button id="btnAgregarArt" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Articulos</button>
@@ -93,7 +118,7 @@ if ($_SESSION['ventas']==1) {
                     <th></th>
                     <th></th>
                     <th>TOTAL</th>
-                    <th><h5 id="total">$ 0.00</h5><input type="hidden" name="total_venta" id="total_venta"></th>
+                    <th><h5 id="total">$ 0.00</h5><input type="hidden" name="total_servicio" id="total_servicio"></th>
                   </tfoot>
                   <tbody>                
                   </tbody>
@@ -107,8 +132,7 @@ if ($_SESSION['ventas']==1) {
             </form>
           </div> 
       </div>
-    </div>  
-        
+    </div>          
   </section>
 </div>
   <!--Modal-->
@@ -141,7 +165,7 @@ if ($_SESSION['ventas']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/venta1.js"></script>
+ <script src="scripts/servicios.js"></script>
  <?php 
 }
 

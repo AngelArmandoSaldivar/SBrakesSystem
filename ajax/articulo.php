@@ -85,8 +85,8 @@ if(!isset($_SESSION["nombre"])) {
 			// 	"iTotalRecords"=>count($data),//enviamos el total de registros al datatable
 			// 	"iTotalDisplayRecords"=>count($data),//enviamos el total de registros a visualizar
 			// 	"aaData"=>$data); 
-			// echo json_encode($results);			
-			$consulta=" SELECT * FROM articulo LIMIT 20";
+			// echo json_encode($results);
+			$consulta=" SELECT * FROM articulo 	WHERE estado='1' LIMIT 30";
 			$termino= "";
 			if(isset($_POST['articulos']))
 			{
@@ -94,7 +94,7 @@ if(!isset($_SESSION["nombre"])) {
 				$consulta="SELECT * FROM articulo WHERE
 				codigo LIKE '%".$termino."%' OR
 				fmsi LIKE '%".$termino."%' OR
-				descripcion LIKE '%".$termino."%' LIMIT 20";
+				descripcion LIKE '%".$termino."%' AND estado='1' LIMIT 30";
 			}
 			$consultaBD=$conexion->query($consulta);
 			if($consultaBD->num_rows>=1){
@@ -141,6 +141,21 @@ if(!isset($_SESSION["nombre"])) {
 					}
 				}
 				echo "</tbody>
+				<tfoot>
+					<tr>
+						<th class='bg-info' scope='col'>Clave</th>
+						<th class='bg-info' scope='col'>FMSI</th>
+						<th class='bg-info' scope='col'>Marca</th>
+						<th class='bg-info' scope='col'>Descripción</th>
+						<th class='bg-info' scope='col'>Costo</th>
+						<th class='bg-info' scope='col'>Publico Mostrador</th>
+						<th class='bg-info' scope='col'>Taller</th>
+						<th class='bg-info' scope='col'>Crédito Taller</th>
+						<th class='bg-info' scope='col'>Mayoreo</th>
+						<th class='bg-info' scope='col'>Stock</th>
+						<th class='bg-info' scope='col'>Acciones</th>
+					</tr>
+						</tfoot>
 				</table>";
 			}else{
 				echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";
