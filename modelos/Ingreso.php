@@ -11,7 +11,7 @@ public function __construct(){
 
 //metodo insertar registro
 public function insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_comprobante,$fecha_hora,$impuesto,$total_compra,$idarticulo,$clave,$fmsi,$descripcion,$cantidad,$precio_compra, $idsucursal){
-	$sql="INSERT INTO ingreso (idproveedor,idusuario,tipo_comprobante,serie_comprobante,fecha_hora,impuesto,total_compra,tipoMov,estado, idsucursal) VALUES ('$idproveedor','$idusuario','$tipo_comprobante','$serie_comprobante','$fecha_hora','$impuesto','$total_compra','RECEPCIÓN','Aceptado', '$idsucursal')";
+	$sql="INSERT INTO ingreso (idproveedor,idusuario,tipo_comprobante,serie_comprobante,fecha_hora,impuesto,total_compra,tipoMov,estado, idsucursal) VALUES ('$idproveedor','$idusuario','$tipo_comprobante','$serie_comprobante','$fecha_hora','$impuesto','$total_compra','RECEPCIÓN','NORMAL', '$idsucursal')";
 	//return ejecutarConsulta($sql);
 	 $idingresonew=ejecutarConsulta_retornarID($sql);
 	 $num_elementos=0;
@@ -20,6 +20,9 @@ public function insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_compro
 
 	 	$sql_detalle="INSERT INTO detalle_ingreso (idingreso,idproveedor,idusuario,serie_comprobante,tipo_comprobante,idarticulo,clave,fmsi,descripcion,cantidad,precio_compra,tipoMov) VALUES('$idingresonew','$idproveedor','$idusuario','$serie_comprobante','$tipo_comprobante','$idarticulo[$num_elementos]','$clave[$num_elementos]','$fmsi[$num_elementos]','$descripcion[$num_elementos]','$cantidad[$num_elementos]','$precio_compra[$num_elementos]','RECEPCIÓN')";		
 	 	ejecutarConsulta($sql_detalle) or $sw=false;
+
+		 $sql_kardex = "INSERT INTO kardex (fecha_hora, folio, clave, fmsi, idcliente_proveedor, cantidad, importe, tipoMov, estado) VALUES ('$fecha_hora', $idingresonew, '$clave[$num_elementos]', '$fmsi[$num_elementos]', '$idproveedor', '$cantidad[$num_elementos]', '$precio_compra[$num_elementos]', 'RECEPCION','ACTIVO')";
+		 ejecutarConsulta($sql_kardex) or $sw=false;
 
 	 	$num_elementos=$num_elementos+1;
 	 }
@@ -47,11 +50,15 @@ public function anular($idingreso){
 			}
 		}
 
-		$stateIngreso = "UPDATE ingreso SET estado='Anulado' WHERE idingreso='$idingreso'";
+		$stateIngreso = "UPDATE ingreso SET estado='ANULADO' WHERE idingreso='$idingreso'";
 		ejecutarConsulta($stateIngreso);
 
 		$stateDetalle = "UPDATE detalle_ingreso SET estado='1' WHERE idingreso='$idingreso'";
 		ejecutarConsulta($stateDetalle);
+
+		$stateDetalle = "UPDATE kardex SET estado='ANULADO' WHERE folio='$idingreso'";
+		ejecutarConsulta($stateDetalle);
+
 
 	 return $sw;
 }

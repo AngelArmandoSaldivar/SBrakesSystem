@@ -88,13 +88,14 @@ $y=85;
 $rsptad=$venta->serviciodetalles($_GET["id"]);
 
 //Header tabla productos.
-$header = array('Clave', 'Concepto', 'Cantidad', 'Importe');
+$header = array('Clave', 'Concepto', 'Cantidad', 'Precio', 'Importe');
 $pdf->ImprovedTable($header);
 
 //Productos y detalle de productos.
 while($regd=$rsptad->fetch_object()){  
   $extrae = substr($regd->descripcion, 0,27);
-  $data = array($regd->codigo, $extrae, $regd->cantidad, $regd->precio_servicio);
+  $importe = $regd->precio_servicio * $regd->cantidad;
+  $data = array($regd->codigo, $extrae, $regd->cantidad, $regd->precio_servicio, $importe);
   $pdf->ImprovedTable2($data);
 }  
 

@@ -75,7 +75,7 @@ switch ($_GET["op"]) {
 
     case 'listar':
 	
-		$consulta="SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE estado='Aceptado' ORDER BY v.idventa DESC LIMIT 40";
+		$consulta="SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario ORDER BY v.idventa DESC LIMIT 40";
 			$termino= "";
 			if(isset($_POST['ventas']))
 			{
@@ -86,7 +86,7 @@ switch ($_GET["op"]) {
 				v.idventa LIKE '%".$termino."%' OR
 				p.nombre LIKE '%".$termino."%' OR
 				u.nombre LIKE '%".$termino."%'
-				AND estado='Aceptado' LIMIT 40";
+				LIMIT 40";
 			}
 			$consultaBD=$conexion->query($consulta);
 			if($consultaBD->num_rows>=1){
@@ -99,15 +99,14 @@ switch ($_GET["op"]) {
 							<th class='bg-info' scope='col'>Salida</th>
 							<th class='bg-info' scope='col'>Estatus</th>
 							<th class='bg-info' scope='col'>Cliente</th>
-							<th class='bg-info' scope='col'>Vendedor</th>
-							<th class='bg-info' scope='col'>Pagado</th>
+							<th class='bg-info' scope='col'>Vendedor</th>							
 							<th class='bg-info' scope='col'>Falta por pagar</th>
 							<th class='bg-info' scope='col'>Total</th>
 						</tr>
 					</thead>
 				<tbody>";				
 				while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){
-					if($fila["idsucursal"] == $idsucursal && $fila["estado"] == 'Aceptado' && $fila["status"] == "NORMAL") {
+					if($fila["idsucursal"] == $idsucursal && $fila["estado"] != 'ANULADO') {
 							if ($fila["tipo_comprobante"]=='Ticket') {
 								$url='../reportes/exTicket.php?id=';
 							}else{
@@ -128,7 +127,6 @@ switch ($_GET["op"]) {
 								<td><p>".$fila['cliente']."</td>
 								<td><p>".$fila['usuario']."</td>
 								<td><p>$ ".$fila["pagado"]."</td>
-								<td><p>$ ".$miles."</td>
 								<td><p>$ ".$miles."</td>								
 							</tr>
 							";
@@ -142,8 +140,7 @@ switch ($_GET["op"]) {
 							<th class='bg-info' scope='col'>Salida</th>
 							<th class='bg-info' scope='col'>Estatus</th>
 							<th class='bg-info' scope='col'>Cliente</th>
-							<th class='bg-info' scope='col'>Vendedor</th>
-							<th class='bg-info' scope='col'>Pagado</th>
+							<th class='bg-info' scope='col'>Vendedor</th>							
 							<th class='bg-info' scope='col'>Falta por pagar</th>
 							<th class='bg-info' scope='col'>Total</th>
 					</tr>

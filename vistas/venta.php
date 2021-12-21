@@ -44,8 +44,7 @@ if ($_SESSION['ventas']==1) {
 
               <div class="form-group col-lg-6 col-md-6 col-xs-12">
                 <label for="">Tipo Comprobante(*): </label>
-                  <select name="tipo_comprobante" id="tipo_comprobante" class="form-control selectpicker" required>                    
-                    <option value="Factura">Factura</option>
+                  <select name="tipo_comprobante" id="tipo_comprobante" class="form-control selectpicker" required>
                     <option value="Ticket">Ticket</option>
                   </select>
               </div>
@@ -82,7 +81,7 @@ if ($_SESSION['ventas']==1) {
                     <th>Cantidad</th>
                     <th>Precio Venta</th>
                     <th>Descuento</th>
-                    <th>Subtotal</th>
+                    <th>Subtotal</th>                    
                   </thead>
                   <tfoot>
                     <th></th>
@@ -141,7 +140,7 @@ if ($_SESSION['ventas']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/venta1.js"></script>
+ <script src="scripts/ventas.js"></script>
  <?php 
 }
 

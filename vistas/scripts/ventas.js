@@ -242,6 +242,7 @@ function marcarImpuesto(){
 function agregarDetalle(idarticulo,articulo,fmsi, descripcion,publico){
 	var cantidad=1;
 	var descuento=0;
+	var sub = document.getElementsByName("subtotal");
 
 	if (idarticulo!="") {
 		var fila='<tr class="filas" id="fila'+cont+'">'+
@@ -253,7 +254,7 @@ function agregarDetalle(idarticulo,articulo,fmsi, descripcion,publico){
         '<td><input style="width: 55px;" type="number" name="cantidad[]" id="cantidad[]" value="'+cantidad+'"></td>'+
         '<td><input style="width: 70px;" type="number" name="precio_venta[]" id="precio_venta[]" value="'+publico+'"></td>'+
         '<td><input style="width: 70px;" type="number" name="descuento[]" value="'+descuento+'"></td>'+
-        '<td><span id="subtotal'+cont+'" name="subtotal">'+publico*cantidad+'</span></td>'+
+        '<td><span id="subtotal'+cont+'" name="subtotal" value="'+sub+'"></span></td>'+
         '<td><button type="button" onclick="modificarSubtotales()" class="btn btn-info"><i class="fa fa-refresh"></i></button></td>'+
 		'</tr>';
 		cont++;
@@ -268,22 +269,16 @@ function agregarDetalle(idarticulo,articulo,fmsi, descripcion,publico){
 
 function modificarSubtotales(){
 	var cant=document.getElementsByName("cantidad[]");
-	var prev=document.getElementsByName("precio_venta[]");
-	var desc=document.getElementsByName("descuento[]");
+	var prev=document.getElementsByName("precio_venta[]");	
+	var desc=document.getElementsByName("descuento[]");	
 	var sub=document.getElementsByName("subtotal");
-	var fmsi=document.getElementsByName("fmsi[]");
-	var descripcion=document.getElementsByName("descripcion[]");
-	
 	for (var i = 0; i < cant.length; i++) {
 		var inpV=cant[i];		
 		var inpP=prev[i];
 		var inpS=sub[i];
 		var des=desc[i];
-		var fmsis = fmsi[i];
-		var descrip = descripcion[i];		
 		inpS.value=(inpV.value*inpP.value)-des.value;
-		document.getElementsByName("subtotal")[i].innerHTML=inpS.value;
-
+		document.getElementsByName("subtotal")[i].innerHTML=inpS.value;		
 	}
 	calcularTotales();
 }

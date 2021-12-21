@@ -11,21 +11,24 @@ public function __construct(){
 
 //metodo insertar registro
 public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$forma_pago,$total_servicio,$marca, $modelo, $ano, $color, $kms,$idarticulo,$clave,$fmsi,$descripcion,$cantidad,$precio_servicio,$descuento, $idsucursal){
-	$sql="INSERT INTO servicio (idcliente,idusuario,tipo_comprobante,fecha_hora,impuesto,forma_pago,total_servicio,marca, modelo, ano, color, kms, estado,idsucursal,status) 
-					VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_hora','$impuesto','$forma_pago','$total_servicio','$marca', '$modelo', '$ano', '$color', '$kms','Aceptado', '$idsucursal', 'NORMAL')";	
+	$sql="INSERT INTO servicio (idcliente,idusuario,tipo_comprobante,fecha_hora,impuesto,forma_pago,total_servicio,pagado,marca, modelo, ano, color, kms, estado,idsucursal,status) 
+					VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_hora','$impuesto','$forma_pago','$total_servicio','$total_servicio','$marca', '$modelo', '$ano', '$color', '$kms','NORMAL', '$idsucursal', 'NORMAL')";	
 	 $idservicionew=ejecutarConsulta_retornarID($sql);
 	 $num_elementos=0;
 	 $sw=true;
 	 while ($num_elementos < count($idarticulo)) {
 	 	$sql_detalle="INSERT INTO detalle_servicio (idservicio,idarticulo,clave,fmsi,descripcion,tipoMov,cantidad,precio_servicio,descuento) VALUES('$idservicionew','$idarticulo[$num_elementos]', '$clave[$num_elementos]','$fmsi[$num_elementos]','$descripcion[$num_elementos]','SERVICIO','$cantidad[$num_elementos]','$precio_servicio[$num_elementos]','$descuento[$num_elementos]')";
 	 	ejecutarConsulta($sql_detalle) or $sw=false;
+
+		 $sql_kardex = "INSERT INTO kardex (fecha_hora, folio, clave, fmsi, idcliente_proveedor, cantidad, importe, tipoMov, estado) VALUES ('$fecha_hora', $idservicionew, '$clave[$num_elementos]', '$fmsi[$num_elementos]', '$idcliente', '$cantidad[$num_elementos]', '$precio_servicio[$num_elementos]', 'SERVICIO', 'ACTIVO')";
+		 ejecutarConsulta($sql_kardex) or $sw=false;
 	 	$num_elementos=$num_elementos+1;
 	 }
 	 return $sw;
 }
 
 public function cobrarServicio($idservicio){
-	$sql = "UPDATE servicio SET status='PAGADO' WHERE idservicio='$idservicio'";
+	$sql = "UPDATE servicio SET status='PAGADO', pagado=0 WHERE idservicio='$idservicio'";
 	return ejecutarConsulta($sql);
 }
 
@@ -40,7 +43,7 @@ public function anular($idservicio){
 			//SELECT OLD STOCK ARTICULO
 			$sqlOldStock = "SELECT * FROM articulo WHERE idarticulo='$reg->idarticulo'";
 			$sqlOldStock2 = ejecutarConsulta($sqlOldStock);
-			while($reg2 = $sqlOldStock2->fetch_object()) {				
+			while($reg2 = $sqlOldStock2->fetch_object()) {
 				$sum = $reg->cantidad + $reg2->stock;
 				//echo "PRODUCTO: ".$reg2->codigo. " NEW STOCK: ".$sum."<br>";
 				//UPDATE NEW STOCK ARTICULO
@@ -49,10 +52,13 @@ public function anular($idservicio){
 			}			
 		}
 
-		$stateSell = "UPDATE servicio SET estado='Anulado' WHERE idservicio='$idservicio'";
+		$stateSell = "UPDATE servicio SET status='ANULADO' WHERE idservicio='$idservicio'";
 		ejecutarConsulta($stateSell);
 
 		$stateDetalle = "UPDATE detalle_servicio SET estado='1' WHERE idservicio='$idservicio'";
+		ejecutarConsulta($stateDetalle);
+
+		$stateDetalle = "UPDATE kardex SET estado='ANULADO' WHERE folio='$idservicio'";
 		ejecutarConsulta($stateDetalle);
 
 	 return $sw;

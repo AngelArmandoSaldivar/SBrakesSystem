@@ -93,7 +93,7 @@ switch ($_GET["op"]) {
         //      "aaData"=>$data); 
 		// echo json_encode($results);
 
-		$consulta="SELECT i.idsucursal, i.idingreso,DATE(i.fecha_hora) as fecha,i.idproveedor,p.nombre as proveedor,u.idusuario,u.nombre as usuario, i.tipo_comprobante,i.serie_comprobante,i.total_compra,i.impuesto,i.estado FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario WHERE estado='Aceptado' ORDER BY i.idingreso DESC LIMIT 40";
+		$consulta="SELECT i.idsucursal, i.idingreso,DATE(i.fecha_hora) as fecha,i.idproveedor,p.nombre as proveedor,u.idusuario,u.nombre as usuario, i.tipo_comprobante,i.serie_comprobante,i.total_compra,i.impuesto,i.estado FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario ORDER BY i.idingreso DESC LIMIT 40";
 			$termino= "";
 			if(isset($_POST['ingresos']))
 			{
@@ -105,7 +105,7 @@ switch ($_GET["op"]) {
 				i.idingreso LIKE '%".$termino."%' OR
 				p.idpersona LIKE '%".$termino."%' OR
 				u.nombre LIKE '%".$termino."%'
-				AND estado='Aceptado' LIMIT 40";
+				LIMIT 40";
 			}
 			$consultaBD=$conexion->query($consulta);
 			if($consultaBD->num_rows>=1){
@@ -125,7 +125,7 @@ switch ($_GET["op"]) {
 				<tbody>";
 
 				while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){
-					if($fila["idsucursal"] == $idsucursal) {
+					if($fila["idsucursal"] == $idsucursal && $fila["estado"] != 'ANULADO') {
 							if ($fila["tipo_comprobante"]=='Ticket') {
 								$url='../reportes/exTicket.php?id=';
 							}else{
@@ -137,8 +137,7 @@ switch ($_GET["op"]) {
 							$paginas = 13;
 
 							echo "<tr>
-								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idingreso"].")'><i class='fa fa-eye'></i></button> <button class='btn btn-danger btn-xs' onclick='anular(".$fila["idingreso"].")'><i class='fa fa-close'></i></button>
-								<button class='btn btn-default btn-xs' onclick='cobrar(".$fila["idingreso"].")'><i class='fa fa-credit-card'></i></button>
+								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idingreso"].")'><i class='fa fa-eye'></i></button> <button class='btn btn-danger btn-xs' onclick='anular(".$fila["idingreso"].")'><i class='fa fa-close'></i></button>								
 								<a target='_blank' href='".$url.$fila["idingreso"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-file'></i></button></a></td>								
 								<td>".$fila['idingreso']."</td>
 								<td>".$fila['fecha']."</td>

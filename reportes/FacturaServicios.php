@@ -344,7 +344,7 @@ function ImprovedTable($header)
     $this->Line( $re+5, $y1+25, 30, $y1+25);
     $this->SetXY( $this->w - 180, 85 + 35 );
     // Anchuras de las columnas
-    $w = array(35, 75, 30, 15);
+    $w = array(30, 62, 30, 18, 15);
     // Cabeceras
     for($i=0;$i<count($header);$i++)
         $this->Cell($w[$i],6,$header[$i],'B'); // La C centra el texto
@@ -355,7 +355,7 @@ function ImprovedTable($header)
 }
 
 function ImprovedTable2($data) {            
-    $w = array(15, 60, 5, 5);
+    $w = array(10, 47, 4, 2, 15);
 
     for($i=0;$i<count($data);$i++) {
         // Move to 8 cm to the right

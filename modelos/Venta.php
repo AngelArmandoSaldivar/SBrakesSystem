@@ -10,8 +10,8 @@ public function __construct(){
 }
 
 //metodo insertar registro
-public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$forma_pago,$total_venta,$idarticulo,$clave,$fmsi,$descripcion,$cantidad,$precio_venta,$descuento, $idsucursal){
-	$sql="INSERT INTO venta (idcliente,idusuario,tipo_comprobante,fecha_hora,impuesto,forma_pago,total_venta,estado,idsucursal,status) VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_hora','$impuesto','$forma_pago','$total_venta','Aceptado', '$idsucursal', 'NORMAL')";	
+public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$forma_pago,$total_venta,$idarticulo,$clave,$fmsi,$descripcion,$cantidad,$precio_venta,$descuento,$idsucursal){
+	$sql="INSERT INTO venta (idcliente,idusuario,tipo_comprobante,fecha_hora,impuesto,forma_pago,total_venta,pagado,estado,idsucursal,status) VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_hora','$impuesto','$forma_pago','$total_venta','$total_venta', 'NORMAL', '$idsucursal', 'NORMAL')";
 	 $idventanew=ejecutarConsulta_retornarID($sql);
 	 $num_elementos=0;
 	 $sw=true;
@@ -21,13 +21,16 @@ public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$im
 
 	 	ejecutarConsulta($sql_detalle) or $sw=false;
 
+		 $sql_kardex = "INSERT INTO kardex (fecha_hora, folio, clave, fmsi, idcliente_proveedor, cantidad, importe, tipoMov, estado) VALUES ('$fecha_hora', $idventanew,'$clave[$num_elementos]', '$fmsi[$num_elementos]', '$idcliente', '$cantidad[$num_elementos]', '$precio_venta[$num_elementos]', 'VENTA', 'ACTIVO')";
+		 ejecutarConsulta($sql_kardex) or $sw=false;
+
 	 	$num_elementos=$num_elementos+1;
 	 }
 	 return $sw;
 }
 
 public function cobrarVenta($idventa){
-	$sql = "UPDATE venta SET status='PAGADO' WHERE idventa='$idventa'";
+	$sql = "UPDATE venta SET estado='PAGADO', pagado=0 WHERE idventa='$idventa'";
 	return ejecutarConsulta($sql);
 }
 
@@ -56,10 +59,13 @@ public function anular($idventa){
 			}			
 		}
 
-		$stateSell = "UPDATE venta SET estado='Anulado' WHERE idventa='$idventa'";
+		$stateSell = "UPDATE venta SET estado='ANULADO' WHERE idventa='$idventa'";
 		ejecutarConsulta($stateSell);
 
 		$stateDetalle = "UPDATE detalle_venta SET estado='1' WHERE idventa='$idventa'";
+		ejecutarConsulta($stateDetalle);
+
+		$stateDetalle = "UPDATE kardex SET estado='ANULADO' WHERE folio='$idventa'";
 		ejecutarConsulta($stateDetalle);
 
 	 return $sw;
