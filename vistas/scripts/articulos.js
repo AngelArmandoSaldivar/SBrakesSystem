@@ -4,7 +4,6 @@ var tabla;
 function init(){
    mostrarform(false);
    obtener_registros();
-
    $("#formulario").on("submit",function(e){
    	guardaryeditar(e);
    })
@@ -21,6 +20,10 @@ function init(){
 		$('#idproveedor').selectpicker('refresh');
 	});
 }
+
+// function refresh() {
+// 	obtener_registros();
+// }
 
 //funcion limpiar
 function limpiar(){
@@ -90,8 +93,7 @@ $(document).on('keyup', '#busqueda', function(){
 });
 
 //funcion para guardaryeditar
-function guardaryeditar(e){
-	console.log($("#idarticulo").val());
+function guardaryeditar(e){	
 	e.preventDefault();//no se activara la accion predeterminada 
 	$("#btnGuardar").prop("disabled",true);
 	var formData=new FormData($("#formulario")[0]);
@@ -111,6 +113,7 @@ function guardaryeditar(e){
 	});
 
 	limpiar();
+	
 }
 
 function mostrar(idarticulo){
@@ -140,7 +143,6 @@ function mostrar(idarticulo){
 			$("#idarticulo").val(data.idarticulo);			
 		})
 }
-
 
 //funcion para desactivar
 function desactivar(idarticulo){

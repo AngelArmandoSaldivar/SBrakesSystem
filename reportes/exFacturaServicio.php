@@ -92,12 +92,12 @@ $header = array('Clave', 'Concepto', 'Cantidad', 'Precio', 'Importe');
 $pdf->ImprovedTable($header);
 
 //Productos y detalle de productos.
-while($regd=$rsptad->fetch_object()){  
+while($regd=$rsptad->fetch_object()){
   $extrae = substr($regd->descripcion, 0,27);
   $importe = $regd->precio_servicio * $regd->cantidad;
   $data = array($regd->codigo, $extrae, $regd->cantidad, $regd->precio_servicio, $importe);
   $pdf->ImprovedTable2($data);
-}  
+}
 
 /*aqui falta codigo de letras*/
 require_once "Letras.php";
@@ -107,9 +107,8 @@ $total=$regv->total_servicio;
 $V=new EnLetras(); 
 $V->substituir_un_mil_por_mil = true;
 // echo "Total: ", $total;
-$con_letra=strtoupper($V->ValorEnLetras($total," PESOS")); 
+$con_letra=strtoupper($V->convertir($total));
 $pdf->addCadreTVAs($con_letra. " M.N.");
-
 
 //mostramos el impuesto
 $pdf->addTVAs( $regv->impuesto, $regv->total_servicio, "$");

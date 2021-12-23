@@ -36,16 +36,16 @@ if (strlen(session_id())<1)
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
-  <header class="main-header">
+  <header class="main-header" >
     <!-- Logo -->
-    <a href="escritorio.php" class="logo">
+    <a href="escritorio.php" class="logo" style="background-image: url(../files/images/imagen_humo.jpg);" >
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>Inv</b> Sys</span>
+      <span class="logo-mini"><b>B1S</b> Sys</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Inventory</b> System</span>
+      <span class="logo-lg" ><b>BrakeOne</b> System</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
-    <nav class="navbar navbar-static-top">
+    <nav class="navbar navbar-static-top"  style="background-image: url(../files/images/imagen_humo.jpg); background-repeat: repeat-x;">
       <!-- Sidebar toggle button-->
       <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
         <span class="sr-only">NAVEGACIÓM</span>
@@ -81,14 +81,14 @@ if (strlen(session_id())<1)
     </nav>
   </header>
   <!-- Left side column. contains the logo and sidebar -->
-  <aside class="main-sidebar">
+  <aside class="main-sidebar" style="background-image: url(../files/images/imagen_humo.jpg); background-repeat: repeat-y;">
     <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
+    <section class="sidebar" >
       <!-- Sidebar user panel -->
      
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
-      <ul class="sidebar-menu" data-widget="tree">
+      <ul class="sidebar-menu" data-widget="tree" style="">
 
 <br>
        <?php 
