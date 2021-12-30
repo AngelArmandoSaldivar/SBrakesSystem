@@ -60,6 +60,7 @@ $pdf->addClientAdresse("CLIENTE: ".utf8_decode($regv->cliente),
                        "TELEFONO: ".$regv->telefono,
                         "MARCA: ". $regv->marca,
                         "MODELO: ". $regv->modelo,
+                        "PLACAS: ". $regv->placas,
                         "COLOR: ". $regv->color,
                         "KMS: ". $regv->kms
                     );                    

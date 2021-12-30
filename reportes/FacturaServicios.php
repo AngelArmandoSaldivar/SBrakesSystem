@@ -271,7 +271,7 @@ function addPageNumber( $page )
 }
 
 // Client address
-function addClientAdresse( $cliente, $domicilio ,$num_documento, $email, $telefono, $marca, $modelo, $color, $kms )
+function addClientAdresse( $cliente, $domicilio ,$num_documento, $email, $telefono, $marca, $modelo, $placas, $color, $kms )
 {
 
     $re  = $this->w - 30;
@@ -295,7 +295,7 @@ function addClientAdresse( $cliente, $domicilio ,$num_documento, $email, $telefo
 
     $r1     = $this->w - 180;
     $r2Y = $this->w - 65;
-    $r2E = $this->w - 135;
+    $r2E = $this->w - 145;
     $r2     = $r1 + 68;
     $y1     = 60;
     $this->Image('../files/images/BrakeOneBrembo.png',45,8,120);
@@ -314,6 +314,7 @@ function addClientAdresse( $cliente, $domicilio ,$num_documento, $email, $telefo
     $this->SetXY( $r2Y, $y1 + 5 );
     $length = $this->GetStringWidth( $telefono );
     $this->Cell( $length, 0, $telefono);
+    
     $this->SetXY( $r1, $y1 + 35 );
     $length = $this->GetStringWidth( $marca );
     $this->Cell( $length, 0, $marca);
@@ -322,9 +323,15 @@ function addClientAdresse( $cliente, $domicilio ,$num_documento, $email, $telefo
     $length = $this->GetStringWidth( $modelo );
     $this->Cell( $length, 0, $modelo);
 
-    $this->SetXY( $this->w - 95, $y1 + 35 );
+    $this->SetXY( $this->w - 110, $y1 + 35 );
+    $length = $this->GetStringWidth( $placas );
+    $this->Cell( $length, 0, $placas);
+
+    $this->SetXY( $this->w - 75, $y1 + 35 );
     $length = $this->GetStringWidth( $color );
     $this->Cell( $length, 0, $color);
+
+
 
     $this->SetXY( $this->w - 48, $y1 + 35 );
     $length = $this->GetStringWidth( $kms );

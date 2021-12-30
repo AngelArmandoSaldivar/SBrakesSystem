@@ -225,7 +225,7 @@ function mostrar(idventa){
 	$.post("../ajax/venta.php?op=mostrar",{idventa : idventa},
 		function(data,status)
 		{
-			data=JSON.parse(data);			
+			data=JSON.parse(data);
 			mostrarform(true);
 			$('.loader').hide();	
 
@@ -233,6 +233,8 @@ function mostrar(idventa){
 			$("#idcliente").selectpicker('refresh');
 			$("#tipo_comprobante").val(data.tipo_comprobante).prop("disabled", true);
 			$("#tipo_comprobante").selectpicker('refresh');	
+			$("#factura").val(data.factura).prop("disabled", true);
+			$("#factura").selectpicker('refresh');	
 			$("#forma_pago").val(data.forma_pago).prop("disabled", true);
 			$("#forma_pago").selectpicker('refresh');	
 			$("#fecha_hora").val(data.fecha).prop("disabled", true);
@@ -270,7 +272,6 @@ function cobrar(idventa) {
 		if (result) {
 			$.post("../ajax/venta.php?op=cobrar", {idventa : idventa}, function(e){
 				bootbox.alert(e);
-				tabla.ajax.reload();
 			});
 		}
 	})

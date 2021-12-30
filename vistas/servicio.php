@@ -75,11 +75,15 @@ if ($_SESSION['servicios']==1) {
                     <center><h4 aling="center">Información de auto</h4></center>
               </div>
 
-              <div class="form-group col-lg-3 col-md-2 col-xs-6">
+              <div class="form-group col-lg-2 col-md-2 col-xs-6">
+                <label for="">Placas: </label>
+                <input class="form-control" type="text" name="placas" id="placas" placeholder="Placas">
+              </div>
+              <div class="form-group col-lg-2 col-md-2 col-xs-6">
                 <label for="">Marca: </label>
                 <input class="form-control" type="text" name="marca" id="marca" placeholder="Marca">
               </div>
-              <div class="form-group col-lg-3 col-md-2 col-xs-6">
+              <div class="form-group col-lg-2 col-md-2 col-xs-6">
                 <label for="">Modelo: </label>
                 <input class="form-control" type="text" name="modelo" id="modelo"  placeholder="Modelo">
               </div>
@@ -381,7 +385,7 @@ if ($_SESSION['servicios']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/servicio1.js"></script>
+ <script src="scripts/servicio.js"></script>
  <?php 
 }
 

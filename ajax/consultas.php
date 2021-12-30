@@ -34,23 +34,34 @@ switch ($_GET["op"]) {
 		break;
 
      case 'ventasfechacliente':
-    $fecha_inicio=$_REQUEST["fecha_inicio"];
-    $fecha_fin=$_REQUEST["fecha_fin"];
-    $idcliente=$_REQUEST["idcliente"];
+      $fecha_inicio=$_REQUEST["fecha_inicio"];
+      $fecha_fin=$_REQUEST["fecha_fin"];
 
-        $rspta=$consulta->ventasfechacliente($fecha_inicio,$fecha_fin,$idcliente);
+        $rspta=$consulta->ventasfechacliente($fecha_inicio,$fecha_fin);
         $data=Array();
 
         while ($reg=$rspta->fetch_object()) {
+          if($reg->estado != 'ANULADO') {
+            if ($reg->tipo_comprobante =='Ticket') {
+              $url='../reportes/exTicket.php?id=';
+            }else{
+              $url='../reportes/exFactura.php?id=';
+            }
             $data[]=array(
-            "0"=>$reg->fecha,
-            "1"=>$reg->usuario,
-            "2"=>$reg->cliente,
-            "3"=>$reg->tipo_comprobante,
-            "4"=>$reg->total_venta,
-            "5"=>$reg->impuesto,
-            "6"=>($reg->estado=='Aceptado')?'<span class="label bg-green">Aceptado</span>':'<span class="label bg-red">Anulado</span>'
+            "0"=>"<button class='btn btn-warning btn-xs' onclick='mostrar(".$reg->idventa.")'><i class='fa fa-eye'></i></button> 
+            <button class='btn btn-danger btn-xs' onclick='anular(".$reg->idventa.")'><i class='fa fa-close'></i></button>
+            <button class='btn btn-default btn-xs' onclick='cobrar(".$reg->idventa.")'><i class='fa fa-credit-card'></i></button>
+            <a target='_blank' href='".$url.$reg->idventa."'> <button class='btn btn-info btn-xs'><i class='fa fa-file'></i></button></a>",
+            "1"=>$reg->idventa,
+            "2"=>$reg->fecha_hora,
+            "3"=>$reg->cliente,
+            "4"=>$reg->usuario,
+            "5"=>$reg->forma_pago,
+            "6"=>$reg->pagado,
+            "7"=>$reg->total_venta,
+            "8"=>($reg->estado=='PAGADO')?'<span class="label bg-green">PAGADO</span>':'<span class="label bg-red">'.$reg->estado.'</span>'
               );
+          }
         }
         $results=array(
              "sEcho"=>1,//info para datatables

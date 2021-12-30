@@ -10,9 +10,9 @@ public function __construct(){
 }
 
 //metodo insertar registro
-public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$forma_pago,$total_servicio,$marca, $modelo, $ano, $color, $kms,$idarticulo,$clave,$fmsi,$descripcion,$cantidad,$precio_servicio,$descuento, $idsucursal){
-	$sql="INSERT INTO servicio (idcliente,idusuario,tipo_comprobante,fecha_hora,impuesto,forma_pago,total_servicio,pagado,marca, modelo, ano, color, kms, estado,idsucursal,status) 
-					VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_hora','$impuesto','$forma_pago','$total_servicio','$total_servicio','$marca', '$modelo', '$ano', '$color', '$kms','NORMAL', '$idsucursal', 'NORMAL')";	
+public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$forma_pago,$total_servicio,$marca, $modelo, $ano, $color, $kms,$placas,$idarticulo,$clave,$fmsi,$descripcion,$cantidad,$precio_servicio,$descuento, $idsucursal){
+	$sql="INSERT INTO servicio (idcliente,idusuario,tipo_comprobante,fecha_hora,impuesto,forma_pago,total_servicio,pagado,marca, modelo, ano, color, kms, placas, estado,idsucursal,status) 
+					VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_hora','$impuesto','$forma_pago','$total_servicio','$total_servicio','$marca', '$modelo', '$ano', '$color', '$kms','$placas', 'NORMAL', '$idsucursal', 'NORMAL')";	
 	 $idservicionew=ejecutarConsulta_retornarID($sql);
 	 $num_elementos=0;
 	 $sw=true;
@@ -68,7 +68,7 @@ public function anular($idservicio){
 
 //implementar un metodopara mostrar los datos de unregistro a modificar
 public function mostrar($idservicio){
-	$sql="SELECT v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.forma_pago,v.total_servicio,v.impuesto,v.estado,v.marca, v.modelo, v.ano, v.kms, v.color FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE idservicio='$idservicio'";
+	$sql="SELECT v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.forma_pago,v.total_servicio,v.impuesto,v.estado,v.marca, v.modelo, v.ano, v.kms, v.color, v.placas FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE idservicio='$idservicio'";
 	sleep(1);
 	return ejecutarConsultaSimpleFila($sql);
 }
@@ -87,7 +87,7 @@ public function listar(){
 
 
 public function serviciocabecera($idservicio){
-	$sql= "SELECT v.idservicio, v.idcliente, p.nombre AS cliente, p.direccion, p.tipo_documento, p.num_documento, p.email, p.telefono, v.idusuario, u.nombre AS usuario, v.tipo_comprobante, DATE(v.fecha_hora) AS fecha, v.impuesto, v.total_servicio, v.marca, v.modelo, v.color, v.kms FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE v.idservicio='$idservicio'";
+	$sql= "SELECT v.idservicio, v.idcliente, p.nombre AS cliente, p.direccion, p.tipo_documento, p.num_documento, p.email, p.telefono, v.idusuario, u.nombre AS usuario, v.tipo_comprobante, DATE(v.fecha_hora) AS fecha, v.impuesto, v.total_servicio, v.marca, v.modelo, v.color, v.kms, v.placas FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE v.idservicio='$idservicio'";
 	return ejecutarConsulta($sql);
 }
 

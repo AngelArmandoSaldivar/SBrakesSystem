@@ -89,20 +89,18 @@ if(!isset($_SESSION["nombre"])) {
 
 			$cantidad = '';
 
-			$consulta=" SELECT * FROM articulo 	WHERE estado='1' AND stock>='$cantidad' LIMIT 30";
-			$termino= "";																
+			$consulta=" SELECT * FROM articulo 	WHERE estado='1' AND stock>='$cantidad' ORDER BY stock DESC LIMIT 100";
+			$termino= "";
 
 			if(isset($_POST['articulos']))
 			{				
 				$termino=$conexion->real_escape_string($_POST['articulos']);
 
-				echo $termino;
-
 				$consulta="SELECT * FROM articulo WHERE
 				codigo LIKE '%".$termino."%' OR
 				fmsi LIKE '%".$termino."%' OR
 				descripcion LIKE '%".$termino."%'
-				LIMIT 30";
+				ORDER BY stock DESC LIMIT 100";
 			}
 			$consultaBD=$conexion->query($consulta);
 			if($consultaBD->num_rows>=1){

@@ -51,10 +51,17 @@ if ($_SESSION['ventas']==1) {
                 <input class="form-control" type="date" name="fecha_hora" id="fecha_hora" required>
               </div>  
 
-              <div class="form-group col-lg-6 col-md-6 col-xs-12">
+              <div class="form-group col-lg-4 col-md-6 col-xs-12">
                 <label for="">Tipo Comprobante(*): </label>
                   <select name="tipo_comprobante" id="tipo_comprobante" class="form-control selectpicker" required>
                     <option value="Ticket">Ticket</option>
+                  </select>
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                <label for="">Factura ? </label>
+                  <select name="factura" id="factura" class="form-control selectpicker" required>
+                    <option value="c/f">Con factura</option>
+                    <option value="s/f">Sin factura</option>
                   </select>
               </div>
               <div class="form-group col-lg-2 col-md-2 col-xs-6">

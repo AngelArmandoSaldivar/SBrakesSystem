@@ -10,6 +10,7 @@ $idventa=isset($_POST["idventa"])? limpiarCadena($_POST["idventa"]):"";
 $idcliente=isset($_POST["idcliente"])? limpiarCadena($_POST["idcliente"]):"";
 $idusuario=$_SESSION["idusuario"];
 $tipo_comprobante=isset($_POST["tipo_comprobante"])? limpiarCadena($_POST["tipo_comprobante"]):"";
+$factura=isset($_POST["factura"])? limpiarCadena($_POST["factura"]):"";
 $fecha_hora=isset($_POST["fecha_hora"])? limpiarCadena($_POST["fecha_hora"]):"";
 $impuesto=isset($_POST["impuesto"])? limpiarCadena($_POST["impuesto"]):"";
 $forma_pago=isset($_POST["forma_pago"])? limpiarCadena($_POST["forma_pago"]):"";
@@ -18,7 +19,7 @@ $total_venta=isset($_POST["total_venta"])? limpiarCadena($_POST["total_venta"]):
 switch ($_GET["op"]) {
 	case 'guardaryeditar':
 	if (empty($idventa)) {
-		$rspta=$venta->insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$forma_pago,$total_venta,$_POST["idarticulo"],$_POST["clave"],$_POST["fmsi"],$_POST["descripcion"],$_POST["cantidad"],$_POST["precio_venta"],$_POST["descuento"], $idsucursal); 		
+		$rspta=$venta->insertar($idcliente,$idusuario,$tipo_comprobante,$factura,$fecha_hora,$impuesto,$forma_pago,$total_venta,$_POST["idarticulo"],$_POST["clave"],$_POST["fmsi"],$_POST["descripcion"],$_POST["cantidad"],$_POST["precio_venta"],$_POST["descuento"], $idsucursal); 		
 		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
 	}else{
 	}
@@ -75,12 +76,12 @@ switch ($_GET["op"]) {
 
     case 'listar':
 	
-		$consulta="SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario ORDER BY v.idventa DESC LIMIT 40";
+		$consulta="SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado, v.forma_pago FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario ORDER BY v.idventa DESC LIMIT 40";
 			$termino= "";
 			if(isset($_POST['ventas']))
 			{
 				$termino=$conexion->real_escape_string($_POST['ventas']);
-				$consulta="SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario
+				$consulta="SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado, v.forma_pago FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario
 				WHERE 
 				tipo_comprobante LIKE '%".$termino."%' OR
 				v.idventa LIKE '%".$termino."%' OR
@@ -102,7 +103,8 @@ switch ($_GET["op"]) {
 							<th class='bg-info' scope='col'>Salida</th>
 							<th class='bg-info' scope='col'>Estatus</th>
 							<th class='bg-info' scope='col'>Cliente</th>
-							<th class='bg-info' scope='col'>Vendedor</th>							
+							<th class='bg-info' scope='col'>Vendedor</th>		
+							<th class='bg-info' scope='col'>Forma de pago</th>					
 							<th class='bg-info' scope='col'>Falta por pagar</th>
 							<th class='bg-info' scope='col'>Total</th>
 						</tr>
@@ -129,8 +131,9 @@ switch ($_GET["op"]) {
 								<td>".$fila['estado']."</td>
 								<td><p>".$fila['cliente']."</td>
 								<td><p>".$fila['usuario']."</td>
+								<td><p>".$fila['forma_pago']."</td>
 								<td><p>$ ".$fila["pagado"]."</td>
-								<td><p>$ ".$miles."</td>								
+								<td><p>$ ".$miles."</td>
 							</tr>
 							";
 					}
@@ -168,7 +171,7 @@ switch ($_GET["op"]) {
 
 			case 'listarProductos':
 	
-				$consulta="SELECT * FROM articulo LIMIT 40";
+				$consulta="SELECT * FROM articulo ORDER BY stock DESC LIMIT 100";
 					$termino= "";
 					if(isset($_POST['productos']))
 					{
@@ -178,7 +181,7 @@ switch ($_GET["op"]) {
 						codigo LIKE '%".$termino."%' OR
 						fmsi LIKE '%".$termino."%' OR
 						descripcion LIKE '%".$termino."%' OR
-						marca LIKE '%".$termino."%' LIMIT 40";
+						marca LIKE '%".$termino."%' ORDER BY stock DESC LIMIT 100";
 					}
 					$consultaBD=$conexion->query($consulta);
 					if($consultaBD->num_rows>=1){

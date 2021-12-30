@@ -183,7 +183,7 @@ switch ($_GET["op"]) {
 		break;
 
 		case 'listarArticulos':
-			$consulta="SELECT * FROM articulo LIMIT 40";
+			$consulta="SELECT * FROM articulo ORDER BY stock DESC LIMIT 100";
 					$termino= "";
 					if(isset($_POST['productos']))
 					{
@@ -193,7 +193,7 @@ switch ($_GET["op"]) {
 						codigo LIKE '%".$termino."%' OR
 						fmsi LIKE '%".$termino."%' OR
 						descripcion LIKE '%".$termino."%' OR
-						marca LIKE '%".$termino."%' LIMIT 40";
+						marca LIKE '%".$termino."%' ORDER BY stock DESC LIMIT 100";
 					}
 					$consultaBD=$conexion->query($consulta);
 					if($consultaBD->num_rows>=1){

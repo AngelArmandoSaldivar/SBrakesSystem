@@ -229,10 +229,11 @@ function mostrar(idservicio){
 			$("#tipo_comprobante").val(data.tipo_comprobante).prop("disabled", true);
 			$("#tipo_comprobante").selectpicker('refresh');	
 			$("#forma_pago").val(data.forma_pago).prop("disabled", true);
-			$("#forma_pago").selectpicker('refresh');	
+			$("#forma_pago").selectpicker('refresh');
 			$("#fecha_hora").val(data.fecha).prop("disabled", true);
 			$("#impuesto").val(data.impuesto).prop("disabled", true);
 			$("#marca").val(data.marca).prop("disabled", true);
+			$("#placas").val(data.placas).prop("disabled", true);
 			$("#modelo").val(data.modelo).prop("disabled", true);
 			$("#color").val(data.color).prop("disabled", true);
 			$("#ano").val(data.ano).prop("disabled", true);

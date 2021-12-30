@@ -19,11 +19,12 @@ $modelo=isset($_POST["modelo"])? limpiarCadena($_POST["modelo"]):"";
 $ano=isset($_POST["ano"])? limpiarCadena($_POST["ano"]):"";
 $color=isset($_POST["color"])? limpiarCadena($_POST["color"]):"";
 $kms=isset($_POST["kms"])? limpiarCadena($_POST["kms"]):"";
+$placas=isset($_POST["placas"])? limpiarCadena($_POST["placas"]):"";
 
 switch ($_GET["op"]) {
 	case 'guardaryeditar':
 	if (empty($idservicio)) {
-		$rspta=$servicio->insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$forma_pago,$total_servicio,$marca, $modelo, $ano, $color, $kms, $_POST["idarticulo"],$_POST["clave"],$_POST["fmsi"],$_POST["descripcion"],$_POST["cantidad"],$_POST["precio_servicio"],$_POST["descuento"], $idsucursal);
+		$rspta=$servicio->insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$forma_pago,$total_servicio,$marca, $modelo, $ano, $color, $kms, $placas, $_POST["idarticulo"],$_POST["clave"],$_POST["fmsi"],$_POST["descripcion"],$_POST["cantidad"],$_POST["precio_servicio"],$_POST["descuento"], $idsucursal);
 		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
 	}else{
 	}
@@ -178,7 +179,7 @@ switch ($_GET["op"]) {
 
 			case 'listarProductos':
 	
-				$consulta="SELECT * FROM articulo LIMIT 40";
+				$consulta="SELECT * FROM articulo ORDER BY stock DESC LIMIT 100";
 					$termino= "";
 					if(isset($_POST['productos']))
 					{
@@ -188,7 +189,7 @@ switch ($_GET["op"]) {
 						codigo LIKE '%".$termino."%' OR
 						fmsi LIKE '%".$termino."%' OR
 						descripcion LIKE '%".$termino."%' OR
-						marca LIKE '%".$termino."%' LIMIT 40";
+						marca LIKE '%".$termino."%' ORDER BY stock DESC LIMIT 100";
 					}
 					$consultaBD=$conexion->query($consulta);
 					if($consultaBD->num_rows>=1){
