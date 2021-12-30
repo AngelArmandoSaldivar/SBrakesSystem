@@ -1,0 +1,12 @@
+.img-responsive {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 115vh;
+    background: url(../../files/images/fondo1.jpg);
+    background-size: cover;
+    overflow: hidden;
+    z-index: -1;
+    background: linear-gradient(rgba(12 15 36), rgba(255 23 23));
+}
