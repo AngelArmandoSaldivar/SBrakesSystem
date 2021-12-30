@@ -29,14 +29,16 @@ if ($_SESSION['almacen']==1) {
 <div class="table-responsive" id="table-search">
   <section>
     <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px"></center>
-  </section><br><br>
+  </section><br>
+  <div class="form-group col-lg-2 col-md-6 col-xs-12" style="align-items:center;">
+      <button id="todo">Todo</button> <button id="1" onclick="actualizarStock(this.id)">Existencias</button>
+    </div>
+    <br><br>
   <section id="tabla_resultado"></section>
 </div>
 
-<div class="panel-body" id="formularioregistros">
+<div class="panel-body" id="formularioregistros">  
   <form action="" name="formulario" id="formulario" method="POST">
-
-
     <!--CLAVE DEL PRODUCTO-->
     <div class="form-group col-lg-4 col-md-6 col-xs-12">
       <label for="">Clave(*):</label>
@@ -156,7 +158,7 @@ require 'footer.php'
  ?>
  <script src="../public/js/JsBarcode.all.min.js"></script>
  <script src="../public/js/jquery.PrintArea.js"></script>
- <script src="scripts/articulos.js"></script>
+ <script src="scripts/articulo.js"></script>
  <!-- <script src="consulta.js"></script> -->
 
  <?php 

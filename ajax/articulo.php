@@ -21,7 +21,7 @@ if(!isset($_SESSION["nombre"])) {
 	$taller=isset($_POST["taller"])? limpiarCadena($_POST["taller"]):"";
 	$credito_taller=isset($_POST["credito_taller"])? limpiarCadena($_POST["credito_taller"]):"";
 	$mayoreo=isset($_POST["mayoreo"])? limpiarCadena($_POST["mayoreo"]):"";
-	$stock=isset($_POST["stock"])? limpiarCadena($_POST["stock"]):"";
+	$stock=isset($_POST["stock"])? limpiarCadena($_POST["stock"]):"";	
 	$descripcion=isset($_POST["descripcion"])? limpiarCadena($_POST["descripcion"]):"";
 	$imagen=isset($_POST["imagen"])? limpiarCadena($_POST["imagen"]):"";
 
@@ -85,16 +85,24 @@ if(!isset($_SESSION["nombre"])) {
 			// 	"iTotalRecords"=>count($data),//enviamos el total de registros al datatable
 			// 	"iTotalDisplayRecords"=>count($data),//enviamos el total de registros a visualizar
 			// 	"aaData"=>$data); 
-			// echo json_encode($results);
-			$consulta=" SELECT * FROM articulo 	WHERE estado='1' LIMIT 30";
-			$termino= "";
+			// echo json_encode($results);					
+
+			$cantidad = '';
+
+			$consulta=" SELECT * FROM articulo 	WHERE estado='1' AND stock>='$cantidad' LIMIT 30";
+			$termino= "";																
+
 			if(isset($_POST['articulos']))
-			{
+			{				
 				$termino=$conexion->real_escape_string($_POST['articulos']);
+
+				echo $termino;
+
 				$consulta="SELECT * FROM articulo WHERE
 				codigo LIKE '%".$termino."%' OR
 				fmsi LIKE '%".$termino."%' OR
-				descripcion LIKE '%".$termino."%' AND estado='1' LIMIT 30";
+				descripcion LIKE '%".$termino."%'
+				LIMIT 30";
 			}
 			$consultaBD=$conexion->query($consulta);
 			if($consultaBD->num_rows>=1){
@@ -124,7 +132,15 @@ if(!isset($_SESSION["nombre"])) {
 					$mayoreoMiles = number_format($fila['mayoreo']);
 					$descrip = $fila['descripcion'];
 					$delit = substr($descrip, 0,30);
-					if($fila["idsucursal"] == $idsucursal) {
+
+					$stock_mdx = '';
+
+					if (isset($_POST['profile_viewer_uids'])) {
+						$stock_mdx .= $_POST['profile_viewer_uids'];
+						echo "LLEGASTE! ". $stock_mdx;
+					}
+					
+					if($fila["idsucursal"] == $idsucursal && $fila["stock"] >=$stock_mdx) {
 							echo "<tr>
 								<td>".$fila['codigo']."</td>
 								<td>".$fila['fmsi']."</td>

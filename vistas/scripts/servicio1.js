@@ -14,13 +14,17 @@ function init(){
 //    $("#formularioCobrar").on("submit",function(e){
 // 	cobrar(e);
 // 	});
-
-   //cargamos los items al select cliente
-   $.post("../ajax/servicio.php?op=selectCliente", function(r){
-   	$("#idcliente").html(r);
-   	$('#idcliente').selectpicker('refresh');
-   });
+	selectCliente()
 }
+
+//cargamos los items al select cliente
+function selectCliente (){
+	$.post("../ajax/servicio.php?op=selectCliente", function(r){
+		$("#idcliente").html(r);
+		$('#idcliente').selectpicker('refresh');
+	});
+}
+
 
 //funcion limpiar
 function limpiar(){
@@ -155,6 +159,9 @@ function guardaryeditar(e){
      	url: "../ajax/servicio.php?op=guardaryeditar",
      	type: "POST",
      	data: formData,
+		beforeSend: function() {
+			$('.loader').show();		
+		},
      	contentType: false,
      	processData: false,
 
@@ -168,12 +175,54 @@ function guardaryeditar(e){
      limpiar();
 }
 
+function guardarCliente() {
+	var formData=new FormData($("#formularioCliente")[0]);
+
+     $.ajax({
+     	url: "../ajax/persona.php?op=guardaryeditar",
+     	type: "POST",
+     	data: formData,
+     	contentType: false,
+     	processData: false,
+
+     	success: function(datos){
+     		bootbox.alert(datos);
+			selectCliente();
+			$("#formulario")[0].reset();
+			$("#formularioCliente")[0].reset();
+			$("#agregarCliente").modal('hide');
+     	}
+     });
+}
+
+function guardaryeditarProducto() {
+	var formData=new FormData($("#formularioProduct")[0]);
+
+     $.ajax({
+     	url: "../ajax/articulo.php?op=guardaryeditar",
+     	type: "POST",
+     	data: formData,
+     	contentType: false,
+     	processData: false,
+
+     	success: function(datos){
+     		bootbox.alert(datos);
+			selectProvider();
+			$("#formulario")[0].reset();
+			$("#formularioProduct")[0].reset();	
+			$("#agregarProducto").modal('hide');
+     	}
+     });
+}
+
 function mostrar(idservicio){
+	$('.loader').show();
 	$.post("../ajax/servicio.php?op=mostrar",{idservicio : idservicio},
 		function(data,status)
 		{
 			data=JSON.parse(data);			
 			mostrarform(true);
+			$('.loader').hide();
 
 			$("#idcliente").val(data.idcliente).prop("disabled", true);
 			$("#idcliente").selectpicker('refresh');

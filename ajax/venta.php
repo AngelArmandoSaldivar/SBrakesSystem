@@ -91,6 +91,9 @@ switch ($_GET["op"]) {
 			$consultaBD=$conexion->query($consulta);
 			if($consultaBD->num_rows>=1){
 				echo "
+				<div class='loader'>
+                  <img src='../files/images/loader.gif' alt=''>
+                </div>
 				<table class='responsive-table table table-hover table-bordered' style='font-size:12px' id='example'>
 					<thead class='table-light'>
 						<tr>

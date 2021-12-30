@@ -37,6 +37,7 @@ public function mostrar($idpersona){
 //listar registros
 public function listarp(){
 	$sql="SELECT * FROM persona WHERE tipo_persona='Proveedor'";
+	sleep(1);
 	return ejecutarConsulta($sql);
 }
 public function listarc(){

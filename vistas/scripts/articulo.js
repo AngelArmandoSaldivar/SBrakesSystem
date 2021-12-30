@@ -67,12 +67,29 @@ function cancelarform(){
 	mostrarform(false);
 }
 
-function obtener_registros(articulos){	
+function actualizarStock(profile_viewer_uid) {	
+
+	$.ajax({
+		url: "../ajax/articulo.php?op=listar",
+		method: "POST",
+		data: { profile_viewer_uids: profile_viewer_uid },
+		success: function(data) {
+			console.log(data);
+		},
+		error: function(request, status, error) {
+			alert("Error: ", error);
+		}
+	})
+	
+}
+
+
+function obtener_registros(articulos){
 	$.ajax({
 		url : '../ajax/articulo.php?op=listar',
 		type : 'POST',
 		dataType : 'html',
-		data : { articulos: articulos },
+		data : { articulos: articulos},
 	})
 	.done(function(resultado){
 		$("#tabla_resultado").html(resultado);
@@ -81,6 +98,7 @@ function obtener_registros(articulos){
 
 $(document).on('keyup', '#busqueda', function(){
 	var valorBusqueda=$(this).val();
+	console.log(valorBusqueda);
 	
 	if (valorBusqueda!="")
 	{

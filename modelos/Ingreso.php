@@ -26,6 +26,7 @@ public function insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_compro
 
 	 	$num_elementos=$num_elementos+1;
 	 }
+	 sleep(1);
 	 return $sw;
 }
 
@@ -58,8 +59,7 @@ public function anular($idingreso){
 
 		$stateDetalle = "UPDATE kardex SET estado='ANULADO' WHERE folio='$idingreso'";
 		ejecutarConsulta($stateDetalle);
-
-
+		sleep(1);
 	 return $sw;
 }
 
@@ -67,6 +67,7 @@ public function anular($idingreso){
 //metodo para mostrar registros
 public function mostrar($idingreso){
 	$sql="SELECT i.idingreso,DATE(i.fecha_hora) as fecha,i.idproveedor,p.nombre as proveedor,u.idusuario,u.nombre as usuario, i.tipo_comprobante,i.serie_comprobante,i.total_compra,i.impuesto,i.estado FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario WHERE idingreso='$idingreso'";
+	sleep(1);
 	return ejecutarConsultaSimpleFila($sql);
 }
 

@@ -24,11 +24,13 @@ public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$im
 		 ejecutarConsulta($sql_kardex) or $sw=false;
 	 	$num_elementos=$num_elementos+1;
 	 }
+	 sleep(1);
 	 return $sw;
 }
 
 public function cobrarServicio($idservicio){
 	$sql = "UPDATE servicio SET status='PAGADO', pagado=0 WHERE idservicio='$idservicio'";
+	sleep(1);
 	return ejecutarConsulta($sql);
 }
 
@@ -60,13 +62,14 @@ public function anular($idservicio){
 
 		$stateDetalle = "UPDATE kardex SET estado='ANULADO' WHERE folio='$idservicio'";
 		ejecutarConsulta($stateDetalle);
-
+		sleep(1);
 	 return $sw;
 }
 
 //implementar un metodopara mostrar los datos de unregistro a modificar
 public function mostrar($idservicio){
 	$sql="SELECT v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.forma_pago,v.total_servicio,v.impuesto,v.estado,v.marca, v.modelo, v.ano, v.kms, v.color FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE idservicio='$idservicio'";
+	sleep(1);
 	return ejecutarConsultaSimpleFila($sql);
 }
 

@@ -32,6 +32,13 @@ if (strlen(session_id())<1)
 	<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 	<script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>	  
 
+  <style>
+    .loader {
+      display: none;
+      text-align: center;
+    }
+  </style>
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">

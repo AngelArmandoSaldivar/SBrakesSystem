@@ -15,11 +15,16 @@ function init(){
 // 	cobrar(e);
 // 	});
 
-   //cargamos los items al select cliente
-   $.post("../ajax/venta.php?op=selectCliente", function(r){
-   	$("#idcliente").html(r);
-   	$('#idcliente').selectpicker('refresh');
-   });
+	selectCliente();
+   
+}
+
+function selectCliente() {
+	//cargamos los items al select cliente
+	$.post("../ajax/venta.php?op=selectCliente", function(r){
+		$("#idcliente").html(r);
+		$('#idcliente').selectpicker('refresh');
+	});
 }
 
 //funcion limpiar
@@ -49,7 +54,7 @@ function limpiar(){
 //funcion mostrar formulario
 function mostrarform(flag){
 	limpiar();
-	if(flag){		
+	if(flag){
 		$("#listadoregistros").hide();
 		$("#formularioregistros").show();
 		$("#btnGuardar").prop("disabled",false);
@@ -62,7 +67,7 @@ function mostrarform(flag){
 		$("#btnAgregarArt").show();
 	}else{
 		$("#listadoregistros").show();
-		$("#formularioregistros").hide();			
+		$("#formularioregistros").hide();
 		$("#btnagregar").show();
 	}
 }
@@ -155,6 +160,9 @@ function guardaryeditar(e){
      	url: "../ajax/venta.php?op=guardaryeditar",
      	type: "POST",
      	data: formData,
+		beforeSend: function() {
+			$('.loader').show();		
+		},
      	contentType: false,
      	processData: false,
 
@@ -162,18 +170,64 @@ function guardaryeditar(e){
      		bootbox.alert(datos);
      		mostrarform(false);
      		obtener_registros();
-     	}
+     	},
+		 complete: function() {
+			$('.loader').hide();
+		},
+		dataType: 'html'
      });
 
      limpiar();
 }
 
+function guardarCliente() {
+	var formData=new FormData($("#formularioCliente")[0]);
+
+     $.ajax({
+     	url: "../ajax/persona.php?op=guardaryeditar",
+     	type: "POST",
+     	data: formData,
+     	contentType: false,
+     	processData: false,
+
+     	success: function(datos){
+     		bootbox.alert(datos);
+			selectCliente();
+			$("#formulario")[0].reset();
+			$("#formularioCliente")[0].reset();
+			$("#agregarCliente").modal('hide');
+     	}
+     });
+}
+
+function guardaryeditarProducto() {
+	var formData=new FormData($("#formularioProduct")[0]);
+
+     $.ajax({
+     	url: "../ajax/articulo.php?op=guardaryeditar",
+     	type: "POST",
+     	data: formData,
+     	contentType: false,
+     	processData: false,
+
+     	success: function(datos){
+     		bootbox.alert(datos);
+			selectProvider();
+			$("#formulario")[0].reset();
+			$("#formularioProduct")[0].reset();	
+			$("#agregarProducto").modal('hide');
+     	}
+     });
+}
+
 function mostrar(idventa){
+	$('.loader').show();	
 	$.post("../ajax/venta.php?op=mostrar",{idventa : idventa},
 		function(data,status)
 		{
 			data=JSON.parse(data);			
 			mostrarform(true);
+			$('.loader').hide();	
 
 			$("#idcliente").val(data.idcliente).prop("disabled", true);
 			$("#idcliente").selectpicker('refresh');
@@ -192,7 +246,7 @@ function mostrar(idventa){
 		});
 	$.post("../ajax/venta.php?op=listarDetalle&id="+idventa,function(r){		
 		$("#detalles").html(r);
-	});
+	});	
 
 }
 

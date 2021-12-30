@@ -11,19 +11,26 @@ function init(){
    });
 
    //cargamos los items al select proveedor
-   $.post("../ajax/ingreso.php?op=selectProveedor", function(r){
-   	$("#idproveedor").html(r);
-   	$('#idproveedor').selectpicker('refresh');
-   });
+   selectProvider();
+   
+}
+
+//Mostrar proveedores
+function selectProvider() {
+
+	$.post("../ajax/ingreso.php?op=selectProveedor", function(r){
+		$("#idproveedor").html(r);
+		$('#idproveedor').selectpicker('refresh');
+	});
 
 }
 
 //funcion limpiar
-function limpiar(){
+function limpiar(){	
 
 	$("#idproveedor").val("");
 	$("#proveedor").val("");
-	$("#serie_comprobante").val("");	
+	$("#serie_comprobante").val("");
 	$("#impuesto").val("");
 	$("#total_compra").val("");
 	$(".filas").remove();
@@ -49,7 +56,7 @@ function mostrarform(flag){
 		$("#listadoregistros").hide();
 		$("#formularioregistros").show();
 		$("#btnGuardar").prop("disabled",false);
-		$("#btnagregar").hide();		
+		$("#btnagregar").hide();
 
 		$("#btnGuardar").hide();
 		$("#btnCancelar").show();
@@ -135,6 +142,9 @@ function guardaryeditar(e){
      	url: "../ajax/ingreso.php?op=guardaryeditar",
      	type: "POST",
      	data: formData,
+		 beforeSend: function() {
+			$('.loader').show();		
+		},
      	contentType: false,
      	processData: false,
 
@@ -148,11 +158,55 @@ function guardaryeditar(e){
      limpiar();
 }
 
-function mostrar(idingreso){	
+function guardaryeditarProveedor(e){
+
+     var formData=new FormData($("#formularioProve")[0]);
+
+     $.ajax({
+     	url: "../ajax/persona.php?op=guardaryeditar",
+     	type: "POST",
+     	data: formData,
+     	contentType: false,
+     	processData: false,
+
+     	success: function(datos){
+     		bootbox.alert(datos);
+			selectProvider();
+			$("#formulario")[0].reset();
+			$("#formularioProve")[0].reset();
+			$("#agregarProveedor").modal('hide');
+     	}
+     });	
+}
+
+function guardaryeditarProducto() {
+
+	var formData=new FormData($("#formularioProduct")[0]);
+
+     $.ajax({
+     	url: "../ajax/articulo.php?op=guardaryeditar",
+     	type: "POST",
+     	data: formData,
+     	contentType: false,
+     	processData: false,
+
+     	success: function(datos){
+     		bootbox.alert(datos);
+			selectProvider();
+			$("#formulario")[0].reset();
+			$("#formularioProduct")[0].reset();	
+			$("#agregarProducto").modal('hide');			
+     	}
+     });
+}
+
+function mostrar(idingreso){
+	$('.loader').show();
 	$.post("../ajax/ingreso.php?op=mostrar",{idingreso : idingreso},
 		function(data,status){			
 			data=JSON.parse(data);
 			mostrarform(true);
+			$('.loader').hide();
 
 			$("#idproveedor").val(data.idproveedor);
 			$("#idproveedor").selectpicker('refresh');
@@ -173,7 +227,6 @@ function mostrar(idingreso){
 	});
 
 }
-
 
 //funcion para desactivar
 function anular(idingreso){

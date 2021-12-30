@@ -26,11 +26,13 @@ public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$im
 
 	 	$num_elementos=$num_elementos+1;
 	 }
-	 return $sw;
+	 sleep(2);
+	 return $sw;	 
 }
 
 public function cobrarVenta($idventa){
 	$sql = "UPDATE venta SET estado='PAGADO', pagado=0 WHERE idventa='$idventa'";
+	sleep(1);
 	return ejecutarConsulta($sql);
 }
 
@@ -67,7 +69,7 @@ public function anular($idventa){
 
 		$stateDetalle = "UPDATE kardex SET estado='ANULADO' WHERE folio='$idventa'";
 		ejecutarConsulta($stateDetalle);
-
+		sleep(1);
 	 return $sw;
 }
 
@@ -75,6 +77,7 @@ public function anular($idventa){
 //implementar un metodopara mostrar los datos de unregistro a modificar
 public function mostrar($idventa){
 	$sql="SELECT v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.forma_pago,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE idventa='$idventa'";
+	sleep(1);
 	return ejecutarConsultaSimpleFila($sql);
 }
 
