@@ -17,7 +17,7 @@ public function comprasfecha($fecha_inicio,$fecha_fin){
 
 
 public function ventasfechacliente($fecha_inicio,$fecha_fin){
-	$sql="SELECT DATE(v.fecha_hora) as fecha, u.nombre as usuario, p.nombre as cliente, v.tipo_comprobante, v.total_venta, v.impuesto, v.estado, v.forma_pago, v.pagado, v.idventa, fecha_hora FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE DATE(v.fecha_hora)>='$fecha_inicio' AND DATE(v.fecha_hora)<='$fecha_fin'";
+	$sql="SELECT DATE(v.fecha_hora) as fecha, u.nombre as usuario, p.nombre as cliente, v.tipo_comprobante, forma_pago,forma_pago2, forma_pago3,v.total_venta, v.impuesto, v.estado,v.pagado, v.idventa, v.fecha_hora FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario INNER JOIN formas_pago fp ON fp.idventa=v.idventa WHERE DATE(v.fecha_hora)>='$fecha_inicio' AND DATE(v.fecha_hora)<='$fecha_fin'";
 	return ejecutarConsulta($sql);	
 }
 public function kardex($fecha_inicio,$fecha_fin){

@@ -10,9 +10,9 @@ public function __construct(){
 }
 
 //metodo insertar registro
-public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$forma_pago,$total_servicio,$marca, $modelo, $ano, $color, $kms,$placas,$idarticulo,$clave,$fmsi,$descripcion,$cantidad,$precio_servicio,$descuento, $idsucursal){
-	$sql="INSERT INTO servicio (idcliente,idusuario,tipo_comprobante,fecha_hora,impuesto,forma_pago,total_servicio,pagado,marca, modelo, ano, color, kms, placas, estado,idsucursal,status) 
-					VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_hora','$impuesto','$forma_pago','$total_servicio','$total_servicio','$marca', '$modelo', '$ano', '$color', '$kms','$placas', 'NORMAL', '$idsucursal', 'NORMAL')";	
+public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$total_servicio,$marca, $modelo, $ano, $color, $kms,$placas,$idarticulo,$clave,$fmsi,$descripcion,$cantidad,$precio_servicio,$descuento, $idsucursal, $forma_pago, $forma_pago2, $forma_pago3, $banco, $banco2, $banco3, $importe, $importe2, $importe3, $ref, $ref2, $ref3){
+	$sql="INSERT INTO servicio (idcliente,idusuario,tipo_comprobante,fecha_hora,impuesto,total_servicio,pagado,marca, modelo, ano, color, kms, placas, estado,idsucursal,status) 
+						VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_hora','$impuesto','$total_servicio','$total_servicio','$marca', '$modelo', '$ano', '$color', '$kms','$placas', 'NORMAL', '$idsucursal', 'NORMAL')";	
 	 $idservicionew=ejecutarConsulta_retornarID($sql);
 	 $num_elementos=0;
 	 $sw=true;
@@ -24,14 +24,22 @@ public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$im
 		 ejecutarConsulta($sql_kardex) or $sw=false;
 	 	$num_elementos=$num_elementos+1;
 	 }
+
+	 $sql_formas_pago = "INSERT INTO formas_pago (forma_pago, forma_pago2, forma_pago3, banco, banco2, banco3, importe, importe2, importe3, referencia, referencia2, referencia3, idservicio, fecha_hora, idsucursal) VALUES('$forma_pago', '$forma_pago2', '$forma_pago3', '$banco', '$banco2', '$banco3', '$importe', '$importe2', '$importe3', '$ref', '$ref2', '$ref3', '$idservicionew', '$fecha_hora', '$idsucursal')";
+	 ejecutarConsulta($sql_formas_pago) or $sw=false;
+	 
 	 sleep(1);
 	 return $sw;
 }
 
-public function cobrarServicio($idservicio){
-	$sql = "UPDATE servicio SET status='PAGADO', pagado=0 WHERE idservicio='$idservicio'";
+public function cobrarServicio($forma_pago, $forma_pago2, $forma_pago3, $banco, $banco2, $banco3, $importe, $importe2, $importe3, $ref, $ref2, $ref3, $idservicio){
+	$sql = "UPDATE servicio SET status='PAGADO', pagado=0 WHERE idservicio='$idservicio'";	
+	ejecutarConsulta($sql);
+	$sw=true;
+	$sql_formas_pago = "UPDATE formas_pago SET forma_pago='$forma_pago', forma_pago2='$forma_pago2', forma_pago3='$forma_pago3', banco='$banco', banco2='$banco2', banco3='$banco3', importe='$importe', importe2='$importe2', importe3='$importe3', referencia='$ref', referencia2='$ref2', referencia3='$ref3' WHERE idservicio='$idservicio'";
+	ejecutarConsulta($sql_formas_pago) or $sw=false;
 	sleep(1);
-	return ejecutarConsulta($sql);
+	return $sw;
 }
 
 public function anular($idservicio){
@@ -68,7 +76,7 @@ public function anular($idservicio){
 
 //implementar un metodopara mostrar los datos de unregistro a modificar
 public function mostrar($idservicio){
-	$sql="SELECT v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.forma_pago,v.total_servicio,v.impuesto,v.estado,v.marca, v.modelo, v.ano, v.kms, v.color, v.placas FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE idservicio='$idservicio'";
+	$sql="SELECT v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.marca, v.modelo, v.ano, v.kms, v.color, v.placas, forma_pago,forma_pago2, forma_pago3,banco,banco2, banco3,importe, importe2, importe3,referencia, referencia2, referencia3 FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario INNER JOIN formas_pago fp ON fp.idservicio=v.idservicio WHERE v.idservicio='$idservicio'";
 	sleep(1);
 	return ejecutarConsultaSimpleFila($sql);
 }

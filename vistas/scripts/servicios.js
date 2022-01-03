@@ -3,7 +3,6 @@ var tabla;
 //funcion que se ejecuta al inicio
 function init(){
    mostrarform(false);
-//    mostrarFormCobro(false);
    obtener_registros();
    obtener_registrosProductos();
 
@@ -11,9 +10,6 @@ function init(){
    	guardaryeditar(e);
    });
 
-//    $("#formularioCobrar").on("submit",function(e){
-// 	cobrar(e);
-// 	});
 	selectCliente()
 }
 
@@ -53,7 +49,9 @@ function limpiar(){
 //funcion mostrar formulario
 function mostrarform(flag){
 	limpiar();
-	if(flag){		
+	if(flag){	
+		//Ocultamos detalle_cobro
+		$("#detalle_cobro").hide();	
 		$("#listadoregistros").hide();
 		$("#formularioregistros").show();
 		$("#btnGuardar").prop("disabled",false);
@@ -70,29 +68,12 @@ function mostrarform(flag){
 		$("#btnagregar").show();
 	}
 }
-// function mostrarFormCobro(flag) {
-// 	limpiar();
-// 	if(flag){
-// 		console.log("Flag Cobro: ", flag);
-// 		$("#listadoregistros").hide();
-// 		// $("#formularioCobro").show();
-// 		$("#btnGuardar").prop("disabled",false);
-// 		$("#btnagregar").hide();
-// 		$("#btnGuardar").hide();
-// 		$("#btnCancelar").show();
-// 		detalles=0;
-// 		$("#btnAgregarArt").show();
-// 	}else{
-// 		$("#listadoregistros").show();
-// 		// $("#formularioCobro").hide();
-// 		$("#btnagregar").show();
-// 	}
-// }
 
 //cancelar form
 function cancelarform(){
 	limpiar();
 	mostrarform(false);
+	$("#detalle_cobro").show();
 	location.replace("servicio.php");
 }
 
@@ -169,10 +150,56 @@ function guardaryeditar(e){
      		bootbox.alert(datos);
      		mostrarform(false);
      		obtener_registros();
-     	}
+     	},
+		 complete: function() {
+			$('.loader').hide();
+		},dataType: 'html'
      });
 
      limpiar();
+}
+
+function cobrarServicio(idservicio){
+
+	$('.loader').show();
+	$.post("../ajax/servicio.php?op=mostrar",{idservicio : idservicio},
+		function(data,status)
+		{
+			data=JSON.parse(data);
+			mostrarform(true);
+			$('.loader').hide();
+
+			$("#detalle_cobro").show();
+			$("#btnAgregarArticulo").hide();
+			$("#divImpuesto").hide();
+			$("#addCliente").hide();
+
+			$("#idcliente").val(data.idcliente).prop("disabled", true);
+			$("#idcliente").selectpicker('refresh');
+			$("#tipo_comprobante").val(data.tipo_comprobante).prop("disabled", true);
+			$("#tipo_comprobante").selectpicker('refresh');	
+			$("#forma_pago").val(data.forma_pago).prop("disabled", true);
+			$("#forma_pago").selectpicker('refresh');
+			$("#fecha_hora").val(data.fecha).prop("disabled", true);
+			$("#impuesto").val(data.impuesto).prop("disabled", true);
+			$("#marca").val(data.marca).prop("disabled", true);
+			$("#placas").val(data.placas).prop("disabled", true);
+			$("#modelo").val(data.modelo).prop("disabled", true);
+			$("#color").val(data.color).prop("disabled", true);
+			$("#ano").val(data.ano).prop("disabled", true);
+			$("#kms").val(data.kms).prop("disabled", true);
+			$("#estado").val(data.estado).prop("disabled", true);
+			$("#idservicio").val(data.idservicio);
+			
+			//ocultar y mostrar los botones
+			$("#btnGuardar").show();
+			$("#btnCancelar").show();
+			$("#btnAgregarArt").hide();				
+		});
+	$.post("../ajax/servicio.php?op=listarDetalle&id="+idservicio,function(r){		
+		$("#detalles").html(r);
+	});
+	
 }
 
 function guardarCliente() {
@@ -224,12 +251,18 @@ function mostrar(idservicio){
 			mostrarform(true);
 			$('.loader').hide();
 
+			$("#detalle_cobro").show();
+			$("#divImpuesto").hide();
+			$("#addCliente").hide();
+			//ocultar y mostrar los botones
+			$("#btnGuardar").hide();
+			$("#btnCancelar").show();
+			$("#btnAddArt").hide();
+
 			$("#idcliente").val(data.idcliente).prop("disabled", true);
 			$("#idcliente").selectpicker('refresh');
 			$("#tipo_comprobante").val(data.tipo_comprobante).prop("disabled", true);
 			$("#tipo_comprobante").selectpicker('refresh');	
-			$("#forma_pago").val(data.forma_pago).prop("disabled", true);
-			$("#forma_pago").selectpicker('refresh');
 			$("#fecha_hora").val(data.fecha).prop("disabled", true);
 			$("#impuesto").val(data.impuesto).prop("disabled", true);
 			$("#marca").val(data.marca).prop("disabled", true);
@@ -238,12 +271,30 @@ function mostrar(idservicio){
 			$("#color").val(data.color).prop("disabled", true);
 			$("#ano").val(data.ano).prop("disabled", true);
 			$("#kms").val(data.kms).prop("disabled", true);
+			$("#estado").val(data.estado).prop("disabled", true);
+
+			$("#importe").val(data.importe).prop("disabled", true);
+			$("#forma").val(data.forma_pago).prop("disabled", true);
+			$("#forma").selectpicker('refresh');	
+			$("#banco").val(data.banco).prop("disabled", true);
+			$("#banco").selectpicker('refresh');
+			$("#ref").val(data.referencia).prop("disabled", true);
+
+			$("#importe2").val(data.importe2).prop("disabled", true);
+			$("#forma2").val(data.forma_pago2).prop("disabled", true);
+			$("#forma2").selectpicker('refresh');	
+			$("#banco2").val(data.banco2).prop("disabled", true);
+			$("#banco2").selectpicker('refresh');
+			$("#ref2").val(data.referencia2).prop("disabled", true);
+
+			$("#importe3").val(data.importe3).prop("disabled", true);
+			$("#forma3").val(data.forma_pago3).prop("disabled", true);
+			$("#forma3").selectpicker('refresh');	
+			$("#banco3").val(data.banco3).prop("disabled", true);
+			$("#banco3").selectpicker('refresh');
+			$("#ref3").val(data.referencia3).prop("disabled", true);
 			$("#idservicio").val(data.idservicio);
-			
-			//ocultar y mostrar los botones
-			$("#btnGuardar").hide();
-			$("#btnCancelar").show();
-			$("#btnAgregarArt").hide();				
+									
 		});
 	$.post("../ajax/servicio.php?op=listarDetalle&id="+idservicio,function(r){		
 		$("#detalles").html(r);
@@ -256,10 +307,12 @@ function mostrar(idservicio){
 function anular(idservicio){
 	bootbox.confirm("¿Esta seguro de desactivar este dato?", function(result){
 		if (result) {
+			$('.loader').show();
 			$.post("../ajax/servicio.php?op=anular", {idservicio : idservicio}, function(e){
 				bootbox.alert(e);
 				// tabla.ajax.reload();
 				obtener_registros();
+				$('.loader').hide();
 			});
 		}
 	})	

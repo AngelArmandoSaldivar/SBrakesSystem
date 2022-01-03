@@ -1,7 +1,7 @@
 <?php 
 require_once "../modelos/Servicios.php";
-if (strlen(session_id())<1) 
-	session_start();	
+if (strlen(session_id())<1)
+	session_start();
 	$idsucursal = $_SESSION['idsucursal'];
 
 $servicio = new Servicios();
@@ -12,7 +12,18 @@ $idusuario=$_SESSION["idusuario"];
 $tipo_comprobante=isset($_POST["tipo_comprobante"])? limpiarCadena($_POST["tipo_comprobante"]):"";
 $fecha_hora=isset($_POST["fecha_hora"])? limpiarCadena($_POST["fecha_hora"]):"";
 $impuesto=isset($_POST["impuesto"])? limpiarCadena($_POST["impuesto"]):"";
-$forma_pago=isset($_POST["forma_pago"])? limpiarCadena($_POST["forma_pago"]):"";
+$forma=isset($_POST["forma"])? limpiarCadena($_POST["forma"]):"";
+$forma2=isset($_POST["forma2"])? limpiarCadena($_POST["forma2"]):"";
+$forma3=isset($_POST["forma3"])? limpiarCadena($_POST["forma3"]):"";
+$banco=isset($_POST["banco"])? limpiarCadena($_POST["banco"]):"";
+$banco2=isset($_POST["banco2"])? limpiarCadena($_POST["banco2"]):"";
+$banco3=isset($_POST["banco3"])? limpiarCadena($_POST["banco3"]):"";
+$importe=isset($_POST["importe"])? limpiarCadena($_POST["importe"]):"";
+$importe2=isset($_POST["importe2"])? limpiarCadena($_POST["importe2"]):"";
+$importe3=isset($_POST["importe3"])? limpiarCadena($_POST["importe3"]):"";
+$ref=isset($_POST["ref"])? limpiarCadena($_POST["ref"]):"";
+$ref2=isset($_POST["ref2"])? limpiarCadena($_POST["ref2"]):"";
+$ref3=isset($_POST["ref3"])? limpiarCadena($_POST["ref3"]):"";
 $total_servicio=isset($_POST["total_servicio"])? limpiarCadena($_POST["total_servicio"]):"";
 $marca=isset($_POST["marca"])? limpiarCadena($_POST["marca"]):"";
 $modelo=isset($_POST["modelo"])? limpiarCadena($_POST["modelo"]):"";
@@ -24,16 +35,13 @@ $placas=isset($_POST["placas"])? limpiarCadena($_POST["placas"]):"";
 switch ($_GET["op"]) {
 	case 'guardaryeditar':
 	if (empty($idservicio)) {
-		$rspta=$servicio->insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$forma_pago,$total_servicio,$marca, $modelo, $ano, $color, $kms, $placas, $_POST["idarticulo"],$_POST["clave"],$_POST["fmsi"],$_POST["descripcion"],$_POST["cantidad"],$_POST["precio_servicio"],$_POST["descuento"], $idsucursal);
+		$rspta=$servicio->insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$total_servicio,$marca, $modelo, $ano, $color, $kms, $placas, $_POST["idarticulo"],$_POST["clave"],$_POST["fmsi"],$_POST["descripcion"],$_POST["cantidad"],$_POST["precio_servicio"],$_POST["descuento"], $idsucursal, $forma, $forma2, $forma3, $banco, $banco2, $banco3, $importe, $importe2, $importe3, $ref, $ref2, $ref3);
 		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
 	}else{
+		$rspta=$servicio->cobrarServicio($forma, $forma2, $forma3, $banco, $banco2, $banco3, $importe, $importe2, $importe3, $ref, $ref2, $ref3, $idservicio);
+		echo $rspta ? " Cobro exitoso!" : "No se pudo realizar el cobro";		
 	}
-		break;
-
-		case 'cobrar':
-		$rspta=$servicio->cobrarServicio($idservicio);
-		echo $rspta ? "Cobro exitoso" : "No se pudo cobrar el servicio";
-		break;
+	break;
 
 	case 'anular':
 		$rspta=$servicio->anular($idservicio);
@@ -131,7 +139,7 @@ switch ($_GET["op"]) {
 
 							echo "<tr>
 								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button> <button class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
-								<button class='btn btn-default btn-xs' onclick='cobrar(".$fila["idservicio"].")'><i class='fa fa-credit-card'></i></button>
+								<button class='btn btn-default btn-xs' onclick='cobrarServicio(".$fila["idservicio"].")'><i class='fa fa-credit-card'></i></button>
 								<a target='_blank' href='".$url.$fila["idservicio"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-file'></i></button></a></td>								
 								<td>".$fila['idservicio']."</td>
 								<td>".$fila['fecha']."</td>

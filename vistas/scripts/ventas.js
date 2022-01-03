@@ -1,19 +1,15 @@
 var tabla;
 
 //funcion que se ejecuta al inicio
-function init(){
+function init(){	
    mostrarform(false);
-//    mostrarFormCobro(false);
    obtener_registros();
    obtener_registrosProductos();
 
    $("#formulario").on("submit",function(e){
+	   console.log(e);
    	guardaryeditar(e);
    });
-
-//    $("#formularioCobrar").on("submit",function(e){
-// 	cobrar(e);
-// 	});
 
 	selectCliente();
    
@@ -52,9 +48,13 @@ function limpiar(){
 }
 
 //funcion mostrar formulario
-function mostrarform(flag){
+function mostrarform(flag){	
 	limpiar();
 	if(flag){
+		//Ocultamos detalle_cobro
+		$("#detalle_cobro").hide();
+
+
 		$("#listadoregistros").hide();
 		$("#formularioregistros").show();
 		$("#btnGuardar").prop("disabled",false);
@@ -71,29 +71,12 @@ function mostrarform(flag){
 		$("#btnagregar").show();
 	}
 }
-// function mostrarFormCobro(flag) {
-// 	limpiar();
-// 	if(flag){
-// 		console.log("Flag Cobro: ", flag);
-// 		$("#listadoregistros").hide();
-// 		// $("#formularioCobro").show();
-// 		$("#btnGuardar").prop("disabled",false);
-// 		$("#btnagregar").hide();
-// 		$("#btnGuardar").hide();
-// 		$("#btnCancelar").show();
-// 		detalles=0;
-// 		$("#btnAgregarArt").show();
-// 	}else{
-// 		$("#listadoregistros").show();
-// 		// $("#formularioCobro").hide();
-// 		$("#btnagregar").show();
-// 	}
-// }
 
 //cancelar form
 function cancelarform(){
 	limpiar();
 	mostrarform(false);
+	$("#detalle_cobro").show();
 	location.replace("venta.php");
 }
 
@@ -124,6 +107,7 @@ $(document).on('keyup', '#busqueda', function(){
 });
 
 function obtener_registrosProductos(productos){	
+	
 	$.ajax({
 		url : '../ajax/venta.php?op=listarProductos',
 		type : 'POST',
@@ -134,8 +118,6 @@ function obtener_registrosProductos(productos){
 		$("#tabla_resultadoProducto").html(resultado);
 	})
 }
-
-
 
 $(document).on('keyup', '#busquedaProduct', function(){
 	var valorBusqueda=$(this).val();
@@ -161,7 +143,7 @@ function guardaryeditar(e){
      	type: "POST",
      	data: formData,
 		beforeSend: function() {
-			$('.loader').show();		
+			$('.loader').show();
 		},
      	contentType: false,
      	processData: false,
@@ -178,6 +160,42 @@ function guardaryeditar(e){
      });
 
      limpiar();
+}
+
+function cobrarVenta(idventa){
+	$('.loader').show();
+	$.post("../ajax/venta.php?op=mostrar",{idventa : idventa},
+		function(data,status)
+		{
+			data=JSON.parse(data);
+			mostrarform(true);
+			$('.loader').hide();	
+
+			$("#detalle_cobro").show();
+			$("#btnAgregarArticulo").hide();
+			$("#divImpuesto").hide();
+			$("#addCliente").hide();
+
+			$("#idcliente").val(data.idcliente).prop("disabled", true);			
+			$("#idcliente").selectpicker('refresh');
+			$("#tipo_comprobante").val(data.tipo_comprobante).prop("disabled", true);
+			$("#tipo_comprobante").selectpicker('refresh');	
+			$("#factura").val(data.factura).prop("disabled", true);
+			$("#factura").selectpicker('refresh');	
+			$("#fecha_hora").val(data.fecha).prop("disabled", true);
+			$("#impuesto").val(data.impuesto).prop("disabled", true);
+			$("#idventa").val(data.idventa);
+			$("#estado").val(data.estado).prop("disabled", true);
+			
+			//ocultar y mostrar los botones
+			$("#btnGuardar").show();
+			$("#btnCancelar").show();
+			$("#btnAgregarArt").hide();
+		});
+	$.post("../ajax/venta.php?op=listarDetalle&id="+idventa,function(r){		
+		$("#detalles").html(r);
+	});	
+	
 }
 
 function guardarCliente() {
@@ -227,18 +245,44 @@ function mostrar(idventa){
 		{
 			data=JSON.parse(data);
 			mostrarform(true);
-			$('.loader').hide();	
+			$('.loader').hide();
 
+			$("#detalle_cobro").show();
+			$("#btnAgregarArticulo").hide();
+			$("#divImpuesto").hide();
+			$("#addCliente").hide();
+			
 			$("#idcliente").val(data.idcliente).prop("disabled", true);
 			$("#idcliente").selectpicker('refresh');
 			$("#tipo_comprobante").val(data.tipo_comprobante).prop("disabled", true);
 			$("#tipo_comprobante").selectpicker('refresh');	
 			$("#factura").val(data.factura).prop("disabled", true);
-			$("#factura").selectpicker('refresh');	
-			$("#forma_pago").val(data.forma_pago).prop("disabled", true);
-			$("#forma_pago").selectpicker('refresh');	
+			$("#factura").selectpicker('refresh');				
 			$("#fecha_hora").val(data.fecha).prop("disabled", true);
 			$("#impuesto").val(data.impuesto).prop("disabled", true);
+			$("#estado").val(data.estado).prop("disabled", true);
+
+			$("#importe").val(data.importe).prop("disabled", true);
+			$("#forma").val(data.forma_pago).prop("disabled", true);
+			$("#forma").selectpicker('refresh');	
+			$("#banco").val(data.banco).prop("disabled", true);
+			$("#banco").selectpicker('refresh');
+			$("#ref").val(data.referencia).prop("disabled", true);
+
+			$("#importe2").val(data.importe2).prop("disabled", true);
+			$("#forma2").val(data.forma_pago2).prop("disabled", true);
+			$("#forma2").selectpicker('refresh');	
+			$("#banco2").val(data.banco2).prop("disabled", true);
+			$("#banco2").selectpicker('refresh');
+			$("#ref2").val(data.referencia2).prop("disabled", true);
+
+			$("#importe3").val(data.importe3).prop("disabled", true);
+			$("#forma3").val(data.forma_pago3).prop("disabled", true);
+			$("#forma3").selectpicker('refresh');	
+			$("#banco3").val(data.banco3).prop("disabled", true);
+			$("#banco3").selectpicker('refresh');
+			$("#ref3").val(data.referencia3).prop("disabled", true);
+
 			$("#idventa").val(data.idventa);
 			
 			//ocultar y mostrar los botones
@@ -257,24 +301,15 @@ function mostrar(idventa){
 function anular(idventa){
 	bootbox.confirm("¿Esta seguro de desactivar este dato?", function(result){
 		if (result) {
+			$('.loader').show();
 			$.post("../ajax/venta.php?op=anular", {idventa : idventa}, function(e){
 				bootbox.alert(e);
 				// tabla.ajax.reload();
 				obtener_registros();
+				$('.loader').hide();
 			});
 		}
 	})	
-}
-function cobrar(idventa) {
-
-	bootbox.confirm("¿Esta seguro de cobrar esta venta?", function(result){
-		
-		if (result) {
-			$.post("../ajax/venta.php?op=cobrar", {idventa : idventa}, function(e){
-				bootbox.alert(e);
-			});
-		}
-	})
 }
 
 //declaramos variables necesarias para trabajar con las compras y sus detalles
@@ -362,6 +397,7 @@ function evaluar(){
 		cont=0;
 	}
 }
+
 
 function eliminarDetalle(indice){
 $("#fila"+indice).remove();

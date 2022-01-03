@@ -10,8 +10,8 @@ public function __construct(){
 }
 
 //metodo insertar registro
-public function insertar($idcliente,$idusuario,$tipo_comprobante,$factura,$fecha_hora,$impuesto,$forma_pago,$total_venta,$idarticulo,$clave,$fmsi,$descripcion,$cantidad,$precio_venta,$descuento,$idsucursal){
-	$sql="INSERT INTO venta (idcliente,idusuario,tipo_comprobante,factura,fecha_hora,impuesto,forma_pago,total_venta,pagado,estado,idsucursal,status) VALUES ('$idcliente','$idusuario','$tipo_comprobante','$factura','$fecha_hora','$impuesto','$forma_pago','$total_venta','$total_venta', 'NORMAL', '$idsucursal', 'NORMAL')";
+public function insertar($idcliente,$idusuario,$tipo_comprobante,$factura,$fecha_hora,$impuesto,$total_venta,$idarticulo,$clave,$fmsi,$descripcion,$cantidad,$precio_venta,$descuento,$idsucursal, $forma_pago, $forma_pago2, $forma_pago3, $banco, $banco2, $banco3, $importe, $importe2, $importe3, $ref, $ref2, $ref3){
+	$sql="INSERT INTO venta (idcliente,idusuario,tipo_comprobante,factura,fecha_hora,impuesto,total_venta,pagado,estado,idsucursal,status) VALUES ('$idcliente','$idusuario','$tipo_comprobante','$factura','$fecha_hora','$impuesto','$total_venta','$total_venta', 'NORMAL', '$idsucursal', 'NORMAL')";
 	 $idventanew=ejecutarConsulta_retornarID($sql);
 	 $num_elementos=0;
 	 $sw=true;
@@ -26,14 +26,22 @@ public function insertar($idcliente,$idusuario,$tipo_comprobante,$factura,$fecha
 
 	 	$num_elementos=$num_elementos+1;
 	 }
-	 sleep(2);
+
+	 $sql_formas_pago = "INSERT INTO formas_pago (forma_pago, forma_pago2, forma_pago3, banco, banco2, banco3, importe, importe2, importe3, referencia, referencia2, referencia3, idventa, fecha_hora, idsucursal) VALUES('$forma_pago', '$forma_pago2', '$forma_pago3', '$banco', '$banco2', '$banco3', '$importe', '$importe2', '$importe3', '$ref', '$ref2', '$ref3', '$idventanew', '$fecha_hora', '$idsucursal')";
+	 ejecutarConsulta($sql_formas_pago) or $sw=false;
+
+	 sleep(1);
 	 return $sw;	 
 }
 
-public function cobrarVenta($idventa){
-	$sql = "UPDATE venta SET estado='PAGADO', pagado=0 WHERE idventa='$idventa'";
+public function cobrarVenta($forma_pago, $forma_pago2, $forma_pago3, $banco, $banco2, $banco3, $importe, $importe2, $importe3, $ref, $ref2, $ref3, $idventa){
+	$sql = "UPDATE venta SET estado='PAGADO', pagado=0 WHERE idventa='$idventa'";	
+	ejecutarConsulta($sql);
+	$sw=true;
+	$sql_formas_pago = "UPDATE formas_pago SET forma_pago='$forma_pago', forma_pago2='$forma_pago2', forma_pago3='$forma_pago3', banco='$banco', banco2='$banco2', banco3='$banco3', importe='$importe', importe2='$importe2', importe3='$importe3', referencia='$ref', referencia2='$ref2', referencia3='$ref3' WHERE idventa='$idventa'";
+	ejecutarConsulta($sql_formas_pago) or $sw=false;
 	sleep(1);
-	return ejecutarConsulta($sql);
+	return $sw;
 }
 
 // public function anular($idventa){
@@ -76,7 +84,7 @@ public function anular($idventa){
 
 //implementar un metodopara mostrar los datos de unregistro a modificar
 public function mostrar($idventa){
-	$sql="SELECT v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.forma_pago,v.total_venta,v.impuesto,v.estado, v.factura FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE idventa='$idventa'";
+	$sql="SELECT v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, forma_pago,forma_pago2, forma_pago3,banco,banco2, banco3,importe, importe2, importe3,referencia, referencia2, referencia3,v.tipo_comprobante,v.total_venta,v.impuesto,v.estado, v.factura FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario INNER JOIN formas_pago fp ON fp.idventa=v.idventa WHERE v.idventa='$idventa'";
 	sleep(1);
 	return ejecutarConsultaSimpleFila($sql);
 }

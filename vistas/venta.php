@@ -39,7 +39,7 @@ if ($_SESSION['ventas']==1) {
                 </select>
               </div>
 
-              <div class="form-group col-lg-4 col-md-4 col-xs-12">
+              <div class="form-group col-lg-4 col-md-4 col-xs-12" id="addCliente">
                 <label for="">Agregar Cliente</label><br>
                   <a data-toggle="modal" href="#agregarCliente">
                     <button id="btnAgregarArt" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Cliente</button>
@@ -64,23 +64,127 @@ if ($_SESSION['ventas']==1) {
                     <option value="s/f">Sin factura</option>
                   </select>
               </div>
-              <div class="form-group col-lg-2 col-md-2 col-xs-6">
+              <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
                 <label for="">Impuesto: </label>
                 <input class="form-control" type="text" name="impuesto" id="impuesto">
               </div>
-              <div class="form-group col-lg-8 col-md-6 col-xs-12">
+
+              <div id="detalle_cobro">
+                <div class="form-group col-lg-4 col-md-4 col-xs-12" id="estatus">
+                  <label for="">Estatus(*): </label>
+                  <input class="form-control" type="text" name="estado" id="estado">
+                </div>
+                
+                <div class="form-group col-lg-12 col-md-4 col-xs-12">
+                  <label for=""><h3>Detalle Cobro </h3></label>
+                </div>                
+                <div class="form-group col-lg-2 col-md-4 col-xs-12" id="">
+                  <label for="">Importe</label>
+                  <input class="form-control" type="number" name="importe" id="importe" placeholder="$">
+                </div>
+                <div class="form-group col-lg-3 col-md-6 col-xs-12" id="">
                 <label for="">Forma de pago(*): </label>
-                  <select name="forma_pago" id="forma_pago" class="form-control selectpicker" required>                    
+                  <select name="forma" id="forma" class="form-control selectpicker">
+                    <option value="" selected disabled hidden>Forma de pago</option>                  
                     <option value="Cheque">CHEQUE</option>
                     <option value="Tarjeta">TARJETA</option>
                     <option value="Efectivo">EFECTIVO</option>
                     <option value="Deposito">DEPÓSITO</option>
                     <option value="Tarjeta">TARJETA</option>
                     <option value="Transferencia">TRASFERENCIA</option>
-                    <option value="American Express">AMERICAN EXPRESS</option>
                   </select>
+                </div>
+                <div class="form-group col-lg-3 col-md-6 col-xs-12" id="">
+                <label for="">Banco(*): </label>
+                  <select name="banco" id="banco" class="form-control selectpicker">     
+                  <option value="" selected disabled hidden>Banco</option>                       
+                    <option value="IXE">IXE</option>
+                    <option value="HSBC">HSBC</option>
+                    <option value="BANORTE">BANORTE</option>
+                    <option value="BANAMEX">BANCOMER</option>
+                    <option value="SANTANDER">SANTANDER</option>
+                    <option value="SCOTIA BANK">SCOTIA BANK</option>                    
+                  </select>
+                </div>
+                <div class="form-group col-lg-3 col-md-4 col-xs-12" id="">
+                  <label for="">Referencia</label>
+                  <input class="form-control" type="text" name="ref" id="ref">
+                </div>
+                <div class="form-group col-lg-2 col-md-4 col-xs-12" id="">
+                  <label for="">Importe</label>
+                  <input class="form-control" type="number" name="importe2" id="importe2" placeholder="$">
+                </div>
+
+                <div class="form-group col-lg-3 col-md-6 col-xs-12" id="">
+                <label for="">Forma de pago(*): </label>
+                  <select name="forma2" id="forma2" class="form-control selectpicker">
+                    <option value="" selected disabled hidden>Forma de pago</option>
+                    <option value="Cheque">CHEQUE</option>
+                    <option value="Tarjeta">TARJETA</option>
+                    <option value="Efectivo">EFECTIVO</option>
+                    <option value="Deposito">DEPÓSITO</option>
+                    <option value="Tarjeta">TARJETA</option>
+                    <option value="Transferencia">TRASFERENCIA</option>                    
+                  </select>
+                </div>
+
+                <div class="form-group col-lg-3 col-md-6 col-xs-12" id="">
+                <label for="">Banco(*): </label>
+                  <select name="banco2" id="banco2" class="form-control selectpicker">  
+                    <option value="" selected disabled hidden>Banco</option>                          
+                    <option value="IXE">IXE</option>
+                    <option value="HSBC">HSBC</option>
+                    <option value="BANORTE">BANORTE</option>
+                    <option value="BANAMEX">BANCOMER</option>
+                    <option value="SANTANDER">SANTANDER</option>
+                    <option value="SCOTIA BANK">SCOTIA BANK</option>                    
+                  </select>
+                </div>
+
+                <div class="form-group col-lg-3 col-md-4 col-xs-12" id="">
+                  <label for="">Referencia</label>
+                  <input class="form-control" type="text" name="ref2" id="ref2">
+                </div>
+
+                <div class="form-group col-lg-2 col-md-4 col-xs-12" id="">
+                  <label for="">Importe</label>
+                  <input class="form-control" type="number" name="importe3" id="importe3" placeholder="$">
+                </div>
+
+                <div class="form-group col-lg-3 col-md-6 col-xs-12" id="">
+                <label for="">Forma de pago(*): </label>
+                  <select name="forma3" id="forma3" class="form-control selectpicker">
+                    <option value="" selected disabled hidden>Forma de pago</option>        
+                    <option value="Cheque">CHEQUE</option>
+                    <option value="Tarjeta">TARJETA</option>
+                    <option value="Efectivo">EFECTIVO</option>
+                    <option value="Deposito">DEPÓSITO</option>
+                    <option value="Tarjeta">TARJETA</option>
+                    <option value="Transferencia">TRASFERENCIA</option>                    
+                  </select>
+                </div>
+
+                <div class="form-group col-lg-3 col-md-6 col-xs-12" id="">
+                <label for="">Banco(*): </label>
+                  <select name="banco3" id="banco3" class="form-control selectpicker">
+                  <option value="" selected disabled hidden>Banco</option>
+                    <option value="IXE">IXE</option>
+                    <option value="HSBC">HSBC</option>
+                    <option value="BANORTE">BANORTE</option>
+                    <option value="BANAMEX">BANCOMER</option>
+                    <option value="SANTANDER">SANTANDER</option>
+                    <option value="SCOTIA BANK">SCOTIA BANK</option>                    
+                  </select>
+                </div>
+
+                <div class="form-group col-lg-3 col-md-4 col-xs-12" id="">
+                  <label for="">Referencia</label>
+                  <input class="form-control" type="text" name="ref3" id="ref3">
+                </div>
+                
               </div>
-              <div class="form-group col-lg-6 col-md-3 col-sm-6 col-xs-12">
+
+              <div class="form-group col-lg-6 col-md-3 col-sm-6 col-xs-12" id="btnAgregarArticulo">
                 <a data-toggle="modal" href="#myModal">
                   <button id="btnAgregarArt" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Articulos</button>
                 </a>

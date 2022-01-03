@@ -13,23 +13,30 @@ $tipo_comprobante=isset($_POST["tipo_comprobante"])? limpiarCadena($_POST["tipo_
 $factura=isset($_POST["factura"])? limpiarCadena($_POST["factura"]):"";
 $fecha_hora=isset($_POST["fecha_hora"])? limpiarCadena($_POST["fecha_hora"]):"";
 $impuesto=isset($_POST["impuesto"])? limpiarCadena($_POST["impuesto"]):"";
-$forma_pago=isset($_POST["forma_pago"])? limpiarCadena($_POST["forma_pago"]):"";
+$forma=isset($_POST["forma"])? limpiarCadena($_POST["forma"]):"";
+$forma2=isset($_POST["forma2"])? limpiarCadena($_POST["forma2"]):"";
+$forma3=isset($_POST["forma3"])? limpiarCadena($_POST["forma3"]):"";
+$banco=isset($_POST["banco"])? limpiarCadena($_POST["banco"]):"";
+$banco2=isset($_POST["banco2"])? limpiarCadena($_POST["banco2"]):"";
+$banco3=isset($_POST["banco3"])? limpiarCadena($_POST["banco3"]):"";
+$importe=isset($_POST["importe"])? limpiarCadena($_POST["importe"]):"";
+$importe2=isset($_POST["importe2"])? limpiarCadena($_POST["importe2"]):"";
+$importe3=isset($_POST["importe3"])? limpiarCadena($_POST["importe3"]):"";
+$ref=isset($_POST["ref"])? limpiarCadena($_POST["ref"]):"";
+$ref2=isset($_POST["ref2"])? limpiarCadena($_POST["ref2"]):"";
+$ref3=isset($_POST["ref3"])? limpiarCadena($_POST["ref3"]):"";
 $total_venta=isset($_POST["total_venta"])? limpiarCadena($_POST["total_venta"]):"";
 
 switch ($_GET["op"]) {
 	case 'guardaryeditar':
 	if (empty($idventa)) {
-		$rspta=$venta->insertar($idcliente,$idusuario,$tipo_comprobante,$factura,$fecha_hora,$impuesto,$forma_pago,$total_venta,$_POST["idarticulo"],$_POST["clave"],$_POST["fmsi"],$_POST["descripcion"],$_POST["cantidad"],$_POST["precio_venta"],$_POST["descuento"], $idsucursal); 		
+		$rspta=$venta->insertar($idcliente,$idusuario,$tipo_comprobante,$factura,$fecha_hora,$impuesto,$total_venta,$_POST["idarticulo"],$_POST["clave"],$_POST["fmsi"],$_POST["descripcion"],$_POST["cantidad"],$_POST["precio_venta"],$_POST["descuento"], $idsucursal, $forma, $forma2, $forma3, $banco, $banco2, $banco3, $importe, $importe2, $importe3, $ref, $ref2, $ref3); 		
 		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
 	}else{
+		$rspta=$venta->cobrarVenta($forma, $forma2, $forma3, $banco, $banco2, $banco3, $importe, $importe2, $importe3, $ref, $ref2, $ref3, $idventa);
+		echo $rspta ? " Cobro exitoso!" : "No se pudo realizar el cobro";
 	}
-		break;
-
-		case 'cobrar':
-		$rspta=$venta->cobrarVenta($idventa);
-		echo $rspta ? "Cobro exitoso" : "No se pudo cobrar la venta";				
-		break;
-
+	break;
 	case 'anular':
 		$rspta=$venta->anular($idventa);
 		echo $rspta ? "Venta anulada correctamente" : "No se pudo anular la venta";
@@ -76,12 +83,12 @@ switch ($_GET["op"]) {
 
     case 'listar':
 	
-		$consulta="SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado, v.forma_pago FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario ORDER BY v.idventa DESC LIMIT 40";
+		$consulta="SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario ORDER BY v.idventa DESC LIMIT 40";
 			$termino= "";
 			if(isset($_POST['ventas']))
 			{
 				$termino=$conexion->real_escape_string($_POST['ventas']);
-				$consulta="SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado, v.forma_pago FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario
+				$consulta="SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario
 				WHERE 
 				tipo_comprobante LIKE '%".$termino."%' OR
 				v.idventa LIKE '%".$termino."%' OR
@@ -103,15 +110,14 @@ switch ($_GET["op"]) {
 							<th class='bg-info' scope='col'>Salida</th>
 							<th class='bg-info' scope='col'>Estatus</th>
 							<th class='bg-info' scope='col'>Cliente</th>
-							<th class='bg-info' scope='col'>Vendedor</th>		
-							<th class='bg-info' scope='col'>Forma de pago</th>					
+							<th class='bg-info' scope='col'>Vendedor</th>
 							<th class='bg-info' scope='col'>Falta por pagar</th>
 							<th class='bg-info' scope='col'>Total</th>
 						</tr>
 					</thead>
-				<tbody>";				
+				<tbody>";
 				while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){
-					if($fila["idsucursal"] == $idsucursal && $fila["estado"] != 'ANULADO') {
+					if($fila["idsucursal"] == $idsucursal && $fila["estado"] != 'ANULADO' && $fila["estado"] != 'PAGADO') {
 							if ($fila["tipo_comprobante"]=='Ticket') {
 								$url='../reportes/exTicket.php?id=';
 							}else{
@@ -124,14 +130,13 @@ switch ($_GET["op"]) {
 
 							echo "<tr>
 								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idventa"].")'><i class='fa fa-eye'></i></button> <button class='btn btn-danger btn-xs' onclick='anular(".$fila["idventa"].")'><i class='fa fa-close'></i></button>
-								<button class='btn btn-default btn-xs' onclick='cobrar(".$fila["idventa"].")'><i class='fa fa-credit-card'></i></button>
+								<button class='btn btn-default btn-xs' onclick='cobrarVenta(".$fila["idventa"].")'><i class='fa fa-credit-card'></i></button>
 								<a target='_blank' href='".$url.$fila["idventa"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-file'></i></button></a></td>								
 								<td>".$fila['idventa']."</td>
 								<td>".$fila['fecha']."</td>
 								<td>".$fila['estado']."</td>
 								<td><p>".$fila['cliente']."</td>
 								<td><p>".$fila['usuario']."</td>
-								<td><p>".$fila['forma_pago']."</td>
 								<td><p>$ ".$fila["pagado"]."</td>
 								<td><p>$ ".$miles."</td>
 							</tr>

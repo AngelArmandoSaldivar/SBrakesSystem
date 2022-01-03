@@ -36,12 +36,12 @@ public function mostrar($idpersona){
 
 //listar registros
 public function listarp(){
-	$sql="SELECT * FROM persona WHERE tipo_persona='Proveedor'";
+	$sql="SELECT * FROM persona WHERE tipo_persona='Proveedor' LIMIT 50";
 	sleep(1);
 	return ejecutarConsulta($sql);
 }
 public function listarc(){
-	$sql="SELECT * FROM persona WHERE tipo_persona='Cliente'";
+	$sql="SELECT * FROM persona WHERE tipo_persona='Cliente' LIMIT 50";
 	return ejecutarConsulta($sql);
 }
 }
