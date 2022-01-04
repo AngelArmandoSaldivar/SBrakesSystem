@@ -186,6 +186,7 @@ if(!isset($_SESSION["nombre"])) {
 				echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";
 				echo "<img src='../files/img/products_brembo.jpg'>";
 			}
+
 			break;
 
 			case 'selectCategoria':
