@@ -33,6 +33,9 @@ if ($_SESSION['almacen']==1) {
   <div class="form-group col-lg-2 col-md-6 col-xs-12" style="align-items:center;">
     </div>
     <br><br>
+    <div class="loader">
+      <img src="../files/images/loader.gif" alt="" width="50px">
+    </div>
   <section id="tabla_resultado"></section>
 </div>
 
@@ -157,7 +160,7 @@ require 'footer.php'
  ?>
  <script src="../public/js/JsBarcode.all.min.js"></script>
  <script src="../public/js/jquery.PrintArea.js"></script>
- <script src="scripts/articulos.js"></script>
+ <script src="scripts/articulo.js"></script>
  <!-- <script src="consulta.js"></script> -->
 
  <?php 

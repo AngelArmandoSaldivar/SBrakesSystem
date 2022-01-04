@@ -98,11 +98,16 @@ function obtener_registros(articulos){
 
 $(document).on('keyup', '#busqueda', function(){
 	var valorBusqueda=$(this).val();
+
 	console.log(valorBusqueda);
 	
 	if (valorBusqueda!="")
 	{
-		obtener_registros(valorBusqueda);
+		$('.loader').show();
+		setTimeout(() => {
+			obtener_registros(valorBusqueda);
+			$('.loader').hide();
+		}, 2000);
 	}
 	else
 	{
