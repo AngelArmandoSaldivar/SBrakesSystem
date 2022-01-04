@@ -8,7 +8,8 @@ if (strlen(session_id())<1)
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Inventory System</title>
+  <link rel="shortcut icon" href="../files/images/favicon.ico">
+  <title>Brake One 2022</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -55,7 +56,7 @@ if (strlen(session_id())<1)
     <nav class="navbar navbar-static-top"  style="background-image: url(../files/images/imagen_humo.jpg); background-repeat: repeat-x;">
       <!-- Sidebar toggle button-->
       <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-        <span class="sr-only">NAVEGACIÓM</span>
+        <span class="sr-only">NAVEGACIÓN</span>
       </a>
 
       <div class="navbar-custom-menu">

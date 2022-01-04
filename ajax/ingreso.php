@@ -183,7 +183,7 @@ switch ($_GET["op"]) {
 		break;
 
 		case 'listarArticulos':
-			$consulta="SELECT * FROM articulo ORDER BY stock DESC LIMIT 100";
+			$consulta="SELECT * FROM articulo ORDER BY stock ASC LIMIT 100";
 					$termino= "";
 					if(isset($_POST['productos']))
 					{
@@ -193,7 +193,7 @@ switch ($_GET["op"]) {
 						codigo LIKE '%".$termino."%' OR
 						fmsi LIKE '%".$termino."%' OR
 						descripcion LIKE '%".$termino."%' OR
-						marca LIKE '%".$termino."%' ORDER BY stock DESC LIMIT 100";
+						marca LIKE '%".$termino."%' ORDER BY stock ASC LIMIT 100";
 					}
 					$consultaBD=$conexion->query($consulta);
 					if($consultaBD->num_rows>=1){
@@ -225,7 +225,8 @@ switch ($_GET["op"]) {
 							$delit = substr($descrip, 0,30);
 							$tipo_precio = "costo";
 							if($fila["idsucursal"] == $idsucursal) {
-									echo "<tr>
+								if($fila["stock"] >=1) {
+									echo "<tr style='color:blue;'>
 										<td>".$fila['codigo']."</td>
 										<td>".$fila['fmsi']."</td>
 										<td>".$fila['marca']."</td>
@@ -238,6 +239,21 @@ switch ($_GET["op"]) {
 										<td><p>".$fila["stock"]." pz</p></td>										
 										<td><button class='btn btn-warning' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\" )'><span class='fa fa-plus'></span></button></td>
 									</tr>";
+								} else {
+									echo "<tr style='color:red;'>
+										<td>".$fila['codigo']."</td>
+										<td>".$fila['fmsi']."</td>
+										<td>".$fila['marca']."</td>
+										<td>".$delit."...</td>
+										<td><p>$ ".$costoMiles."</p></td>
+										<td><p>$ ".$publicMiles."</p></td>
+										<td><p>$ ".$tallerMiles."</p></td>
+										<td><p>$ ".$creditoMiles."</p></td>
+										<td><p>$ ".$mayoreoMiles."</p></td>
+										<td><p>".$fila["stock"]." pz</p></td>										
+										<td><button class='btn btn-warning' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\" )'><span class='fa fa-plus'></span></button></td>
+									</tr>";
+								}					
 							}
 						}
 						echo "</tbody>

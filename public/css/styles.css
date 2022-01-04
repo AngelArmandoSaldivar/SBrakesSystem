@@ -10,3 +10,7 @@
     z-index: -1;
     background: linear-gradient(rgba(12 15 36), rgba(255 23 23));
 }
+
+#menu-styles {
+    background-color: red;
+}

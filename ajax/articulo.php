@@ -125,18 +125,13 @@ if(!isset($_SESSION["nombre"])) {
 				while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){
 					$costoMiles = number_format($fila['costo']);
 					$publicMiles = number_format($fila['publico']);
-					$tallerMiles = number_format($fila['taller'],2);
+					$tallerMiles = number_format($fila['taller']);
 					$creditoMiles = number_format($fila['credito_taller']);
 					$mayoreoMiles = number_format($fila['mayoreo']);
 					$descrip = $fila['descripcion'];
 					$delit = substr($descrip, 0,30);
 
 					$stock_mdx = '';
-
-					if (isset($_POST['profile_viewer_uids'])) {
-						$stock_mdx .= $_POST['profile_viewer_uids'];
-						echo "LLEGASTE! ". $stock_mdx;
-					}
 					
 					if($fila["idsucursal"] == $idsucursal && $fila["stock"] >=$stock_mdx) {
 						if($fila["stock"] >=1) {
