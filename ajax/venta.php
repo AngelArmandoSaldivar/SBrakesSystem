@@ -83,7 +83,7 @@ switch ($_GET["op"]) {
 
     case 'listar':
 	
-		$consulta="SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario ORDER BY v.idventa DESC LIMIT 40";
+		$consulta="SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario ORDER BY v.idventa DESC LIMIT 100";
 			$termino= "";
 			if(isset($_POST['ventas']))
 			{
@@ -94,7 +94,7 @@ switch ($_GET["op"]) {
 				v.idventa LIKE '%".$termino."%' OR
 				p.nombre LIKE '%".$termino."%' OR
 				u.nombre LIKE '%".$termino."%'
-				LIMIT 40";
+				LIMIT 100";
 			}
 			$consultaBD=$conexion->query($consulta);
 			if($consultaBD->num_rows>=1){
@@ -117,7 +117,7 @@ switch ($_GET["op"]) {
 					</thead>
 				<tbody>";
 				while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){
-					if($fila["idsucursal"] == $idsucursal && $fila["estado"] != 'ANULADO' && $fila["estado"] != 'PAGADO') {
+					if($fila["idsucursal"] == $idsucursal && $fila["estado"] != 'ANULADO') {
 							if ($fila["tipo_comprobante"]=='Ticket') {
 								$url='../reportes/exTicket.php?id=';
 							}else{
@@ -127,20 +127,34 @@ switch ($_GET["op"]) {
 							
 							$ventas_pagina = 3;
 							$paginas = 13;
-
-							echo "<tr>
-								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idventa"].")'><i class='fa fa-eye'></i></button> <button class='btn btn-danger btn-xs' onclick='anular(".$fila["idventa"].")'><i class='fa fa-close'></i></button>
-								<button class='btn btn-default btn-xs' onclick='cobrarVenta(".$fila["idventa"].")'><i class='fa fa-credit-card'></i></button>
-								<a target='_blank' href='".$url.$fila["idventa"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-file'></i></button></a></td>								
-								<td>".$fila['idventa']."</td>
-								<td>".$fila['fecha']."</td>
-								<td>".$fila['estado']."</td>
-								<td><p>".$fila['cliente']."</td>
-								<td><p>".$fila['usuario']."</td>
-								<td><p>$ ".$fila["pagado"]."</td>
-								<td><p>$ ".$miles."</td>
-							</tr>
-							";
+							if($fila["estado"] != 'ANULADO' && $fila["estado"] != 'NORMAL') {
+								echo "<tr>
+										<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idventa"].")'><i class='fa fa-eye'></i></button> <button class='btn btn-danger btn-xs' onclick='anular(".$fila["idventa"].")'><i class='fa fa-close'></i></button>
+										<a target='_blank' href='".$url.$fila["idventa"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-file'></i></button></a></td>								
+										<td>".$fila['idventa']."</td>
+										<td>".$fila['fecha']."</td>
+										<td>".$fila['estado']."</td>
+										<td><p>".$fila['cliente']."</td>
+										<td><p>".$fila['usuario']."</td>
+										<td><p>$ ".$fila["pagado"]."</td>
+										<td><p>$ ".$miles."</td>
+									</tr>
+								";
+							} else {
+							echo "<tr style='color:red;'>
+									<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idventa"].")'><i class='fa fa-eye'></i></button> <button class='btn btn-danger btn-xs' onclick='anular(".$fila["idventa"].")'><i class='fa fa-close'></i></button>
+									<button class='btn btn-default btn-xs' onclick='cobrarVenta(".$fila["idventa"].")'><i class='fa fa-credit-card'></i></button>
+									<a target='_blank' href='".$url.$fila["idventa"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-file'></i></button></a></td>								
+									<td>".$fila['idventa']."</td>
+									<td>".$fila['fecha']."</td>
+									<td>".$fila['estado']."</td>
+									<td><p>".$fila['cliente']."</td>
+									<td><p>".$fila['usuario']."</td>
+									<td><p>$ ".$fila["pagado"]."</td>
+									<td><p>$ ".$miles."</td>
+								</tr>
+								";
+							}
 					}
 				}
 				echo "</tbody>

@@ -48,7 +48,9 @@ switch ($_GET["op"]) {
               $url='../reportes/exFactura.php?id=';
             }
             $data[]=array(
-            "0"=>"<button class='btn btn-warning btn-xs' onclick='mostrar(".$reg->idventa.")'><i class='fa fa-eye'></i></button> 
+            "0"=>($reg->estado!='ANULADO' && $reg->estado!='NORMAL')? "<button class='btn btn-warning btn-xs' onclick='mostrar(".$reg->idventa.")'><i class='fa fa-eye'></i></button> 
+            <button class='btn btn-danger btn-xs' onclick='anular(".$reg->idventa.")'><i class='fa fa-close'></i></button>
+            <a target='_blank' href='".$url.$reg->idventa."'> <button class='btn btn-info btn-xs'><i class='fa fa-file'></i></button></a>" : "<button class='btn btn-warning btn-xs' onclick='mostrar(".$reg->idventa.")'><i class='fa fa-eye'></i></button> 
             <button class='btn btn-danger btn-xs' onclick='anular(".$reg->idventa.")'><i class='fa fa-close'></i></button>
             <button class='btn btn-default btn-xs' onclick='cobrar(".$reg->idventa.")'><i class='fa fa-credit-card'></i></button>
             <a target='_blank' href='".$url.$reg->idventa."'> <button class='btn btn-info btn-xs'><i class='fa fa-file'></i></button></a>",

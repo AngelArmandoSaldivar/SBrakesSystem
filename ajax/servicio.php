@@ -89,7 +89,7 @@ switch ($_GET["op"]) {
 
     case 'listar':
 	
-		$consulta="SELECT v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario ORDER BY v.idservicio DESC LIMIT 40";
+		$consulta="SELECT v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario ORDER BY v.idservicio DESC LIMIT 100";
 			$termino= "";
 			if(isset($_POST['servicios']))
 			{
@@ -102,7 +102,7 @@ switch ($_GET["op"]) {
                 v.modelo LIKE '%".$termino."%' OR
                 v.marca LIKE '%".$termino."%' OR
                 v.ano LIKE '%".$termino."%'
-				LIMIT 40";
+				LIMIT 100";
 			}
 			$consultaBD=$conexion->query($consulta);
 			if($consultaBD->num_rows>=1){
@@ -137,9 +137,9 @@ switch ($_GET["op"]) {
 							$ventas_pagina = 3;
 							$paginas = 13;
 
-							echo "<tr>
-								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button> <button class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
-								<button class='btn btn-default btn-xs' onclick='cobrarServicio(".$fila["idservicio"].")'><i class='fa fa-credit-card'></i></button>
+							if($fila["status"] != 'ANULADO' && $fila["status"] != 'NORMAL') {
+								echo "<tr>
+								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button> <button class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>								
 								<a target='_blank' href='".$url.$fila["idservicio"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-file'></i></button></a></td>								
 								<td>".$fila['idservicio']."</td>
 								<td>".$fila['fecha']."</td>
@@ -151,6 +151,22 @@ switch ($_GET["op"]) {
 								<td><p>$ ".$miles."</td>								
 							</tr>
 							";
+							} else {
+								echo "<tr style='color:red'>
+								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button> <button class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
+								<button class='btn btn-default btn-xs' onclick='cobrarServicio(".$fila["idservicio"].")'><i class='fa fa-credit-card'></i></button>
+								<a target='_blank' href='".$url.$fila["idservicio"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-file'></i></button></a></td>								
+								<td>".$fila['idservicio']."</td>
+								<td>".$fila['fecha']."</td>
+								<td>".$fila['status']."</td>
+								<td><p>".$fila['cliente']."</td>
+								<td><p>".$fila['usuario']."</td>
+								<td><p>$ ".$fila["pagado"]."</td>
+								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
+								<td><p>$ ".$miles."</td>
+							</tr>
+							";
+							}
 					}
 				}
 				echo "</tbody>

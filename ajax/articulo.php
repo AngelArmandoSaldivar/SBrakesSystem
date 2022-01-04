@@ -105,8 +105,8 @@ if(!isset($_SESSION["nombre"])) {
 			$consultaBD=$conexion->query($consulta);
 			if($consultaBD->num_rows>=1){
 				echo "				
-				<table class='responsive-table table table-hover table-bordered' style='font-size:12px'>
-					<thead class='table-light'>
+				<table class='responsive-table table table-hover table-bordered' style='border-radius: 15px;'>
+					<thead class='table-light' style='font-size:12px'>
 						<tr>
 							<th class='bg-info' scope='col'>Clave</th>
 							<th class='bg-info' scope='col'>FMSI</th>
@@ -125,7 +125,7 @@ if(!isset($_SESSION["nombre"])) {
 				while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){
 					$costoMiles = number_format($fila['costo']);
 					$publicMiles = number_format($fila['publico']);
-					$tallerMiles = number_format($fila['taller']);
+					$tallerMiles = number_format($fila['taller'],2);
 					$creditoMiles = number_format($fila['credito_taller']);
 					$mayoreoMiles = number_format($fila['mayoreo']);
 					$descrip = $fila['descripcion'];
@@ -139,8 +139,9 @@ if(!isset($_SESSION["nombre"])) {
 					}
 					
 					if($fila["idsucursal"] == $idsucursal && $fila["stock"] >=$stock_mdx) {
-							echo "<tr>
-								<td>".$fila['codigo']."</td>
+						if($fila["stock"] >=1) {
+							echo "<tr style='color:blue; font-size:11px;'>
+								<td >".$fila['codigo']."</td>
 								<td>".$fila['fmsi']."</td>
 								<td>".$fila['marca']."</td>
 								<td>".$delit."...</td>
@@ -152,10 +153,25 @@ if(!isset($_SESSION["nombre"])) {
 								<td><p>".$fila['stock']."pz</td>
 								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-pencil'></i></button> <button class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idarticulo"].")')><i class='fa fa-close'></i></button><button class='btn btn-primary btn-xs' onclick='activar(".$fila["idarticulo"].")'><i class='fa fa-check'></i></button></td>					
 							</tr>";
+						} else if($fila["stock"] <=0) {
+							echo "<tr style='color:red; font-size:11px;'>
+								<td>".$fila['codigo']."</td>
+								<td>".$fila['fmsi']."</td>
+								<td>".$fila['marca']."</td>
+								<td>".$delit."...</td>
+								<td><p>$ ".$costoMiles."</p></td>
+								<td><p>$ ".$publicMiles."</p></td>
+								<td><p>$ ".$tallerMiles."</p></td>
+								<td><p>$ ".$creditoMiles."</p></td>
+								<td><p>$ ".$mayoreoMiles."</p></td>
+								<td><p>".$fila['stock']."pz</td>
+								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-pencil'></i></button> <button class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idarticulo"].")')><i class='fa fa-close'></i></button><button class='btn btn-primary btn-xs' onclick='activar(".$fila["idarticulo"].")'><i class='fa fa-check'></i></button></td>					
+							</tr>";	
+						}					
 					}
 				}
 				echo "</tbody>
-				<tfoot>
+				<tfoot style='font-size:12px'>
 					<tr>
 						<th class='bg-info' scope='col'>Clave</th>
 						<th class='bg-info' scope='col'>FMSI</th>

@@ -158,7 +158,7 @@ function mostrar(idarticulo){
 			$("#mayoreo").val(data.mayoreo);
 			$("#descripcion").val(data.descripcion);
 			$("#barcode").val(data.barcode);
-			$("#idarticulo").val(data.idarticulo);			
+			$("#idarticulo").val(data.idarticulo);
 		})
 }
 

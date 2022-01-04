@@ -16,7 +16,7 @@ if ($_SESSION['almacen']==1) {
       <!-- Default box -->
       <div class="row">
         <div class="col-md-12">
-      <div class="box">
+      <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
 <div class="box-header with-border">
   <h1 class="box-title">Articulo <button class="btn btn-success" onclick="mostrarform(true)" id="btnagregar"><i class="fa fa-plus-circle"></i>Agregar</button> <a target="_blank" href="../reportes/rptarticulos.php"><button class="btn btn-info">Reporte</button></a></h1>
   <div class="box-tools pull-right">
@@ -28,10 +28,9 @@ if ($_SESSION['almacen']==1) {
 
 <div class="table-responsive" id="table-search">
   <section>
-    <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px"></center>
+    <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 16px;"></center>
   </section><br>
   <div class="form-group col-lg-2 col-md-6 col-xs-12" style="align-items:center;">
-      <button id="todo">Todo</button> <button id="1" onclick="actualizarStock(this.id)">Existencias</button>
     </div>
     <br><br>
   <section id="tabla_resultado"></section>
@@ -158,7 +157,7 @@ require 'footer.php'
  ?>
  <script src="../public/js/JsBarcode.all.min.js"></script>
  <script src="../public/js/jquery.PrintArea.js"></script>
- <script src="scripts/articulo.js"></script>
+ <script src="scripts/articulos.js"></script>
  <!-- <script src="consulta.js"></script> -->
 
  <?php 
