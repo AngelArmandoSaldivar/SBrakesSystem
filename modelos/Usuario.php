@@ -21,7 +21,6 @@ public function insertar($nombre,$tipo_documento,$num_documento,$direccion,$tele
 	 ejecutarConsulta($sql_user_sucursal);
 
 	 while ($num_elementos < count($permisos)) {
-		 
 
 	 	$sql_detalle="INSERT INTO usuario_permiso (idusuario,idpermiso) VALUES('$idusuarionew','$permisos[$num_elementos]')";
 

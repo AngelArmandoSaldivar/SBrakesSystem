@@ -95,14 +95,14 @@ if(!isset($_SESSION["nombre"])) {
 			if(isset($_POST['articulos']))
 			{				
 				$termino=$conexion->real_escape_string($_POST['articulos']);
-
+				usleep(10000);
 				$consulta="SELECT * FROM articulo WHERE
 				codigo LIKE '%".$termino."%' OR
 				fmsi LIKE '%".$termino."%' OR
-				descripcion LIKE '%".$termino."%'
+				descripcion LIKE '%".$termino."%' OR 
+				barcode LIKE '%".$termino."%'
 				ORDER BY stock DESC LIMIT 100";
 			}
-			usleep(250000);
 			$consultaBD=$conexion->query($consulta);
 			//2000000
 			if($consultaBD->num_rows>=1){

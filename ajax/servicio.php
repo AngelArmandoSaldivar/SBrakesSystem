@@ -208,10 +208,12 @@ switch ($_GET["op"]) {
 					if(isset($_POST['productos']))
 					{
 						$termino=$conexion->real_escape_string($_POST['productos']);
+						usleep(10000);
 						$consulta="SELECT * FROM articulo
 						WHERE
 						codigo LIKE '%".$termino."%' OR
 						fmsi LIKE '%".$termino."%' OR
+						barcode LIKE '%".$termino."%' OR
 						descripcion LIKE '%".$termino."%' OR
 						marca LIKE '%".$termino."%' ORDER BY stock DESC LIMIT 100";
 					}

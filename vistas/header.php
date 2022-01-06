@@ -18,8 +18,8 @@ if (strlen(session_id())<1)
 
   <link rel="stylesheet" href="../public/css/font-awesome.min.css">
 
-  <link rel="stylesheet" href="../public/css/AdminLTE.min.css">
-  <link rel="stylesheet" href="../public/css/_all-skins.min.css">
+  <link rel="stylesheet" href="../public/css/AdminLTES.min.css">
+  <link rel="stylesheet" href="../public/css/_all-skinss.min.css">
   <!-- Morris chart --><!-- Daterange picker -->
  <link rel="stylesheet" href="img/apple-touch-ico.png">
  <link rel="stylesheet" href="img/favicon.ico">
@@ -46,14 +46,14 @@ if (strlen(session_id())<1)
 
   <header class="main-header" >
     <!-- Logo -->
-    <a href="escritorio.php" class="logo" style="background-image: url(../files/images/imagen_humo.jpg);" >
+    <a href="escritorio.php" class="logo" >
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>B1S</b> Sys</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg" ><b>BrakeOne</b> System</span>
+      <img src="../files/images/MainLogo.png" alt="" width="130px" style="box-shadow: -13px 10px 22px black;">
     </a>
     <!-- Header Navbar: style can be found in header.less -->
-    <nav class="navbar navbar-static-top"  style="background-image: url(../files/images/imagen_humo.jpg); background-repeat: repeat-x;">
+    <nav class="navbar navbar-static-top" >
       <!-- Sidebar toggle button-->
       <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
         <span class="sr-only">NAVEGACIÓN</span>
@@ -89,7 +89,7 @@ if (strlen(session_id())<1)
     </nav>
   </header>
   <!-- Left side column. contains the logo and sidebar -->
-  <aside class="main-sidebar" style="background-image: url(../files/images/imagen_humo.jpg); background-repeat: repeat-y;">
+  <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar" >
       <!-- Sidebar user panel -->

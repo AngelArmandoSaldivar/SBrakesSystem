@@ -238,7 +238,7 @@ if ($_SESSION['ventas']==1) {
   <!--Modal-->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" style="width: 95% !important;">
-    <div class="modal-content">
+    <div class="modal-content" style="border-radius: 20px;">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title">Seleccione un Articulo</h4>
@@ -269,7 +269,7 @@ if ($_SESSION['ventas']==1) {
   <!--Modal registrar nuevo cliente-->
   <div class="modal fade" id="agregarCliente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="width: 80% !important; box-shadow:5px 5px 5px 5px rgba(0, 0, 0, 0.2);">
-      <div class="modal-content">
+      <div class="modal-content" style="border-radius: 20px;">
         <div class="modal-header">
           <button name="addProduct" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           <h4 class="modal-title">Agregar Cliente</h4>
@@ -335,7 +335,7 @@ if ($_SESSION['ventas']==1) {
   <!--Modal registrar nuevo producto-->
   <div class="modal fade" id="agregarProducto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="width: 80% !important; box-shadow:5px 5px 5px 5px rgba(0, 0, 0, 0.2);">
-      <div class="modal-content">
+      <div class="modal-content" style="border-radius: 20px;">
         <div class="modal-header">
           <button name="addProduct" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           <h4 class="modal-title">Registrar Producto</h4>
