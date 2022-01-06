@@ -95,7 +95,6 @@ if(!isset($_SESSION["nombre"])) {
 			if(isset($_POST['articulos']))
 			{				
 				$termino=$conexion->real_escape_string($_POST['articulos']);
-				usleep(10000);
 				$consulta="SELECT * FROM articulo WHERE
 				codigo LIKE '%".$termino."%' OR
 				fmsi LIKE '%".$termino."%' OR
@@ -123,7 +122,7 @@ if(!isset($_SESSION["nombre"])) {
 							<th class='bg-info' scope='col'>Acciones</th>
 						</tr>
 					</thead>
-				<tbody>";
+				<tbody>";				
 				while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){
 					$costoMiles = number_format($fila['costo']);
 					$publicMiles = number_format($fila['publico']);
@@ -137,6 +136,7 @@ if(!isset($_SESSION["nombre"])) {
 					
 					if($fila["idsucursal"] == $idsucursal && $fila["stock"] >=$stock_mdx) {
 						if($fila["stock"] >=1) {
+							usleep(10000);
 							echo "<tr style='color:blue; font-size:11px;'>
 								<td >".$fila['codigo']."</td>
 								<td>".$fila['fmsi']."</td>
