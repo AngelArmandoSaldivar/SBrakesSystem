@@ -102,12 +102,14 @@ if(!isset($_SESSION["nombre"])) {
 				descripcion LIKE '%".$termino."%'
 				ORDER BY stock DESC LIMIT 100";
 			}
+			usleep(250000);
 			$consultaBD=$conexion->query($consulta);
+			//2000000
 			if($consultaBD->num_rows>=1){
 				echo "				
 				<table class='responsive-table table table-hover table-bordered' style='border-radius: 15px;'>
 					<thead class='table-light' style='font-size:12px'>
-						<tr>
+						<tr background: linear-gradient(337deg, rgba(0, 1, 255, 0.682) 0%, rgba(255, 0, 0, 0.71) 50%, rgba(0, 246, 144, 0.737) 100%);>
 							<th class='bg-info' scope='col'>Clave</th>
 							<th class='bg-info' scope='col'>FMSI</th>
 							<th class='bg-info' scope='col'>Marca</th>

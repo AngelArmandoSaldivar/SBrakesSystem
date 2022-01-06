@@ -35,7 +35,7 @@ class Articulo{
 
 	//listar registros 
 	public function listar(){
-		$sql="SELECT a.idarticulo,a.idcategoria,c.nombre as categoria, a.idproveedor, c.nombre as proveedor, a.codigo, a.fmsi, a.pasillo, a.marca, a.costo, a.publico, a.taller, a.credito_taller, a.mayoreo,a.stock,a.descripcion,a.estado, idsucursal FROM articulo AS a INNER JOIN Categoria c ON a.idcategoria=c.idcategoria INNER JOIN persona p ON a.idproveedor=p.idpersona WHERE a.estado='1'";
+		$sql="SELECT * FROM articulo WHERE estado='1' ORDER BY stock DESC LIMIT 100";
 		return ejecutarConsulta($sql);
 	}
 

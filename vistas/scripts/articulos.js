@@ -85,28 +85,30 @@ function actualizarStock(profile_viewer_uid) {
 
 
 function obtener_registros(articulos){
-	$.ajax({
-		url : '../ajax/articulo.php?op=listar',
-		type : 'POST',
-		dataType : 'html',
-		data : { articulos: articulos},
-	})
-	.done(function(resultado){
-		$("#tabla_resultado").html(resultado);
-	})
-}
-
+		$('.loader').show();
+		$.ajax({
+			url : '../ajax/articulo.php?op=listar',
+			type : 'POST',
+			dataType : 'html',
+			data : { articulos: articulos},
+		})
+		.done(function(resultado){
+			setTimeout(() => {
+				$("#tabla_resultado").html(resultado);
+				$('.loader').hide();
+			}, 50);
+		})
+}	
 
 $(document).on('keyup', '#busqueda', function(){
-	var valorBusqueda=$(this).val();
+
+		var valorBusqueda=$(this).val();
 	
 	if (valorBusqueda!="")
 	{
-		$('.loader').show();
-		setTimeout(() => {
-			obtener_registros(valorBusqueda);
-			$('.loader').hide();
-		}, 1000);
+		obtener_registros(valorBusqueda);		
+	} else {
+		obtener_registros(valorBusqueda);
 	}
 });
 
