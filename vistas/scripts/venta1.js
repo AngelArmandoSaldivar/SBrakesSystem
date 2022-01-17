@@ -363,7 +363,7 @@ function guardaryeditarProducto() {
 }
 
 function mostrar(idventa){
-	$('.loader').show();	
+	$('.loader').show();
 	$.post("../ajax/venta.php?op=mostrar",{idventa : idventa},
 		function(data,status)
 		{
@@ -413,15 +413,16 @@ function mostrar(idventa){
 			$("#email").val(data.email).prop("disabled", true);
 			$("#telefono").val(data.telefono).prop("disabled", true);
 			$("#credito").val(data.credito).prop("disabled", true);
-			if(data.tipo_precio == "publico") {
-				$("#tipoPrecio").val("Publico / Mostrador").prop("disabled", true);
-			} else if(data.tipo_precio == "taller") {
-				$("#tipoPrecio").val("Taller").prop("disabled", true);
-			} else if(data.tipo_precio == "credito_taller") {
-				$("#tipoPrecio").val("Credito Taller").prop("disabled", true);
-			} else if(data.tipo_precio == "mayoreo") {
-				$("#tipoPrecio").val("Mayoreo").prop("disabled", true);
-			}
+			$("#tipoPrecio").val(data.tipo_precio).prop("disabled", true);
+			// if(data.tipo_precio == "publico") {
+			// 	$("#tipoPrecio").val("Publico / Mostrador").prop("disabled", true);
+			// } else if(data.tipo_precio == "taller") {
+			// 	$("#tipoPrecio").val("Taller").prop("disabled", true);
+			// } else if(data.tipo_precio == "credito_taller") {
+			// 	$("#tipoPrecio").val("Credito Taller").prop("disabled", true);
+			// } else if(data.tipo_precio == "mayoreo") {
+			// 	$("#tipoPrecio").val("Mayoreo").prop("disabled", true);
+			// }
 
 			$("#idventa").val(data.idventa);
 			
