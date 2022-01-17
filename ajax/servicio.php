@@ -7,6 +7,7 @@ if (strlen(session_id())<1)
 $servicio = new Servicios();
 
 $idservicio=isset($_POST["idservicio"])? limpiarCadena($_POST["idservicio"]):"";
+$idauto=isset($_POST["idauto"])? limpiarCadena($_POST["idauto"]):"";
 $idcliente=isset($_POST["idcliente"])? limpiarCadena($_POST["idcliente"]):"";
 $idusuario=$_SESSION["idusuario"];
 $tipo_comprobante=isset($_POST["tipo_comprobante"])? limpiarCadena($_POST["tipo_comprobante"]):"";
@@ -39,7 +40,14 @@ switch ($_GET["op"]) {
 		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
 	}else{
 		$rspta=$servicio->cobrarServicio($forma, $forma2, $forma3, $banco, $banco2, $banco3, $importe, $importe2, $importe3, $ref, $ref2, $ref3, $idservicio);
-		echo $rspta ? " Cobro exitoso!" : "No se pudo realizar el cobro";		
+		echo $rspta ? " Cobro exitoso!" : "No se pudo realizar el cobro";
+	}
+	break;
+
+	case 'ultimoServicio' :
+	$rspta=$servicio->ultimoServicio();		
+	while ($reg=$rspta->fetch_object()) {
+		echo json_encode($reg->idservicio);
 	}
 	break;
 
@@ -50,6 +58,11 @@ switch ($_GET["op"]) {
 	
 	case 'mostrar':
 		$rspta=$servicio->mostrar($idservicio);
+		echo json_encode($rspta);
+	break;
+
+	case 'mostrarInfoAuto':
+		$rspta=$servicio->mostrarInfoAuto($idauto);
 		echo json_encode($rspta);
 	break;
 
@@ -139,8 +152,12 @@ switch ($_GET["op"]) {
 
 							if($fila["status"] != 'ANULADO' && $fila["status"] != 'NORMAL') {
 								echo "<tr>
-								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button> <button class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>								
-								<a target='_blank' href='".$url.$fila["idservicio"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-file'></i></button></a></td>								
+								<td>
+								<div class='emergente'>
+								<span data-tooltip='Mostrar servicio'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button></span>
+								<span data-tooltip='Anular servicio'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button></span>							
+								<span data-tooltip='Imprimir remisión'><a target='_blank' href='".$url.$fila["idservicio"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a></div></span>
+								</td>
 								<td>".$fila['idservicio']."</td>
 								<td>".$fila['fecha']."</td>
 								<td>".$fila['status']."</td>
@@ -153,9 +170,11 @@ switch ($_GET["op"]) {
 							";
 							} else {
 								echo "<tr style='color:red'>
-								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button> <button class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
-								<button class='btn btn-default btn-xs' onclick='cobrarServicio(".$fila["idservicio"].")'><i class='fa fa-credit-card'></i></button>
-								<a target='_blank' href='".$url.$fila["idservicio"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-file'></i></button></a></td>								
+								<td>
+								<span data-tooltip='Mostrar servicio'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button></span>
+								<span data-tooltip='Anular servicio'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button></span>							
+								<span data-tooltip='Cobrar servicio'><button class='btn btn-default btn-xs' onclick='cobrarServicio(".$fila["idservicio"].")'><i class='fa fa-credit-card'></i></button></span>
+								<span data-tooltip='Imprimir remisión'><a target='_blank' href='".$url.$fila["idservicio"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a></div></span>
 								<td>".$fila['idservicio']."</td>
 								<td>".$fila['fecha']."</td>
 								<td>".$fila['status']."</td>
@@ -199,7 +218,23 @@ switch ($_GET["op"]) {
 			while ($reg = $rspta->fetch_object()) {
 				echo '<option value='.$reg->idpersona.'>'.$reg->nombre.'</option>';
 			}
-			break;
+		break;
+
+		case 'selectAuto':
+			require_once "../modelos/Persona.php";
+			$persona = new Persona();
+
+			$id=$_GET['id'];
+
+			echo $id;
+
+			$rspta = $persona->listarAutos($id);
+			echo '<option value="" disabled selected>Seleccionar auto</option>';
+			while ($reg = $rspta->fetch_object()) {
+				echo '<option value='.$reg->idauto.'>'.$reg->marca." ".$reg->modelo." ".$reg->ano.'</option>';
+			}
+
+		break;
 
 			case 'listarProductos':
 	
@@ -245,37 +280,54 @@ switch ($_GET["op"]) {
 							$mayoreoMiles = number_format($fila['mayoreo']);
 							$descrip = $fila['descripcion'];
 							$delit = substr($descrip, 0,30);
-							$tipo_precio = "publico";
-							if($fila["idsucursal"] == $idsucursal) {
-								if($fila["stock"] >= 1) {
-									echo "<tr style='color:blue;'>
-										<td>".$fila['codigo']."</td>
-										<td>".$fila['fmsi']."</td>
-										<td>".$fila['marca']."</td>
-										<td>".$delit."...</td>
-										<td><p>$ ".$costoMiles."</p></td>
-										<td><p>$ ".$publicMiles."</p></td>
-										<td><p>$ ".$tallerMiles."</p></td>
-										<td><p>$ ".$creditoMiles."</p></td>
-										<td><p>$ ".$mayoreoMiles."</p></td>
-										<td><p>".$fila["stock"]." pz</p></td>										
-										<td><button class='btn btn-warning' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\" )'><span class='fa fa-plus'></span></button></td>
-									</tr>";
-								} else {
-									echo "<tr style='color:red;'>
-										<td>".$fila['codigo']."</td>
-										<td>".$fila['fmsi']."</td>
-										<td>".$fila['marca']."</td>
-										<td>".$delit."...</td>
-										<td><p>$ ".$costoMiles."</p></td>
-										<td><p>$ ".$publicMiles."</p></td>
-										<td><p>$ ".$tallerMiles."</p></td>
-										<td><p>$ ".$creditoMiles."</p></td>
-										<td><p>$ ".$mayoreoMiles."</p></td>
-										<td><p>".$fila["stock"]." pz</p></td>										
-										<td><button class='btn btn-warning' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\" )'><span class='fa fa-plus'></span></button></td>
-									</tr>";
-								}								
+							
+							if(isset($_POST["types"])) {
+								$tipo_precio = $_POST["types"];
+
+								if($fila["idsucursal"] == $idsucursal) {
+									if($fila["stock"] >=1 && $tipo_precio != null) {
+										echo "<tr style='color:blue;'>
+											<td>".$fila['codigo']."</td>
+											<td>".$fila['fmsi']."</td>
+											<td>".$fila['marca']."</td>
+											<td>".$delit."...</td>
+											<td><p>$ ".$costoMiles."</p></td>
+											<td><p>$ ".$publicMiles."</p></td>
+											<td><p>$ ".$tallerMiles."</p></td>
+											<td><p>$ ".$creditoMiles."</p></td>
+											<td><p>$ ".$mayoreoMiles."</p></td>
+											<td><p>".$fila["stock"]." pz</p></td>										
+											<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\" )'><span class='fa fa-plus'></span></button></td>
+										</tr>";
+									} else if($fila["stock"] >=1 && $tipo_precio == null){
+										$precio = "publico";
+										echo "<tr style='color:blue;'>
+											<td>".$fila['codigo']."</td>
+											<td>".$fila['fmsi']."</td>
+											<td>".$fila['marca']."</td>
+											<td>".$delit."...</td>
+											<td><p>$ ".$costoMiles."</p></td>
+											<td><p>$ ".$publicMiles."</p></td>
+											<td><p>$ ".$tallerMiles."</p></td>
+											<td><p>$ ".$creditoMiles."</p></td>
+											<td><p>$ ".$mayoreoMiles."</p></td>
+											<td><p>".$fila["stock"]." pz</p></td>										
+											<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila[$precio]."\" , \"".$fila["stock"]."\")'><span class='fa fa-plus'></span></button></td>
+										</tr>";
+									} else if($fila["stock"] < 1){
+										echo "<tr style='color:red;'>
+											<td>".$fila['codigo']."</td>
+											<td>".$fila['fmsi']."</td>
+											<td>".$fila['marca']."</td>
+											<td>".$delit."...</td>
+											<td><p>$ ".$costoMiles."</p></td>
+											<td><p>$ ".$publicMiles."</p></td>
+											<td><p>$ ".$tallerMiles."</p></td>
+											<td><p>$ ".$creditoMiles."</p></td>
+											<td><p>$ ".$mayoreoMiles."</p></td>
+											<td><p>".$fila["stock"]." pz</p></td>";
+									}
+								}
 							}
 						}
 						echo "</tbody>

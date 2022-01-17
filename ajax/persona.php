@@ -14,17 +14,25 @@ if(!isset($_SESSION["nombre"])) {
 	$direccion=isset($_POST["direccion"])? limpiarCadena($_POST["direccion"]):"";
 	$telefono=isset($_POST["telefono"])? limpiarCadena($_POST["telefono"]):"";
 	$email=isset($_POST["email"])? limpiarCadena($_POST["email"]):"";
+	$rfc=isset($_POST["rfc"])? limpiarCadena($_POST["rfc"]):"";
+	$credito=isset($_POST["credito"])? limpiarCadena($_POST["credito"]):"";
 
 	switch ($_GET["op"]) {
 		case 'guardaryeditar':
-		if (empty($idpersona)) {
-			$rspta=$persona->insertar($tipo_persona,$nombre,$tipo_documento,$tipo_precio,$num_documento,$direccion,$telefono,$email);
+		if (empty($idpersona) && empty($_POST["placas"])) {
+			$rspta=$persona->insertarCliente($tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$email, $rfc, $credito);			
 			echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
-		}else{
-			$rspta=$persona->editar($idpersona,$tipo_persona,$nombre,$tipo_documento,$tipo_precio,$num_documento,$direccion,$telefono,$email);
+		} else if(empty($idpersona) && $_POST["placas"] != "") {
+			$rspta = $persona->insertar($tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$email, $rfc, $credito,$_POST["placas"],$_POST["marca"],$_POST["modelo"],$_POST["ano"],$_POST["color"],$_POST["kms"]);
+			echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
+		} else if($idpersona != null && empty($_POST["placas"])) {
+			$rspta=$persona->editarPersona($idpersona,$tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$email, $rfc, $credito);
+			echo $rspta ? "Datos actualizados correctamente" : "No se pudo actualizar los datos";
+		} else if($idpersona != null && $_POST["placas"] != ""){
+			$rspta = $persona->editar($idpersona,$tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$email, $rfc, $credito, $_POST["placas"],$_POST["marca"],$_POST["modelo"],$_POST["ano"],$_POST["color"],$_POST["kms"]);
 			echo $rspta ? "Datos actualizados correctamente" : "No se pudo actualizar los datos";
 		}
-			break;
+		break;
 		
 
 		case 'eliminar':
@@ -36,6 +44,36 @@ if(!isset($_SESSION["nombre"])) {
 			$rspta=$persona->mostrar($idpersona);
 			echo json_encode($rspta);
 			break;
+		case 'listarAutos':
+			$id=$_GET['id'];
+
+			$rspta=$persona->listarAutos($id);
+			echo ' <thead style="background-color:#A9D0F5">
+			<th>Acciones</th>
+			<th>Placas</th>
+			<th>Marca</th>
+			<th>Modelo</th>
+			<th>Año</th>
+			<th>Color</th>
+			<th>Kms</th>
+		</thead>';
+			while ($reg=$rspta->fetch_object()) {
+				echo '<tr class="filas">
+				<td><button disabled>eliminar</button></td>
+				<td>'.$reg->placas.'</td>
+				<td>'.$reg->marca.'</td>
+				<td>'.$reg->modelo.'</td>
+				<td>'.$reg->ano.'</td>
+				<td>'.$reg->color.'</td>
+				<td>'.$reg->kms.'</td></tr>';
+			}
+			echo '<tfoot>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+			</tfoot>';
+		break;
 
 		case 'listarp':
 			// $rspta=$persona->listarp();
@@ -174,7 +212,7 @@ if(!isset($_SESSION["nombre"])) {
 								<td>".$fila['direccion']."</td>
 								<td>".$fila['telefono']."</td>
 								<td><p>".$fila['email']."</td>
-								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idpersona"].")'><i class='fa fa-pencil'></i></button> <button class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idpersona"].")')><i class='fa fa-close'></i></button><button class='btn btn-primary btn-xs' onclick='activar(".$fila["idpersona"].")'><i class='fa fa-check'></i></button></td>					
+								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idpersona"].")'><i class='fa fa-pencil'></i></button> <button class='btn btn-danger btn-xs' onclick='eliminar(".$fila["idpersona"].")')><i class='fa fa-close'></i></button><button class='btn btn-primary btn-xs' onclick='activar(".$fila["idpersona"].")'><i class='fa fa-check'></i></button></td>					
 							</tr>";
 				}
 				echo "</tbody>

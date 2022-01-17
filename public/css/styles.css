@@ -1,16 +1,71 @@
-.img-responsive {
+[data-tooltip]::before {
+    content : attr(data-tooltip);
+    display:none;
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 115vh;
-    background: url(../../files/images/fondo1.jpg);
-    background-size: cover;
-    overflow: hidden;
-    z-index: -1;
-    background: linear-gradient(rgba(12 15 36), rgba(255 23 23));
 }
 
-#menu-styles {
-    background-color: red;
+[data-tooltip]:hover::before {
+    display : block;
 }
+[data-tooltip]{ 
+    position:relative; 
+    border-bottom: 1px dotted #09C;
+    cursor:pointer;
+}
+[data-tooltip]::before {
+    content : attr(data-tooltip);
+    background-color:rgba(0,0,0,.75);
+    color:white;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    width:150px;
+    padding:10px;
+    height:auto;
+    border-radius:3px;
+    display:none;
+    position:absolute;
+    bottom:25px;
+    left:calc(100% - 75%);
+    pointer-events: none;
+    z-index:99;
+}
+[data-tooltip]::after{
+    content:"";
+    height:1px;
+    width:1px;
+    border:10px solid transparent;
+    border-top-color:rgba(0,0,0,.75);
+    position:absolute;
+    bottom:4px;
+    left:50%;
+    display: none;
+}
+[data-tooltip]:hover::before,
+[data-tooltip]:hover::after
+{ display:block;} 
+
+
+.emergente [data-tooltip]::before {
+    display:block;
+    opacity:0;
+    pointer-events: none;
+    }
+    .emergente [data-tooltip]::after{
+    opacity:0;
+    pointer-events: none;
+    }
+
+    .emergente [data-tooltip]:hover::before,
+.emergente [data-tooltip]:hover::after {
+    animation-name: toolTip;
+    animation-duration: 1s;
+}
+/* define las fotogramas de la animación*/
+@keyframes toolTip {
+  0%   {opacity:0;}
+  100% {opacity:1;}
+  }
+
+  .emergente [data-tooltip]:hover::before,
+.emergente [data-tooltip]:hover::after
+{opacity:1;} 

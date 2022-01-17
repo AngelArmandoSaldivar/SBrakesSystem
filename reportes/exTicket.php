@@ -92,14 +92,14 @@ $phone = "Tel: (55) 52733450 / (55) 43834342";
 		<tr>
 			<td colspan="3">===========================================</td>
 		</tr>
-		<?php
+		<?php		
 		$rsptad = $venta->ventadetalles($_GET["id"]);
 		$cantidad=0;
 		while ($regd = $rsptad->fetch_object()) {
 			$descripcion = substr($regd->descripcion, 0,40);
 		 	echo "<tr>";
 		 	echo "<td>".$regd->cantidad."</td>";
-		 	echo "<td>".$regd->clave." ".$descripcion."...</td>";
+		 	echo "<td>".$regd->clave." ".$regd->fmsi." ".$regd->marca."...</td>";
 		 	echo "<td align='right'>$ ".number_format($regd->subtotal)."</td>";
 		 	echo "</tr>";
 		 	$cantidad+=$regd->cantidad;
@@ -114,8 +114,17 @@ $phone = "Tel: (55) 52733450 / (55) 43834342";
 		<tr>
 			<td></td>
 			<td align="right"><b>TOTAL:</b></td>
-			<td align="right"><b>$ <?php echo number_format($reg->total_venta); ?></b></td>
-		</tr>		
+			<td align="right"><b>$ <?php echo number_format($reg->total_venta); ?></b></td>			
+		</tr>	
+		<tr>
+			<td colspan="3" align="justify"><?php 
+				require_once "Letras.php";
+				$V = new EnLetras();
+				$total = $reg->total_venta;
+				$con_letra=strtoupper($V->convertir($total));
+				echo $con_letra;
+			?></td>
+		</tr>
 		<tr>
 			<td colspan="3">&nbsp;</td>
 		</tr>

@@ -13,12 +13,16 @@ function init(){
 //funcion limpiar
 function limpiar(){
 
+	detalles=0;
 	$("#nombre").val("");
 	$("#num_documento").val("");
 	$("#direccion").val("");
 	$("#telefono").val("");
 	$("#email").val("");
+	$("#rfc").val("");
+	$("#credito").val("");
 	$("#idpersona").val("");
+	
 }
 
 //funcion mostrar formulario 
@@ -29,6 +33,7 @@ function mostrarform(flag){
 		$("#formularioregistros").show();
 		$("#btnGuardar").prop("disabled",false);
 		$("#btnagregar").hide();
+		detalles=0;
 	}else{
 		$("#listadoregistros").show();
 		$("#formularioregistros").hide();
@@ -85,7 +90,6 @@ function guardaryeditar(e){
      	success: function(datos){
      		bootbox.alert(datos);
      		mostrarform(false);
-     		tabla.ajax.reload();
      	}
      });
 
@@ -106,8 +110,16 @@ function mostrar(idpersona){
 			$("#direccion").val(data.direccion);
 			$("#telefono").val(data.telefono);
 			$("#email").val(data.email);
+			$("#rfc").val(data.rfc);
+			$("#credito").val(data.credito);
+			$("#tipo_precio").val(data.tipo_precio).prop("disabled", false);
+			$("#tipo_precio").selectpicker('refresh');
 			$("#idpersona").val(data.idpersona);
-		})
+			//btnAgregarAut
+		});
+	$.post("../ajax/persona.php?op=listarAutos&id="+idpersona,function(r){
+		$("#detalles").html(r);
+	});
 }
 
 
@@ -124,5 +136,66 @@ function eliminar(idpersona){
 	})
 }
 
+//placas, marca, modelo, ano, color, kms
+
+$("#placas").change(placasAuto);
+function placasAuto() {
+	var placas = $("#placas").val();
+	$("#marca").change(marcaAuto);
+	function marcaAuto() {
+		var marca = $("#marca").val();
+		$("#modelo").change(modeloAuto);
+		function modeloAuto() {
+			var modelo = $("#modelo").val();
+			$("#ano").change(anoAuto);
+			function anoAuto() {
+				var ano = $("#ano").val();
+				$("#color").change(colorAuto);
+				function colorAuto() {
+					var color = $("#color").val();
+					$("#kms").change(kmsAuto);
+					function kmsAuto() {
+						var kms = $("#kms").val();
+						()=> {
+							agregarDetalle(placas, marca, modelo, ano, color, kms);
+						}						
+					}			
+				}
+			}
+		}
+	}
+}
+
+var cont=0;
+var detalles=0;
+
+function agregarDetalle(placas, marca, modelo, ano, color, kms) {
+	// console.log(placas.value, marca.value, modelo.value, ano.value, color.value, kms.value);
+	if (kms != "") {
+		var fila='<tr class="filas" id="fila'+cont+'">'+
+        '<td><button style="width: 40px;" type="button" class="btn btn-danger" onclick="eliminarDetalle('+cont+')">X</button></td>'+
+		'<td><input type="hidden" name="placas" value="'+placas.value+'">'+placas.value+'</td>'+
+		'<td><input type="hidden" name="marca" value="'+marca.value+'">'+marca.value+'</td>'+
+		'<td><input type="hidden" name="modelo" value="'+modelo.value+'">'+modelo.value+'</td>'+
+		'<td><input type="hidden" name="ano" value="'+ano.value+'">'+ano.value+'</td>'+
+		'<td><input type="hidden" name="color" value="'+color.value+'">'+color.value+'</td>'+
+		'<td><input type="hidden" name="kms" value="'+kms.value+'">'+kms.value+'</td>'+
+		'</tr>';
+		cont++;
+		detalles++;
+		$('#detalles').append(fila);
+		$("#btnAgregarAut").hide();
+		// limpiarDetalle();
+
+	}else{
+		alert("error al ingresar el detalle, revisar las datos del articulo ");
+	}
+}
+
+function eliminarDetalle(indice){
+	$("#fila"+indice).remove();
+	detalles=detalles-1;
+	$("#btnAgregarAut").show();
+}
 
 init();

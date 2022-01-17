@@ -140,8 +140,7 @@ switch ($_GET["op"]) {
 							$paginas = 13;
 
 							echo "<tr>
-								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idingreso"].")'><i class='fa fa-eye'></i></button> <button class='btn btn-danger btn-xs' onclick='anular(".$fila["idingreso"].")'><i class='fa fa-close'></i></button>								
-								<a target='_blank' href='".$url.$fila["idingreso"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-file'></i></button></a></td>								
+								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idingreso"].")'><i class='fa fa-eye'></i></button> <button class='btn btn-danger btn-xs' onclick='anular(".$fila["idingreso"].")'><i class='fa fa-close'></i></button></td>								
 								<td>".$fila['idingreso']."</td>
 								<td>".$fila['fecha']."</td>
 								<td>".$fila['estado']."</td>
@@ -239,7 +238,7 @@ switch ($_GET["op"]) {
 										<td><p>$ ".$creditoMiles."</p></td>
 										<td><p>$ ".$mayoreoMiles."</p></td>
 										<td><p>".$fila["stock"]." pz</p></td>										
-										<td><button class='btn btn-warning' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\" )'><span class='fa fa-plus'></span></button></td>
+										<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\" )'><span class='fa fa-plus'></span></button></td>
 									</tr>";
 								} else {
 									echo "<tr style='color:red;'>
@@ -253,7 +252,7 @@ switch ($_GET["op"]) {
 										<td><p>$ ".$creditoMiles."</p></td>
 										<td><p>$ ".$mayoreoMiles."</p></td>
 										<td><p>".$fila["stock"]." pz</p></td>										
-										<td><button class='btn btn-warning' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\" )'><span class='fa fa-plus'></span></button></td>
+										<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\" )'><span class='fa fa-plus'></span></button></td>
 									</tr>";
 								}					
 							}

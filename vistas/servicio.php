@@ -30,26 +30,74 @@ if ($_SESSION['servicios']==1) {
           </div>          
           <div class="panel-body" style="height: 400px;" id="formularioregistros">
             <form action="" name="formulario" id="formulario" method="POST">
+
+            <div class="form-group col-lg-12 col-md-6 col-xs-12">
+                <center><h4 aling="center">Información del cliente</h4></center>
+              </div>
+
               <div class="form-group col-lg-4 col-md-8 col-xs-12">
                 <label for="">Cliente(*):</label>
                 <input class="form-control" type="hidden" name="idservicio" id="idservicio">
                 <select name="idcliente" id="idcliente" class="form-control selectpicker" data-live-search="true" required>                  
                 </select>
               </div>
-
-              <div class="form-group col-lg-4 col-md-4 col-xs-12">
+              <div class="loader form-group col-lg-1 col-md-8 col-xs-12" style="margin-top: 15px;">
+                  <img src="../files/images/loader.gif" alt="" width="50px;">
+              </div>
+              <div class="form-group col-lg-2 col-md-4 col-xs-12" id="addCliente">
                 <label for="">Agregar Cliente</label><br>
                   <a data-toggle="modal" href="#agregarCliente">
                     <button id="btnAgregarArt" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Cliente</button>
                   </a>
               </div>
 
-              <div class="form-group col-lg-4 col-md-4 col-xs-12">
+              <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
+                <label for="">RFC: </label>
+                <input class="form-control" type="text" name="rfc" id="rfc">
+              </div>
+
+              <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
+                <label for="">Dirección: </label>
+                <input class="form-control" type="text" name="direccion" id="direccion">
+              </div>
+
+              <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
+                <label for="">Tipo de precio: </label>
+                <input class="form-control" type="text" name="tipoPrecio" id="tipoPrecio">
+              </div>
+
+              <div class="form-group col-lg-3 col-md-2 col-xs-6" id="divImpuesto">
+                <label for="">Email: </label>
+                <input class="form-control" type="text" name="email" id="email">
+              </div>
+
+              <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
+                <label for="">Número móvil: </label>
+                <input class="form-control" type="text" name="telefono" id="telefono">
+              </div>
+
+              <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
+                <label for="">Días Crédito: </label>
+                <input class="form-control" type="text" name="credito" id="credito">
+              </div>
+
+              <div class="form-group col-lg-3 col-md-2 col-xs-6" id="divImpuesto">
+                <label for="">Automovil: </label>
+                <select name="idauto" id="idauto" class="form-control selectpicker" data-live-search="true">
+                  <option value="" disabled selected>Seleccionar auto</option>
+                </select>
+              </div>
+              <input type="hidden" id="idclient" name="idclient" value="" style="border:none; color:white;">
+
+              <div class="form-group col-lg-12 col-md-6 col-xs-12">
+                <center><h4 aling="center">Detalles venta</h4></center>
+              </div>
+              <div class="form-group col-lg-2 col-md-4 col-xs-12">
                 <label for="">Fecha(*): </label>
                 <input class="form-control" type="date" name="fecha_hora" id="fecha_hora" required>
               </div>  
 
-              <div class="form-group col-lg-6 col-md-6 col-xs-12">
+              <div class="form-group col-lg-4 col-md-6 col-xs-12">
                 <label for="">Tipo Comprobante(*): </label>
                   <select name="tipo_comprobante" id="tipo_comprobante" class="form-control selectpicker" required>                    
                     <option value="Factura">Factura</option>
@@ -59,9 +107,26 @@ if ($_SESSION['servicios']==1) {
                 <label for="">Impuesto: </label>
                 <input class="form-control" type="text" name="impuesto" id="impuesto">
               </div>
+
+              <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                <label for="">Tipo de precio </label>
+                  <select name="tipo_precio" id="tipo_precio" class="form-control selectpicker">
+                  <option value="" disabled selected>Tipo Precio</option>                    
+                    <option value="publico">Publico / Mostrador</option>
+                    <option value="taller">Taller</option>
+                    <option value="credito_taller">Credito Taller</option>
+                    <option value="mayoreo">Mayoreo</option>
+                  </select>
+              </div> 
+              
+              <input type="text" name="caja_valor" id="caja_valor" value="" style="border: none; color: transparent;">
               
               <div class="form-group col-lg-12 col-md-6 col-xs-12">
                     <center><h4 aling="center">Información de auto</h4></center>
+              </div>
+
+              <div class="loaderInfoAuto form-group col-lg-1 col-md-8 col-xs-12" style="margin-top: 15px;">
+                  <img src="../files/images/loader.gif" alt="" width="50px;">
               </div>
 
               <div class="form-group col-lg-2 col-md-2 col-xs-6">
@@ -489,7 +554,7 @@ if ($_SESSION['servicios']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/servicios.js"></script>
+ <script src="scripts/servicio.js"></script>
  <?php 
 }
 

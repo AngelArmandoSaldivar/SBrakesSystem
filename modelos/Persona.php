@@ -10,18 +10,58 @@ public function __construct(){
 }
 
 //metodo insertar regiustro
-public function insertar($tipo_persona,$nombre,$tipo_documento,$tipo_precio,$num_documento,$direccion,$telefono,$email){
-	$sql="INSERT INTO persona (tipo_persona,nombre,tipo_documento,tipo_precio,num_documento,direccion,telefono,email) VALUES ('$tipo_persona','$nombre','$tipo_documento','$tipo_precio','$num_documento','$direccion','$telefono','$email')";
-	return ejecutarConsulta($sql);
+public function insertar($tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$email, $rfc, $credito, $placas, $marca, $modelo, $ano, $color, $kms){	
+	$sql="INSERT INTO persona (tipo_persona,nombre,tipo_precio,direccion,telefono,email, rfc, credito) VALUES ('$tipo_persona','$nombre','$tipo_precio','$direccion','$telefono','$email', '$rfc', '$credito')";
+	$idPersonaNew=ejecutarConsulta_retornarID($sql);
+
+	$sw=true;
+	$num_elementos=0;
+
+	if($modelo != "") {
+		$sql_auto="INSERT INTO autos (placas, marca, modelo, ano, color, kms, idcliente) VALUES('$placas', '$marca', '$modelo', '$ano', '$color', '$kms', '$idPersonaNew')";
+		ejecutarConsulta($sql_auto) or $sw=false;
+	}	
+
+	sleep(1);
+	return $sw;
+
 }
 
+public function insertarCliente($tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$email, $rfc, $credito){	
+	$sql="INSERT INTO persona (tipo_persona,nombre,tipo_precio,direccion,telefono,email, rfc, credito) VALUES ('$tipo_persona','$nombre','$tipo_precio','$direccion','$telefono','$email', '$rfc', '$credito')";
+	$idPersonaNew=ejecutarConsulta_retornarID($sql);
 
+	$sw=true;
+	$num_elementos=0;
+	
+	sleep(1);
+	return $sw;
 
-public function editar($idpersona,$tipo_persona,$nombre,$tipo_documento,$tipo_precio,$num_documento,$direccion,$telefono,$email){
-	$sql="UPDATE persona SET tipo_persona='$tipo_persona', nombre='$nombre',tipo_documento='$tipo_documento',tipo_precio='$tipo_precio',num_documento='$num_documento',direccion='$direccion',telefono='$telefono',email='$email' 
+}
+
+public function editar($idpersona,$tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$email, $rfc, $credito, $placas, $marca, $modelo, $ano, $color, $kms){
+	$sql="UPDATE persona SET tipo_persona='$tipo_persona', nombre='$nombre',tipo_precio='$tipo_precio',direccion='$direccion',telefono='$telefono',email='$email', rfc='$rfc', credito='$credito'
 	WHERE idpersona='$idpersona'";
-	return ejecutarConsulta($sql);
+	ejecutarConsulta($sql);
+	$sw=true;
+	if($modelo != "") {
+		$sql_auto="INSERT INTO autos (placas, marca, modelo, ano, color, kms, idcliente) VALUES('$placas', '$marca', '$modelo', '$ano', '$color', '$kms', '$idpersona')";
+		ejecutarConsulta($sql_auto);
+	}
+
+	sleep(1);
+	return $sw;
 }
+
+public function editarPersona($idpersona,$tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$email, $rfc, $credito){
+	$sql="UPDATE persona SET tipo_persona='$tipo_persona', nombre='$nombre',tipo_precio='$tipo_precio',direccion='$direccion',telefono='$telefono',email='$email', rfc='$rfc', credito='$credito'
+	WHERE idpersona='$idpersona'";
+	ejecutarConsulta($sql);
+	$sw=true;
+	sleep(1);
+	return $sw;
+}
+
 //funcion para eliminar datos
 public function eliminar($idpersona){
 	$sql="DELETE FROM persona WHERE idpersona='$idpersona'";
@@ -44,6 +84,12 @@ public function listarc(){
 	$sql="SELECT * FROM persona WHERE tipo_persona='Cliente'";
 	return ejecutarConsulta($sql);
 }
+
+public function listarAutos($idpersona) {
+	$sql = "SELECT * FROM autos WHERE idcliente='$idpersona'";
+	return ejecutarConsulta($sql);
+}
+
 }
 
  ?>

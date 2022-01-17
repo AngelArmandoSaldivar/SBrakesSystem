@@ -55,7 +55,6 @@ $pdf->addDate($regv->fecha);
 //enviamos los datos del cliente al metodo addClientAddresse de la clase factura
 $pdf->addClientAdresse("CLIENTE: ".utf8_decode($regv->cliente),
                        "DIRECCION: ".utf8_decode($regv->direccion), 
-                       $regv->tipo_documento.": ".$regv->num_documento, 
                        "EMAIL: ".$regv->email, 
                        "TELEFONO: ".$regv->telefono,
                         "MARCA: ". $regv->marca,
@@ -96,7 +95,7 @@ $pdf->ImprovedTable($header);
 while($regd=$rsptad->fetch_object()){
   $extrae = substr($regd->descripcion, 0,27);
   $importe = $regd->precio_servicio * $regd->cantidad;
-  $data = array($regd->codigo, $extrae, $regd->cantidad, $regd->precio_servicio, $importe);
+  $data = array($regd->codigo, $extrae, $regd->cantidad, "$".number_format($regd->precio_servicio, 2), "$".number_format($importe, 2));
   $pdf->ImprovedTable2($data);
 }
 

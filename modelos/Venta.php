@@ -10,14 +10,14 @@ public function __construct(){
 }
 
 //metodo insertar registro
-public function insertar($idcliente,$idusuario,$tipo_comprobante,$factura,$fecha_hora,$impuesto,$total_venta,$idarticulo,$clave,$fmsi,$descripcion,$cantidad,$precio_venta,$descuento,$idsucursal, $forma_pago, $forma_pago2, $forma_pago3, $banco, $banco2, $banco3, $importe, $importe2, $importe3, $ref, $ref2, $ref3){
-	$sql="INSERT INTO venta (idcliente,idusuario,tipo_comprobante,factura,fecha_hora,impuesto,total_venta,pagado,estado,idsucursal,status) VALUES ('$idcliente','$idusuario','$tipo_comprobante','$factura','$fecha_hora','$impuesto','$total_venta','$total_venta', 'NORMAL', '$idsucursal', 'NORMAL')";
+public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$total_venta,$idarticulo,$clave,$fmsi,$marca,$descripcion,$cantidad,$precio_venta,$descuento,$idsucursal, $forma_pago, $forma_pago2, $forma_pago3, $banco, $banco2, $banco3, $importe, $importe2, $importe3, $ref, $ref2, $ref3){
+	$sql="INSERT INTO venta (idcliente,idusuario,tipo_comprobante,fecha_hora,impuesto,total_venta,pagado,estado,idsucursal,status) VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_hora','$impuesto','$total_venta','$total_venta', 'NORMAL', '$idsucursal', 'NORMAL')";
 	 $idventanew=ejecutarConsulta_retornarID($sql);
 	 $num_elementos=0;
 	 $sw=true;
 	 while ($num_elementos < count($idarticulo)) {
 
-	 	$sql_detalle="INSERT INTO detalle_venta (idventa,idarticulo,clave,fmsi,descripcion,tipoMov,cantidad,precio_venta,descuento) VALUES('$idventanew','$idarticulo[$num_elementos]', '$clave[$num_elementos]','$fmsi[$num_elementos]','$descripcion[$num_elementos]','VENTA','$cantidad[$num_elementos]','$precio_venta[$num_elementos]','$descuento[$num_elementos]')";
+	 	$sql_detalle="INSERT INTO detalle_venta (idventa,idarticulo,clave,fmsi,marca, descripcion,tipoMov,cantidad,precio_venta,descuento) VALUES('$idventanew','$idarticulo[$num_elementos]', '$clave[$num_elementos]','$fmsi[$num_elementos]','$marca[$num_elementos]','$descripcion[$num_elementos]','VENTA','$cantidad[$num_elementos]','$precio_venta[$num_elementos]','$descuento[$num_elementos]')";
 
 	 	ejecutarConsulta($sql_detalle) or $sw=false;
 
@@ -81,10 +81,15 @@ public function anular($idventa){
 	 return $sw;
 }
 
+public function mostrarInfoClient($idcliente){
+	$sql="SELECT * FROM persona WHERE tipo_persona='Cliente' AND idpersona='$idcliente'";
+	sleep(1);
+	return ejecutarConsultaSimpleFila($sql);
+}
 
 //implementar un metodopara mostrar los datos de unregistro a modificar
 public function mostrar($idventa){
-	$sql="SELECT v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, forma_pago,forma_pago2, forma_pago3,banco,banco2, banco3,importe, importe2, importe3,referencia, referencia2, referencia3,v.tipo_comprobante,v.total_venta,v.impuesto,v.estado, v.factura FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario INNER JOIN formas_pago fp ON fp.idventa=v.idventa WHERE v.idventa='$idventa'";
+	$sql="SELECT v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente, p.rfc, p.direccion, p.email, p.telefono, p.tipo_precio, p.credito, u.idusuario,u.nombre as usuario, forma_pago,forma_pago2, forma_pago3,banco,banco2, banco3,importe, importe2, importe3,referencia, referencia2, referencia3,v.tipo_comprobante,v.total_venta,v.impuesto,v.estado, v.factura FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario INNER JOIN formas_pago fp ON fp.idventa=v.idventa WHERE v.idventa='$idventa'";
 	sleep(1);
 	return ejecutarConsultaSimpleFila($sql);
 }
@@ -103,13 +108,17 @@ public function listar(){
 
 
 public function ventacabecera($idventa){
-	$sql= "SELECT v.idventa, v.idcliente, p.nombre AS cliente, p.direccion, p.tipo_documento, p.num_documento, p.email, p.telefono, v.idusuario, u.nombre AS usuario, v.tipo_comprobante, DATE(v.fecha_hora) AS fecha, v.impuesto, v.total_venta FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE v.idventa='$idventa'";
+	$sql= "SELECT v.idventa, v.idcliente, p.nombre AS cliente, p.direccion, p.email, p.telefono, v.idusuario, u.nombre AS usuario, v.tipo_comprobante, DATE(v.fecha_hora) AS fecha, v.impuesto, v.total_venta FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE v.idventa='$idventa'";
 	return ejecutarConsulta($sql);
 }
 
 public function ventadetalles($idventa){
-	$sql="SELECT a.codigo AS articulo, a.codigo, d.cantidad,d.fmsi, d.descripcion, d.precio_venta, d.descuento, d.clave, (d.cantidad*d.precio_venta-d.descuento) AS subtotal FROM detalle_venta d INNER JOIN articulo a ON d.idarticulo=a.idarticulo WHERE d.idventa='$idventa'";
+	$sql="SELECT a.codigo AS articulo, a.codigo, d.cantidad,d.fmsi,d.marca, d.descripcion, d.precio_venta, d.descuento, d.clave, (d.cantidad*d.precio_venta-d.descuento) AS subtotal FROM detalle_venta d INNER JOIN articulo a ON d.idarticulo=a.idarticulo WHERE d.idventa='$idventa'";
     	return ejecutarConsulta($sql);
+}
+public function ultimaVenta() {
+	$sql = "SELECT * FROM venta ORDER BY idventa DESC limit 1";
+	return ejecutarConsulta($sql);
 }
 
 }

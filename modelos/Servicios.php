@@ -76,7 +76,13 @@ public function anular($idservicio){
 
 //implementar un metodopara mostrar los datos de unregistro a modificar
 public function mostrar($idservicio){
-	$sql="SELECT v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.marca, v.modelo, v.ano, v.kms, v.color, v.placas, forma_pago,forma_pago2, forma_pago3,banco,banco2, banco3,importe, importe2, importe3,referencia, referencia2, referencia3 FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario INNER JOIN formas_pago fp ON fp.idservicio=v.idservicio WHERE v.idservicio='$idservicio'";
+	$sql="SELECT v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,p.rfc, p.direccion, p.email, p.telefono, p.tipo_precio, p.credito, u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.marca, v.modelo, v.ano, v.kms, v.color, v.placas, forma_pago,forma_pago2, forma_pago3,banco,banco2, banco3,importe, importe2, importe3,referencia, referencia2, referencia3 FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario INNER JOIN formas_pago fp ON fp.idservicio=v.idservicio WHERE v.idservicio='$idservicio'";
+	sleep(1);
+	return ejecutarConsultaSimpleFila($sql);
+}
+
+public function mostrarInfoAuto($idauto){
+	$sql="SELECT * FROM autos WHERE idauto='$idauto'";
 	sleep(1);
 	return ejecutarConsultaSimpleFila($sql);
 }
@@ -95,7 +101,7 @@ public function listar(){
 
 
 public function serviciocabecera($idservicio){
-	$sql= "SELECT v.idservicio, v.idcliente, p.nombre AS cliente, p.direccion, p.tipo_documento, p.num_documento, p.email, p.telefono, v.idusuario, u.nombre AS usuario, v.tipo_comprobante, DATE(v.fecha_hora) AS fecha, v.impuesto, v.total_servicio, v.marca, v.modelo, v.color, v.kms, v.placas FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE v.idservicio='$idservicio'";
+	$sql= "SELECT v.idservicio, v.idcliente, p.nombre AS cliente, p.direccion,p.email, p.telefono, v.idusuario, u.nombre AS usuario, v.tipo_comprobante, DATE(v.fecha_hora) AS fecha, v.impuesto, v.total_servicio, v.marca, v.modelo, v.color, v.kms, v.placas FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE v.idservicio='$idservicio'";
 	return ejecutarConsulta($sql);
 }
 
@@ -103,6 +109,12 @@ public function serviciodetalles($idservicio){
 	$sql="SELECT a.codigo AS articulo, a.codigo, d.cantidad,d.fmsi, d.descripcion, d.precio_servicio, d.descuento, d.clave, (d.cantidad*d.precio_servicio-d.descuento) AS subtotal FROM detalle_servicio d INNER JOIN articulo a ON d.idarticulo=a.idarticulo WHERE d.idservicio='$idservicio'";
     	return ejecutarConsulta($sql);
 }
+
+public function ultimoServicio() {
+	$sql = "SELECT * FROM servicio ORDER BY idservicio DESC limit 1";
+	return ejecutarConsulta($sql);
+}
+
 
 }
 

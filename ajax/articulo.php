@@ -148,7 +148,12 @@ if(!isset($_SESSION["nombre"])) {
 								<td><p>$ ".$creditoMiles."</p></td>
 								<td><p>$ ".$mayoreoMiles."</p></td>
 								<td><p>".$fila['stock']."pz</td>
-								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-pencil'></i></button> <button class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idarticulo"].")')><i class='fa fa-close'></i></button><button class='btn btn-primary btn-xs' onclick='activar(".$fila["idarticulo"].")'><i class='fa fa-check'></i></button></td>					
+								<td>
+								<div class='emergente'>
+									<span data-tooltip='Editar articulo'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-pencil'></i></button></span>
+									<span data-tooltip='Desactivar articulo'><button class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idarticulo"].")')><i class='fa fa-close'></i></button></span>
+									<span data-tooltip='Activar articulo'><button class='btn btn-primary btn-xs' onclick='activar(".$fila["idarticulo"].")'><i class='fa fa-check'></i></button></span>
+								</td>
 							</tr>";
 						} else if($fila["stock"] <=0) {
 							echo "<tr style='color:red; font-size:11px;'>
@@ -186,7 +191,6 @@ if(!isset($_SESSION["nombre"])) {
 				</table>";
 			}else{
 				echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";
-				echo "<img src='../files/img/products_brembo.jpg'>";
 			}
 
 			break;

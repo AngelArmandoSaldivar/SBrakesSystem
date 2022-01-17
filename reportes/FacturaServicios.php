@@ -271,7 +271,7 @@ function addPageNumber( $page )
 }
 
 // Client address
-function addClientAdresse( $cliente, $domicilio ,$num_documento, $email, $telefono, $marca, $modelo, $placas, $color, $kms )
+function addClientAdresse( $cliente, $domicilio ,$email, $telefono, $marca, $modelo, $placas, $color, $kms )
 {
 
     $re  = $this->w - 30;
@@ -362,7 +362,7 @@ function ImprovedTable($header)
 }
 
 function ImprovedTable2($data) {            
-    $w = array(10, 47, 4, 2, 15);
+    $w = array(10, 47, 2, 1, 15);
 
     for($i=0;$i<count($data);$i++) {
         // Move to 8 cm to the right
@@ -522,7 +522,7 @@ function addTVAs( $impuesto, $total_venta, $simbolo )
     $this->SetFont('Arial','',8);
     
     
-    $re  = $this->w - 30;
+    $re  = $this->w - 35;
     $rei  = $this->w - 0;
     $rf  = $this->w - 0;
     $y1  = $this->h - 74;
@@ -535,7 +535,7 @@ function addTVAs( $impuesto, $total_venta, $simbolo )
     $length = $this->GetStringWidth( $simbolo );
     $this->Cell( $length, 2, $simbolo);
     $length = $this->GetStringWidth( $total_venta );
-    $formatTotal = number_format($total_venta);
+    $formatTotal = number_format($total_venta, 2);
     $this->Cell( $length, 2, $formatTotal);   
 
     $this->SetXY( $this->w - 190, $this->h - 59+12 );
