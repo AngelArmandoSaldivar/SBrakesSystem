@@ -132,7 +132,7 @@ switch ($_GET["op"]) {
 							<th class='bg-info' scope='col'>Estatus</th>
 							<th class='bg-info' scope='col'>Cliente</th>
 							<th class='bg-info' scope='col'>Vendedor</th>
-							<th class='bg-info' scope='col'>Falta por pagar</th>
+							<th class='bg-info' scope='col'>Saldo pendiente</th>
 							<th class='bg-info' scope='col'>Auto</th>
 							<th class='bg-info' scope='col'>Total</th>
 						</tr>
@@ -150,7 +150,7 @@ switch ($_GET["op"]) {
 							$ventas_pagina = 3;
 							$paginas = 13;
 
-							if($fila["status"] != 'ANULADO' && $fila["status"] != 'NORMAL') {
+							if($fila["status"] != 'ANULADO' && $fila["status"] != 'PENDIENTE') {
 								echo "<tr>
 								<td>
 								<div class='emergente'>
@@ -197,7 +197,7 @@ switch ($_GET["op"]) {
 							<th class='bg-info' scope='col'>Estatus</th>
 							<th class='bg-info' scope='col'>Cliente</th>
 							<th class='bg-info' scope='col'>Vendedor</th>
-							<th class='bg-info' scope='col'>Pagado</th>
+							<th class='bg-info' scope='col'>Saldo pendiente</th>
 							<th class='bg-info' scope='col'>Auto</th>
 							<th class='bg-info' scope='col'>Total</th>
 					</tr>
@@ -214,7 +214,7 @@ switch ($_GET["op"]) {
 			$persona = new Persona();
 
 			$rspta = $persona->listarc();
-
+			echo '<option value="" disabled selected>Seleccionar cliente</option>';
 			while ($reg = $rspta->fetch_object()) {
 				echo '<option value='.$reg->idpersona.'>'.$reg->nombre.'</option>';
 			}
@@ -352,5 +352,114 @@ switch ($_GET["op"]) {
 						echo "<br><br>";
 					}
 				break;
+
+				case 'listarProductosSucursal':
+	
+					$consulta="SELECT a.codigo, a.fmsi, a.barcode, a.descripcion, a.marca, a.stock, a.costo, a.publico, a.taller, a.credito_taller, a.mayoreo, a.idarticulo,a.idsucursal, s.nombre FROM articulo AS a INNER JOIN sucursal s ON a.idsucursal=s.idsucursal WHERE s.idsucursal != $idsucursal";
+						$termino= "";
+						if(isset($_POST['productos']))
+						{
+							$termino=$conexion->real_escape_string($_POST['productos']);
+							usleep(10000);
+							$consulta="SELECT a.codigo, a.fmsi, a.barcode, a.descripcion, a.marca, a.stock, a.costo, a.publico, a.taller, a.credito_taller, a.mayoreo, a.idarticulo,a.idsucursal, s.nombre FROM articulo AS a INNER JOIN sucursal s ON a.idsucursal=s.idsucursal
+							WHERE
+							codigo LIKE '%".$termino."%' OR
+							fmsi LIKE '%".$termino."%' OR
+							barcode LIKE '%".$termino."%' OR
+							descripcion LIKE '%".$termino."%' OR
+							marca LIKE '%".$termino."%' AND stock > 0 ORDER BY stock DESC LIMIT 100";
+						}					
+						$consultaBD=$conexion->query($consulta);
+						if($consultaBD->num_rows>=1){
+							echo "
+							<table class='responsive-table table table-hover table-bordered' style='font-size:12px'>
+								<thead class='table-light'>
+									<tr>
+										<th class='bg-info' scope='col'>Sucursal</th>
+										<th class='bg-info' scope='col'>Clave</th>
+										<th class='bg-info' scope='col'>FMSI</th>
+										<th class='bg-info' scope='col'>Marca</th>
+										<th class='bg-info' scope='col'>Descripción</th>
+										<th class='bg-info' scope='col'>Costo</th>
+										<th class='bg-info' scope='col'>Publico Mostrador</th>
+										<th class='bg-info' scope='col'>Taller</th>
+										<th class='bg-info' scope='col'>Crédito Taller</th>
+										<th class='bg-info' scope='col'>Mayoreo</th>
+										<th class='bg-info' scope='col'>Stock</th>									
+										<th class='bg-info' scope='col'>Acciones</th>
+									</tr>
+								</thead>
+							<tbody>";
+							while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){							
+								$costoMiles = number_format($fila['costo']);
+								$publicMiles = number_format($fila['publico']);
+								$tallerMiles = number_format($fila['taller']);
+								$creditoMiles = number_format($fila['credito_taller']);
+								$mayoreoMiles = number_format($fila['mayoreo']);
+								$descrip = $fila['descripcion'];
+								$delit = substr($descrip, 0,30);
+								$selectTypes ="";
+					
+								if(isset($_POST["types"])) {
+									$tipo_precio = $_POST["types"];
+									if($fila["idsucursal"] != $idsucursal) {
+										if($fila["stock"] >=1 && $tipo_precio != null) {
+											echo "<tr style='color:blue;'>
+												<td>".$fila['nombre']."</td>
+												<td>".$fila['codigo']."</td>
+												<td>".$fila['fmsi']."</td>
+												<td>".$fila['marca']."</td>
+												<td>".$delit."...</td>
+												<td><p>$ ".$costoMiles."</p></td>
+												<td><p>$ ".$publicMiles."</p></td>
+												<td><p>$ ".$tallerMiles."</p></td>
+												<td><p>$ ".$creditoMiles."</p></td>
+												<td><p>$ ".$mayoreoMiles."</p></td>
+												<td><p>".$fila["stock"]." pz</p></td>										
+												<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\" )'><span class='fa fa-plus'></span></button></td>
+											</tr>";
+										} else if($fila["stock"] >=1 && $tipo_precio == null){
+											$precio = "publico";
+											echo "<tr style='color:blue;'>
+												<td>".$fila['nombre']."</td>
+												<td>".$fila['codigo']."</td>
+												<td>".$fila['fmsi']."</td>
+												<td>".$fila['marca']."</td>
+												<td>".$delit."...</td>
+												<td><p>$ ".$costoMiles."</p></td>
+												<td><p>$ ".$publicMiles."</p></td>
+												<td><p>$ ".$tallerMiles."</p></td>
+												<td><p>$ ".$creditoMiles."</p></td>
+												<td><p>$ ".$mayoreoMiles."</p></td>
+												<td><p>".$fila["stock"]." pz</p></td>										
+												<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila[$precio]."\", \"".$fila["stock"]."\" )'><span class='fa fa-plus'></span></button></td>
+											</tr>";
+										}
+									}
+								}
+							}
+							echo "</tbody>
+							<tfoot>
+								<tr>		
+									<th class='bg-info' scope='col'>Sucursal</th>
+									<th class='bg-info' scope='col'>Clave</th>
+									<th class='bg-info' scope='col'>FMSI</th>
+									<th class='bg-info' scope='col'>Marca</th>
+									<th class='bg-info' scope='col'>Descripción</th>
+									<th class='bg-info' scope='col'>Costo</th>
+									<th class='bg-info' scope='col'>Publico Mostrador</th>
+									<th class='bg-info' scope='col'>Taller</th>
+									<th class='bg-info' scope='col'>Crédito Taller</th>
+									<th class='bg-info' scope='col'>Mayoreo</th>
+									<th class='bg-info' scope='col'>Stock</th>									
+									<th class='bg-info' scope='col'>Acciones</th>
+								</tr>
+							</tfoot>
+							</table>";
+						}else{
+							echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";						
+							echo "<br><br>";
+						}
+					break;
 }
  ?>

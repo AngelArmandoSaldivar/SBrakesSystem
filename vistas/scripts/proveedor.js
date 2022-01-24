@@ -98,13 +98,11 @@ function mostrar(idpersona){
 			data=JSON.parse(data);
 			mostrarform(true);
 
-			$("#nombre").val(data.nombre);
-			$("#tipo_documento").val(data.tipo_documento);
-			$("#tipo_documento").selectpicker('refresh');
-			$("#num_documento").val(data.num_documento);
+			$("#nombre").val(data.nombre);			
 			$("#direccion").val(data.direccion);
 			$("#telefono").val(data.telefono);
 			$("#email").val(data.email);
+			$("#rfc").val(data.rfc);
 			$("#idpersona").val(data.idpersona);
 		})
 }

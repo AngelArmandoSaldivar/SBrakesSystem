@@ -156,7 +156,7 @@ switch ($_GET["op"]) {
 	}
 	break;
 
-	case 'verificar':
+	case 'verificar':		
 	//validar si el usuario tiene acceso al sistema
 	$logina=$_POST['logina'];
 	$clavea=$_POST['clavea'];
@@ -164,7 +164,7 @@ switch ($_GET["op"]) {
 	//Hash SHA256 en la contraseña
 	$clavehash=hash("SHA256", $clavea);
 	
-	$rspta=$usuario->verificar($logina, $clavehash);
+	$rspta=$usuario->verificar($logina, $clavehash);	
 
 	$fetch=$rspta->fetch_object();
 	if (isset($fetch)) {
@@ -198,11 +198,9 @@ switch ($_GET["op"]) {
 
 	}
 	echo json_encode($fetch);
-
-
 	break;
 	case 'salir':
-	   //limpiamos la variables de la secion
+	   //limpiamos la variables de la sesión
 	session_unset();
 
 	  //destruimos la sesion

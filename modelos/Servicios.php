@@ -12,7 +12,7 @@ public function __construct(){
 //metodo insertar registro
 public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$total_servicio,$marca, $modelo, $ano, $color, $kms,$placas,$idarticulo,$clave,$fmsi,$descripcion,$cantidad,$precio_servicio,$descuento, $idsucursal, $forma_pago, $forma_pago2, $forma_pago3, $banco, $banco2, $banco3, $importe, $importe2, $importe3, $ref, $ref2, $ref3){
 	$sql="INSERT INTO servicio (idcliente,idusuario,tipo_comprobante,fecha_hora,impuesto,total_servicio,pagado,marca, modelo, ano, color, kms, placas, estado,idsucursal,status) 
-						VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_hora','$impuesto','$total_servicio','$total_servicio','$marca', '$modelo', '$ano', '$color', '$kms','$placas', 'NORMAL', '$idsucursal', 'NORMAL')";	
+						VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_hora','$impuesto','$total_servicio','$total_servicio','$marca', '$modelo', '$ano', '$color', '$kms','$placas', 'PENDIENTE', '$idsucursal', 'PENDIENTE')";	
 	 $idservicionew=ejecutarConsulta_retornarID($sql);
 	 $num_elementos=0;
 	 $sw=true;

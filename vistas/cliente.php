@@ -76,6 +76,9 @@ if ($_SESSION['ventas']==1) {
       </a>
     </div>
 
+    <div class="form-group col-lg-12 col-md-4 col-xs-12">
+      <label for=""><h3>Detalle Auto </h3></label>
+    </div>   
     <div class="form-group col-lg-12 col-md-12 col-xs-12">         
                 <div class="panel-body table-responsive">
                 <table id="detalles" class="table table-striped table-bordered table-condensed table-hover">
@@ -101,6 +104,7 @@ if ($_SESSION['ventas']==1) {
                   </tbody>
                 </table>
                 </div>
+              </div>
               </div>
 
      <br><br>

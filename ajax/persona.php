@@ -117,7 +117,6 @@ if(!isset($_SESSION["nombre"])) {
 						<tr>
 							<th class='bg-info' scope='col'>Acciones</th>
 							<th class='bg-info' scope='col'>Nombre</th>
-							<th class='bg-info' scope='col'>Documento</th>
 							<th class='bg-info' scope='col'>Telefono</th>
 							<th class='bg-info' scope='col'>Email</th>
 							<th class='bg-info' scope='col'>Direccion</th>
@@ -134,7 +133,6 @@ if(!isset($_SESSION["nombre"])) {
 								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idpersona"].")'><i class='fa fa-eye'></i></button>								
 								<button class='btn btn-danger btn-xs' onclick='eliminar(".$fila["idpersona"].")'><i class='fa fa-trash'></i></button>
 								<td>".$fila['nombre']."</td>
-								<td>".$fila['tipo_documento']."</td>
 								<td>".$fila['telefono']."</td>
 								<td><p>".$fila['email']."</td>
 								<td><p>".$fila['direccion']."</td>
@@ -146,7 +144,6 @@ if(!isset($_SESSION["nombre"])) {
 					<tr>					
 					<th class='bg-info' scope='col'>Acciones</th>
 					<th class='bg-info' scope='col'>Nombre</th>
-					<th class='bg-info' scope='col'>Documento</th>
 					<th class='bg-info' scope='col'>Telefono</th>
 					<th class='bg-info' scope='col'>Email</th>
 					<th class='bg-info' scope='col'>Direccion</th>

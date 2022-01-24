@@ -3,6 +3,7 @@ $("#frmAcceso").on('submit', function(e)
 	e.preventDefault();
 	logina=$("#logina").val();
 	clavea=$("#clavea").val();
+    console.log(logina);
 
 	$.post("../ajax/usuario.php?op=verificar",
         {"logina":logina, "clavea":clavea},
@@ -11,8 +12,8 @@ $("#frmAcceso").on('submit', function(e)
            if (data!="null")
             {
             	$(location).attr("href","escritorio.php");
-            }else{
-            	bootbox.alert("Usuario y/o Password incorrectos");
+            } else {
+            	alert("Nombre u contraseña incorrectos");
             }
         });
 })

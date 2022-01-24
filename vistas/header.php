@@ -137,7 +137,7 @@ if ($_SESSION['compras']==1) {
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="ingreso.php"><i class="fa fa-circle-o"></i> Ingresos</a></li>
+            <li><a href="ingreso.php"><i class="fa fa-circle-o"></i> Recepciones</a></li>
             <li><a href="proveedor.php"><i class="fa fa-circle-o"></i> Proveedores</a></li>
           </ul>
         </li>';
@@ -223,7 +223,6 @@ if ($_SESSION['consultac']==1) {
         </li>';
 }
         ?>  
-              
                                                 <?php 
 if ($_SESSION['consultav']==1) {
   echo '<li class="treeview">

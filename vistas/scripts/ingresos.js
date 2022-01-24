@@ -152,6 +152,7 @@ function guardaryeditar(e){
      		bootbox.alert(datos);
      		mostrarform(false);
      		obtener_registros();
+			$('.loader').hide();
      	}
      });
 

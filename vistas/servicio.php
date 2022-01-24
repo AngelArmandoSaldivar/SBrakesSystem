@@ -337,6 +337,11 @@ if ($_SESSION['servicios']==1) {
               <button id="btnAgregarArt" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Registrar Producto</button>
             </a>
           </div>
+          <div class="form-group col-lg-2 col-md-8 col-xs-12">              
+            <a data-toggle="modal" href="#agregarProductoAlmacen">
+              <button id="btnAgregarArt" type="button" class="btn btn-primary"><span class="fa fa-search-plus"></span>Buscar en otra sucursal</button>
+            </a>
+          </div>
           <section id="tabla_resultadoProducto"> </section>
         </div>
         </div>
@@ -358,56 +363,85 @@ if ($_SESSION['servicios']==1) {
         </div>
         <div class="modal-body">
           <div class="panel-body table-responsive">
-            <form action="" name="formularioCliente" id="formularioCliente" method="POST">
-              <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                <label for="">Nombre</label>
-                <input class="form-control" type="hidden" name="idpersona" id="idpersona">
-                <input class="form-control" type="hidden" name="tipo_persona" id="tipo_persona" value="Cliente">
-                <input class="form-control" type="text" name="nombre" id="nombre" maxlength="100" placeholder="Nombre del cliente" required>
-              </div>
-              <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                <label for="">Tipo Dcumento</label>
-                <select class="form-control select-picker" name="tipo_documento" id="tipo_documento" required>
-                  <option value="DNI">DNI</option>
-                  <option value="RUC">RUC</option>
-                  <option value="CEDULA">CEDULA</option>
-                </select>
-              </div>
-              <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                <label for="">Número Documento</label>
-                <input class="form-control" type="text" name="num_documento" id="num_documento" maxlength="20" placeholder="Número de Documento">
-              </div>
-              <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                <label for="">Direccion</label>
-                <input class="form-control" type="text" name="direccion" id="direccion" maxlength="70" placeholder="Direccion">
-              </div>
-              <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                <label for="">Telefono</label>
-                <input class="form-control" type="text" name="telefono" id="telefono" maxlength="20" placeholder="Número de Telefono">
-              </div>
-              <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                <label for="">Email</label>
-                <input class="form-control" type="email" name="email" id="email" maxlength="50" placeholder="Email">
-              </div>
-              <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                <label for="">Tipo de precio(*): </label>
-                <select name="tipo_precio" id="tipo_precio" class="form-control selectpicker" required>     
-                  <option value="publico">Publico</option>
-                  <option value="taller">Taller</option>
-                  <option value="credito_taller">Crédito Taller</option>
-                  <option value="mayoreo">Mayoreo</option>
-                </select><br><br>   
-              </div>
-            </form>
+          <form action="" name="formularioCliente" id="formularioCliente" method="POST">
+            <div class="form-group col-lg-6 col-md-6 col-xs-12">
+              <label for="">Nombre</label>
+              <input class="form-control" type="hidden" name="idpersona" id="idpersona">
+              <input class="form-control" type="hidden" name="tipo_persona" id="tipo_persona" value="Cliente">
+              <input class="form-control" type="text" name="nombre" id="nombre" maxlength="100" placeholder="Nombre del cliente" required>
+            </div>
+            <div class="form-group col-lg-6 col-md-6 col-xs-12">
+              <label for="">Direccion</label>
+              <input class="form-control" type="text" name="direccion" id="direccion" maxlength="70" placeholder="Direccion">
+            </div>
+            <div class="form-group col-lg-6 col-md-6 col-xs-12">
+              <label for="">Telefono</label>
+              <input class="form-control" type="text" name="telefono" id="telefono" maxlength="20" placeholder="Número de Telefono">
+            </div>
+            <div class="form-group col-lg-6 col-md-6 col-xs-12">
+              <label for="">Email</label>
+              <input class="form-control" type="email" name="email" id="email" maxlength="50" placeholder="Email">
+            </div>
+            <div class="form-group col-lg-4 col-md-6 col-xs-12">
+              <label for="">RFC</label>
+              <input class="form-control" type="text" name="rfc" id="rfc" placeholder="RFC">
+            </div>
+            <div class="form-group col-lg-4 col-md-6 col-xs-12">
+              <label for="">Días de crédito</label>
+              <input class="form-control" type="number" name="credito" id="credito" min="0" placeholder="Crédito">
+            </div>
+            <div class="form-group col-lg-4 col-md-12 col-xs-12">
+              <label for="">Tipo de precio(*): </label>
+              <select name="tipo_precio" id="tipo_precio" class="form-control selectpicker" required>     
+                <option value="publico">Publico</option>
+                <option value="taller">Taller</option>
+                <option value="credito_taller">Crédito Taller</option>
+                <option value="mayoreo">Mayoreo</option>
+              </select>
+            </div>
+            <!-- <div class="form-group col-lg-6 col-md-3 col-sm-6 col-xs-12" id="btnAgregarAuto">
+              <a data-toggle="modal" href="#myModalAuto">
+                <button id="btnAgregarAut" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Auto</button>
+              </a>
+            </div> -->
+
+            <!-- <div class="form-group col-lg-12 col-md-12 col-xs-12">         
+                        <div class="panel-body table-responsive">
+                        <table id="detallesAuto" class="table table-striped table-bordered table-condensed table-hover">
+                          <thead style="background-color:#A9D0F5">
+                            <th>Acciones</th>
+                            <th>Placas</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Año</th>
+                            <th>Color</th>
+                            <th>Kms</th>                                     
+                          </thead>
+                          <tfoot>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>                   
+                          </tfoot>
+                          <tbody>                
+                          </tbody>
+                        </table>
+                        </div>
+                      </div>
+
+            <br><br> -->
+                    </form>
             <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <button class="btn btn-success" type="submit" name="btnGuardarProveedor" onclick="guardarCliente()">Guardar</button>
               <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
             </div>
           </div>
           <div class="modal-footer">
-          <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
-        </div>
-        </div>
+            <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
+          </div>
         </div>
       </div>
     </div>
@@ -547,6 +581,32 @@ if ($_SESSION['servicios']==1) {
     </div>
   </div>
   <!-- fin Modal-->
+
+
+  <!--Agregar productos de otra sucursal-->
+  <div class="modal fade" id="agregarProductoAlmacen" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="width: 95% !important;">
+    <div class="modal-content" style="border-radius: 20px;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Seleccione un Articulo</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel-body table-responsive">
+          <div class="form-group col-lg-10 col-md-8 col-xs-12">
+            <section>            
+              <center><input class="form-control me-2" type="text" name="busquedaProductAlmacen" id="busquedaProductAlmacen" placeholder="Buscar..." style="width:250px"></center><br><br>
+            </section>
+          </div>
+          <section id="tabla_resultadoProducto_almacen"> </section>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+  </div>
 <?php 
 }else{
  require 'noacceso.php'; 
@@ -554,7 +614,7 @@ if ($_SESSION['servicios']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/servicio.js"></script>
+ <script src="scripts/servicios1.js"></script>
  <?php 
 }
 

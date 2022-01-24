@@ -21,7 +21,7 @@ if ($_SESSION['compras']==1) {
         <div class="col-md-12">
       <div class="box">
 <div class="box-header with-border">
-  <h1 class="box-title">Ingresos <button class="btn btn-success" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
+  <h1 class="box-title">Recepciones <button class="btn btn-success" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
   <div class="box-tools pull-right">
     
   </div>
@@ -80,7 +80,7 @@ if ($_SESSION['compras']==1) {
     <th>Fmsi</th>
     <th>Descripción</th>
     <th>Cantidad</th>
-    <th>Precio Compra</th>
+    <th>Costo</th>
     <th>Descuento</th>
     <th>Subtotal</th>
   </thead>
@@ -135,19 +135,7 @@ if ($_SESSION['compras']==1) {
               <input class="form-control" type="hidden" name="idpersona" id="idpersona">
               <input class="form-control" type="hidden" name="tipo_persona" id="tipo_persona" value="Proveedor">
               <input class="form-control" type="text" name="nombre" id="nombre" maxlength="100" placeholder="Nombre del proveedor" required>
-            </div>
-            <div class="form-group col-lg-6 col-md-6 col-xs-12">
-              <label for="">Tipo Dcumento</label>
-            <select class="form-control select-picker" name="tipo_documento" id="tipo_documento">
-              <option value="DNI">DNI</option>
-              <option value="RUC">RUC</option>
-              <option value="CEDULA">CEDULA</option>
-            </select>
-            </div>
-            <div class="form-group col-lg-6 col-md-6 col-xs-12">
-              <label for="">Número Documento</label>
-              <input class="form-control" type="text" name="num_documento" id="num_documento" maxlength="20" placeholder="Número de Documento">
-            </div>
+            </div>            
             <div class="form-group col-lg-6 col-md-6 col-xs-12">
               <label for="">Direccion</label>
               <input class="form-control" type="text" name="direccion" id="direccion" maxlength="70" placeholder="Direccion">
@@ -354,7 +342,7 @@ if ($_SESSION['compras']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/ingreso.js"></script>
+ <script src="scripts/ingresos.js"></script>
  <?php 
 }
 

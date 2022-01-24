@@ -11,7 +11,7 @@ public function __construct(){
 
 //metodo insertar registro
 public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$total_venta,$idarticulo,$clave,$fmsi,$marca,$descripcion,$cantidad,$precio_venta,$descuento,$idsucursal, $forma_pago, $forma_pago2, $forma_pago3, $banco, $banco2, $banco3, $importe, $importe2, $importe3, $ref, $ref2, $ref3){
-	$sql="INSERT INTO venta (idcliente,idusuario,tipo_comprobante,fecha_hora,impuesto,total_venta,pagado,estado,idsucursal,status) VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_hora','$impuesto','$total_venta','$total_venta', 'NORMAL', '$idsucursal', 'NORMAL')";
+	$sql="INSERT INTO venta (idcliente,idusuario,tipo_comprobante,fecha_hora,impuesto,total_venta,pagado,estado,idsucursal,status) VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_hora','$impuesto','$total_venta','$total_venta', 'PENDIENTE', '$idsucursal', 'PENDIENTE')";
 	 $idventanew=ejecutarConsulta_retornarID($sql);
 	 $num_elementos=0;
 	 $sw=true;

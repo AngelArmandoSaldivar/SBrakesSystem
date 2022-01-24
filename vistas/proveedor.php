@@ -39,18 +39,6 @@ if ($_SESSION['compras']==1) {
       <input class="form-control" type="hidden" name="tipo_persona" id="tipo_persona" value="Proveedor">
       <input class="form-control" type="text" name="nombre" id="nombre" maxlength="100" placeholder="Nombre del proveedor" required>
     </div>
-     <div class="form-group col-lg-6 col-md-6 col-xs-12">
-      <label for="">Tipo Dcumento</label>
-     <select class="form-control select-picker" name="tipo_documento" id="tipo_documento" required>
-       <option value="DNI">DNI</option>
-       <option value="RUC">RUC</option>
-       <option value="CEDULA">CEDULA</option>
-     </select>
-    </div>
-     <div class="form-group col-lg-6 col-md-6 col-xs-12">
-      <label for="">Número Documento</label>
-      <input class="form-control" type="text" name="num_documento" id="num_documento" maxlength="20" placeholder="Número de Documento">
-    </div>
     <div class="form-group col-lg-6 col-md-6 col-xs-12">
       <label for="">Direccion</label>
       <input class="form-control" type="text" name="direccion" id="direccion" maxlength="70" placeholder="Direccion">
@@ -62,6 +50,10 @@ if ($_SESSION['compras']==1) {
         <div class="form-group col-lg-6 col-md-6 col-xs-12">
       <label for="">Email</label>
       <input class="form-control" type="email" name="email" id="email" maxlength="50" placeholder="Email">
+    </div>
+    <div class="form-group col-lg-6 col-md-6 col-xs-12">
+      <label for="">RFC</label>
+      <input class="form-control" type="text" name="rfc" id="rfc" maxlength="50" placeholder="RFC">
     </div>
     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
       <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i>  Guardar</button>
@@ -85,7 +77,7 @@ if ($_SESSION['compras']==1) {
 }
 require 'footer.php';
  ?>
- <script src="scripts/proveedor1.js"></script>
+ <script src="scripts/proveedor.js"></script>
  <?php 
 }
 
