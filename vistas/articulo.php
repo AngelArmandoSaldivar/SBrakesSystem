@@ -25,19 +25,11 @@ if ($_SESSION['almacen']==1) {
 </div>
 <!--box-header-->
 
+<input type="text" style="border:none; color:black; width:5px;" id="caja_pagina" name="caja_pagina" value=""></input>
 
-<div class="table-responsive" id="table-search">
-  <section>
-    <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 16px;"></center>
-  </section><br>
-  <div class="form-group col-lg-2 col-md-6 col-xs-12" style="align-items:center;">
-    </div>
-    <br><br>
-    <div class="loader">
-      <img src="../files/images/loader.gif" alt="" width="50px">
-    </div>
-  <section id="tabla_resultado"></section>
-</div>
+  <?php 
+    require('paginacion.php');
+  ?>
 
 <div class="panel-body" id="formularioregistros">  
   <form action="" name="formulario" id="formulario" method="POST">
@@ -142,7 +134,7 @@ if ($_SESSION['almacen']==1) {
       <button class="btn btn-danger" onclick="cancelarform()" type="button"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
     </div>
   </form>
-</div>
+
 <!--fin centro-->
       </div>
       </div>
@@ -160,7 +152,7 @@ require 'footer.php'
  ?>
  <script src="../public/js/JsBarcode.all.min.js"></script>
  <script src="../public/js/jquery.PrintArea.js"></script>
- <script src="scripts/articulos.js"></script>
+ <script src="scripts/articles.js"></script>
  <!-- <script src="consulta.js"></script> -->
 
  <?php 

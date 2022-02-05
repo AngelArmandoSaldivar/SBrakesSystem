@@ -30,7 +30,13 @@ if (strlen(session_id())<1)
 <link rel="stylesheet" href="../public/datatables/responsive.dataTables.min.css">
 <link rel="stylesheet" href="../public/css/bootstrap-select.min.css">
 
-  <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.css">
+<!-- MATERIAL UI-->
+<link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+<!-- ICONOS MATERIAL UI -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<!-- CIERRE MATERIAL UI-->  
+
+<link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.css">
 	<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 	<script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>	  
 

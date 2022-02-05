@@ -26,5 +26,9 @@
 <script src="../public/datatables/datatables.min.js"></script>
 <script src="../public/js/bootbox.min.js"></script>
 <script src="../public/js/bootstrap-select.min.js"></script>
+
+<!-- SCRIPT MATERIAL UI -->
+<script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+<!-- CIERRE MATERIAL UI -->
 </body>
 </html>

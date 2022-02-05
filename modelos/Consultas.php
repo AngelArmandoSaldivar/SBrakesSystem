@@ -35,10 +35,10 @@ public function totalventahoy(){
 	return ejecutarConsulta($sql);
 }
 
-// public function totalserviciohoy(){
-// 	$sql="SELECT IFNULL(SUM(total_venta),0) as total_venta FROM venta WHERE DATE(fecha_hora)=curdate()";
-// 	return ejecutarConsulta($sql);
-// }
+public function totalserviciohoy(){
+	$sql="SELECT IFNULL(SUM(total_servicio),0) as total_servicio FROM servicio WHERE DATE(fecha_hora)=curdate()";
+	return ejecutarConsulta($sql);
+}
 
 public function comprasultimos_10dias(){
 	$sql=" SELECT CONCAT(DAY(fecha_hora),'-',MONTH(fecha_hora)) AS fecha, SUM(total_compra) AS total FROM ingreso GROUP BY fecha_hora ORDER BY fecha_hora DESC LIMIT 0,10";
@@ -50,6 +50,15 @@ public function ventasultimos_12meses(){
 	return ejecutarConsulta($sql);
 }
 
+public function totalClientes() {
+	$sql = "SELECT COUNT(nombre) AS total_clientes FROM persona";
+	return ejecutarConsulta($sql);
+}
+
+public function totalProductos() {
+	$sql = "SELECT COUNT(codigo) AS total_productos FROM articulo";
+	return ejecutarConsulta($sql);
+}
 
 }
 

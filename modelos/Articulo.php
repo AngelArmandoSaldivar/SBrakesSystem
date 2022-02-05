@@ -56,6 +56,17 @@ class Articulo{
 		return ejecutarConsulta($sql);
 	}
 
+	public function totalArticulos() {
+		$sql = "SELECT COUNT(*) AS totalArticulos FROM articulo";
+		return ejecutarConsulta($sql);
+	}
+
+	public function articulosPagination($limit, $limit2, $busqueda) {
+		$sql = "SELECT * FROM articulo WHERE codigo LIKE '%$busqueda%' ORDER BY stock DESC LIMIT $limit, $limit2";
+		return ejecutarConsulta($sql);
+	}
+
 }
+//B22-131614
 
  ?>

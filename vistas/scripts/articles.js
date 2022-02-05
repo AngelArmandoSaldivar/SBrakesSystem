@@ -1,9 +1,11 @@
 var tabla;
 
 //funcion que se ejecuta al inicio
-function init(){
+function init(){	
+
    mostrarform(false);
-   obtener_registros();
+//    obtener_registros();
+	obtenerValoresBusqueda();
    $("#formulario").on("submit",function(e){
    	guardaryeditar(e);
    })
@@ -24,6 +26,40 @@ function init(){
 // function refresh() {
 // 	obtener_registros();
 // }
+function obtenerValoresBusqueda(data) {
+	/* document.getElementById("tabla_resultado").value=data;	
+	console.log(document.getElementById("tabla_resultado").value); */
+
+	document.getElementById("tabla_resultado").innerHTML="\
+	<h1>HOLA "+ data +" <h1>\
+	";
+
+	// console.log(data);
+	$('.loader').show();
+		$.ajax({
+			url : 'paginacion.php',
+			type : 'POST',
+			dataType : 'html',
+			data : { articulos: data},
+		})
+		$('.loader').hide();
+	// 	.done(function(resultado){
+	// 		// setTimeout(() => {
+	// 		// 	$("#tabla_resultado").html(resultado);
+	// 		// 	$('.loader').hide();
+	// 		// }, 50);
+	// 		$("#tabla_resultado").value(data)
+	// 		console.log(resultado);
+	// 	})
+	
+}
+
+$(document).on('keyup', '#busqueda', function() {
+	var dataBusqueda = $(this).val();
+	if(dataBusqueda != "") {
+		obtenerValoresBusqueda(dataBusqueda);
+	}	
+});
 
 //funcion limpiar
 function limpiar(){
@@ -84,33 +120,33 @@ function actualizarStock(profile_viewer_uid) {
 }
 
 
-function obtener_registros(articulos){
-		$('.loader').show();
-		$.ajax({
-			url : '../ajax/articulo.php?op=listar',
-			type : 'POST',
-			dataType : 'html',
-			data : { articulos: articulos},
-		})
-		.done(function(resultado){
-			setTimeout(() => {
-				$("#tabla_resultado").html(resultado);
-				$('.loader').hide();
-			}, 50);
-		})
-}	
+// function obtener_registros(articulos) {
+// 		$('.loader').show();
+// 		$.ajax({
+// 			url : '',
+// 			type : 'POST',
+// 			dataType : 'html',
+// 			data : { articulos: articulos},
+// 		})
+// 		.done(function(resultado){
+// 			setTimeout(() => {
+// 				$("#tabla_resultado").html(resultado);
+// 				$('.loader').hide();
+// 			}, 50);
+// 		})
+// }	
 
-$(document).on('keyup', '#busqueda', function(){
+// $(document).on('keyup', '#busqueda', function(){	
 
-		var valorBusqueda=$(this).val();
+// 		var valorBusqueda=$(this).val();
 	
-	if (valorBusqueda!="")
-	{
-		obtener_registros(valorBusqueda);		
-	} else {
-		obtener_registros(valorBusqueda);
-	}
-});
+// 	if (valorBusqueda!="")
+// 	{
+// 		obtener_registros(valorBusqueda);		
+// 	} else {
+// 		obtener_registros(valorBusqueda);
+// 	}
+// });
 
 //funcion para guardaryeditar
 function guardaryeditar(e){	
