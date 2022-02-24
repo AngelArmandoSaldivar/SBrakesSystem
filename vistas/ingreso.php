@@ -19,7 +19,7 @@ if ($_SESSION['compras']==1) {
       <!-- Default box -->
       <div class="row">
         <div class="col-md-12">
-      <div class="box">
+      <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
 <div class="box-header with-border">
   <h1 class="box-title">Recepciones <button class="btn btn-success" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
   <div class="box-tools pull-right">
@@ -30,8 +30,30 @@ if ($_SESSION['compras']==1) {
 <!--centro-->
 <div class="panel-body table-responsive" id="listadoregistros">  
     <section>
-      <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px"></center><br><br>
-    </section>            
+      <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 16px; box-shadow: 5px 5px 8px #3300ff99;"></center><br><br>
+    </section>    
+    <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+      <label>Fecha Inicio</label>
+      <input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" value="<?php echo date("Y-m-d"); ?>">
+    </div>
+    <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+      <label>Fecha Fin</label>
+      <input type="date" class="form-control" name="fecha_fin" id="fecha_fin" value="<?php echo date("Y-m-d"); ?>">
+    </div>
+    <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
+    <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
+    <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">      
+     <select name="limite_registros" id="limite_registros" class="form-control selectpicker" required>
+      <option value="" disabled selected>Seleccionar limite</option>
+       <option value="1-50">50 / Registros</option>
+       <option value="1-50">100 / Registros</option>
+       <option value="1-50">200 / Registros</option>
+       <option value="1-50">500 / Registros</option>
+       <option value="1-50">1000 / Registros</option>
+     </select>
+    </div>
+    <br>
+
     <section id="tabla_resultado"></section>
 </div>
 <div class="panel-body" style="height: 400px;" id="formularioregistros">
@@ -342,10 +364,9 @@ if ($_SESSION['compras']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/ingresos.js"></script>
+ <script src="scripts/ingresosP.js"></script>
  <?php 
 }
 
 ob_end_flush();
   ?>
-

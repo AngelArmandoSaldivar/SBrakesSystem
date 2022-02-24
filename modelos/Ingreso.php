@@ -81,6 +81,14 @@ public function listar(){
 	$sql="SELECT i.idsucursal, i.idingreso,DATE(i.fecha_hora) as fecha,i.idproveedor,p.nombre as proveedor,u.idusuario,u.nombre as usuario, i.tipo_comprobante,i.serie_comprobante,i.total_compra,i.impuesto,i.estado FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario ORDER BY i.idingreso DESC";
 	return ejecutarConsulta($sql);
 }
+public function totalIngresos() {
+	$sql = "SELECT COUNT(*) AS totalIngresos FROM ingreso WHERE estado='NORMAL'";
+	return ejecutarConsulta($sql);
+}
+public function ingresosPagination($limit, $limit2, $busqueda) {
+	$sql = "SELECT i.idsucursal, i.estado, i.tipo_comprobante, i.total_compra, i.idingreso, i.fecha_hora, i.idproveedor, u.idusuario, p.nombre as proveedor, u.nombre as usuario FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario WHERE p.nombre LIKE '%$busqueda%' OR i.idingreso LIKE '%$busqueda%' OR i.estado LIKE '%$busqueda%' LIMIT $limit, $limit2";
+	return ejecutarConsulta($sql);
+}
 
 }
 

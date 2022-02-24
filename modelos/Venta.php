@@ -18,20 +18,16 @@ public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$im
 	 while ($num_elementos < count($idarticulo)) {
 
 	 	$sql_detalle="INSERT INTO detalle_venta (idventa,idarticulo,clave,fmsi,marca, descripcion,tipoMov,cantidad,precio_venta,descuento) VALUES('$idventanew','$idarticulo[$num_elementos]', '$clave[$num_elementos]','$fmsi[$num_elementos]','$marca[$num_elementos]','$descripcion[$num_elementos]','VENTA','$cantidad[$num_elementos]','$precio_venta[$num_elementos]','$descuento[$num_elementos]')";
-
 	 	ejecutarConsulta($sql_detalle) or $sw=false;
-
-		 $sql_kardex = "INSERT INTO kardex (fecha_hora, folio, clave, fmsi, idcliente_proveedor, cantidad, importe, tipoMov, estado) VALUES ('$fecha_hora', $idventanew,'$clave[$num_elementos]', '$fmsi[$num_elementos]', '$idcliente', '$cantidad[$num_elementos]', '$precio_venta[$num_elementos]', 'VENTA', 'ACTIVO')";
-		 ejecutarConsulta($sql_kardex) or $sw=false;
-
+		$sql_kardex = "INSERT INTO kardex (fecha_hora, folio, clave, fmsi, idcliente_proveedor, cantidad, importe, tipoMov, estado) VALUES ('$fecha_hora', $idventanew,'$clave[$num_elementos]', '$fmsi[$num_elementos]', '$idcliente', '$cantidad[$num_elementos]', '$precio_venta[$num_elementos]', 'VENTA', 'ACTIVO')";
+		ejecutarConsulta($sql_kardex) or $sw=false;
 	 	$num_elementos=$num_elementos+1;
 	 }
 
 	 $sql_formas_pago = "INSERT INTO formas_pago (forma_pago, forma_pago2, forma_pago3, banco, banco2, banco3, importe, importe2, importe3, referencia, referencia2, referencia3, idventa, fecha_hora, idsucursal) VALUES('$forma_pago', '$forma_pago2', '$forma_pago3', '$banco', '$banco2', '$banco3', '$importe', '$importe2', '$importe3', '$ref', '$ref2', '$ref3', '$idventanew', '$fecha_hora', '$idsucursal')";
 	 ejecutarConsulta($sql_formas_pago) or $sw=false;
-
 	 sleep(1);
-	 return $sw;	 
+	 return $sw;
 }
 
 public function cobrarVenta($forma_pago, $forma_pago2, $forma_pago3, $banco, $banco2, $banco3, $importe, $importe2, $importe3, $ref, $ref2, $ref3, $idventa){
@@ -60,13 +56,13 @@ public function anular($idventa){
 			//SELECT OLD STOCK ARTICULO
 			$sqlOldStock = "SELECT * FROM articulo WHERE idarticulo='$reg->idarticulo'";
 			$sqlOldStock2 = ejecutarConsulta($sqlOldStock);
-			while($reg2 = $sqlOldStock2->fetch_object()) {				
+			while($reg2 = $sqlOldStock2->fetch_object()) {
 				$sum = $reg->cantidad + $reg2->stock;
 				// echo "PRODUCTO: ".$reg2->codigo. " NEW STOCK: ".$sum."<br>";
 				//UPDATE NEW STOCK ARTICULO
 				$sql_update_articulo = "UPDATE articulo SET stock='$sum' WHERE idarticulo='$reg->idarticulo'";
 				ejecutarConsulta($sql_update_articulo);
-			}			
+			}
 		}
 
 		$stateSell = "UPDATE venta SET estado='ANULADO' WHERE idventa='$idventa'";
@@ -118,6 +114,18 @@ public function ventadetalles($idventa){
 }
 public function ultimaVenta() {
 	$sql = "SELECT * FROM venta ORDER BY idventa DESC limit 1";
+	return ejecutarConsulta($sql);
+}
+public function totalVentas() {
+	$sql = "SELECT COUNT(*) as totalVentas FROM venta WHERE estado != 'ANULADO'";
+	return ejecutarConsulta($sql);
+}
+
+public function ventasPagination($limit, $limit2, $busqueda) {
+	$sql = "SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE tipo_comprobante LIKE '%$busqueda%' OR
+	v.idventa LIKE '$busqueda%' OR
+	p.nombre LIKE '%$busqueda%' OR
+	u.nombre LIKE '%$busqueda%' LIMIT $limit, $limit2";
 	return ejecutarConsulta($sql);
 }
 

@@ -48,8 +48,22 @@ if ($_SESSION['escritorio']==1) {
   $fechasc=substr($fechasc, 0, -1);
   $totalesc=substr($totalesc, 0,-1);
 
+  $ventasProductos = $consulta->sumaVentaProductos();
+  $totalesP = "";
+  $clavesProductos = "";
+  while($regVentaP=$ventasProductos->fetch_object()) {
+    $totalesP=$totalesP.$regVentaP->totalVetasProductos.",";
+    $clavesProductos = $clavesProductos.'"'.$regVentaP->clave.'",';
+  }
 
-
+  $ventasProductosServ = $consulta->sumaVentaProductosServicios();
+  $totalesServ = "";
+  $clavesProductosServ = "";
+  while($regVentaS=$ventasProductosServ->fetch_object()) {
+    $totalesServ=$totalesServ.$regVentaS->totalVentasProductosServicio.",";
+    $clavesProductosServ = $clavesProductosServ.'"'.$regVentaS->clave.'",';
+  }
+  
     //obtener valores para cargar al grafico de barras
   $ventas12 = $consulta->ventasultimos_12meses ();
   $fechasv='';
@@ -256,6 +270,28 @@ if ($_SESSION['escritorio']==1) {
 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
   <div class="box box-primary">
     <div class="box-header with-border">
+      Productos más vendidos sección servicios
+    </div>
+    <div class="box-body">
+      <canvas id="serviciosProductos" width="400" height="300"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+  <div class="box box-primary">
+    <div class="box-header with-border">
+      Productos más vendidos sección ventas
+    </div>
+    <div class="box-body">
+      <canvas id="ventasProductos" width="400" height="300"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+  <div class="box box-primary">
+    <div class="box-header with-border">
       Compras de los ultimos 10 dias
     </div>
     <div class="box-body">
@@ -263,6 +299,7 @@ if ($_SESSION['escritorio']==1) {
     </div>
   </div>
 </div>
+
 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
   <div class="box box-primary">
     <div class="box-header with-border">
@@ -327,6 +364,98 @@ require 'footer.php';
                 ],
                 borderColor: [
                     'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+
+    var ctx = document.getElementById("ventasProductos").getContext('2d');
+    var compras = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [<?php echo $clavesProductos ?>],
+            datasets: [{
+                label: '# Productos más vendidos',
+                data: [<?php echo $totalesP ?>],
+                backgroundColor: [
+                    'rgba(150, 255, 50, 1.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(150, 255, 50, 5.2)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+
+    var ctx = document.getElementById("serviciosProductos").getContext('2d');
+    var compras = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [<?php echo $clavesProductosServ ?>],
+            datasets: [{
+                label: '# Productos más vendidos',
+                data: [<?php echo $totalesServ ?>],
+                backgroundColor: [
+                    'rgba(150, 255, 50, 1.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(150, 255, 50, 5.2)',
                     'rgba(54, 162, 235, 1)',
                     'rgba(255, 206, 86, 1)',
                     'rgba(75, 192, 192, 1)',

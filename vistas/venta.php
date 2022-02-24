@@ -19,17 +19,16 @@ if ($_SESSION['ventas']==1) {
         <!-- Default box -->
     <div class="row">
       <div class="col-md-12">
-        <div class="box">
+        <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
           <div class="box-header with-border">    
             <div class="emergente">
               <h1 class="box-title">Ventas 
               <span data-tooltip="Agregar nueva venta"><button class="btn btn-success" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i>Agregar</button></h1></span>
               <div class="box-tools pull-right"></div>
-            </div>                    
-    
+            </div>    
             <div class="panel-body table-responsive" id="listadoregistros">
               <section>
-                <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px"></center><br><br>
+                <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 16px; box-shadow: 5px 5px 8px #3300ff99;"></center><br><br>
               </section>
               <section id="tabla_resultado"></section>
             </div>
@@ -428,27 +427,22 @@ if ($_SESSION['ventas']==1) {
             <label for="">Placas</label>
             <input class="form-control" type="text" name="placas" id="placas" placeholder="Placas" value="" required>
           </div>
-
           <div class="form-group col-lg-4 col-md-6 col-xs-12">
             <label for="">Marca</label>
             <input class="form-control" type="text" name="marcaAuto" id="marcaAuto" placeholder="MarcaAuto" value="" required>
           </div>
-
           <div class="form-group col-lg-4 col-md-6 col-xs-12">
             <label for="">Modelo</label>
             <input class="form-control" type="text" name="modelo" id="modelo" placeholder="Modelo" value="" required>
           </div>
-
           <div class="form-group col-lg-4 col-md-6 col-xs-12">
             <label for="">Año</label>
             <input class="form-control" type="text" name="ano" id="ano" placeholder="Año" value="" required>
           </div>
-
           <div class="form-group col-lg-4 col-md-6 col-xs-12">
             <label for="">Color</label>
             <input class="form-control" type="text" name="color" id="color" placeholder="Color" value="" required>
           </div>
-
           <div class="form-group col-lg-4 col-md-6 col-xs-12">
             <label for="">Kms</label>
             <input class="form-control" type="number" name="kms" id="kms" min="0" placeholder="Kms" value="" required>
@@ -607,10 +601,9 @@ if ($_SESSION['ventas']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/ventas.js"></script>
+ <script src="scripts/venta.js"></script>
  <?php 
 }
 
 ob_end_flush();
   ?>
-

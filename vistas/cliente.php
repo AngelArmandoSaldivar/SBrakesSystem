@@ -16,7 +16,7 @@ if ($_SESSION['ventas']==1) {
       <!-- Default box -->
       <div class="row">
         <div class="col-md-12">
-      <div class="box">
+      <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
 <div class="box-header with-border">
   <h1 class="box-title">Clientes <button class="btn btn-success" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
   <div class="box-tools pull-right">
@@ -27,7 +27,7 @@ if ($_SESSION['ventas']==1) {
 <!--centro-->
 <div class="panel-body table-responsive" id="listadoregistros">
   <section>
-    <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px"></center>
+    <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 16px; box-shadow: 5px 5px 8px #3300ff99;"></center>
   </section><br><br>
   <section id="tabla_resultado"></section>
 </div>

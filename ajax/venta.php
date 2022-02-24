@@ -253,7 +253,6 @@ switch ($_GET["op"]) {
 							$selectTypes ="";
 				
 							if(isset($_POST["types"])) {
-								echo "llegaste";
 								$tipo_precio = $_POST["types"];
 							
 
