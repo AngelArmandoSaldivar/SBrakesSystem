@@ -12,6 +12,11 @@ function init(){
 
    //cargamos los items al select proveedor
    selectProvider();
+
+   $("#fecha_inicio").change(filtrosFechas);
+
+   var fecha_inicio = $("#fecha_inicio").val();
+	console.log(fecha_inicio);
    
 }
 
@@ -83,7 +88,7 @@ function obtener_registros(ingresos){
 		url : '../ajax/ingreso.php?op=listar',
 		type : 'POST',
 		dataType : 'html',
-		data : { ingresos: ingresos },
+		data : { ingresos: ingresos},
 	}
 	)
 	.done(function(resultado){
@@ -92,7 +97,7 @@ function obtener_registros(ingresos){
 }
 
 $(document).on('keyup', '#busqueda', function(){
-	var valorBusqueda=$(this).val();
+	var valorBusqueda=$(this).val();	
 	
 	if (valorBusqueda!="")
 	{
@@ -104,6 +109,24 @@ $(document).on('keyup', '#busqueda', function(){
 	}
 });
 
+//Filtros fecha
+function filtrosFechas() {
+	// var  fecha_inicio = $("#fecha_inicio").val();
+	// console.log(fecha_inicio);
+	
+	// $.ajax({
+	// 	url : '../ajax/ingreso.php?op=listar',
+	// 	type : 'POST',
+	// 	dataType : 'html',
+	// 	data : { fecha_inicio: fecha_inicio},
+	// }
+	// )
+	// .done(function(resultado){
+	// 	$("#tabla_resultado").html(resultado);
+	// })
+}
+
+//Listar productos
 function obtener_registrosProductos(productos){
 	$.ajax({
 		url : '../ajax/ingreso.php?op=listarArticulos',

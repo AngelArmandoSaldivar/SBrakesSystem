@@ -22,7 +22,7 @@ function mostrarInfoClient(idcliente) {
 			$('.loader').hide();
 			data=JSON.parse(data);				
 			$("#rfc").val(data.rfc).prop("disabled", true);
-			$("#direccion").val(data.direccion).prop("disabled", true);			
+			$("#direccion").val(data.direccion).prop("disabled", true);
 			$("#email").val(data.email).prop("disabled", true);
 			$("#telefono").val(data.telefono).prop("disabled", true);
 			$("#credito").val(data.credito).prop("disabled", true);

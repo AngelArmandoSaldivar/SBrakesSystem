@@ -61,12 +61,7 @@ public function totalProductos() {
 }
 
 public function sumaVentaProductos() {
-	$sql = "SELECT clave, SUM(cantidad) as totalVetasProductos FROM detalle_venta GROUP BY clave ORDER BY totalVetasProductos DESC LIMIT 5";
-	return ejecutarConsulta($sql);	
-}
-
-public function sumaVentaProductosServicios() {
-	$sql = "SELECT clave, SUM(cantidad) as totalVentasProductosServicio FROM detalle_servicio GROUP BY clave ORDER BY totalVentasProductosServicio DESC LIMIT 10";
+	$sql = "SELECT codigo, SUM(ventas) as totalVetasProductos FROM articulo GROUP BY codigo ORDER BY totalVetasProductos DESC LIMIT 6";
 	return ejecutarConsulta($sql);
 }
 

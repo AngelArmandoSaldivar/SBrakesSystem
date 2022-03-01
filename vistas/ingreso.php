@@ -31,7 +31,7 @@ if ($_SESSION['compras']==1) {
 <div class="panel-body table-responsive" id="listadoregistros">  
     <section>
       <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 16px; box-shadow: 5px 5px 8px #3300ff99;"></center><br><br>
-    </section>    
+    </section>
     <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
       <label>Fecha Inicio</label>
       <input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" value="<?php echo date("Y-m-d"); ?>">
@@ -42,7 +42,7 @@ if ($_SESSION['compras']==1) {
     </div>
     <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
     <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
-    <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">      
+    <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">
      <select name="limite_registros" id="limite_registros" class="form-control selectpicker" required>
       <option value="" disabled selected>Seleccionar limite</option>
        <option value="1-50">50 / Registros</option>
@@ -364,7 +364,7 @@ if ($_SESSION['compras']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/ingresosP.js"></script>
+ <script src="scripts/ingresos.js"></script>
  <?php 
 }
 

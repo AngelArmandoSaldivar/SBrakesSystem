@@ -69,44 +69,26 @@ switch ($_GET["op"]) {
        </tfoot>';
 		break;
 
-    case 'listar':
-		// $rspta=$ingreso->listar();
-		// $data=Array();
+    case 'listar':	
 
-		// while ($reg=$rspta->fetch_object()) {
-		// 	if($reg->idsucursal == $idsucursal) {
-		// 		$data[]=array(
-		// 		"0"=>($reg->estado=='Aceptado')?'<button class="btn btn-warning btn-xs" onclick="mostrar('.$reg->idingreso.')"><i class="fa fa-eye"></i></button>'.' '.'<button class="btn btn-danger btn-xs" onclick="anular('.$reg->idingreso.')"><i class="fa fa-close"></i></button>':'<button class="btn btn-warning btn-xs" onclick="mostrar('.$reg->idingreso.')"><i class="fa fa-eye"></i></button>',
-		// 		"1"=>$reg->fecha,
-		// 		"2"=>$reg->proveedor,
-		// 		"3"=>$reg->usuario,
-		// 		"4"=>$reg->tipo_comprobante,
-		// 		"5"=>$reg->total_compra,
-		// 		"6"=>($reg->estado=='Aceptado')?'<span class="label bg-green">Aceptado</span>':'<span class="label bg-red">Anulado</span>'
-		// 		);
-		// 	}
-		// }
-		// $results=array(
-        //      "sEcho"=>1,//info para datatables
-        //      "iTotalRecords"=>count($data),//enviamos el total de registros al datatable
-        //      "iTotalDisplayRecords"=>count($data),//enviamos el total de registros a visualizar
-        //      "aaData"=>$data); 
-		// echo json_encode($results);
-
-		$consulta="SELECT i.idsucursal, i.idingreso,DATE(i.fecha_hora) as fecha,i.idproveedor,p.nombre as proveedor,u.idusuario,u.nombre as usuario, i.tipo_comprobante,i.serie_comprobante,i.total_compra,i.impuesto,i.estado FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario ORDER BY i.idingreso DESC LIMIT 40";
+			
+			$consulta="SELECT i.idsucursal, i.idingreso,DATE(i.fecha_hora) as fecha,i.idproveedor,p.nombre as proveedor,u.idusuario,u.nombre as usuario, i.tipo_comprobante,i.serie_comprobante,i.total_compra,i.impuesto,i.estado FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario ORDER BY i.idingreso DESC LIMIT 40";
 			$termino= "";
+
 			if(isset($_POST['ingresos']))
 			{
+				
 				$termino=$conexion->real_escape_string($_POST['ingresos']);
-				$consulta="SELECT i.idsucursal, i.idingreso,DATE(i.fecha_hora) as fecha,i.idproveedor,p.nombre as proveedor,u.idusuario,u.nombre as usuario, i.tipo_comprobante,i.serie_comprobante,i.total_compra,i.impuesto,i.estado FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario
+				echo $termino;
+				$consulta="SELECT i.idsucursal, i.idingreso, DATE(i.fecha_hora) as fecha,i.idproveedor,p.nombre as proveedor,u.idusuario,u.nombre as usuario, i.tipo_comprobante,i.serie_comprobante,i.total_compra,i.impuesto,i.estado FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario
 				WHERE 
 				tipo_comprobante LIKE '%".$termino."%' OR
 				p.nombre LIKE '%".$termino."%' OR
 				i.idingreso LIKE '%".$termino."%' OR
-				p.idpersona LIKE '%".$termino."%' OR
+				p.idpersona LIKE '%".$termino."%' OR				
 				u.nombre LIKE '%".$termino."%'
-				LIMIT 40";
-			}
+				LIMIT 40";			
+		}
 			$consultaBD=$conexion->query($consulta);
 			if($consultaBD->num_rows>=1){
 				echo "
@@ -167,6 +149,7 @@ switch ($_GET["op"]) {
 			}else{
 				echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";
 			}
+
 
 		break;
 
