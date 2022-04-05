@@ -6,7 +6,7 @@ $usuario=new Usuario();
 
 $idusuario=isset($_POST["idusuario"])? limpiarCadena($_POST["idusuario"]):"";
 $nombre=isset($_POST["nombre"])? limpiarCadena($_POST["nombre"]):"";
-$tipo_documento=isset($_POST["tipo_documento"])? limpiarCadena($_POST["tipo_documento"]):"";
+$acceso=isset($_POST["idNivelUsuario"])? limpiarCadena($_POST["idNivelUsuario"]):"";
 $num_documento=isset($_POST["num_documento"])? limpiarCadena($_POST["num_documento"]):"";
 $direccion=isset($_POST["direccion"])? limpiarCadena($_POST["direccion"]):"";
 $telefono=isset($_POST["telefono"])? limpiarCadena($_POST["telefono"]):"";
@@ -24,10 +24,10 @@ switch ($_GET["op"]) {
 	//Hash SHA256 para la contraseña
 	$clavehash=hash("SHA256", $clave);
 	if (empty($idusuario)) {
-		$rspta=$usuario->insertar($nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clavehash,$_POST['permiso'], $idsucursal);
+		$rspta=$usuario->insertar($nombre,$direccion,$telefono,$email,$cargo,$acceso,$login,$clavehash,$_POST['permiso'], $idsucursal);
 		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar todos los datos del usuario";
 	}else{
-		$rspta=$usuario->editar($idusuario,$nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clavehash,$_POST['permiso'], $idsucursal);
+		$rspta=$usuario->editar($idusuario,$nombre,$direccion,$telefono,$email,$cargo,$acceso,$login,$clavehash,$_POST['permiso'], $idsucursal);
 		echo "Sucursal: '$idsucursal'";
 	
 	}
@@ -79,8 +79,7 @@ switch ($_GET["op"]) {
 				$termino=$conexion->real_escape_string($_POST['usuarios']);
 				$consulta="SELECT * FROM usuario
 				WHERE
-				nombre LIKE '%".$termino."%' OR
-				tipo_documento LIKE '%".$termino."%' OR
+				nombre LIKE '%".$termino."%' OR				
 				direccion LIKE '%".$termino."%' OR
 				email LIKE '%".$termino."%' OR
 				telefono LIKE '%".$termino."%' OR
@@ -95,10 +94,10 @@ switch ($_GET["op"]) {
 						<tr>
 							<th class='bg-info' scope='col'>Acciones</th>
 							<th class='bg-info' scope='col'>Nombre</th>
-							<th class='bg-info' scope='col'>Documento</th>
 							<th class='bg-info' scope='col'>Telefono</th>
 							<th class='bg-info' scope='col'>Email</th>
 							<th class='bg-info' scope='col'>Usuario</th>
+							<th class='bg-info' scope='col'>Nivel de usuario</th>
 							<th class='bg-info' scope='col'>Status</th>
 						</tr>
 					</thead>
@@ -108,10 +107,10 @@ switch ($_GET["op"]) {
 								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idusuario"].")'><i class='fa fa-eye'></i></button> <button class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idusuario"].")'><i class='fa fa-close'></i></button>
 								<button class='btn btn-primary btn-xs' onclick='activar(".$fila["idusuario"].")'><i class='fa fa-check'></i></button>
 								<td>".$fila['nombre']."</td>
-								<td>".$fila['tipo_documento']."</td>
 								<td>".$fila['telefono']."</td>
 								<td><p>".$fila['email']."</td>
 								<td><p>".$fila['login']."</td>
+								<td><p>".$fila['acceso']."</td>
 								<td><p>".$fila["condicion"]."</td>							
 							</tr>
 							";
@@ -120,11 +119,11 @@ switch ($_GET["op"]) {
 				<tfoot>
 					<tr>
 						<th class='bg-info' scope='col'>Acciones</th>
-						<th class='bg-info' scope='col'>Nombre</th>
-						<th class='bg-info' scope='col'>Documento</th>
+						<th class='bg-info' scope='col'>Nombre</th>						
 						<th class='bg-info' scope='col'>Telefono</th>
 						<th class='bg-info' scope='col'>Email</th>
 						<th class='bg-info' scope='col'>Usuario</th>
+						<th class='bg-info' scope='col'>Nivel de usuario</th>
 						<th class='bg-info' scope='col'>Status</th>
 					</tr>
 				</tfoot>
@@ -173,6 +172,7 @@ switch ($_GET["op"]) {
 		$_SESSION['nombre']=$fetch->nombre;
 		$_SESSION['login']=$fetch->login;
 		$_SESSION['idsucursal']=$fetch->idsucursal;
+		$_SESSION['acceso']=$fetch->acceso;		 
 
 		//obtenemos los permisos
 		$marcados=$usuario->listarmarcados($fetch->idusuario);
@@ -191,7 +191,7 @@ switch ($_GET["op"]) {
 		in_array(3, $valores)?$_SESSION['compras']=1:$_SESSION['compras']=0;
 		in_array(4, $valores)?$_SESSION['ventas']=1:$_SESSION['ventas']=0;
 		in_array(4, $valores)?$_SESSION['servicios']=1:$_SESSION['servicios']=0;
-		in_array(5, $valores)?$_SESSION['acceso']=1:$_SESSION['acceso']=0;
+		in_array(5, $valores)?$_SESSION['accesos']=1:$_SESSION['accesos']=0;
 		in_array(6, $valores)?$_SESSION['consultac']=1:$_SESSION['consultac']=0;
 		in_array(7, $valores)?$_SESSION['consultav']=1:$_SESSION['consultav']=0;
 		in_array(7, $valores)?$_SESSION['sucursal']=1:$_SESSION['sucursal']=0;
@@ -214,7 +214,7 @@ switch ($_GET["op"]) {
 			$sucursal = new Sucursal();
 
 			$rspta = $sucursal->listar();
-
+			echo '<option value="" disabled selected>Seleccionar sucursal</option>';
 			while ($reg = $rspta->fetch_object()) {
 				echo '<option value='.$reg->idsucursal.'>'.$reg->nombre.'</option>';
 			}

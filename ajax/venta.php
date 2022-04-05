@@ -78,10 +78,10 @@ switch ($_GET["op"]) {
 			<td></td>
 			<td>'.$reg->codigo.'</td>
 			<td>'.$reg->cantidad.'</td>
-			<td>'.$reg->precio_venta.'</td>
+			<td>$'.number_format($reg->precio_venta, 2).'</td>
 			<td>'.$reg->descuento.'</td>
-			<td>'.$reg->subtotal.'</td></tr>';
-			$total=$total+($reg->precio_venta*$reg->cantidad-$reg->descuento);
+			<td>$'.number_format($reg->subtotal, 2).'</td></tr>';
+			number_format($total=$total+($reg->precio_venta*$reg->cantidad-$reg->descuento), 2);
 		}
 		echo '<tfoot>
          <th>TOTAL</th>
@@ -89,12 +89,11 @@ switch ($_GET["op"]) {
          <th></th>
          <th></th>
          <th></th>
-         <th><h4 id="total">$ '.$total.'</h4><input type="hidden" name="total_venta" id="total_venta"></th>
+         <th><h4 id="total">$ '.number_format($total, 2).'</h4><input type="hidden" name="total_venta" id="total_venta"></th>
        </tfoot>';
 		break;
 
-    case 'listar':
-	
+    case 'listar':	
 		$consulta="SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario ORDER BY v.idventa DESC LIMIT 100";
 			$termino= "";
 			if(isset($_POST['ventas']))
@@ -118,7 +117,7 @@ switch ($_GET["op"]) {
 					<thead class='table-light'>
 						<tr>
 							<th class='bg-info' scope='col'>Acciones</th>
-							<th class='bg-info' scope='col'># Documento</th>
+							<th class='bg-info' scope='col'># Folio</th>
 							<th class='bg-info' scope='col'>Salida</th>
 							<th class='bg-info' scope='col'>Estado</th>
 							<th class='bg-info' scope='col'>Cliente</th>

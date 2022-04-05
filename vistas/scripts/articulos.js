@@ -49,7 +49,26 @@ function limpiar(){
 //funcion mostrar formulario
 function mostrarform(flag){
 	limpiar();
-	if(flag){
+	if(flag){		
+		$("#idcategoria").prop("disabled", false);
+		$("#idcategoria").selectpicker('refresh');
+		$("#idproveedor").prop("disabled", false);
+		$("#idproveedor").selectpicker('refresh');
+		$("#codigo").prop("disabled", false);
+		$("#fmsi").prop("disabled", false);
+		$("#marca").prop("disabled", false);
+		$("#unidades").prop("disabled", false);
+		$("#pasillo").prop("disabled", false);
+		$("#nombre").prop("disabled", false);
+		$("#stock").prop("disabled", false);
+		$("#costo").prop("disabled", false);
+		$("#publico").prop("disabled", false);
+		$("#taller").prop("disabled", false);
+		$("#credito_taller").prop("disabled", false);
+		$("#mayoreo").prop("disabled", false);
+		$("#descripcion").prop("disabled", false);
+		$("#barcode").prop("disabled", false);
+		$("#idarticulo").prop("disabled", false);
 		$("#table-search").hide();
 		$("#formularioregistros").show();
 		$("#btnGuardar").prop("disabled",false);
@@ -84,19 +103,19 @@ function actualizarStock(profile_viewer_uid) {
 }
 
 function obtener_registros(articulos){
-		$('.loader').show();
-		$.ajax({
-			url : '../ajax/articulo.php?op=listar',
-			type : 'POST',
-			dataType : 'html',
-			data : { articulos: articulos},
-		})
-		.done(function(resultado){
-			setTimeout(() => {
-				$("#tabla_resultado").html(resultado);
-				$('.loader').hide();
-			}, 50);
-		})
+	$('.loader').show();
+	$.ajax({
+		url : '../ajax/articulo.php?op=listar',
+		type : 'POST',
+		dataType : 'html',
+		data : { articulos: articulos},
+	})
+	.done(function(resultado){
+		setTimeout(() => {
+			$("#tabla_resultado").html(resultado);
+			$('.loader').hide();
+		}, 50);
+	})
 }	
 
 $(document).on('keyup', '#busqueda', function(){
@@ -112,7 +131,7 @@ $(document).on('keyup', '#busqueda', function(){
 });
 
 //funcion para guardaryeditar
-function guardaryeditar(e){	
+function guardaryeditar(e){
 	e.preventDefault();//no se activara la accion predeterminada 
 	$("#btnGuardar").prop("disabled",true);
 	var formData=new FormData($("#formulario")[0]);
@@ -134,7 +153,36 @@ function guardaryeditar(e){
 	
 }
 
-function mostrar(idarticulo){
+function mostrar(idarticulo){	
+	$.post("../ajax/articulo.php?op=mostrar",{idarticulo : idarticulo},
+		function(data,status)
+		{
+			data=JSON.parse(data);
+			mostrarform(true);
+			$("#idcategoria").val(data.idcategoria).prop("disabled", true);
+			$("#idcategoria").selectpicker('refresh');
+			$("#idproveedor").val(data.idproveedor).prop("disabled", true);
+			$("#idproveedor").selectpicker('refresh');
+			$("#codigo").val(data.codigo).prop("disabled", true);
+			$("#fmsi").val(data.fmsi).prop("disabled", true);
+			$("#marca").val(data.marca).prop("disabled", true);
+			$("#unidades").val(data.unidades).prop("disabled", true);
+			$("#pasillo").val(data.pasillo).prop("disabled", true);
+			$("#nombre").val(data.nombre).prop("disabled", true);
+			$("#stock").val(data.stock).prop("disabled", true);
+			$("#costo").val(data.costo).prop("disabled", true);
+			$("#publico").val(data.publico).prop("disabled", true);
+			$("#taller").val(data.taller).prop("disabled", true);
+			$("#credito_taller").val(data.credito_taller).prop("disabled", true);
+			$("#mayoreo").val(data.mayoreo).prop("disabled", true);
+			$("#descripcion").val(data.descripcion).prop("disabled", true);
+			$("#barcode").val(data.barcode).prop("disabled", true);
+			$("#idarticulo").val(data.idarticulo).prop("disabled", true);
+		});
+		limpiar();
+}
+
+function editarArticulo(idarticulo){
 	$.post("../ajax/articulo.php?op=mostrar",{idarticulo : idarticulo},
 		function(data,status)
 		{
@@ -159,7 +207,8 @@ function mostrar(idarticulo){
 			$("#descripcion").val(data.descripcion);
 			$("#barcode").val(data.barcode);
 			$("#idarticulo").val(data.idarticulo);
-		})
+		});
+		limpiar();
 }
 
 //funcion para desactivar

@@ -18,6 +18,7 @@ function limpiar(){
 	$("#num_documento").val("");
 	$("#direccion").val("");
 	$("#telefono").val("");
+	$("#telefono_local").val("");
 	$("#email").val("");
 	$("#rfc").val("");
 	$("#credito").val("");
@@ -75,7 +76,7 @@ $(document).on('keyup', '#busqueda', function()
 });
 
 //funcion para guardaryeditar
-function guardaryeditar(e){
+function guardaryeditar(e){	
      e.preventDefault();//no se activara la accion predeterminada 
      $("#btnGuardar").prop("disabled",true);
      var formData=new FormData($("#formulario")[0]);
@@ -86,22 +87,23 @@ function guardaryeditar(e){
      	data: formData,
      	contentType: false,
      	processData: false,
-
      	success: function(datos){
      		bootbox.alert(datos);
+			obtener_registros();
      		mostrarform(false);
      	}
      });
 
      limpiar();
 }
-
-function mostrar(idpersona){
+function editar(idpersona) {	
+	$('.loader').show();
 	$.post("../ajax/persona.php?op=mostrar",{idpersona : idpersona},
 		function(data,status)
 		{
 			data=JSON.parse(data);
 			mostrarform(true);
+			$('.loader').hide();
 
 			$("#nombre").val(data.nombre);
 			$("#tipo_documento").val(data.tipo_documento);
@@ -109,6 +111,7 @@ function mostrar(idpersona){
 			$("#num_documento").val(data.num_documento);
 			$("#direccion").val(data.direccion);
 			$("#telefono").val(data.telefono);
+			$("#telefono_local").val(data.telefono_local);
 			$("#email").val(data.email);
 			$("#rfc").val(data.rfc);
 			$("#credito").val(data.credito);
@@ -117,6 +120,38 @@ function mostrar(idpersona){
 			$("#idpersona").val(data.idpersona);
 			//btnAgregarAut
 		});
+	$.post("../ajax/persona.php?op=listarAutos&id="+idpersona,function(r){		
+		$("#detalles").html(r);
+	});
+}
+function mostrar(idpersona){
+	$('.loader').show();
+	$.post("../ajax/persona.php?op=mostrar",{idpersona : idpersona},
+	function(data,status)
+	{
+		data=JSON.parse(data);
+		mostrarform(true);
+		$('.loader').hide();
+
+		$("#nombre").val(data.nombre).prop("disabled", true);
+		$("#tipo_documento").val(data.tipo_documento).prop("disabled", true);
+		$("#tipo_documento").selectpicker('refresh').prop("disabled", true);
+		$("#num_documento").val(data.num_documento).prop("disabled", true);
+		$("#direccion").val(data.direccion).prop("disabled", true);
+		$("#telefono").val(data.telefono).prop("disabled", true);
+		$("#telefono_local").val(data.telefono_local).prop("disabled", true);
+		$("#email").val(data.email).prop("disabled", true);
+		$("#rfc").val(data.rfc).prop("disabled", true);
+		$("#credito").val(data.credito).prop("disabled", true);
+		$("#tipo_precio").val(data.tipo_precio).prop("disabled", true);
+		$("#tipo_precio").selectpicker('refresh').prop("disabled", true);
+		$("#idpersona").val(data.idpersona);
+
+		$("#btnGuardar").hide();
+		$("#btnCancelar").show();
+		$("#btnAgregarAuto").hide();
+		//btnAgregarAut
+	});
 	$.post("../ajax/persona.php?op=listarAutos&id="+idpersona,function(r){
 		$("#detalles").html(r);
 	});
@@ -124,16 +159,25 @@ function mostrar(idpersona){
 
 
 //funcion para desactivar
-function eliminar(idpersona){
+function eliminarCliente(idpersona){
 	bootbox.confirm("¿Esta seguro de eliminar este dato?", function(result){
 		if (result) {
-
-			$.post("../ajax/persona.php?op=eliminar", {idpersona : idpersona }, function(e){
+			$.post("../ajax/persona.php?op=eliminarCliente", {idpersona : idpersona }, function(e){
 				bootbox.alert(e);
-				tabla.ajax.reload();
 			});
+			obtener_registros();
 		}
 	})
+}
+
+function eliminarAuto(idauto) {
+	// bootbox.confirm("¿Esta seguro de eliminar este auto?", function(result){
+		// if (result) {
+			$.post("../ajax/persona.php?op=eliminarAuto", {idauto : idauto }, function(e){
+				bootbox.alert(e);				
+			});
+		// }
+	// })
 }
 
 //placas, marca, modelo, ano, color, kms

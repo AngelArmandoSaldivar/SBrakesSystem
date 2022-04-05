@@ -5,6 +5,7 @@ if(!isset($_SESSION["nombre"])) {
 	$articulo=new Articulo();
 	session_start();
 	$idsucursal = $_SESSION['idsucursal'];
+	$acceso = $_SESSION['acceso'];
 
 	$idarticulo=isset($_POST["idarticulo"])? limpiarCadena($_POST["idarticulo"]):"";
 	$idcategoria=isset($_POST["idcategoria"])? limpiarCadena($_POST["idcategoria"]):"";
@@ -135,7 +136,57 @@ if(!isset($_SESSION["nombre"])) {
 
 					$stock_mdx = '';
 					
-					if($fila["idsucursal"] == $idsucursal && $fila["stock"] >=$stock_mdx) {
+					if($fila["idsucursal"] == $idsucursal && $fila["stock"] >=$stock_mdx && $acceso === "admin") {
+						if($fila["stock"] >=1) {
+							if($fila["estado"] == "1") {
+								echo "<tr style='color:blue; font-size:11px;'>
+								<td >".$fila['codigo']."</td>
+								<td>".$fila['fmsi']."</td>
+								<td>".$fila['marca']."</td>
+								<td>".$delit."...</td>
+								<td><p>$ ".$costoMiles."</p></td>
+								<td><p>$ ".$publicMiles."</p></td>
+								<td><p>$ ".$tallerMiles."</p></td>
+								<td><p>$ ".$creditoMiles."</p></td>
+								<td><p>$ ".$mayoreoMiles."</p></td>
+								<td><p>".$fila['stock']."pz</td>
+								<td>
+									<div class='emergente'>
+										<span data-tooltip='Mostrar articulo'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button></span>
+										<span data-tooltip='Editar articulo'><button class='btn btn-warning btn-xs' onclick='editarArticulo(".$fila["idarticulo"].")'><i class='fa fa-pencil'></i></button></span>
+										<span data-tooltip='Desactivar articulo'><button class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idarticulo"].")')><i class='fa fa-close'></i></button></span>
+										<!--<span data-tooltip='Activar articulo'><button class='btn btn-primary btn-xs' onclick='activar(".$fila["idarticulo"].")'><i class='fa fa-check'></i></button></span>-->
+									</div>
+								</td>
+							</tr>";	
+							}							
+						}
+						else if($fila["stock"] <=0) {
+							if($fila["estado"] == 1) {
+								echo "<tr style='color:red; font-size:11px;'>
+								<td>".$fila['codigo']."</td>
+								<td>".$fila['fmsi']."</td>
+								<td>".$fila['marca']."</td>
+								<td>".$delit."...</td>
+								<td><p>$ ".$costoMiles."</p></td>
+								<td><p>$ ".$publicMiles."</p></td>
+								<td><p>$ ".$tallerMiles."</p></td>
+								<td><p>$ ".$creditoMiles."</p></td>
+								<td><p>$ ".$mayoreoMiles."</p></td>
+								<td><p>".$fila['stock']."pz</td>
+								<td>
+									<div class='emergente'>
+										<span data-tooltip='Mostrar articulo'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button></span>
+										<span data-tooltip='Editar articulo'><button class='btn btn-warning btn-xs' onclick='editarArticulo(".$fila["idarticulo"].")'><i class='fa fa-pencil'></i></button></span>
+										<span data-tooltip='Desactivar articulo'><button class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idarticulo"].")')><i class='fa fa-close'></i></button></span>										
+									</div>
+								</td>
+							</tr>";	
+							}							
+						}
+												
+					//Usuario normal
+					} else {
 						if($fila["stock"] >=1) {
 							usleep(10000);
 							echo "<tr style='color:blue; font-size:11px;'>
@@ -151,12 +202,11 @@ if(!isset($_SESSION["nombre"])) {
 								<td><p>".$fila['stock']."pz</td>
 								<td>
 								<div class='emergente'>
-									<span data-tooltip='Editar articulo'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-pencil'></i></button></span>
-									<span data-tooltip='Desactivar articulo'><button class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idarticulo"].")')><i class='fa fa-close'></i></button></span>
-									<span data-tooltip='Activar articulo'><button class='btn btn-primary btn-xs' onclick='activar(".$fila["idarticulo"].")'><i class='fa fa-check'></i></button></span>
+									<span data-tooltip='Mostrar articulo'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button></span>									
 								</td>
 							</tr>";
-						} else if($fila["stock"] <=0) {
+						} 						
+						else if($fila["stock"] <=0) {
 							echo "<tr style='color:red; font-size:11px;'>
 								<td>".$fila['codigo']."</td>
 								<td>".$fila['fmsi']."</td>
@@ -168,9 +218,10 @@ if(!isset($_SESSION["nombre"])) {
 								<td><p>$ ".$creditoMiles."</p></td>
 								<td><p>$ ".$mayoreoMiles."</p></td>
 								<td><p>".$fila['stock']."pz</td>
-								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-pencil'></i></button> <button class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idarticulo"].")')><i class='fa fa-close'></i></button><button class='btn btn-primary btn-xs' onclick='activar(".$fila["idarticulo"].")'><i class='fa fa-check'></i></button></td>					
+								<td>
+								<button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i>								
 							</tr>";	
-						}					
+						}	
 					}
 				}
 				echo "</tbody>

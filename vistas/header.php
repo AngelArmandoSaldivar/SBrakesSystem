@@ -30,6 +30,7 @@ if (strlen(session_id())<1)
 <link rel="stylesheet" href="../public/datatables/responsive.dataTables.min.css">
 <link rel="stylesheet" href="../public/css/bootstrap-select.min.css">
 
+
 <!-- MATERIAL UI-->
 <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
 <!-- ICONOS MATERIAL UI -->
@@ -57,12 +58,14 @@ if (strlen(session_id())<1)
 
   <header class="main-header" >
     <!-- Logo -->
-    <a href="escritorio.php" class="logo" >
-      <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>B1S</b> Sys</span>
-      <!-- logo for regular state and mobile devices -->
-      <img src="../files/images/MainLogo.png" alt="" width="130px" style="box-shadow: -13px 10px 22px black;">
-    </a>
+    <div style="dysplay:inline-block">
+      <a href="escritorio.php" class="logo" >
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini"><b>B1S</b> Sys</span>
+        <!-- logo for regular state and mobile devices -->      
+          <img src="../files/images/MainLogo.png" alt="" width="130px" style="box-shadow: -13px 10px 22px black;">      
+      </a>
+    </div>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top" >
       <!-- Sidebar toggle button-->
@@ -184,10 +187,10 @@ if ($_SESSION['servicios']==1) {
         ?>
 
                              <?php 
-if ($_SESSION['acceso']==1) {
+if ($_SESSION['accesos']==1) {
   echo '  <li class="treeview">
           <a href="#">
-            <i class="fa fa-folder"></i> <span>Acceso</span>
+            <i class="fa fa-folder"></i> <span>Accesos</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>

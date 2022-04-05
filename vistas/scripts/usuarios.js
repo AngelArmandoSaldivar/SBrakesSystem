@@ -24,8 +24,7 @@ $.post("../ajax/usuario.php?op=selectSucursal", function(r){
 
 //funcion limpiar
 function limpiar(){
-	$("#nombre").val("");
-    $("#num_documento").val("");
+	$("#nombre").val("");    
 	$("#direccion").val("");
 	$("#telefono").val("");
 	$("#email").val("");
@@ -36,6 +35,7 @@ function limpiar(){
 	$("#imagenactual").val("");
 	$("#idusuario").val("");
 	$("#idsucursal").val("");
+	$("#idNivelUsuario").val("");
 }
 
 //funcion mostrar formulario
@@ -116,12 +116,11 @@ function mostrar(idusuario){
 			data=JSON.parse(data);
 			mostrarform(true);
 
-			$("#nombre").val(data.nombre);
-            $("#tipo_documento").val(data.tipo_documento);
-            $("#tipo_documento").selectpicker('refresh');
+			$("#nombre").val(data.nombre);            
 			$("#idsucursal").selectpicker('refresh');
 			$("#idsucursal").val(data.idsucursal);
-            $("#num_documento").val(data.num_documento);
+			$("#idNivelUsuario").selectpicker('refresh');
+			$("#idNivelUsuario").val(data.idNivelUsuario);            
             $("#direccion").val(data.direccion);
             $("#telefono").val(data.telefono);
             $("#email").val(data.email);
@@ -132,8 +131,6 @@ function mostrar(idusuario){
             $("#imagenmuestra").attr("src","../files/usuarios/"+data.imagen);
             $("#imagenactual").val(data.imagen);
             $("#idusuario").val(data.idusuario);
-
-
 		});
 	$.post("../ajax/usuario.php?op=permisos&id="+idusuario, function(r){
 	$("#permisos").html(r);

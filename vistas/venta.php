@@ -39,8 +39,8 @@ if ($_SESSION['ventas']==1) {
                 </div>
                 <div class="form-group col-lg-4 col-md-8 col-xs-12">
                   <label for="">Cliente(*):</label>
-                 <input class="form-control" type="hidden" name="idventa" id="idventa">
-                  <select name="idcliente" id="idcliente" class="form-control selectpicker" data-live-search="true" required>
+                 <input class="form-control" type="hidden" name="idventa" id="idventa">                 
+                  <select name="idcliente" id="idcliente" class="form-control selectpicker" data-live-search="true" required>                   
                     <option value="" disabled selected>Seleccionar cliente</option>
                   </select>
                 </div>
@@ -80,6 +80,11 @@ if ($_SESSION['ventas']==1) {
                 </div>
 
                 <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
+                  <label for="">Telefono Local: </label>
+                  <input class="form-control" type="text" name="telefono_local" id="telefono_local">
+                </div>
+
+                <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
                   <label for="">Días Crédito: </label>
                   <input class="form-control" type="text" name="credito" id="credito">
                 </div>
@@ -98,10 +103,10 @@ if ($_SESSION['ventas']==1) {
                       <option value="Ticket">Ticket</option>
                     </select>
                 </div>             
-                <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
+                <!-- <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
                   <label for="">Impuesto: </label>
                   <input class="form-control" type="text" name="impuesto" id="impuesto">
-                </div>
+                </div> -->
 
                 <div class="form-group col-lg-4 col-md-6 col-xs-12">
                   <label for="">Tipo de precio </label>
@@ -411,55 +416,6 @@ if ($_SESSION['ventas']==1) {
     </div>
   </div>
 
-
-
-  <!--MODAL AGREGAR AUTO-->
-  <!-- <div class="modal fade" id="myModalAuto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog" style="width: 75% !important;">
-    <div class="modal-content" style="border-radius: 20px;">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Agregar automovil</h4>
-      </div>
-      <div class="modal-body">
-        <div class="panel-body table-responsive">
-          <div class="form-group col-lg-4 col-md-6 col-xs-12">
-            <label for="">Placas</label>
-            <input class="form-control" type="text" name="placas" id="placas" placeholder="Placas" value="" required>
-          </div>
-          <div class="form-group col-lg-4 col-md-6 col-xs-12">
-            <label for="">Marca</label>
-            <input class="form-control" type="text" name="marcaAuto" id="marcaAuto" placeholder="MarcaAuto" value="" required>
-          </div>
-          <div class="form-group col-lg-4 col-md-6 col-xs-12">
-            <label for="">Modelo</label>
-            <input class="form-control" type="text" name="modelo" id="modelo" placeholder="Modelo" value="" required>
-          </div>
-          <div class="form-group col-lg-4 col-md-6 col-xs-12">
-            <label for="">Año</label>
-            <input class="form-control" type="text" name="ano" id="ano" placeholder="Año" value="" required>
-          </div>
-          <div class="form-group col-lg-4 col-md-6 col-xs-12">
-            <label for="">Color</label>
-            <input class="form-control" type="text" name="color" id="color" placeholder="Color" value="" required>
-          </div>
-          <div class="form-group col-lg-4 col-md-6 col-xs-12">
-            <label for="">Kms</label>
-            <input class="form-control" type="number" name="kms" id="kms" min="0" placeholder="Kms" value="" required>
-          </div>
-          <div class="form-group col-lg-6 col-md-3 col-sm-6 col-xs-12" id="">
-            <button id="btnAgregar" type="button" class="btn btn-primary" onclick="agregarDetalleAuto(placas, marca, modelo, ano, color, kms)" data-dismiss="modal"><span class="fa fa-plus"></span>Agregar</button>
-          </a>
-        </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
-      </div>
-      </div>
-    </div>
-  </div> -->
-  <!-- fin Modal-->
   <!--Modal registrar nuevo producto-->
   <div class="modal fade" id="agregarProducto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="width: 80% !important; box-shadow:5px 5px 5px 5px rgba(0, 0, 0, 0.2);">
@@ -601,7 +557,7 @@ if ($_SESSION['ventas']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/venta.js"></script>
+ <script src="scripts/ventas.js"></script>
  <?php 
 }
 

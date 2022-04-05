@@ -14,7 +14,7 @@ function init(){
    
 }
 
-function mostrarInfoClient(idcliente) {
+function mostrarInfoClient(idcliente) {	
 	$('.loader').show();
 	$.post("../ajax/venta.php?op=mostrarInfoClient",{idcliente : idcliente},
 		function(data,status)
@@ -25,6 +25,7 @@ function mostrarInfoClient(idcliente) {
 			$("#direccion").val(data.direccion).prop("disabled", true);
 			$("#email").val(data.email).prop("disabled", true);
 			$("#telefono").val(data.telefono).prop("disabled", true);
+			$("#telefono_local").val(data.telefono).prop("disabled", true);
 			$("#credito").val(data.credito).prop("disabled", true);
 			if(data.tipo_precio == "publico") {
 				$("#tipoPrecio").val("Publico / Mostrador").prop("disabled", true);
@@ -38,7 +39,16 @@ function mostrarInfoClient(idcliente) {
 		});
 }
 
-function selectCliente() {
+
+$('#searchSelect').on("keyup", function(){
+	alert(this.value);
+});
+
+function selectCliente() {	
+	
+
+	console.log(document.getElementById("searchSelect"));
+	
 	//cargamos los items al select cliente
 	$.post("../ajax/venta.php?op=selectCliente", function(r){
 		$("#idcliente").html(r);
@@ -47,7 +57,7 @@ function selectCliente() {
 
 	$("#tipo_precio").change(modTipoPrecio);
 	function modTipoPrecio() {
-		var tipo_precio = $("#tipo_precio option:selected").val();			
+		var tipo_precio = $("#tipo_precio option:selected").val();
 		document.getElementById("caja_valor").value=tipo_precio;	
 	}
 
@@ -390,11 +400,37 @@ function guardaryeditarProducto() {
      });
 }
 
+function number_format (number, decimals, dec_point, thousands_sep) {
+    // Strip all characters but numerical ones.
+    number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
+    var n = !isFinite(+number) ? 0 : +number,
+        prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+        sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+        dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+        s = '',
+        toFixedFix = function (n, prec) {
+            var k = Math.pow(10, prec);
+            return '' + Math.round(n * k) / k;
+        };
+    // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+    s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+    if (s[0].length > 3) {
+        s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+    }
+    if ((s[1] || '').length < prec) {
+        s[1] = s[1] || '';
+        s[1] += new Array(prec - s[1].length + 1).join('0');
+    }
+    return s.join(dec);
+}
+
 function mostrar(idventa){
 	$('.loader').show();
 	$.post("../ajax/venta.php?op=mostrar",{idventa : idventa},
 		function(data,status)
-		{
+		{			
+			let importe = Intl.NumberFormat('es-MX').format(data.importe);
+			console.log(importe);
 			data=JSON.parse(data);
 			mostrarform(true);
 			$('.loader').hide();
@@ -435,23 +471,12 @@ function mostrar(idventa){
 			$("#banco3").selectpicker('refresh');
 			$("#ref3").val(data.referencia3).prop("disabled", true);
 
-
 			$("#rfc").val(data.rfc).prop("disabled", true);
 			$("#direccion").val(data.direccion).prop("disabled", true);			
 			$("#email").val(data.email).prop("disabled", true);
 			$("#telefono").val(data.telefono).prop("disabled", true);
 			$("#credito").val(data.credito).prop("disabled", true);
 			$("#tipoPrecio").val(data.tipo_precio).prop("disabled", true);
-			// if(data.tipo_precio == "publico") {
-			// 	$("#tipoPrecio").val("Publico / Mostrador").prop("disabled", true);
-			// } else if(data.tipo_precio == "taller") {
-			// 	$("#tipoPrecio").val("Taller").prop("disabled", true);
-			// } else if(data.tipo_precio == "credito_taller") {
-			// 	$("#tipoPrecio").val("Credito Taller").prop("disabled", true);
-			// } else if(data.tipo_precio == "mayoreo") {
-			// 	$("#tipoPrecio").val("Mayoreo").prop("disabled", true);
-			// }
-
 			$("#idventa").val(data.idventa);
 			
 			//ocultar y mostrar los botones
@@ -459,10 +484,19 @@ function mostrar(idventa){
 			$("#btnCancelar").show();
 			$("#btnAgregarArt").hide();
 		});
-	$.post("../ajax/venta.php?op=listarDetalle&id="+idventa,function(r){
-		$("#detalles").html(r);
-	});	
-
+		$.post("../ajax/venta.php?op=listarDetalle&id="+idventa,function(r){
+			console.log("Productos: ", r.length);
+				$('.loader').show();
+				if(r.length < 0) {
+					$("#detalles").html(r);
+					$('.loader').hide();
+				} else {
+					setInterval(() => {
+						$("#detalles").html(r);
+						$('.loader').hide();
+					}, 2000);
+				}
+		});
 }
 
 //funcion para desactivar
@@ -477,7 +511,7 @@ function anular(idventa){
 				$('.loader').hide();
 			});
 		}
-	})	
+	});
 }
 
 // $("#placas").change(placasAuto);

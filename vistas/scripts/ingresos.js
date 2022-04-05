@@ -4,7 +4,7 @@ var tabla;
 function init(){
    mostrarform(false);
    obtener_registros();
-   obtener_registrosProductos();
+   obtener_registrosProductos();   
 
    $("#formulario").on("submit",function(e){
    	guardaryeditar(e);
@@ -13,11 +13,11 @@ function init(){
    //cargamos los items al select proveedor
    selectProvider();
 
-   $("#fecha_inicio").change(filtrosFechas);
-
-   var fecha_inicio = $("#fecha_inicio").val();
-	console.log(fecha_inicio);
-   
+   	//Revisamos si la paginación esta en 1 para no mostrar el boton de Anterior
+	let cachaPaginaNumber = Number($("#pagina").val());
+	if(cachaPaginaNumber <= 1) {
+		$("#anterior").hide();
+	}
 }
 
 //Mostrar proveedores
@@ -82,23 +82,192 @@ function cancelarform(){
 	mostrarform(false);
 }
 
-//funcion listar REGISTROS INGRESOS CREADOS
-function obtener_registros(ingresos){
+function fechas() {	
+	$("#fecha_inicio").on('change', function() {
+		let fecha_inicio = $("#fecha_inicio").val();		
+		return fecha_inicio;
+	})		
+}
+
+
+
+function paginasClick(e) {
+	console.log("Paginas: ", e);
+	let cachaPagina = document.getElementById("cachaPagina").value=e;
+	document.getElementById("cachaPagina").value=e;	
+
+	if(cachaPagina > 1) {
+		$("#anterior").show();
+	} else {
+		$("#anterior").hide();
+	}
+}
+
+function paginaSiguiente() {
+	let cachaPaginaNumber = Number($("#pagina").val());
+	cachaPaginaNumber = cachaPaginaNumber + 1;
+	document.getElementById("pagina").value=cachaPaginaNumber;	
+	if(cachaPaginaNumber > 1) {
+		$("#anterior").show();
+	}
+
+	let paginaNext = Number(cachaPaginaNumber * 50);
+	let paginaAntes = Number(paginaNext - 50);
+
+	console.log("Pagina Antes: ", paginaAntes);
+	console.log("Pagina siguiente: ", paginaNext);
 	$.ajax({
 		url : '../ajax/ingreso.php?op=listar',
 		type : 'POST',
 		dataType : 'html',
-		data : { ingresos: ingresos},
+		data : {paginaAntes: paginaAntes, paginaNext: paginaNext},
+	})
+	.done(function(resultado){				
+		$('.loader').hide();
+		$("#tabla_resultado").html(resultado);
+	})
+
+}
+
+function paginaAnterior() {		
+	let cachaPaginaNumber = Number($("#pagina").val());
+	cachaPaginaNumber = cachaPaginaNumber - 1;
+	document.getElementById("pagina").value=cachaPaginaNumber;
+	console.log(cachaPaginaNumber);
+
+	if(cachaPaginaNumber <= 1) {
+		$("#anterior").hide();
 	}
-	)
-	.done(function(resultado){
+
+	let paginaNext = Number(cachaPaginaNumber * 40);
+	let paginaAntes = Number(paginaNext - 40);
+
+	console.log("Pagina Antes: ", paginaAntes);
+	console.log("Pagina siguiente: ", paginaNext);
+	$.ajax({
+		url : '../ajax/ingreso.php?op=listar',
+		type : 'POST',
+		dataType : 'html',
+		data : {paginaAntes: paginaAntes, paginaNext: paginaNext},
+	})
+	.done(function(resultado){				
+		$('.loader').hide();
 		$("#tabla_resultado").html(resultado);
 	})
 }
 
-$(document).on('keyup', '#busqueda', function(){
-	var valorBusqueda=$(this).val();	
+
+//Filtro Limite de registros
+var select = document.getElementById('limite_registros');
+select.addEventListener('change',
+function(){
+	$('.loader').show();
+	let selectedOption = this.options[select.selectedIndex];
+	let limites = selectedOption.value;
+	console.log(selectedOption.value);
+	$.ajax({
+		url : '../ajax/ingreso.php?op=listar',
+		type : 'POST',
+		dataType : 'html',
+		data : { limites: limites},
+	})
+	.done(function(resultado){				
+		$('.loader').hide();
+		$("#tabla_resultado").html(resultado);
+	})
+});
+
+
+//funcion listar REGISTROS INGRESOS CREADOS
+function obtener_registros(ingresos){	
+
+	busqueda = $("#busqueda").val();
+	fechaInicial = $("#fecha_inicio").val();
+	fechaFinal = $("#fecha_fin").val();
 	
+
+	//Filtro solo fecha
+	$("#fecha_inicio").change(fechaInicio);
+	function fechaInicio() {	
+		fechas = $("#fecha_inicio").val();	
+		$.ajax({
+			url : '../ajax/ingreso.php?op=listar',
+			type : 'POST',
+			dataType : 'html',
+			data : { fechas: fechas},
+		}
+		)
+		.done(function(resultado){
+			$("#tabla_resultado").html(resultado);
+		})
+		$("#fecha_fin").change(fechaFin);
+		function fechaFin() {
+			if(busqueda == "") {
+				fechas = $("#fecha_inicio").val();
+				fechaFin = $("#fecha_fin").val();
+				$.ajax({
+					url : '../ajax/ingreso.php?op=listar',
+					type : 'POST',
+					dataType : 'html',
+					data : { fechas: fechas, fechaFin:fechaFin},
+				}
+				)
+				.done(function(resultado){
+					$("#tabla_resultado").html(resultado);
+				})
+			}
+		}		
+	}
+
+	//Filtro busqueda y fechas
+	if(ingresos != "") {
+		$.ajax({
+			url : '../ajax/ingreso.php?op=listar',
+			type : 'POST',
+			dataType : 'html',
+			data : { ingresos: ingresos},
+		}
+		)
+		.done(function(resultado){
+			$("#tabla_resultado").html(resultado);
+		})	
+	}
+
+	if(ingresos != "" && fechaInicial != "" && fechaFinal != "") {
+		$.ajax({
+			url : '../ajax/ingreso.php?op=listar',
+			type : 'POST',
+			dataType : 'html',
+			data : { ingresos: ingresos},
+		}
+		)
+		.done(function(resultado){
+			$("#tabla_resultado").html(resultado);
+		})
+		$("#fecha_inicio").change(fechaInicio);
+		function fechaInicio() {
+			$("#fecha_fin").change(fechaFinFun);
+			function fechaFinFun(){
+				fechas = $("#fecha_inicio").val();
+				fechasFin = $("#fecha_fin").val();
+				$.ajax({
+					url : '../ajax/ingreso.php?op=listar',
+					type : 'POST',
+					dataType : 'html',
+					data : { ingresos: ingresos, fechas: fechas, fechasFin: fechasFin},
+				}
+				)
+				.done(function(resultado){
+					$("#tabla_resultado").html(resultado);
+				})
+			}
+		}
+	}
+	
+}
+
+$(document).on('keyup', '#busqueda', function(){
+	var valorBusqueda=$(this).val();
 	if (valorBusqueda!="")
 	{
 		obtener_registros(valorBusqueda);
@@ -109,41 +278,24 @@ $(document).on('keyup', '#busqueda', function(){
 	}
 });
 
-//Filtros fecha
-function filtrosFechas() {
-	// var  fecha_inicio = $("#fecha_inicio").val();
-	// console.log(fecha_inicio);
-	
-	// $.ajax({
-	// 	url : '../ajax/ingreso.php?op=listar',
-	// 	type : 'POST',
-	// 	dataType : 'html',
-	// 	data : { fecha_inicio: fecha_inicio},
-	// }
-	// )
-	// .done(function(resultado){
-	// 	$("#tabla_resultado").html(resultado);
-	// })
-}
-
 //Listar productos
 function obtener_registrosProductos(productos){
-	$.ajax({
-		url : '../ajax/ingreso.php?op=listarArticulos',
-		type : 'POST',
-		dataType : 'html',
-		data : { productos: productos },
-	})
-	.done(function(resultado){
-		$("#tabla_resultadoProducto").html(resultado);
-	})
+		$.ajax({
+			url : '../ajax/ingreso.php?op=listarArticulos',
+			type : 'POST',
+			dataType : 'html',
+			data : { productos: productos},
+		})
+		.done(function(resultado){
+			$("#tabla_resultadoProducto").html(resultado);
+		})	
 }
 
 
 
 $(document).on('keyup', '#busquedaProduct', function(){
-	var valorBusqueda=$(this).val();
 	
+	var valorBusqueda=$(this).val();
 	if (valorBusqueda!="")
 	{
 		obtener_registrosProductos(valorBusqueda);
@@ -333,8 +485,7 @@ function calcularTotales(){
 	}
 	$("#total").html("$ " + total);
 	$("#total_compra").val(total);
-	evaluar();
-	
+	evaluar();	
 }
 
 function evaluar(){

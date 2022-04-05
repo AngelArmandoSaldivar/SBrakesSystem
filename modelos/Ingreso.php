@@ -85,8 +85,37 @@ public function totalIngresos() {
 	$sql = "SELECT COUNT(*) AS totalIngresos FROM ingreso WHERE estado='NORMAL'";
 	return ejecutarConsulta($sql);
 }
-public function ingresosPagination($limit, $limit2, $busqueda) {
-	$sql = "SELECT i.idsucursal, i.estado, i.tipo_comprobante, i.total_compra, i.idingreso, i.fecha_hora, i.idproveedor, u.idusuario, p.nombre as proveedor, u.nombre as usuario FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario WHERE p.nombre LIKE '%$busqueda%' OR i.idingreso LIKE '%$busqueda%' OR i.estado LIKE '%$busqueda%' LIMIT $limit, $limit2";
+public function busquedaTexto($busqueda, $limite, $limit2) {
+	$sql = "SELECT i.idsucursal, i.estado, i.tipo_comprobante, i.total_compra, i.idingreso, i.fecha_hora, i.idproveedor, u.idusuario, p.nombre as proveedor, u.nombre as usuario FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario WHERE p.nombre LIKE '%$busqueda%' OR i.idingreso LIKE '%$busqueda%' OR i.estado LIKE '%$busqueda%' LIMIT $limite, $limit2";
+	return ejecutarConsulta($sql);
+}
+
+public function textoFecha($fecha_inicio, $fecha_fin, $limite, $limit2, $busqueda) {
+	$sql = "SELECT i.idsucursal, i.estado, i.tipo_comprobante, i.total_compra, i.idingreso, i.fecha_hora, i.idproveedor, u.idusuario, p.nombre as proveedor, u.nombre as usuario FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario WHERE DATE(i.fecha_hora)>='$fecha_inicio' AND DATE(i.fecha_hora)<='$fecha_fin' AND p.nombre LIKE '%$busqueda%' OR i.idingreso LIKE '%$busqueda%' OR i.estado LIKE '%$busqueda%' LIMIT $limite, $limit2";
+	return ejecutarConsulta($sql);
+}
+
+public function ingresosPagination($fecha_inicio, $fecha_fin, $limite, $limit2, $busqueda) {
+	$sql = "SELECT i.idsucursal, i.estado, i.tipo_comprobante, i.total_compra, i.idingreso, i.fecha_hora, i.idproveedor, u.idusuario, p.nombre as proveedor, u.nombre as usuario FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario WHERE DATE(i.fecha_hora)>='$fecha_inicio' AND DATE(i.fecha_hora)<='$fecha_fin' AND p.nombre LIKE '%$busqueda%' OR i.idingreso LIKE '%$busqueda%' OR i.estado LIKE '%$busqueda%' LIMIT $limite, $limit2";
+	return ejecutarConsulta($sql);
+}
+
+public function filtroFechas($fecha_inicio, $fecha_fin, $limite, $limit2) {
+	$sql = "SELECT i.idsucursal, i.estado, i.tipo_comprobante, i.total_compra, i.idingreso, i.fecha_hora, i.idproveedor, u.idusuario, p.nombre as proveedor, u.nombre as usuario FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario WHERE DATE(i.fecha_hora)>='$fecha_inicio' AND DATE(i.fecha_hora)<='$fecha_fin' LIMIT $limite, $limit2";
+	return ejecutarConsulta($sql);
+}
+
+public function filtroLimite($limite, $limit2) {
+	$sql = "SELECT i.idsucursal, i.estado, i.tipo_comprobante, i.total_compra, i.idingreso, i.fecha_hora, i.idproveedor, u.idusuario, p.nombre as proveedor, u.nombre as usuario FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario LIMIT $limite, $limit2";
+	sleep(1);
+	return ejecutarConsulta($sql);	
+}
+public function filtroFechaInicial($fecha_inicio, $limite, $limit2) {
+	$sql = "SELECT i.idsucursal, i.estado, i.tipo_comprobante, i.total_compra, i.idingreso, i.fecha_hora, i.idproveedor, u.idusuario, p.nombre as proveedor, u.nombre as usuario FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario WHERE DATE(i.fecha_hora)>='$fecha_inicio' LIMIT $limite, $limit2";
+	return ejecutarConsulta($sql);
+}
+public function filtroPaginado($paginaAnterior, $paginaSiguiente) {
+	$sql = "SELECT i.idsucursal, i.estado, i.tipo_comprobante, i.total_compra, i.idingreso, i.fecha_hora, i.idproveedor, u.idusuario, p.nombre as proveedor, u.nombre as usuario FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario LIMIT $paginaAnterior, $paginaSiguiente;";
 	return ejecutarConsulta($sql);
 }
 

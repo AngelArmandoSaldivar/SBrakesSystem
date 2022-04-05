@@ -1,6 +1,7 @@
 <?php
 //activamos almacenamiento en el buffer
 require "../config/Conexion.php";
+require "../modelos/ingreso.php";
 ob_start();
 session_start();
 if (!isset($_SESSION['nombre'])) {
@@ -28,10 +29,10 @@ if ($_SESSION['compras']==1) {
 </div>
 <!--box-header-->
 <!--centro-->
-<div class="panel-body table-responsive" id="listadoregistros">  
+<div class="panel-body table-responsive" id="listadoregistros">
     <section>
       <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 16px; box-shadow: 5px 5px 8px #3300ff99;"></center><br><br>
-    </section>
+    </section>   
     <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
       <label>Fecha Inicio</label>
       <input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" value="<?php echo date("Y-m-d"); ?>">
@@ -43,18 +44,36 @@ if ($_SESSION['compras']==1) {
     <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
     <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
     <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">
-     <select name="limite_registros" id="limite_registros" class="form-control selectpicker" required>
+     <select name="limite_registros" id="limite_registros" class="form-control selectpicker">
       <option value="" disabled selected>Seleccionar limite</option>
-       <option value="1-50">50 / Registros</option>
-       <option value="1-50">100 / Registros</option>
-       <option value="1-50">200 / Registros</option>
-       <option value="1-50">500 / Registros</option>
-       <option value="1-50">1000 / Registros</option>
+       <option value="51">50 / Registros</option>
+       <option value="101">100 / Registros</option>
+       <option value="201">200 / Registros</option>
+       <option value="501">500 / Registros</option>
+       <option value="1001">1000 / Registros</option>
      </select>
     </div>
     <br>
-
     <section id="tabla_resultado"></section>
+
+    <nav aria-label="Page navigation example" style="text-align:right">
+    <?php 
+    
+    $ingreso = new Ingreso();
+    $rspta=$ingreso->totalIngresos();
+
+    while($res=$rspta->fetch_object()) {
+      //echo $res->totalIngresos;
+    }
+    
+    ?>
+      <ul class="pagination">
+        <input type="button" class="btn btn-primary me-md-2" value="Anterior" id="anterior" name="siguiente" onclick="paginaAnterior();">
+            <li class="page-item"><input type="submit" id="pagina" class="btn btn-primary me-md-2" name="pagina" value="1" onclick="paginasClick(<?php echo $i;?>)"></li>
+          <input type="submit" class="btn btn-primary me-md-2" value="Siguiente" id="siguiente" name="siguiente" onclick="paginaSiguiente()">
+      </ul>
+    </nav>
+    <input type="text" id="cachaPagina" name="cachaPagina" style="color:white; border:none;" value="">
 </div>
 <div class="panel-body" style="height: 400px;" id="formularioregistros">
   <form action="" name="formulario" id="formulario" method="POST">    

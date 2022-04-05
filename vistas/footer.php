@@ -25,7 +25,8 @@
 <script src="../public/datatables/vfs_fonts.js"></script>
 <script src="../public/datatables/datatables.min.js"></script>
 <script src="../public/js/bootbox.min.js"></script>
-<script src="../public/js/bootstrap-select.min.js"></script>
+<script src="../public/js/bootstraps-selects.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.1/howler.min.js"></script>
 
 <!-- SCRIPT MATERIAL UI -->
 <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>

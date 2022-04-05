@@ -69,27 +69,56 @@ switch ($_GET["op"]) {
        </tfoot>';
 		break;
 
-    case 'listar':	
-
-			
-			$consulta="SELECT i.idsucursal, i.idingreso,DATE(i.fecha_hora) as fecha,i.idproveedor,p.nombre as proveedor,u.idusuario,u.nombre as usuario, i.tipo_comprobante,i.serie_comprobante,i.total_compra,i.impuesto,i.estado FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario ORDER BY i.idingreso DESC LIMIT 40";
+    case 'listar':
+			//$consulta="SELECT i.idsucursal, i.idingreso,DATE(i.fecha_hora) as fecha,i.idproveedor,p.nombre as proveedor,u.idusuario,u.nombre as usuario, i.tipo_comprobante,i.serie_comprobante,i.total_compra,i.impuesto,i.estado FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario ORDER BY i.idingreso DESC LIMIT 40";
+			$consulta = $ingreso->ingresosPagination("", "", 1, 40, "");
 			$termino= "";
 
-			if(isset($_POST['ingresos']))
+			if(!empty($_POST["paginaAntes"]) && !empty($_POST["paginaNext"])) {				
+				$paginaAntes = $_POST["paginaAntes"];		
+				$paginaSiguiente = $_POST["paginaNext"];
+				$consulta = $ingreso->filtroPaginado($paginaAntes, $paginaSiguiente);
+			} else
+
+			if(!empty($_POST["limites"])) {
+				echo "Llegaste";
+				$limite_registros = $_POST["limites"];			
+				$consulta = $ingreso->filtroLimite(1, $limite_registros);
+			} else
+			
+			//Filtro solo fechas
+			if(empty($_POST["ingresos"]) && !empty($_POST["fechas"]) && !empty($_POST["fechaFin"])) {
+				$fecha_inicio = $conexion->real_escape_string($_POST['fechas']);
+				$fecha_fin = $conexion->real_escape_string($_POST['fechaFin']);
+				$consulta = $ingreso->filtroFechas($fecha_inicio, $fecha_fin, 1, 40);				
+			}
+			else
+			if(!empty($_POST['ingresos']) && !empty($_POST["fechas"]) && !empty($_POST["fechasFin"])) {				
+				$fecha_inicio = $conexion->real_escape_string($_POST['fechas']);
+				$fecha_fin = $conexion->real_escape_string($_POST['fechasFin']);
+				$termino=$conexion->real_escape_string($_POST['ingresos']);
+				$consulta = $ingreso->textoFecha($fecha_inicio, $fecha_fin, 1, 40, $termino);
+			}
+			else
+
+			if(!empty($_POST['ingresos']) && empty($_POST["fecha_inicio"]))
 			{
-				
 				$termino=$conexion->real_escape_string($_POST['ingresos']);
 				echo $termino;
-				$consulta="SELECT i.idsucursal, i.idingreso, DATE(i.fecha_hora) as fecha,i.idproveedor,p.nombre as proveedor,u.idusuario,u.nombre as usuario, i.tipo_comprobante,i.serie_comprobante,i.total_compra,i.impuesto,i.estado FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario
-				WHERE 
-				tipo_comprobante LIKE '%".$termino."%' OR
-				p.nombre LIKE '%".$termino."%' OR
-				i.idingreso LIKE '%".$termino."%' OR
-				p.idpersona LIKE '%".$termino."%' OR				
-				u.nombre LIKE '%".$termino."%'
-				LIMIT 40";			
-		}
-			$consultaBD=$conexion->query($consulta);
+				$consulta = $ingreso->busquedaTexto($termino, 1, 40);
+			}
+
+
+			else
+
+			if(!empty($_POST["fechas"]) &&  empty($_POST['ingresos']) && empty($_POST["fechaFin"]))
+			{
+				$termino=$conexion->real_escape_string($_POST['fechas']);
+				echo $termino;
+				$consulta = $ingreso->filtroFechaInicial($termino, 1, 40);
+			}
+
+			$consultaBD=$consulta;
 			if($consultaBD->num_rows>=1){
 				echo "
 				<div class='loader'>
@@ -124,7 +153,7 @@ switch ($_GET["op"]) {
 							echo "<tr>
 								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idingreso"].")'><i class='fa fa-eye'></i></button> <button class='btn btn-danger btn-xs' onclick='anular(".$fila["idingreso"].")'><i class='fa fa-close'></i></button></td>								
 								<td>".$fila['idingreso']."</td>
-								<td>".$fila['fecha']."</td>
+								<td>".$fila['fecha_hora']."</td>
 								<td>".$fila['estado']."</td>
 								<td><p>".$fila['proveedor']."</td>
 								<td><p>".$fila['usuario']."</td>
