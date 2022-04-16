@@ -21,11 +21,9 @@ if ($_SESSION['ventas']==1) {
       <div class="col-md-12">
         <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
           <div class="box-header with-border">    
-            <div class="emergente">
               <h1 class="box-title">Ventas 
-              <span data-tooltip="Agregar nueva venta"><button class="btn btn-success" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i>Agregar</button></h1></span>
+                <button class="btn btn-success" title="Agregar nueva venta" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
               <div class="box-tools pull-right"></div>
-            </div>    
             <div class="panel-body table-responsive" id="listadoregistros">
               <section>
                 <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 16px; box-shadow: 5px 5px 8px #3300ff99;"></center><br><br>
@@ -92,12 +90,12 @@ if ($_SESSION['ventas']==1) {
                 <div class="form-group col-lg-12 col-md-6 col-xs-12">
                   <center><h4 aling="center">Detalles venta</h4></center>
                 </div>
-                <div class="form-group col-lg-4 col-md-4 col-xs-12">
+                <div class="form-group col-lg-3 col-md-4 col-xs-12">
                   <label for="">Fecha(*): </label>
                   <input class="form-control" type="date" name="fecha_hora" id="fecha_hora" required>
                 </div>  
 
-                <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                <div class="form-group col-lg-3 col-md-6 col-xs-12">
                   <label for="">Tipo Comprobante(*): </label>
                     <select name="tipo_comprobante" id="tipo_comprobante" class="form-control selectpicker" required>
                       <option value="Ticket">Ticket</option>
@@ -108,7 +106,7 @@ if ($_SESSION['ventas']==1) {
                   <input class="form-control" type="text" name="impuesto" id="impuesto">
                 </div> -->
 
-                <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                <div class="form-group col-lg-3 col-md-6 col-xs-12">
                   <label for="">Tipo de precio </label>
                     <select name="tipo_precio" id="tipo_precio" class="form-control selectpicker">
                     <option value="" disabled selected>Tipo Precio</option>                    
@@ -122,7 +120,7 @@ if ($_SESSION['ventas']==1) {
                 <input type="text" name="caja_valor" id="caja_valor" value="" style="border: none; color: transparent;"></input>
 
                 <div id="detalle_cobro">
-                  <div class="form-group col-lg-4 col-md-4 col-xs-12" id="estatus">
+                  <div class="form-group col-lg-3 col-md-4 col-xs-12" id="estatus">
                     <label for="">Estatus(*): </label>
                     <input class="form-control" type="text" name="estado" id="estado">
                   </div>
@@ -243,6 +241,11 @@ if ($_SESSION['ventas']==1) {
                     <button id="btnAgregarArt" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Articulos</button>
                   </a>
                 </div>
+                <div class="form-group col-lg-8 col-md-3 col-sm-6 col-xs-12" id="btnAgregarArticulosEdit">
+                  <a data-toggle="modal" href="#myModalProductsEdit">
+                    <button id="btnAgregarArticulosEdit" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Add Articulos</button>
+                  </a>
+                </div>
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">         
                   <div class="panel-body table-responsive">
                     <table id="detalles" class="table table-striped table-bordered table-condensed table-hover">
@@ -291,6 +294,11 @@ if ($_SESSION['ventas']==1) {
   </section>
     <!-- /.content -->
 </div>
+
+<?php 
+  require("actualizarVenta.php");
+?>
+
   <!--Modal-->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" style="width: 95% !important;">

@@ -14,12 +14,12 @@ if (strlen(session_id())<1)
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="../public/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../public/css/styles.css">
+  <link rel="stylesheet" href="../public/css/style.css">
   <!-- Font Awesome -->
 
   <link rel="stylesheet" href="../public/css/font-awesome.min.css">
 
-  <link rel="stylesheet" href="../public/css/AdminLTES.min.css">
+  <link rel="stylesheet" href="../public/css/AdminLTESS.min.css">
   <link rel="stylesheet" href="../public/css/_all-skinss.min.css">
   <!-- Morris chart --><!-- Daterange picker -->
  <link rel="stylesheet" href="img/apple-touch-ico.png">
@@ -29,6 +29,7 @@ if (strlen(session_id())<1)
 <link rel="stylesheet" href="../public/datatables/buttons.dataTables.min.css">
 <link rel="stylesheet" href="../public/datatables/responsive.dataTables.min.css">
 <link rel="stylesheet" href="../public/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="sweetalert2.min.css">  
 
 
 <!-- MATERIAL UI-->
@@ -40,6 +41,8 @@ if (strlen(session_id())<1)
 <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.css">
 	<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 	<script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>	  
+  <script src="../public/plugins/sweetalert2/sweetalert2.all.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
 
   <style>
     .loader {
@@ -76,7 +79,7 @@ if (strlen(session_id())<1)
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
 
-          <li class="dropdown user user-menu">
+          <li class="dropdown user user-menu" style="border-radius: 5px">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">              
               <span class="hidden-xs"><?php echo $_SESSION['nombre']; ?></span>
             </a>

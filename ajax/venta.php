@@ -37,6 +37,20 @@ switch ($_GET["op"]) {
 		echo $rspta ? " Cobro exitoso!" : "No se pudo realizar el cobro";
 	}
 	break;
+	case 'guardarProductoVenta':
+		$idarticulo=$conexion->real_escape_string($_POST['idarticulo']);
+		$articulo=$conexion->real_escape_string($_POST['articulo']);
+		$fmsi=$conexion->real_escape_string($_POST['fmsi']);
+		$marca=$conexion->real_escape_string($_POST['marca']);
+		$descripcion=$conexion->real_escape_string($_POST['descripcion']);
+		$publico=$conexion->real_escape_string($_POST['publico']);
+		$stock=$conexion->real_escape_string($_POST['stock']);
+		$idVenta=$conexion->real_escape_string($_POST['idVenta']);
+
+		$rspta=$venta->addProductoVenta($idarticulo,$articulo,$fmsi,$marca,$descripcion,$publico,$stock,$idVenta);
+		// echo $rspta ? "Producto agregado correctamente" : "No se pudo agregar el producto"
+		break;
+
 	case 'ultimaVenta' :
 	$rspta=$venta->ultimaVenta();		
 	while ($reg=$rspta->fetch_object()) {
@@ -48,17 +62,70 @@ switch ($_GET["op"]) {
 		$rspta=$venta->anular($idventa);
 		echo $rspta ? "Venta anulada correctamente" : "No se pudo anular la venta";
 		break;
+	case 'eliminarProductoVenta':
+		$idventaProducto=$conexion->real_escape_string($_POST['idventa']);
+		$idProductoVenta = $conexion->real_escape_string($_POST['idarticulo']);
+		$stock = $conexion->real_escape_string($_POST['stock']);
+		
+		$rspta=$venta->eliminarProductoVenta($idventaProducto, $idProductoVenta, $stock);
+		break;
 	
 	case 'mostrar':
 		$rspta=$venta->mostrar($idventa);
 		echo json_encode($rspta);
 	break;
 
+	case 'mostrarDetalleVenta' :
+		$id=$_GET['id'];
+
+		$rspta=$venta->listarDetalle($id);
+		$total=0;
+		echo ' <thead style="background-color:#A9D0F5">
+        <th>Opciones</th>
+		<th>Código</th>
+		<th>Clave</th>
+		<th>Fmsi</th>
+		<th>Marca</th>
+		<th>Descripción</th>       
+        <th>Cantidad</th>
+        <th>Precio Venta</th>
+        <th>Descuento</th>
+        <th>Subtotal</th>
+       </thead>';
+		while ($reg=$rspta->fetch_object()) {
+			echo '<tr class="filas" >
+			<td><button style="width: 40px;" type="button" class="btn btn-danger" onclick="eliminarProductoVenta('.$reg->idventa.', '.$reg->idarticulo.', '.$reg->cantidad.')">X</button></td>			
+			<td>'.$reg->idarticulo.'</td>
+			<td>'.$reg->codigo.'</td>
+			<td>'.$reg->fmsi.'</td>
+			<td>'.$reg->marca.'</td>
+			<td>'.$reg->descripcion.'</td>
+			<td>'.$reg->cantidad.'</td>
+			<td>$'.number_format($reg->precio_venta, 2).'</td>
+			<td>'.$reg->descuento.'</td>
+			<td>$'.number_format($reg->subtotal, 2).'</td></tr>';
+			number_format($total=$total+($reg->precio_venta*$reg->cantidad-$reg->descuento), 2);
+		}
+		$cont++;
+		echo '<tfoot>
+         <th>TOTAL</th>
+         <th></th>
+         <th></th>
+         <th></th>
+         <th></th>
+         <th><h4 id="total">$ '.number_format($total, 2).'</h4><input type="hidden" name="total_venta" id="total_venta"></th>
+       </tfoot>';
+		break;
+
+	case 'editar':
+		$rspta=$venta->editar($idventa,$_POST["idarticulo"],$_POST["clave"],$_POST["fmsi"],$_POST["marca"],$_POST["descripcion"],$_POST["cantidad"],$_POST["precio_venta"],$_POST["descuento"]);
+	break;
+
 	case 'mostrarInfoClient':
 		$rspta=$venta->mostrarInfoClient($idcliente);
 		echo json_encode($rspta);
 	break;
-
+	
 	case 'listarDetalle':
 		//recibimos el idventa
 		$id=$_GET['id'];
@@ -115,8 +182,7 @@ switch ($_GET["op"]) {
                 </div>
 				<table class='responsive-table table table-hover table-bordered' style='font-size:12px' id='example'>
 					<thead class='table-light'>
-						<tr>
-							<th class='bg-info' scope='col'>Acciones</th>
+						<tr>							
 							<th class='bg-info' scope='col'># Folio</th>
 							<th class='bg-info' scope='col'>Salida</th>
 							<th class='bg-info' scope='col'>Estado</th>
@@ -124,6 +190,7 @@ switch ($_GET["op"]) {
 							<th class='bg-info' scope='col'>Vendedor</th>
 							<th class='bg-info' scope='col'>Saldo pendiente</th>
 							<th class='bg-info' scope='col'>Total</th>
+							<th class='bg-info' scope='col'>Acciones</th>
 						</tr>
 					</thead>
 				<tbody>";
@@ -135,39 +202,44 @@ switch ($_GET["op"]) {
 								$url='../reportes/exFactura.php?id=';
 							}
 							$miles = number_format($fila['total_venta']);
-							
+							$pagado = number_format($fila['pagado']);
+
+							$suma = intval($miles) - intval($pagado);							
 							$ventas_pagina = 3;
 							$paginas = 13;
-							if($fila["estado"] != 'ANULADO' && $fila["estado"] != 'PENDIENTE') {
-								echo "<tr>
-										<td><div class='emergente'>
-										<span data-tooltip='Mostrar venta'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idventa"].")'><i class='fa fa-eye'></i></button></span>
-										<span data-tooltip='Cancelar venta'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idventa"].")'><i class='fa fa-close'></i></button></span>										
-										<span data-tooltip='Imprimir ticket'><a target='_blank' href='".$url.$fila["idventa"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a></span></div></td>							
+
+							if($fila["estado"] != 'ANULADO' && $fila["total_venta"] == intval($fila["pagado"])) {
+								echo "<tr>										
 										<td>".$fila['idventa']."</td>
 										<td>".$fila['fecha']."</td>
-										<td>".$fila['estado']."</td>
+										<td>"."PAGADO"."</td>
 										<td><p>".$fila['cliente']."</td>
 										<td><p>".$fila['usuario']."</td>
-										<td><p>$ ".$fila["pagado"]."</td>
+										<td><p>$ ".intval($miles) - intval($pagado)."</td>
 										<td><p>$ ".$miles."</td>
+										<td><div class='emergente'>
+										<span data-tooltip='Editar venta'><button class='btn btn-warning btn-xs' onclick='editar(".$fila["idventa"].")'><i class='fa fa-pencil'></i></button></span>
+										<span data-tooltip='Mostrar venta'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idventa"].")'><i class='fa fa-eye'></i></button></span>
+										<span data-tooltip='Cancelar venta'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idventa"].")'><i class='fa fa-close'></i></button></span>										
+										<span data-tooltip='Imprimir ticket'><a target='_blank' href='".$url.$fila["idventa"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a></span></div></td>
 									</tr>
 								";
 							} else {
 							$color = 'red';
-							echo "<tr style='color:".$color."'>
+							echo "<tr style='color:".$color."'>									
+									<td>".$fila['idventa']."</td>
+									<td>".$fila['fecha']."</td>
+									<td>".$fila["estado"]."</td>
+									<td><p>".$fila['cliente']."</td>
+									<td><p>".$fila['usuario']."</td>
+									<td><p>$ ".intval($miles) - intval($pagado)."</td>
+									<td><p>$ ".$miles."</td>
 									<td><div class='emergente'>
+									<span data-tooltip='Editar venta'><button class='btn btn-warning btn-xs' onclick='editar(".$fila["idventa"].")'><i class='fa fa-pencil'></i></button></span>
 									<span data-tooltip='Mostrar venta'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idventa"].")'><i class='fa fa-eye'></i></button></span>
 									<span data-tooltip='Cancelar venta'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idventa"].")'><i class='fa fa-close'></i></button></span>
 									<span data-tooltip='Cobrar venta'><button class='btn btn-default btn-xs' onclick='cobrarVenta(".$fila["idventa"].")'><i class='fa fa-credit-card'></i></button></span>
 									<span data-tooltip='Imprimir ticket'><a target='_blank' href='".$url.$fila["idventa"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a></span></div></td>
-									<td>".$fila['idventa']."</td>
-									<td>".$fila['fecha']."</td>
-									<td>".$fila['estado']."</td>
-									<td><p>".$fila['cliente']."</td>
-									<td><p>".$fila['usuario']."</td>
-									<td><p>$ ".$fila["pagado"]."</td>
-									<td><p>$ ".$miles."</td>
 								</tr>
 								";
 							}
@@ -175,8 +247,7 @@ switch ($_GET["op"]) {
 				}
 				echo "</tbody>
 				<tfoot>
-					<tr>
-					<th class='bg-info' scope='col'>Acciones</th>
+					<tr>					
 							<th class='bg-info' scope='col'># Documento</th>
 							<th class='bg-info' scope='col'>Salida</th>
 							<th class='bg-info' scope='col'>Estado</th>
@@ -184,6 +255,7 @@ switch ($_GET["op"]) {
 							<th class='bg-info' scope='col'>Vendedor</th>							
 							<th class='bg-info' scope='col'>Saldo pendiente</th>
 							<th class='bg-info' scope='col'>Total</th>
+							<th class='bg-info' scope='col'>Acciones</th>
 					</tr>
 				</tfoot>
 				</table>";
@@ -207,7 +279,7 @@ switch ($_GET["op"]) {
 
 			case 'listarProductos':
 	
-				$consulta="SELECT * FROM articulo ORDER BY stock DESC LIMIT 100";
+				$consulta="SELECT * FROM articulo ORDER BY stock DESC LIMIT 5";
 					$termino= "";
 					if(isset($_POST['productos']))
 					{
@@ -219,8 +291,8 @@ switch ($_GET["op"]) {
 						fmsi LIKE '%".$termino."%' OR
 						barcode LIKE '%".$termino."%' OR
 						descripcion LIKE '%".$termino."%' OR
-						marca LIKE '%".$termino."%' ORDER BY stock DESC LIMIT 100";
-					}					
+						marca LIKE '%".$termino."%' ORDER BY stock DESC LIMIT 50";
+					}
 					$consultaBD=$conexion->query($consulta);
 					if($consultaBD->num_rows>=1){
 						echo "
@@ -323,6 +395,128 @@ switch ($_GET["op"]) {
 						echo "<br><br>";
 					}
 				break;
+
+
+				case 'listarProductosEdit':
+
+					echo $idventa;
+	
+					$consulta="SELECT * FROM articulo ORDER BY stock DESC LIMIT 5";
+						$termino= "";
+						if(isset($_POST['productosEdit']))
+						{
+							$termino=$conexion->real_escape_string($_POST['productosEdit']);
+							usleep(10000);
+							$consulta="SELECT * FROM articulo
+							WHERE
+							codigo LIKE '%".$termino."%' OR
+							fmsi LIKE '%".$termino."%' OR
+							barcode LIKE '%".$termino."%' OR
+							descripcion LIKE '%".$termino."%' OR
+							marca LIKE '%".$termino."%' ORDER BY stock DESC LIMIT 50";
+						}
+						$consultaBD=$conexion->query($consulta);
+						if($consultaBD->num_rows>=1){
+							echo "
+							<table class='responsive-table table table-hover table-bordered' style='font-size:12px'>
+								<thead class='table-light'>
+									<tr>
+										<th class='bg-info' scope='col'>Claves</th>
+										<th class='bg-info' scope='col'>FMSI</th>
+										<th class='bg-info' scope='col'>Marca</th>
+										<th class='bg-info' scope='col'>Descripción</th>
+										<th class='bg-info' scope='col'>Costo</th>
+										<th class='bg-info' scope='col'>Publico Mostrador</th>
+										<th class='bg-info' scope='col'>Taller</th>
+										<th class='bg-info' scope='col'>Crédito Taller</th>
+										<th class='bg-info' scope='col'>Mayoreo</th>
+										<th class='bg-info' scope='col'>Stock</th>									
+										<th class='bg-info' scope='col'>Acciones</th>
+									</tr>
+								</thead>
+							<tbody>";
+							while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){							
+								$costoMiles = number_format($fila['costo']);
+								$publicMiles = number_format($fila['publico']);
+								$tallerMiles = number_format($fila['taller']);
+								$creditoMiles = number_format($fila['credito_taller']);
+								$mayoreoMiles = number_format($fila['mayoreo']);
+								$descrip = $fila['descripcion'];
+								$delit = substr($descrip, 0,30);
+								$selectTypes ="";
+					
+								if(isset($_POST["types"])) {
+									$tipo_precio = $_POST["types"];
+								
+	
+									if($fila["idsucursal"] == $idsucursal) {
+										if($fila["stock"] >=1 && $tipo_precio != null) {
+											echo "<tr style='color:blue;'>
+												<td>".$fila['codigo']."</td>
+												<td>".$fila['fmsi']."</td>
+												<td>".$fila['marca']."</td>
+												<td>".$delit."...</td>
+												<td><p>$ ".$costoMiles."</p></td>
+												<td><p>$ ".$publicMiles."</p></td>
+												<td><p>$ ".$tallerMiles."</p></td>
+												<td><p>$ ".$creditoMiles."</p></td>
+												<td><p>$ ".$mayoreoMiles."</p></td>
+												<td><p>".$fila["stock"]." pz</p></td>										
+												<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalleEdit(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["marca"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\")'><span class='fa fa-plus'></span></button></td>
+											</tr>";
+										} else if($fila["stock"] >=1 && $tipo_precio == null){
+											$precio = "publico";
+											echo "<tr style='color:blue;'>
+												<td>".$fila['codigo']."</td>
+												<td>".$fila['fmsi']."</td>
+												<td>".$fila['marca']."</td>
+												<td>".$delit."...</td>
+												<td><p>$ ".$costoMiles."</p></td>
+												<td><p>$ ".$publicMiles."</p></td>
+												<td><p>$ ".$tallerMiles."</p></td>
+												<td><p>$ ".$creditoMiles."</p></td>
+												<td><p>$ ".$mayoreoMiles."</p></td>
+												<td><p>".$fila["stock"]." pz</p></td>										
+												<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalleEdit(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["marca"]."\", \"".$fila["descripcion"]."\", \"".$fila[$precio]."\")'><span class='fa fa-plus'></span></button></td>
+											</tr>";
+										} else if($fila["stock"] < 1){
+											echo "<tr style='color:red;'>
+												<td>".$fila['codigo']."</td>
+												<td>".$fila['fmsi']."</td>
+												<td>".$fila['marca']."</td>
+												<td>".$delit."...</td>
+												<td><p>$ ".$costoMiles."</p></td>
+												<td><p>$ ".$publicMiles."</p></td>
+												<td><p>$ ".$tallerMiles."</p></td>
+												<td><p>$ ".$creditoMiles."</p></td>
+												<td><p>$ ".$mayoreoMiles."</p></td>
+												<td><p>".$fila["stock"]." pz</p></td>";
+										}
+									}
+								}
+							}
+							echo "</tbody>
+							<tfoot>
+								<tr>								
+									<th class='bg-info' scope='col'>Clave</th>
+									<th class='bg-info' scope='col'>FMSI</th>
+									<th class='bg-info' scope='col'>Marca</th>
+									<th class='bg-info' scope='col'>Descripción</th>
+									<th class='bg-info' scope='col'>Costo</th>
+									<th class='bg-info' scope='col'>Publico Mostrador</th>
+									<th class='bg-info' scope='col'>Taller</th>
+									<th class='bg-info' scope='col'>Crédito Taller</th>
+									<th class='bg-info' scope='col'>Mayoreo</th>
+									<th class='bg-info' scope='col'>Stock</th>									
+									<th class='bg-info' scope='col'>Acciones</th>
+								</tr>
+							</tfoot>
+							</table>";
+						}else{
+							echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";						
+							echo "<br><br>";
+						}
+					break;
 
 				case 'listarProductosSucursal':
 	

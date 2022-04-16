@@ -90,24 +90,20 @@ if(!isset($_SESSION["nombre"])) {
 
 			$cantidad = '';
 
-			$consulta=" SELECT * FROM articulo 	WHERE estado='1' AND stock>='$cantidad' ORDER BY stock DESC LIMIT 7";
+			//$consulta="SELECT * FROM articulo WHERE estado='1' AND stock>='$cantidad' ORDER BY stock DESC LIMIT 7";
 			$termino= "";
+
+			$consulta = $articulo->articulosPagination(0, 10, "");
 
 			if(isset($_POST['articulos']))
 			{				
 				$termino=$conexion->real_escape_string($_POST['articulos']);
-				$consulta="SELECT * FROM articulo WHERE
-				codigo LIKE '%".$termino."%' OR
-				fmsi LIKE '%".$termino."%' OR
-				descripcion LIKE '%".$termino."%' OR 
-				barcode LIKE '%".$termino."%' OR
-				marca LIKE '%".$termino."%'
-				ORDER BY stock DESC LIMIT 100";
+				$consulta=$articulo->articulosPagination(0,60, $termino);
 			}
-			$consultaBD=$conexion->query($consulta);
+			$consultaBD=$consulta;
 			//2000000
 			if($consultaBD->num_rows>=1){
-				echo "				
+				echo "
 				<table class='responsive-table table table-hover table-bordered' style='border-radius: 15px;'>
 					<thead class='table-light' style='font-size:12px'>
 						<tr background: linear-gradient(337deg, rgba(0, 1, 255, 0.682) 0%, rgba(255, 0, 0, 0.71) 50%, rgba(0, 246, 144, 0.737) 100%);>
@@ -133,9 +129,7 @@ if(!isset($_SESSION["nombre"])) {
 					$mayoreoMiles = number_format($fila['mayoreo']);
 					$descrip = $fila['descripcion'];
 					$delit = substr($descrip, 0,30);
-
-					$stock_mdx = '';
-					
+					$stock_mdx = '';					
 					if($fila["idsucursal"] == $idsucursal && $fila["stock"] >=$stock_mdx && $acceso === "admin") {
 						if($fila["stock"] >=1) {
 							if($fila["estado"] == "1") {
@@ -187,8 +181,7 @@ if(!isset($_SESSION["nombre"])) {
 												
 					//Usuario normal
 					} else {
-						if($fila["stock"] >=1) {
-							usleep(10000);
+						if($fila["stock"] >=1) {							
 							echo "<tr style='color:blue; font-size:11px;'>
 								<td >".$fila['codigo']."</td>
 								<td>".$fila['fmsi']."</td>
@@ -244,7 +237,6 @@ if(!isset($_SESSION["nombre"])) {
 			}else{
 				echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";
 			}
-
 			break;
 
 			case 'selectCategoria':

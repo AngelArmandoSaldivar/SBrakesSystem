@@ -125,12 +125,12 @@ if(!isset($_SESSION["nombre"])) {
 				echo "
 				<table class='responsive-table table table-hover table-bordered' style='font-size:12px' id='example'>
 					<thead class='table-light'>
-						<tr>
-							<th class='bg-info' scope='col'>Acciones</th>
+						<tr>							
 							<th class='bg-info' scope='col'>Nombre</th>
 							<th class='bg-info' scope='col'>Telefono</th>
 							<th class='bg-info' scope='col'>Email</th>
 							<th class='bg-info' scope='col'>Direccion</th>
+							<th class='bg-info' scope='col'>Acciones</th>
 						</tr>
 					</thead>
 				<tbody>";
@@ -140,24 +140,28 @@ if(!isset($_SESSION["nombre"])) {
 							$ventas_pagina = 3;
 							$paginas = 13;
 
-							echo "<tr>
-								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idpersona"].")'><i class='fa fa-eye'></i></button>								
-								<button class='btn btn-danger btn-xs' onclick='eliminar(".$fila["idpersona"].")'><i class='fa fa-trash'></i></button>
+							echo "<tr>																
 								<td>".$fila['nombre']."</td>
 								<td>".$fila['telefono']."</td>
 								<td><p>".$fila['email']."</td>
 								<td><p>".$fila['direccion']."</td>
+								<td>
+									<div class='emergente'>
+										<span data-tooltip='Mostrar proveedor'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idpersona"].")'><i class='fa fa-eye'></i></button></span>
+										<span data-tooltip='Eliminar proveedor'><button class='btn btn-danger btn-xs' onclick='eliminar(".$fila["idpersona"].")'><i class='fa fa-trash'></i></button></span>
+									</div>
+								</td>
 							</tr>
 							";					
 				}
 				echo "</tbody>
 				<tfoot>
-					<tr>					
-					<th class='bg-info' scope='col'>Acciones</th>
+					<tr>										
 					<th class='bg-info' scope='col'>Nombre</th>
 					<th class='bg-info' scope='col'>Telefono</th>
 					<th class='bg-info' scope='col'>Email</th>
 					<th class='bg-info' scope='col'>Direccion</th>
+					<th class='bg-info' scope='col'>Acciones</th>
 					</tr>
 				</tfoot>
 				</table>";

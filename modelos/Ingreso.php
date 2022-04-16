@@ -73,6 +73,7 @@ public function mostrar($idingreso){
 
 public function listarDetalle($idingreso){
 	$sql="SELECT di.idingreso,di.idarticulo,a.codigo,di.precio_compra, di.cantidad FROM detalle_ingreso di INNER JOIN articulo a ON di.idarticulo=a.idarticulo WHERE di.idingreso='$idingreso'";
+	sleep(1);
 	return ejecutarConsulta($sql);
 }
 

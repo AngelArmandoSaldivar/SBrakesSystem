@@ -18,7 +18,7 @@ if ($_SESSION['accesos']==1) {
         <div class="col-md-12">
       <div class="box">
 <div class="box-header with-border">
-  <h1 class="box-title">Sucursales <button class="btn btn-success" onclick="mostrarform(true)" id="btnagregar"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
+  <h1 class="box-title">Sucursales <button title="Agregar nueva sucursal" class="btn btn-success" onclick="mostrarform(true)" id="btnagregar"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
   <div class="box-tools pull-right"> 
     
   </div>
@@ -27,21 +27,23 @@ if ($_SESSION['accesos']==1) {
 <!--centro-->
 <div class="panel-body table-responsive" id="listadoregistros">
   <table id="tbllistado" class="table table-striped table-bordered table-condensed table-hover">
-    <thead>
-      <th>Opciones</th>
-      <th>Denominación</th>
-      <th>Direccion</th>
-      <th>Telefono</th>
-      <th>Ventas</th>    
-    </thead>
-    <tbody>
-    </tbody>
-    <tfoot>
-      <th>Opciones</th>
+    <thead>      
       <th>Denominación</th>
       <th>Direccion</th>
       <th>Telefono</th>
       <th>Ventas</th>
+      <th>Estado</th>    
+      <th>Opciones</th>
+    </thead>
+    <tbody>
+    </tbody>
+    <tfoot>      
+      <th>Denominación</th>
+      <th>Direccion</th>
+      <th>Telefono</th>
+      <th>Ventas</th>
+      <th>Estado</th>    
+      <th>Opciones</th>
     </tfoot>   
   </table>
 </div>
@@ -99,7 +101,7 @@ if ($_SESSION['accesos']==1) {
 }
 require 'footer.php';
  ?>
- <script src="scripts/sucursal.js"></script>
+ <script src="scripts/sucursales.js"></script>
  <?php 
 }
 

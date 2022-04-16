@@ -31,6 +31,7 @@ function limpiar(){
 	$("#cargo").val("");
 	$("#login").val("");
 	$("#clave").val("");
+	$("#permisos").val("");
 	$("#imagenmuestra").attr("src","");
 	$("#imagenactual").val("");
 	$("#idusuario").val("");
@@ -100,27 +101,31 @@ function guardaryeditar(e){
      	processData: false,
 
      	success: function(datos){
-     		bootbox.alert(datos);
-     		mostrarform(false);
-     		tabla.ajax.reload();
+			swal({
+				position: 'top-end',
+				type: 'success',
+				title: 'Se guardo correctamente el usuario',
+				showConfirmButton: false,
+				timer: 1500
+			  });     		
+     		mostrarform(false); 
+			obtener_registros();
      	}
      });
-
      limpiar();
 }
 
 function mostrar(idusuario){
 	$.post("../ajax/usuario.php?op=mostrar",{idusuario : idusuario},
 		function(data,status)
-		{
+		{							
 			data=JSON.parse(data);
 			mostrarform(true);
-
-			$("#nombre").val(data.nombre);            
-			$("#idsucursal").selectpicker('refresh');
+			$("#nombre").val(data.nombre);
 			$("#idsucursal").val(data.idsucursal);
+			$("#idsucursal").selectpicker('refresh');
+			$("#idNivelUsuario").val(data.acceso);
 			$("#idNivelUsuario").selectpicker('refresh');
-			$("#idNivelUsuario").val(data.idNivelUsuario);            
             $("#direccion").val(data.direccion);
             $("#telefono").val(data.telefono);
             $("#email").val(data.email);
@@ -140,25 +145,53 @@ function mostrar(idusuario){
 
 //funcion para desactivar
 function desactivar(idusuario){
-	bootbox.confirm("¿Esta seguro de desactivar este dato?", function(result){
-		if (result) {
+	swal({
+		title: '¿Está seguro de borrar el usuario?',
+		text: "¡Si no lo está puede cancelar la accíón!",
+		type: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  cancelButtonText: 'Cancelar',
+		  confirmButtonText: 'Si, borrar usuario!'
+	  }).then(function(result){
+	
+		if(result.value){
+	
 			$.post("../ajax/usuario.php?op=desactivar", {idusuario : idusuario}, function(e){
-				bootbox.alert(e);
-				tabla.ajax.reload();
-			});
+				swal(
+				'Usuario eliminado!',
+				'Se elimino correctamente el usuario.',
+				'success'
+				)
+				obtener_registros();
+			});	
 		}
 	})
 }
 
 function activar(idusuario){
-	bootbox.confirm("¿Esta seguro de activar este dato?" , function(result){
-		if (result) {
+	swal({
+		title: '¿Está seguro de activar el usuario?',
+		text: "¡Si no lo está puede cancelar la accíón!",
+		type: 'question',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  cancelButtonText: 'Cancelar',
+		  confirmButtonText: 'Si, activar usuario!'
+	  }).then(function(result){
+		  if(result.value) {
 			$.post("../ajax/usuario.php?op=activar", {idusuario : idusuario}, function(e){
-				bootbox.alert(e);
-				// tabla.ajax.reload();
+				swal(
+				'Usuario activado!',
+				'Se activo correctamente el usuario.',
+				'success'
+				)
+				obtener_registros();
 			});
-		}
-	})
+		  }
+		})
 }
 
 

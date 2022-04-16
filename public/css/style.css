@@ -25,7 +25,7 @@
     display:none;
     position:absolute;
     bottom:25px;
-    left:calc(100% - 75%);
+    left:calc(100% - 605%);
     pointer-events: none;
     z-index:99;
 }
@@ -37,7 +37,7 @@
     border-top-color:rgba(0,0,0,.75);
     position:absolute;
     bottom:4px;
-    left:50%;
+    left:1%;
     display: none;
 }
 [data-tooltip]:hover::before,
@@ -56,7 +56,7 @@
     }
 
     .emergente [data-tooltip]:hover::before,
-.emergente [data-tooltip]:hover::after {
+    .emergente [data-tooltip]:hover::after {
     animation-name: toolTip;
     animation-duration: 1s;
 }
@@ -69,3 +69,12 @@
   .emergente [data-tooltip]:hover::before,
 .emergente [data-tooltip]:hover::after
 {opacity:1;} 
+
+
+.navbar-custom-menu>.navbar-nav>li>.perfil-menu {
+    position: absolute;
+    right: 5%;
+    left: auto;
+    border: 1px solid #ddd;
+    background: #fff;
+}

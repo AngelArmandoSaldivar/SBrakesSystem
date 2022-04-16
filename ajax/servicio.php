@@ -125,8 +125,7 @@ switch ($_GET["op"]) {
                 </div>
 				<table class='responsive-table table table-hover table-bordered' style='font-size:12px' id='example'>
 					<thead class='table-light'>
-						<tr>
-							<th class='bg-info' scope='col'>Acciones</th>
+						<tr>							
 							<th class='bg-info' scope='col'>Folio</th>
 							<th class='bg-info' scope='col'>Salida</th>
 							<th class='bg-info' scope='col'>Estatus</th>
@@ -135,6 +134,7 @@ switch ($_GET["op"]) {
 							<th class='bg-info' scope='col'>Saldo pendiente</th>
 							<th class='bg-info' scope='col'>Auto</th>
 							<th class='bg-info' scope='col'>Total</th>
+							<th class='bg-info' scope='col'>Acciones</th>
 						</tr>
 					</thead>
 				<tbody>";				
@@ -151,30 +151,7 @@ switch ($_GET["op"]) {
 							$paginas = 13;
 
 							if($fila["status"] != 'ANULADO' && $fila["status"] != 'PENDIENTE') {
-								echo "<tr>
-								<td>
-								<div class='emergente'>
-								<span data-tooltip='Mostrar servicio'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button></span>
-								<span data-tooltip='Anular servicio'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button></span>							
-								<span data-tooltip='Imprimir remisión'><a target='_blank' href='".$url.$fila["idservicio"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a></div></span>
-								</td>
-								<td>".$fila['idservicio']."</td>
-								<td>".$fila['fecha']."</td>
-								<td>".$fila['status']."</td>
-								<td><p>".$fila['cliente']."</td>
-								<td><p>".$fila['usuario']."</td>
-								<td><p>$ ".$fila["pagado"]."</td>
-								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
-								<td><p>$ ".$miles."</td>								
-							</tr>
-							";
-							} else {
-								echo "<tr style='color:red'>
-								<td>
-								<span data-tooltip='Mostrar servicio'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button></span>
-								<span data-tooltip='Anular servicio'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button></span>							
-								<span data-tooltip='Cobrar servicio'><button class='btn btn-default btn-xs' onclick='cobrarServicio(".$fila["idservicio"].")'><i class='fa fa-credit-card'></i></button></span>
-								<span data-tooltip='Imprimir remisión'><a target='_blank' href='".$url.$fila["idservicio"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a></div></span>
+								echo "<tr>								
 								<td>".$fila['idservicio']."</td>
 								<td>".$fila['fecha']."</td>
 								<td>".$fila['status']."</td>
@@ -183,6 +160,32 @@ switch ($_GET["op"]) {
 								<td><p>$ ".$fila["pagado"]."</td>
 								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
 								<td><p>$ ".$miles."</td>
+								<td>
+									<div class='emergente'>
+										<span data-tooltip='Mostrar servicio'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button></span>
+										<span data-tooltip='Anular servicio'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button></span>							
+										<span data-tooltip='Imprimir remisión'><a target='_blank' href='".$url.$fila["idservicio"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a></div></span>
+									</td>
+								</tr>
+							";
+							} else {
+								echo "<tr style='color:red'>								
+								<td>".$fila['idservicio']."</td>
+								<td>".$fila['fecha']."</td>
+								<td>".$fila['status']."</td>
+								<td><p>".$fila['cliente']."</td>
+								<td><p>".$fila['usuario']."</td>
+								<td><p>$ ".$fila["pagado"]."</td>
+								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
+								<td><p>$ ".$miles."</td>
+								<td>
+									<div class='emergente'>
+										<span data-tooltip='Mostrar servicio'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button></span>
+										<span data-tooltip='Anular servicio'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button></span>							
+										<span data-tooltip='Cobrar servicio'><button class='btn btn-default btn-xs' onclick='cobrarServicio(".$fila["idservicio"].")'><i class='fa fa-credit-card'></i></button></span>
+										<span data-tooltip='Imprimir remisión'><a target='_blank' href='".$url.$fila["idservicio"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a></div></span>
+									</div>
+								</td>
 							</tr>
 							";
 							}
@@ -190,8 +193,7 @@ switch ($_GET["op"]) {
 				}
 				echo "</tbody>
 				<tfoot>
-					<tr>
-					<th class='bg-info' scope='col'>Acciones</th>
+					<tr>					
 							<th class='bg-info' scope='col'>Folio</th>
 							<th class='bg-info' scope='col'>Salida</th>
 							<th class='bg-info' scope='col'>Estatus</th>
@@ -200,6 +202,7 @@ switch ($_GET["op"]) {
 							<th class='bg-info' scope='col'>Saldo pendiente</th>
 							<th class='bg-info' scope='col'>Auto</th>
 							<th class='bg-info' scope='col'>Total</th>
+							<th class='bg-info' scope='col'>Acciones</th>
 					</tr>
 				</tfoot>
 				</table>";

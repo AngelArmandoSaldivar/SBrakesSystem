@@ -31,7 +31,7 @@ public function insertar($nombre,$direccion,$telefono,$email,$cargo,$acceso,$log
 	 return $sw;
 }
 
-public function editar($idusuario,$nombre,$direccion,$telefono,$email,$cargo,$acceso,$login,$clave,$permisos, $idsucursal){
+public function editar($idusuario,$nombre,$direccion,$telefono,$email,$cargo,$acceso,$login,$clave,$permisos, $idsucursal){	
 	$sql="UPDATE usuario SET nombre='$nombre',direccion='$direccion',telefono='$telefono',email='$email',cargo='$cargo',acceso='$acceso',login='$login',clave='$clave', idsucursal='$idsucursal'
 	WHERE idusuario='$idusuario'";
 	 ejecutarConsulta($sql);
@@ -42,8 +42,7 @@ public function editar($idusuario,$nombre,$direccion,$telefono,$email,$cargo,$ac
 
 	$num_elementos=0;
 	 $sw=true;
-	 while ($num_elementos < count($permisos)) {
-
+	 while ($num_elementos < count($permisos)) {		 
 	 	$sql_detalle="INSERT INTO usuario_permiso (idusuario,idpermiso) VALUES('$idusuario','$permisos[$num_elementos]')";
 
 	 	ejecutarConsulta($sql_detalle) or $sw=false;

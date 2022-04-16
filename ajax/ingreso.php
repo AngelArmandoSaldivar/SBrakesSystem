@@ -71,7 +71,7 @@ switch ($_GET["op"]) {
 
     case 'listar':
 			//$consulta="SELECT i.idsucursal, i.idingreso,DATE(i.fecha_hora) as fecha,i.idproveedor,p.nombre as proveedor,u.idusuario,u.nombre as usuario, i.tipo_comprobante,i.serie_comprobante,i.total_compra,i.impuesto,i.estado FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario ORDER BY i.idingreso DESC LIMIT 40";
-			$consulta = $ingreso->ingresosPagination("", "", 1, 40, "");
+			$consulta = $ingreso->ingresosPagination("", "", 0, 40, "");
 			$termino= "";
 
 			if(!empty($_POST["paginaAntes"]) && !empty($_POST["paginaNext"])) {				
@@ -90,14 +90,14 @@ switch ($_GET["op"]) {
 			if(empty($_POST["ingresos"]) && !empty($_POST["fechas"]) && !empty($_POST["fechaFin"])) {
 				$fecha_inicio = $conexion->real_escape_string($_POST['fechas']);
 				$fecha_fin = $conexion->real_escape_string($_POST['fechaFin']);
-				$consulta = $ingreso->filtroFechas($fecha_inicio, $fecha_fin, 1, 40);				
+				$consulta = $ingreso->filtroFechas($fecha_inicio, $fecha_fin, 0, 40);				
 			}
 			else
 			if(!empty($_POST['ingresos']) && !empty($_POST["fechas"]) && !empty($_POST["fechasFin"])) {				
 				$fecha_inicio = $conexion->real_escape_string($_POST['fechas']);
 				$fecha_fin = $conexion->real_escape_string($_POST['fechasFin']);
 				$termino=$conexion->real_escape_string($_POST['ingresos']);
-				$consulta = $ingreso->textoFecha($fecha_inicio, $fecha_fin, 1, 40, $termino);
+				$consulta = $ingreso->textoFecha($fecha_inicio, $fecha_fin, 0, 40, $termino);
 			}
 			else
 
@@ -105,7 +105,7 @@ switch ($_GET["op"]) {
 			{
 				$termino=$conexion->real_escape_string($_POST['ingresos']);
 				echo $termino;
-				$consulta = $ingreso->busquedaTexto($termino, 1, 40);
+				$consulta = $ingreso->busquedaTexto($termino, 0, 40);
 			}
 
 
@@ -115,7 +115,7 @@ switch ($_GET["op"]) {
 			{
 				$termino=$conexion->real_escape_string($_POST['fechas']);
 				echo $termino;
-				$consulta = $ingreso->filtroFechaInicial($termino, 1, 40);
+				$consulta = $ingreso->filtroFechaInicial($termino, 0, 40);
 			}
 
 			$consultaBD=$consulta;
@@ -126,14 +126,14 @@ switch ($_GET["op"]) {
                 </div>
 				<table class='responsive-table table table-hover table-bordered' style='font-size:12px' id='example'>
 					<thead class='table-light'>
-						<tr>
-							<th class='bg-info' scope='col'>Acciones</th>
+						<tr>							
 							<th class='bg-info' scope='col'>Folio</th>
 							<th class='bg-info' scope='col'>Entrada</th>
 							<th class='bg-info' scope='col'>Estatus</th>
 							<th class='bg-info' scope='col'>Proveedor</th>
 							<th class='bg-info' scope='col'>Usuario</th>
 							<th class='bg-info' scope='col'>Total</th>
+							<th class='bg-info' scope='col'>Acciones</th>
 						</tr>
 					</thead>
 				<tbody>";
@@ -150,28 +150,32 @@ switch ($_GET["op"]) {
 							$ventas_pagina = 3;
 							$paginas = 13;
 
-							echo "<tr>
-								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idingreso"].")'><i class='fa fa-eye'></i></button> <button class='btn btn-danger btn-xs' onclick='anular(".$fila["idingreso"].")'><i class='fa fa-close'></i></button></td>								
+							echo "<tr>								
 								<td>".$fila['idingreso']."</td>
 								<td>".$fila['fecha_hora']."</td>
 								<td>".$fila['estado']."</td>
 								<td><p>".$fila['proveedor']."</td>
 								<td><p>".$fila['usuario']."</td>
-								<td><p>$ ".$fila["total_compra"]."</td>								
+								<td><p>$ ".$fila["total_compra"]."</td>
+								<td>
+									<div class='emergente'>
+										<span data-tooltip='Mostrar recepción'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idingreso"].")'><i class='fa fa-eye'></i></button></span>
+										<span data-tooltip='Eliminar recepción'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idingreso"].")'><i class='fa fa-close'></i></button></td></span>
+									</div>
 							</tr>
 							";
 					}
 				}
 				echo "</tbody>
 				<tfoot>
-					<tr>						
-						<th class='bg-info' scope='col'>Acciones</th>
+					<tr>												
 						<th class='bg-info' scope='col'>Folio</th>
 						<th class='bg-info' scope='col'>Entrada</th>
 						<th class='bg-info' scope='col'>Estatus</th>
 						<th class='bg-info' scope='col'>Proveedor</th>
 						<th class='bg-info' scope='col'>Usuario</th>
 						<th class='bg-info' scope='col'>Total</th>
+						<th class='bg-info' scope='col'>Acciones</th>
 					</tr>
 				</tfoot>
 				</table>";
@@ -188,6 +192,7 @@ switch ($_GET["op"]) {
 
 			$rspta = $persona->listarp();
 
+			echo '<option value="" disabled selected>Seleccionar proveedor</option>';
 			while ($reg = $rspta->fetch_object()) {
 				echo '<option value='.$reg->idpersona.'>'.$reg->nombre.'</option>';
 			}

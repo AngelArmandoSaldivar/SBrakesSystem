@@ -6,9 +6,9 @@ function init(){
    obtener_registros();
    obtener_registrosProductos();
 
-   $("#formulario").on("submit",function(e){
-   	guardaryeditar(e);
-   });
+	$("#formulario").on("submit",function(e){
+		guardaryeditar(e);
+	});
 
 	selectCliente();
    
@@ -178,6 +178,38 @@ $(document).on('keyup', '#busquedaProduct', function(){
 	}
 });
 
+
+function obtener_registrosProductosEdit(productosEdit){		
+
+	var tiposPrecios = document.getElementById("caja_valor").value;
+	
+	$.ajax({
+		url : '../ajax/venta.php?op=listarProductosEdit',
+		type : 'POST',
+		dataType : 'html',
+		data : { productosEdit: productosEdit, types: tiposPrecios },
+	})
+	.done(function(resultado){
+		$("#tabla_resultadoProductoEdit").html(resultado);
+	})
+}
+
+$(document).on('keyup', '#busquedaProductEdit', function(){	
+	var valorBusqueda=$(this).val();
+
+	console.log(valorBusqueda);
+	
+	if (valorBusqueda!="")
+	{	
+		obtener_registrosProductosEdit(valorBusqueda);
+	}
+	else
+	{
+		limpiar();
+		obtener_registrosProductosEdit();
+	}
+});
+
 function obtener_registrosProductos_almacen(productos){		
 
 	var tiposPrecios = document.getElementById("caja_valor").value;
@@ -224,7 +256,13 @@ function guardaryeditar(e){
      	processData: false,
 
      	success: function(datos){
-     		bootbox.alert(datos);			 
+			swal({
+				position: 'top-end',
+				type: 'success',
+				title: 'Se guardo correctamente la venta',
+				showConfirmButton: false,
+				timer: 1500
+			});		 
      		mostrarform(false);			 
      		obtener_registros();
 			limpiar();
@@ -253,9 +291,11 @@ function cobrarVenta(idventa){
 		function(data,status)
 		{				
 			data=JSON.parse(data);
-
+			console.log(data);
+			mostrarform(true);
+			$("#btnGuardar").show();
 			$('#importe').focusout(function() {
-				var datas =  parseInt(data.total_venta);
+				var datas =  parseInt(data.total_venta);				
 				x = parseInt($(this).val());
 				if(x === datas) {
 					$("#btnGuardar").show();
@@ -266,7 +306,7 @@ function cobrarVenta(idventa){
 				} else if(x < datas) {
 					$("#importe2").prop("disabled", false);
 					$("#importe3").prop("disabled", false);
-					$("#btnGuardar").hide();
+					$("#btnGuardar").show();
 				}
 				$('#importe2').focusout(function() {
 					x2 = parseInt($(this).val());
@@ -280,14 +320,14 @@ function cobrarVenta(idventa){
 					} else if(x2 < datas) {
 						$("#importe").prop("disabled", false);
 						$("#importe3").prop("disabled", false);
-						$("#btnGuardar").hide();
+						$("#btnGuardar").show();
 					}
 					let calcular = x + x2;
 					if(calcular === datas) {
 						$("#btnGuardar").show();
 						$("#importe3").prop("disabled", true);
 					} else {						
-						$("#btnGuardar").hide();
+						$("#btnGuardar").show();
 						$("#importe3").prop("disabled", false);
 					}
 					$('#importe3').focusout(function() {
@@ -308,14 +348,14 @@ function cobrarVenta(idventa){
 						if(calcular === datas) {
 							$("#btnGuardar").show();
 						} else {						
-							$("#btnGuardar").hide();
+							$("#btnGuardar").show();
 						}		
 						}
 					});	
 				});				
 			});			
 			
-			mostrarform(true);
+			//mostrarform(true);
 			$('.loader').hide();	
 
 			$("#detalle_cobro").show();
@@ -325,6 +365,10 @@ function cobrarVenta(idventa){
 
 			$("#idcliente").val(data.idcliente).prop("disabled", true);			
 			$("#idcliente").selectpicker('refresh');
+
+			$("#tipo_precio").val(data.tipo_precio).prop("disabled", true);			
+			$("#tipo_precio").selectpicker('refresh');
+
 			$("#tipo_comprobante").val(data.tipo_comprobante).prop("disabled", true);
 			$("#tipo_comprobante").selectpicker('refresh');	
 			$("#factura").val(data.factura).prop("disabled", true);
@@ -333,6 +377,28 @@ function cobrarVenta(idventa){
 			$("#impuesto").val(data.impuesto).prop("disabled", true);
 			$("#idventa").val(data.idventa);
 			$("#estado").val(data.estado).prop("disabled", true);
+
+			$("#importe").val(data.importe).prop("disabled", false);
+			$("#importe2").val(data.importe2).prop("disabled", false);
+			$("#importe3").val(data.importe3).prop("disabled", false);
+
+			$("#forma").val(data.forma_pago).prop("disabled", false);
+			$("#forma").selectpicker('refresh');	
+			$("#forma2").val(data.forma_pago2).prop("disabled", false);
+			$("#forma2").selectpicker('refresh');
+			$("#forma3").val(data.forma_pago3).prop("disabled", false);
+			$("#forma3").selectpicker('refresh');	
+
+			$("#banco").val(data.banco).prop("disabled", false);
+			$("#banco").selectpicker('refresh');	
+			$("#banco2").val(data.banco2).prop("disabled", false);
+			$("#banco2").selectpicker('refresh');	
+			$("#banco3").val(data.banco2).prop("disabled", false);
+			$("#banco3").selectpicker('refresh');	
+
+			$("#ref").val(data.referencia).prop("disabled", false);
+			$("#ref2").val(data.referencia2).prop("disabled", false);
+			$("#ref3").val(data.referencia3).prop("disabled", false);
 
 			$("#rfc").val(data.rfc).prop("disabled", true);
 			$("#direccion").val(data.direccion).prop("disabled", true);			
@@ -350,13 +416,13 @@ function cobrarVenta(idventa){
 			}
 			
 			//ocultar y mostrar los botones
-			$("#btnGuardar").hide();
+			// $("#btnGuardar").hide();
 			$("#btnCancelar").show();
 			$("#btnAgregarArt").hide();
 		});
-	$.post("../ajax/venta.php?op=listarDetalle&id="+idventa,function(r){		
-		$("#detalles").html(r);
-	});	
+		$.post("../ajax/venta.php?op=listarDetalle&id="+idventa,function(r){		
+			$("#detalles").html(r);
+		});	
 	
 }
 
@@ -424,19 +490,16 @@ function number_format (number, decimals, dec_point, thousands_sep) {
     return s.join(dec);
 }
 
-function mostrar(idventa){
-	$('.loader').show();
+function viewClient(idventa) {
 	$.post("../ajax/venta.php?op=mostrar",{idventa : idventa},
 		function(data,status)
 		{			
-			let importe = Intl.NumberFormat('es-MX').format(data.importe);
-			console.log(importe);
-			data=JSON.parse(data);
+			let importe = Intl.NumberFormat('es-MX').format(data.importe);			
+			data=JSON.parse(data);			
 			mostrarform(true);
 			$('.loader').hide();
 
 			$("#detalle_cobro").show();
-			$("#btnAgregarArticulo").hide();
 			$("#divImpuesto").hide();
 			$("#addCliente").hide();
 			
@@ -475,43 +538,117 @@ function mostrar(idventa){
 			$("#direccion").val(data.direccion).prop("disabled", true);			
 			$("#email").val(data.email).prop("disabled", true);
 			$("#telefono").val(data.telefono).prop("disabled", true);
-			$("#credito").val(data.credito).prop("disabled", true);
+			$("#telefono_local").val(data.telefono).prop("disabled", true);
+			$("#credito").val(data.telefono_local).prop("disabled", true);
 			$("#tipoPrecio").val(data.tipo_precio).prop("disabled", true);
 			$("#idventa").val(data.idventa);
+			$("#tipo_precio").val(data.tipo_precio).prop("disabled", true);			
+			$("#tipo_precio").selectpicker('refresh');
 			
 			//ocultar y mostrar los botones
-			$("#btnGuardar").hide();
 			$("#btnCancelar").show();
 			$("#btnAgregarArt").hide();
 		});
-		$.post("../ajax/venta.php?op=listarDetalle&id="+idventa,function(r){
-			console.log("Productos: ", r.length);
-				$('.loader').show();
-				if(r.length < 0) {
-					$("#detalles").html(r);
-					$('.loader').hide();
-				} else {
-					setInterval(() => {
-						$("#detalles").html(r);
-						$('.loader').hide();
-					}, 2000);
-				}
-		});
+}
+
+function detallesVenta(idventa) {	
+	$.post("../ajax/venta.php?op=listarDetalle&id="+idventa,function(r){			
+		$('.loader').show();
+		if(r.length < 0) {
+			$("#detalles").html(r);
+			$('.loader').hide();
+		} else {
+			setInterval(() => {
+				$("#detalles").html(r);
+				$('.loader').hide();
+			}, 2000);
+		}
+	});
+}
+
+function mostrar(idventa){
+	$('.loader').show();
+	viewClient(idventa);
+	$("#btnAgregarArticulo").hide();
+	$("#btnGuardar").hide();
+	detallesVenta(idventa);
+}
+
+function detallesVentaEditar(idventa) {
+	console.log(idventa);
+	$.post("../ajax/venta.php?op=mostrarDetalleVenta&id="+idventa,function(r){		
+		$("#detalles").html(r);
+	});
+}
+
+function editar(idventa){
+	console.log(idventa);
+	mostrarform(true);
+	//Mostrando info del cliente
+	viewClient(idventa);
+	$("#btnAgregarArticulo").hide();
+	$("#btnAgregarArticulosEdit").show();
+	$("#btnGuardar").show();
+	detallesVentaEditar(idventa);
+}
+
+function eliminarProductoVenta(idventa, idarticulo, stock) {
+	// console.log("ID VENTA: ", idventa, "\n", "CLAVE PRODUCTO: ", idarticulo);
+	// detallesVenta();
+
+	swal({
+		title: '¿Está seguro de eliminar el articulo?',
+		text: "¡Si no lo está puede cancelar la accíón!",
+		type: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  cancelButtonText: 'Cancelar',
+		  confirmButtonText: 'Si, eliminar!'
+	  }).then(function(result){	
+		if(result.value){
+			$.post("../ajax/venta.php?op=eliminarProductoVenta", {idventa : idventa, idarticulo : idarticulo, stock:stock}, function(e){
+				swal({
+					title:'Articulo eliminado!',
+					text: 'Se elimino correctamente el articulo de la venta.',
+					type: 'success',
+					showConfirmButton: false,
+					timer: 1500
+				})
+				detallesVentaEditar();
+			});	
+		}
+	})
 }
 
 //funcion para desactivar
 function anular(idventa){
-	bootbox.confirm("¿Esta seguro de desactivar este dato?", function(result){
-		if (result) {
+	swal({
+		title: '¿Está seguro de borrar la venta?',
+		text: "¡Si no lo está puede cancelar la accíón!",
+		type: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  cancelButtonText: 'Cancelar',
+		  confirmButtonText: 'Si, borrar venta!'
+	  }).then(function(result){
+	
+		if(result.value){
 			$('.loader').show();
 			$.post("../ajax/venta.php?op=anular", {idventa : idventa}, function(e){
-				bootbox.alert(e);
-				// tabla.ajax.reload();
+				swal({
+					title:'Venta eliminada!',
+					text: 'Se elimino correctamente la venta.',
+					type: 'success',
+					showConfirmButton: false,
+					timer: 1500
+				})
 				obtener_registros();
 				$('.loader').hide();
-			});
+			});	
 		}
-	});
+	})
 }
 
 // $("#placas").change(placasAuto);
@@ -652,7 +789,7 @@ function calcularTotales(){
 
 function evaluar(){
 
-	if (detalles>0) 
+	if (detalles>0)
 	{
 		$("#btnGuardar").show();
 	}
@@ -669,6 +806,65 @@ $("#fila"+indice).remove();
 calcularTotales();
 detalles=detalles-1;
 
+}
+
+function agregarDetalleEdit(idarticulo,articulo,fmsi, marca, descripcion,publico, stock){	
+	stock = 1;
+
+	//console.log("ID ARTICULO: ", idarticulo, "\nCÓDIGO: ", articulo, "\nFMSI: ", fmsi, "\nMARCA: ", marca, "\nDESCRIPCIÓN: ", descripcion, "\nCOSTO: ", publico, "\nCANTIDAD: ", stock);
+
+	let idVenta = document.getElementById("idventa").value;	
+
+	var cantidad=1;
+	var descuento=0;
+	var sub = document.getElementsByName("subtotal");
+
+	if (idarticulo!="") {
+		var fila='<tr class="filas" id="fila'+cont+'">'+
+        '<td><button style="width: 40px;" type="button" class="btn btn-danger" onclick="eliminarDetalle('+cont+')">X</button></td>'+
+        '<td><input type="hidden" name="idarticulo[]" value="'+idarticulo+'">'+idarticulo+'</td>'+
+		'<td><input type="hidden" name="clave[]" value="'+articulo+'">'+articulo+'</td>'+
+		'<td><input type="hidden" name="fmsi[]" id="fmsi[]" value="'+fmsi+'">'+fmsi+'</td>'+
+		'<td><input type="hidden" name="marca[]" id="marca[]" value="'+marca+'">'+marca+'</td>'+
+		'<td><textarea class="form-control" id="descripcion[]" name="descripcion[]"rows="3" style="width: 150px;" value="'+descripcion+'">'+descripcion+'</textarea></td>'+
+        '<td><input style="width: 55px;" type="number" name="cantidad[]" id="cantidad[]" value="'+cantidad+'" max="'+stock+'" min="1"></td>'+		
+        '<td><input style="width: 70px;" type="number" name="precio_venta[]" id="precio_venta[]" value="'+publico+'"></td>'+
+        '<td><input style="width: 70px;" type="number" name="descuento[]" value="'+descuento+'"></td>'+
+        '<td><span id="subtotal'+cont+'" name="subtotal" value="'+sub+'"></span></td>'+
+        '<td><div class="emergente"><span data-tooltip="Actualizar"><button type="button" onclick="actualizarProducto("'+idarticulo+'")" class="btn btn-success"><i class="fa fa-refresh"></i></button></span></div></td>'+
+		'</tr>';
+		cont++;
+		detalles++;
+		$('#detalles').append(fila);
+		modificarSubtotales();
+
+
+		$.ajax({
+			url: "../ajax/venta.php?op=guardarProductoVenta",
+			type: "POST",
+			data: {idarticulo:idarticulo, articulo:articulo, fmsi:fmsi, marca:marca, descripcion:descripcion, publico:publico, stock:stock,idVenta:idVenta},
+		   beforeSend: function() {		  
+		   },
+			contentType: false,
+			processData: false,
+	
+			success: function(datos){
+			   swal({
+				   position: 'top-end',
+				   type: 'success',
+				   title: 'Se agrego correctamente el producto',
+				   showConfirmButton: false,
+				   timer: 1500
+			   });
+				// mostrarform(true);
+				// obtener_registros();
+			//    limpiar();
+			},
+		});
+
+	}else{
+		alert("error al ingresar el detalle, revisar las datos del articulo ");
+	}
 }
 
 init();

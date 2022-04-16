@@ -16,13 +16,13 @@ if ($_SESSION['almacen']==1) {
       <!-- Default box -->
       <div class="row">
         <div class="col-md-12">
-      <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
-<div class="box-header with-border">
-  <h1 class="box-title">Articulo <button class="btn btn-success" onclick="mostrarform(true)" id="btnagregar"><i class="fa fa-plus-circle"></i>Agregar</button> <a target="_blank" href="../reportes/rptarticulos.php"><button class="btn btn-info">Reporte</button></a></h1>
-  <div class="box-tools pull-right">
-    
-  </div>
-</div>
+          <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
+            <div class="box-header with-border">
+                <h1 class="box-title">Articulos 
+                <button class="btn btn-success" title="Agregar nuevo articulo" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
+                <div class="box-tools pull-right">            
+                </div>    
+            </div>
 <!--box-header-->
 
 

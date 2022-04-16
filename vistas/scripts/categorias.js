@@ -30,7 +30,7 @@ function mostrarform(flag){
 		$("#formularioregistros").hide();
 		$("#btnagregar").show();
 		
-	}	
+	}
 }
 
 //cancelar form
@@ -41,6 +41,7 @@ function cancelarform(){
 
 //funcion listar
 function obtener_registros(categorias){
+	$('.loader').show();
 	$.ajax({
 		url : '../ajax/categoria.php?op=listar',
 		type : 'POST',
@@ -48,6 +49,7 @@ function obtener_registros(categorias){
 		data : { categorias: categorias },
 	})
 	.done(function(resultado){
+		$('.loader').hide();
 		$("#tabla_resultado").html(resultado);
 	})
 }
@@ -80,9 +82,15 @@ function guardaryeditar(e){
      	processData: false,
 
      	success: function(datos){
-     		bootbox.alert(datos);
-     		mostrarform(false);
-     		tabla.ajax.reload();
+			swal({
+				position: 'top-end',
+				type: 'success',
+				title: 'Se guardo correctamente la categoria',
+				showConfirmButton: false,
+				timer: 1500
+			});
+     		mostrarform(false);     		
+			obtener_registros();
      	}
      });
 
@@ -105,25 +113,55 @@ function mostrar(idcategoria){
 
 //funcion para desactivar
 function desactivar(idcategoria){
-	bootbox.confirm("¿Esta seguro de desactivar este dato?", function(result){
-		if (result) {
+	swal({
+		title: '¿Está seguro de eliminar la categoria?',
+		text: "¡Si no lo está puede cancelar la accíón!",
+		type: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  cancelButtonText: 'Cancelar',
+		  confirmButtonText: 'Si, eliminar categoria!'
+	  }).then(function(result){
+	
+		if(result.value){
+	
 			$.post("../ajax/categoria.php?op=desactivar", {idcategoria : idcategoria}, function(e){
-				bootbox.alert(e);
-				tabla.ajax.reload();
-			});
+				swal({
+					title:'Categoria eliminada!',
+					text: 'Se elimino correctamente la categoria.',
+					type: 'success',
+					showConfirmButton: false,
+					timer: 1500
+				})
+				obtener_registros();
+			});	
 		}
 	})
 }
 
 function activar(idcategoria){
-	bootbox.confirm("¿Esta seguro de activar este dato?" , function(result){
-		if (result) {
+	swal({
+		title: '¿Está seguro de activar la categoria?',
+		text: "¡Si no lo está puede cancelar la accíón!",
+		type: 'question',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  cancelButtonText: 'Cancelar',
+		  confirmButtonText: 'Si, activar categoria!'
+	  }).then(function(result){
+		  if(result.value) {
 			$.post("../ajax/categoria.php?op=activar" , {idcategoria : idcategoria}, function(e){
-				bootbox.alert(e);
-				tabla.ajax.reload();
+				swal(
+				'Categoria activado!',
+				'Se activo correctamente la categoria.',
+				'success'
+				)
+				obtener_registros();
 			});
-		}
-	})
+		  }
+		})
 }
 
 init();

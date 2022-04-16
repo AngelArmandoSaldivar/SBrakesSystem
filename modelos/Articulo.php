@@ -10,26 +10,31 @@ class Articulo{
 	//metodo insertar registro
 	public function insertar($codigo, $costo, $barcode, $credito_taller, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $mayoreo, $pasillo, $publico, $stock, $taller, $unidades, $idsucursal){		
 		$sql="INSERT INTO articulo (codigo, costo, barcode, credito_taller, descripcion, fmsi, idcategoria, idproveedor, marca, mayoreo, pasillo, publico, stock, taller, unidades, estado, idsucursal) VALUES ('$codigo', '$costo', '$barcode', '$credito_taller', '$descripcion', '$fmsi', '$idcategoria', '$idproveedor', '$marca', '$mayoreo', '$pasillo', '$publico', '$stock', '$taller', '$unidades', '1', '$idsucursal')";
+		usleep(140000);
 		return ejecutarConsulta($sql);
 	}
 
 	public function editar($idarticulo,$codigo,$costo, $barcode, $credito_taller,$descripcion,$fmsi,$idcategoria, $idproveedor, $marca,$mayoreo,$pasillo,$publico,$stock,$taller,$unidades){
 		$sql="UPDATE articulo SET codigo='$codigo', costo='$costo', barcode='$barcode', credito_taller='$credito_taller', descripcion='$descripcion', fmsi='$fmsi', idcategoria='$idcategoria', idproveedor='$idproveedor', marca='$marca', mayoreo='$mayoreo', pasillo='$pasillo', publico='$publico', stock='$stock', taller='$taller', unidades='$unidades'
 		WHERE idarticulo='$idarticulo'";
+		usleep(140000);
 		return ejecutarConsulta($sql);
 	}
 	public function desactivar($idarticulo){	
 		$sql="UPDATE articulo SET estado='0' WHERE idarticulo='$idarticulo'";
+		usleep(140000);
 		return ejecutarConsulta($sql);
 	}
 	public function activar($idarticulo){
 		$sql="UPDATE articulo SET estado='1' WHERE idarticulo='$idarticulo'";
+		usleep(140000);
 		return ejecutarConsulta($sql);
 	}
 
 	//metodo para mostrar registros
 	public function mostrar($idarticulo){
 		$sql="SELECT * FROM articulo WHERE idarticulo='$idarticulo'";
+		usleep(140000);
 		return ejecutarConsultaSimpleFila($sql);
 	}
 
@@ -63,6 +68,7 @@ class Articulo{
 
 	public function articulosPagination($limit, $limit2, $busqueda) {
 		$sql = "SELECT * FROM articulo WHERE codigo LIKE '%$busqueda%' OR fmsi LIKE '%$busqueda%' OR marca LIKE '%$busqueda%' OR descripcion LIKE '%$busqueda%' ORDER BY stock DESC LIMIT $limit, $limit2";
+		usleep(140000);
 		return ejecutarConsulta($sql);
 	}
 

@@ -15,7 +15,7 @@ if ($_SESSION['accesos']==1) {
           <div class="col-md-12">
             <div class="box">
               <div class="box-header with-border">
-                <h1 class="box-title">Usuarios <button class="btn btn-success" onclick="mostrarform(true)" id="btnagregar"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
+                <h1 class="box-title">Usuarios <button title="Agregar nuevo usuario" class="btn btn-success" onclick="mostrarform(true)" id="btnagregar"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
                   <div class="box-tools pull-right">    
                   </div>
               </div>
@@ -32,19 +32,7 @@ if ($_SESSION['accesos']==1) {
                     <label for="">Nombre(*):</label>
                     <input class="form-control" type="hidden" name="idusuario" id="idusuario">
                     <input class="form-control" type="text" name="nombre" id="nombre" maxlength="100" placeholder="Nombre" required>
-                  </div>
-                  <!-- <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                    <label for="">Tipo Documento(*):</label>
-                    <select name="tipo_documento" id="tipo_documento" class="form-control select-picker" required>
-                      <option value="DNI">DNI</option>
-                      <option value="RUC">RUC</option>
-                      <option value="CEDULA">CEDULA</option>
-                    </select>
-                  </div> -->
-                  <!-- <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                    <label for="">Numero de Documento(*):</label>
-                    <input type="text" class="form-control" name="num_documento" id="num_documento" placeholder="Documento" maxlength="20">
-                  </div> -->
+                  </div>                 
                   <div class="form-group col-lg-6 col-md-6 col-xs-12">
                     <label for="">Direccion</label>
                     <input class="form-control" type="text" name="direccion" id="direccion"  maxlength="70">
@@ -76,7 +64,7 @@ if ($_SESSION['accesos']==1) {
                   </div>
                   <div class="form-group col-lg-6 col-md-6 col-xs-12">
                     <label for="">Clave(*):</label>
-                    <input class="form-control" type="password" name="clave" id="clave" maxlength="64" placeholder="Clave">
+                    <input class="form-control" type="text" name="clave" id="clave" maxlength="64" placeholder="Clave">
                   </div>
                   <div class="form-group col-lg-6 col-md-8 col-xs-12">
                     <label for="">Sucursal(*):</label>
@@ -85,8 +73,7 @@ if ($_SESSION['accesos']==1) {
                   </div>
                   <div class="form-group col-lg-6 col-md-6 col-xs-12">
                     <label>Permisos</label>
-                    <ul id="permisos" style="list-style: none;">
-                      
+                    <ul id="permisos" style="list-style: none;">                      
                     </ul>
                   </div>
                       

@@ -31,5 +31,8 @@
 <!-- SCRIPT MATERIAL UI -->
 <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
 <!-- CIERRE MATERIAL UI -->
+
+<!--SWEETALERT -->
+
 </body>
 </html>

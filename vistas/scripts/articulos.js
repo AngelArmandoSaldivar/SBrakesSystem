@@ -143,7 +143,13 @@ function guardaryeditar(e){
 		contentType: false,
 		processData: false,
 		success: function(datos){
-			bootbox.alert(datos);
+			swal({
+				position: 'top-end',
+				type: 'success',
+				title: 'Se guardo correctamente el articulo',
+				showConfirmButton: false,
+				timer: 1500
+			});
 			mostrarform(false);
 			// tabla.ajax.reload();
 		}
@@ -153,12 +159,14 @@ function guardaryeditar(e){
 	
 }
 
-function mostrar(idarticulo){	
+function mostrar(idarticulo){
+	$('.loader').show();
 	$.post("../ajax/articulo.php?op=mostrar",{idarticulo : idarticulo},
 		function(data,status)
 		{
 			data=JSON.parse(data);
-			mostrarform(true);
+			mostrarform(true);	
+			$('.loader').hide();		
 			$("#idcategoria").val(data.idcategoria).prop("disabled", true);
 			$("#idcategoria").selectpicker('refresh');
 			$("#idproveedor").val(data.idproveedor).prop("disabled", true);
@@ -178,16 +186,19 @@ function mostrar(idarticulo){
 			$("#descripcion").val(data.descripcion).prop("disabled", true);
 			$("#barcode").val(data.barcode).prop("disabled", true);
 			$("#idarticulo").val(data.idarticulo).prop("disabled", true);
+			$("#btnGuardar").hide();
 		});
 		limpiar();
 }
 
 function editarArticulo(idarticulo){
+	$('.loader').show();
 	$.post("../ajax/articulo.php?op=mostrar",{idarticulo : idarticulo},
 		function(data,status)
 		{
 			data=JSON.parse(data);
 			mostrarform(true);
+			$('.loader').hide();
 			$("#idcategoria").val(data.idcategoria);
 			$("#idcategoria").selectpicker('refresh');
 			$("#idproveedor").val(data.idproveedor);
@@ -207,31 +218,62 @@ function editarArticulo(idarticulo){
 			$("#descripcion").val(data.descripcion);
 			$("#barcode").val(data.barcode);
 			$("#idarticulo").val(data.idarticulo);
+			$("#btnGuardar").show();
 		});
 		limpiar();
 }
 
 //funcion para desactivar
 function desactivar(idarticulo){
-	bootbox.confirm("¿Esta seguro de desactivar este dato?", function(result){
-		if (result) {
+	swal({
+		title: '¿Está seguro de eliminar el articulo?',
+		text: "¡Si no lo está puede cancelar la accíón!",
+		type: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  cancelButtonText: 'Cancelar',
+		  confirmButtonText: 'Si, eliminar articulo!'
+	  }).then(function(result){
+	
+		if(result.value){
+	
 			$.post("../ajax/articulo.php?op=desactivar", {idarticulo : idarticulo}, function(e){
-				bootbox.alert(e);
-				tabla.ajax.reload();
-			});
+				swal({
+					title:'Articulo eliminado!',
+					text: 'Se elimino correctamente el articulo.',
+					type: 'success',
+					showConfirmButton: false,
+					timer: 1500
+				})
+				obtener_registros();
+			});	
 		}
 	})
 }
 
 function activar(idarticulo){
-	bootbox.confirm("¿Esta seguro de activar este dato?" , function(result){
-		if (result) {
+	swal({
+		title: '¿Está seguro de activar el articulo?',
+		text: "¡Si no lo está puede cancelar la accíón!",
+		type: 'question',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  cancelButtonText: 'Cancelar',
+		  confirmButtonText: 'Si, activar articulo!'
+	  }).then(function(result){
+		  if(result.value) {
 			$.post("../ajax/articulo.php?op=activar" , {idarticulo : idarticulo}, function(e){
-				bootbox.alert(e);
-				tabla.ajax.reload();
+				swal(
+				'Articulo activado!',
+				'Se activo correctamente el articulo.',
+				'success'
+				)
+				obtener_registros();
 			});
-		}
-	})
+		  }
+		})
 }
 
 function generarbarcode(){

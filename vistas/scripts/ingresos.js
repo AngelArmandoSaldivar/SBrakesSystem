@@ -324,7 +324,13 @@ function guardaryeditar(e){
      	processData: false,
 
      	success: function(datos){
-     		bootbox.alert(datos);
+			swal({
+				position: 'top-end',
+				type: 'success',
+				title: 'Se guardo correctamente la recepción',
+				showConfirmButton: false,
+				timer: 1500
+			});
      		mostrarform(false);
      		obtener_registros();
 			$('.loader').hide();
@@ -346,7 +352,13 @@ function guardaryeditarProveedor(e){
      	processData: false,
 
      	success: function(datos){
-     		bootbox.alert(datos);
+			swal({
+				position: 'top-end',
+				type: 'success',
+				title: 'Se guardo correctamente el proveedor',
+				showConfirmButton: false,
+				timer: 1500
+			});
 			selectProvider();
 			$("#formulario")[0].reset();
 			$("#formularioProve")[0].reset();
@@ -367,7 +379,13 @@ function guardaryeditarProducto() {
      	processData: false,
 
      	success: function(datos){
-     		bootbox.alert(datos);
+			swal({
+				position: 'top-end',
+				type: 'success',
+				title: 'Se guardo correctamente el producto',
+				showConfirmButton: false,
+				timer: 1500
+			});
 			selectProvider();
 			$("#formulario")[0].reset();
 			$("#formularioProduct")[0].reset();	
@@ -383,7 +401,6 @@ function mostrar(idingreso){
 			data=JSON.parse(data);
 			mostrarform(true);
 			$('.loader').hide();
-
 			$("#idproveedor").val(data.idproveedor);
 			$("#idproveedor").selectpicker('refresh');
 			$("#tipo_comprobante").val(data.tipo_comprobante);
@@ -398,20 +415,42 @@ function mostrar(idingreso){
 			$("#btnCancelar").show();
 			$("#btnAgregarArt").hide();
 		});
-	$.post("../ajax/ingreso.php?op=listarDetalle&id="+idingreso,function(r){
-		$("#detalles").html(r);
-	});
+
+		$.post("../ajax/ingreso.php?op=listarDetalle&id="+idingreso,function(r){
+			$('.loader').show();
+			if(r) {
+				$('.loader').hide();
+				$("#detalles").html(r);
+			}			
+		});
 
 }
 
 //funcion para desactivar
 function anular(idingreso){
-	bootbox.confirm("¿Esta seguro de desactivar este dato?", function(result){
-		if (result) {
+	swal({
+		title: '¿Está seguro de borrar la recepción?',
+		text: "¡Si no lo está puede cancelar la accíón!",
+		type: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  cancelButtonText: 'Cancelar',
+		  confirmButtonText: 'Si, borrar recepción!'
+	  }).then(function(result){
+
+		if(result.value){
+	
 			$.post("../ajax/ingreso.php?op=anular", {idingreso : idingreso}, function(e){
-				bootbox.alert(e);
-				tabla.ajax.reload();
-			});
+				swal({
+					title:'Recepción eliminada!',
+					text: 'Se elimino correctamente la recepción.',
+					type: 'success',
+					showConfirmButton: false,
+					timer: 1500
+				})
+				obtener_registros();
+			});	
 		}
 	})
 }

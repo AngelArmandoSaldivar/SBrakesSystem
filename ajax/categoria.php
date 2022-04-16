@@ -44,7 +44,7 @@ switch ($_GET["op"]) {
 				descripcion LIKE '%".$termino."%' LIMIT 20";
 			}
 			$consultaBD=$conexion->query($consulta);
-			if($consultaBD->num_rows>=1){
+			if($consultaBD->num_rows>=1){			
 				echo "				
 				<table class='responsive-table table table-hover table-bordered' style='font-size:12px'>
 					<thead class='table-light'>
@@ -56,11 +56,30 @@ switch ($_GET["op"]) {
 					</thead>
 				<tbody>";
 				while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){
-							echo "<tr>
+					if($fila["condicion"] != 0) {
+						echo "<tr>
 								<td>".$fila['nombre']."</td>
 								<td>".$fila['descripcion']."</td>
-								<td><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idcategoria"].")'><i class='fa fa-pencil'></i></button> <button class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idcategoria"].")')><i class='fa fa-close'></i></button><button class='btn btn-primary btn-xs' onclick='activar(".$fila["idcategoria"].")'><i class='fa fa-check'></i></button></td>					
+								<td>
+									<div class='emergente'>
+										<span data-tooltip='Editar categoria'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idcategoria"].")'><i class='fa fa-pencil'></i></button></span> 
+										<span data-tooltip='Eliminar categoria'><button class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idcategoria"].")')><i class='fa fa-close'></i></button></span>										
+									</div>
+								</td>
 							</tr>";
+					} else {
+						echo "<tr>
+								<td>".$fila['nombre']."</td>
+								<td>".$fila['descripcion']."</td>
+								<td>
+									<div class='emergente'>
+										<span data-tooltip='Editar categoria'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idcategoria"].")'><i class='fa fa-pencil'></i></button></span> 										
+										<span data-tooltip='Activar categoria'><button class='btn btn-primary btn-xs' onclick='activar(".$fila["idcategoria"].")'><i class='fa fa-check'></i></button></span>
+									</div>
+								</td>
+							</tr>";
+					}
+							
 					}
 				echo "</tbody>
 				</table>";

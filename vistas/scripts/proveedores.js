@@ -80,11 +80,16 @@ function guardaryeditar(e){
      	data: formData,
      	contentType: false,
      	processData: false,
-
      	success: function(datos){
-     		bootbox.alert(datos);
-     		mostrarform(false);
-     		tabla.ajax.reload();
+			swal({
+				position: 'top-end',
+				type: 'success',
+				title: 'Se guardo correctamente el proveedor',
+				showConfirmButton: false,
+				timer: 1500
+			});
+     		mostrarform(false);     		
+			obtener_registros();
      	}
      });
 
@@ -110,13 +115,29 @@ function mostrar(idpersona){
 
 //funcion para desactivar
 function eliminar(idpersona){
-	bootbox.confirm("¿Esta seguro de eliminar este dato?", function(result){
-		if (result) {
-
+	swal({
+		title: '¿Está seguro de borrar el proveedor?',
+		text: "¡Si no lo está puede cancelar la accíón!",
+		type: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  cancelButtonText: 'Cancelar',
+		  confirmButtonText: 'Si, borrar proveedor!'
+	  }).then(function(result){
+	
+		if(result.value){
+	
 			$.post("../ajax/persona.php?op=eliminar", {idpersona : idpersona }, function(e){
-				bootbox.alert(e);
-				tabla.ajax.reload();
-			});
+				swal({
+					title:'Proveedor eliminado!',
+					text: 'Se elimino correctamente el proveedor.',
+					type: 'success',
+					showConfirmButton: false,
+					timer: 1500
+				})
+				obtener_registros();
+			});	
 		}
 	})
 }

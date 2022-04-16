@@ -22,9 +22,8 @@ if ($_SESSION['compras']==1) {
         <div class="col-md-12">
       <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
 <div class="box-header with-border">
-  <h1 class="box-title">Recepciones <button class="btn btn-success" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
-  <div class="box-tools pull-right">
-    
+  <h1 class="box-title">Recepciones <button title="Agregar recepción" class="btn btn-success" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
+  <div class="box-tools pull-right">    
   </div>
 </div>
 <!--box-header-->
@@ -132,7 +131,7 @@ if ($_SESSION['compras']==1) {
     <th></th>
     <th></th>
     <th></th>
-    <th></th>
+    <th></th>        
     <th>TOTAL</th>
     <th><h5 id="total">$ 0.00</h5><input type="hidden" name="total_compra" id="total_compra"></th>
   </tfoot>

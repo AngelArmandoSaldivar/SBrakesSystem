@@ -43,13 +43,14 @@ switch ($_GET["op"]) {
 	$data=Array();
 
 	while ($reg=$rspta->fetch_object()) {
-		$data[]=array(
-			"0"=>($reg->condicion)?'<button class="btn btn-warning btn-xs" onclick="mostrar('.$reg->idsucursal.')"><i class="fa fa-pencil"></i></button>'.' '.'<button class="btn btn-danger btn-xs" onclick="desactivar('.$reg->idsucursal.')"><i class="fa fa-close"></i></button>':'<button class="btn btn-warning btn-xs" onclick="mostrar('.$reg->idsucursal.')"><i class="fa fa-pencil"></i></button>'.' '.'<button class="btn btn-primary btn-xs" onclick="activar('.$reg->idsucursal.')"><i class="fa fa-check"></i></button>',
-			"1"=>$reg->nombre,
-			"2"=>$reg->direccion,
-			"3"=>$reg->telefono,
-			"4"=>$reg->numVentas,								
-			"5"=>($reg->condicion)?'<span class="label bg-green">Activado</span>':'<span class="label bg-red">Desactivado</span>'
+		$data[]=array(			
+			"0"=>$reg->nombre,
+			"1"=>$reg->direccion,
+			"2"=>$reg->telefono,
+			"3"=>$reg->numVentas,								
+			"4"=>($reg->condicion)?'<span class="label bg-green">Activado</span>':'<span class="label bg-red">Desactivado</span>',
+			"5"=>($reg->condicion)?'<div class="emergente">
+				<span data-tooltip="Mostrar sucursal"><button class="btn btn-warning btn-xs" onclick="mostrar('.$reg->idsucursal.')"><i class="fa fa-pencil"></i></button></span>'.' '.'<span data-tooltip="Eliminar sucursal"><button class="btn btn-danger btn-xs" onclick="desactivar('.$reg->idsucursal.')"><i class="fa fa-close"></i></button></span>':'<span data-tooltip="Mostrar sucursal"><button class="btn btn-warning btn-xs" onclick="mostrar('.$reg->idsucursal.')"><i class="fa fa-pencil"></i></button></span>'.' '.'<span data-tooltip="Activar sucursal"><button class="btn btn-primary btn-xs" onclick="activar('.$reg->idsucursal.')"><i class="fa fa-check"></i></button></span></div>'
 		);
 	}
 

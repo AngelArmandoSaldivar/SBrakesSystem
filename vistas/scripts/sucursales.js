@@ -88,7 +88,13 @@ function guardaryeditar(e){
      	processData: false,
 
      	success: function(datos){
-     		bootbox.alert(datos);
+			swal({
+				position: 'top-end',
+				type: 'success',
+				title: 'Se guardo correctamente la sucursal',
+				showConfirmButton: false,
+				timer: 1500
+			});
      		mostrarform(false);
      		tabla.ajax.reload();
      	}
@@ -120,25 +126,57 @@ function mostrar(idsucursal){
 
 //funcion para desactivar
 function desactivar(idsucursal){
-	bootbox.confirm("¿Esta seguro de desactivar este dato?", function(result){
-		if (result) {
+	swal({
+		title: '¿Está seguro de borrar la sucursal?',
+		text: "¡Si no lo está puede cancelar la accíón!",
+		type: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  cancelButtonText: 'Cancelar',
+		  confirmButtonText: 'Si, borrar sucursal!'
+	  }).then(function(result){
+	
+		if(result.value){
+	
 			$.post("../ajax/sucursal.php?op=desactivar", {idsucursal : idsucursal}, function(e){
-				bootbox.alert(e);
+				swal({
+					title:'Sucursal eliminada!',
+					text: 'Se elimino correctamente la sucursal.',
+					type: 'success',
+					showConfirmButton: false,
+					timer: 1500
+				})
 				tabla.ajax.reload();
-			});
+			});	
 		}
 	})
 }
 
 function activar(idsucursal){
-	bootbox.confirm("¿Esta seguro de activar este dato?" , function(result){
-		if (result) {
-			$.post("../ajax/usuario.php?op=activar", {idsucursal : idsucursal}, function(e){
-				bootbox.alert(e);
+	swal({
+		title: '¿Está seguro de activar la sucursal?',
+		text: "¡Si no lo está puede cancelar la accíón!",
+		type: 'question',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  cancelButtonText: 'Cancelar',
+		  confirmButtonText: 'Si, activar sucursal!'
+	  }).then(function(result){
+		  if(result.value) {
+			$.post("../ajax/sucursal.php?op=activar", {idsucursal : idsucursal}, function(e){
+				swal({
+					title:'Sucursal activada!',
+					text: 'Se activo correctamente la sucursal.',
+					type: 'success',
+					showConfirmButton: false,
+					timer: 1500
+				})
 				tabla.ajax.reload();
 			});
-		}
-	})
+		  }
+		})
 }
 
 
