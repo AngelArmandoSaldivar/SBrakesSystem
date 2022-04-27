@@ -34,6 +34,86 @@
   </div>
 </div>
 
+<div class="modal fade" id="editProductventa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="width: 50% !important;">
+    <div class="modal-content" style="border-radius: 20px;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Editar producto</h4>
+      </div>
+      <!--<div class="modal-body">-->
+      <form action="" name="formularioProductoVenta" id="formularioProductoVenta" method="POST">
+        <div class="panel-body table-responsive">
+            <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
+              <label for="">ID</label>
+              <input class="form-control" type="text" id="idproducto" name="idproducto"></input>
+            </div>
+            <div class="form-group col-lg-6 col-md-2 col-xs-6" id="divImpuesto">
+              <label for="">Descripción </label>
+              <textarea class="form-control" id="descripcion" name="descripcion" rows="5" style="width: 280px;" required></textarea>
+            </div>
+            <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
+              <label for="">Cantidad </label>
+              <input class="form-control" type="number" name="cantidad" id="cantidad" required>
+            </div>
+            <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
+              <label for="">Precio Venta </label>
+              <input class="form-control" type="number" name="precio" id="precio" required>
+            </div>
+        </div>
+      </form>
+        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <button class="btn btn-success" type="submit" name="btnGuardarProductoVenta" onclick="editarGuardarProductoVenta()">Guardar</button>
+          <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
+        </div>
+      <!--</div>-->
+      <div class="modal-footer">
+        <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="editProductServicio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="width: 50% !important;">
+    <div class="modal-content" style="border-radius: 20px;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Editar producto</h4>
+      </div>
+      <!--<div class="modal-body">-->
+      <form action="" name="formularioProductoServicio" id="formularioProductoServicio" method="POST">
+        <div class="panel-body table-responsive">
+            <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
+              <label for="">ID</label>
+              <input class="form-control" type="text" id="idProducto" name="idProducto"></input>
+            </div>
+            <div class="form-group col-lg-6 col-md-2 col-xs-6" id="divImpuesto">
+              <label for="">Descripción </label>
+              <textarea class="form-control" id="descripcionProducto" name="descripcionProducto" rows="5" style="width: 280px;" required></textarea>
+            </div>
+            <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
+              <label for="">Cantidad </label>
+              <input class="form-control" type="number" name="cantidadProducto" id="cantidadProducto" required>
+            </div>
+            <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
+              <label for="">Precio Venta </label>
+              <input class="form-control" type="number" name="precioProducto" id="precioProducto" required>
+            </div>
+        </div>
+      </form>
+        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <button class="btn btn-success" type="submit" name="btnGuardarProductoServicio" onclick="editarGuardarProductoServicio()">Guardar</button>
+          <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
+        </div>
+      <!--</div>-->
+      <div class="modal-footer">
+        <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <!--MODAL PRODUCTOS DE OTRAS SUCURSALES-->
@@ -195,3 +275,6 @@
     </div>
   </div>
   <!-- fin Modal-->
+
+
+

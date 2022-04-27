@@ -12,7 +12,7 @@ public function __construct(){
 //metodo insertar registro
 public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$total_servicio,$marca, $modelo, $ano, $color, $kms,$placas,$idarticulo,$clave,$fmsi,$descripcion,$cantidad,$precio_servicio,$descuento, $idsucursal, $forma_pago, $forma_pago2, $forma_pago3, $banco, $banco2, $banco3, $importe, $importe2, $importe3, $ref, $ref2, $ref3){
 	$sql="INSERT INTO servicio (idcliente,idusuario,tipo_comprobante,fecha_hora,impuesto,total_servicio,pagado,marca, modelo, ano, color, kms, placas, estado,idsucursal,status) 
-						VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_hora','$impuesto','$total_servicio','$total_servicio','$marca', '$modelo', '$ano', '$color', '$kms','$placas', 'PENDIENTE', '$idsucursal', 'PENDIENTE')";	
+						VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_hora','$impuesto','$total_servicio','0','$marca', '$modelo', '$ano', '$color', '$kms','$placas', 'PENDIENTE', '$idsucursal', 'PENDIENTE')";	
 	 $idservicionew=ejecutarConsulta_retornarID($sql);
 	 $num_elementos=0;
 	 $sw=true;
@@ -33,12 +33,87 @@ public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$im
 }
 
 public function cobrarServicio($forma_pago, $forma_pago2, $forma_pago3, $banco, $banco2, $banco3, $importe, $importe2, $importe3, $ref, $ref2, $ref3, $idservicio){
-	$sql = "UPDATE servicio SET status='PAGADO', pagado=0 WHERE idservicio='$idservicio'";	
+	echo $importe;
+	if($importe != "" && $importe2 == "" && $importe3 == "") {
+		$sql = "UPDATE servicio SET pagado='$importe' WHERE idservicio='$idservicio'";
+		ejecutarConsulta($sql);
+		$sw=true;
+		$sql_formas_pago = "UPDATE formas_pago SET forma_pago='$forma_pago', banco='$banco', importe='$importe', referencia='$ref' WHERE idservicio='$idservicio'";
+		ejecutarConsulta($sql_formas_pago) or $sw=false;
+		sleep(1);
+		return $sw;
+	} else if($importe != "" && $importe2 != "" && $importe3 == "") {
+		$suma = $importe + $importe2;
+		$sql = "UPDATE servicio SET pagado='$suma' WHERE idservicio='$idservicio'";
+		ejecutarConsulta($sql);
+		$sw=true;
+		$sql_formas_pago = "UPDATE formas_pago SET forma_pago='$forma_pago', forma_pago2='$forma_pago2', banco='$banco', banco2='$banco2', importe='$importe', importe2='$importe2', referencia='$ref', referencia2='$ref2' WHERE idservicio='$idservicio'";
+		ejecutarConsulta($sql_formas_pago) or $sw=false;
+		sleep(1);
+		return $sw;
+	} else if($importe != "" && $importe2 != "" && $importe3 != "") {
+		$suma = $importe + $importe2 + $importe3;
+		$sql = "UPDATE servicio SET pagado='$suma' WHERE idservicio='$idservicio'";
+		ejecutarConsulta($sql);
+		$sw=true;
+		$sql_formas_pago = "UPDATE formas_pago SET forma_pago='$forma_pago', forma_pago2='$forma_pago2', forma_pago3='$forma_pago3', banco='$banco', banco2='$banco2', banco3='$banco3', importe='$importe', importe2='$importe2', importe3='$importe3', referencia='$ref', referencia2='$ref2', referencia3='$ref3' WHERE idservicio='$idservicio'";
+		ejecutarConsulta($sql_formas_pago) or $sw=false;
+		sleep(1);
+		return $sw;
+	}
+}
+
+public function addProductoServicio($idarticulo,$articulo,$fmsi,$marca,$descripcion,$publico,$stock,$idServicio) {
+	$bandera = true;
+	$sql = "INSERT INTO detalle_servicio 
+			(idservicio,idarticulo,clave,fmsi,marca, descripcion,tipoMov,cantidad,precio_servicio,descuento) 
+			VALUES('$idServicio','$idarticulo', '$articulo','$fmsi','$marca','$descripcion','SERVICIO','$stock','$publico','0')";			
 	ejecutarConsulta($sql);
-	$sw=true;
-	$sql_formas_pago = "UPDATE formas_pago SET forma_pago='$forma_pago', forma_pago2='$forma_pago2', forma_pago3='$forma_pago3', banco='$banco', banco2='$banco2', banco3='$banco3', importe='$importe', importe2='$importe2', importe3='$importe3', referencia='$ref', referencia2='$ref2', referencia3='$ref3' WHERE idservicio='$idservicio'";
-	ejecutarConsulta($sql_formas_pago) or $sw=false;
+	$sql_servicio = "UPDATE servicio SET total_servicio=total_servicio+'$publico' WHERE idservicio='$idServicio'";
+	ejecutarConsulta($sql_servicio);
 	sleep(1);
+	return $bandera;
+}
+
+public function mostrarProductoEdit($idarticulo, $idservicio) {
+	$sql = "SELECT * FROM detalle_servicio WHERE idservicio='$idservicio' AND idarticulo='$idarticulo'";
+	return ejecutarConsultaSimpleFila($sql);
+}
+
+public function editarGuardarProductoServicio($p1, $p2, $p3, $idarticulo, $idservicio, $precioViejo, $stockViejo) {
+	$bandera = true;
+	$sql_servicio = "UPDATE servicio SET total_servicio=total_servicio-($precioViejo*$stockViejo) WHERE idservicio='$idservicio'";
+	ejecutarConsulta($sql_servicio);
+	$sql_articulo = "UPDATE articulo SET stock=stock+$stockViejo WHERE idarticulo='$idarticulo'";
+	ejecutarConsulta($sql_articulo);
+	sleep(1);
+
+	$sql = "UPDATE detalle_servicio SET descripcion='$p1', cantidad='$p2', precio_servicio='$p3' WHERE idservicio='$idservicio' AND idarticulo='$idarticulo'";
+	ejecutarConsulta($sql);	
+
+	$sql_servicioTotalNew = "UPDATE servicio SET total_servicio = total_servicio + ($p2 * $p3) WHERE idservicio='$idservicio'";
+	ejecutarConsulta($sql_servicioTotalNew);
+
+	$sql_articuloStockNew = "UPDATE articulo SET stock=stock-$p2 WHERE idarticulo='$idarticulo'";
+	ejecutarConsulta($sql_articuloStockNew);
+	sleep(1);
+	return $bandera;
+}
+
+public function eliminarProductoServicio($p1, $p2, $p3, $p4) {
+	$sql = "UPDATE detalle_servicio SET estado='1' WHERE idservicio='$p1' AND idarticulo='$p2'";
+	$sw = true;
+	ejecutarConsulta($sql);
+
+	$sql_producto = "UPDATE articulo SET stock=stock+'$p3' WHERE idarticulo='$p2'";
+	ejecutarConsulta($sql_producto);
+
+	$sql_kardex = "UPDATE kardex SET estado='ANULADO' WHERE idventa='$p1'";
+	ejecutarConsulta($sql_kardex);
+
+	$sql_servicio = "UPDATE servicio SET total_servicio=total_servicio-($p3*$p4) WHERE idservicio='$p1'";
+	ejecutarConsulta($sql_servicio);
+
 	return $sw;
 }
 
@@ -76,7 +151,7 @@ public function anular($idservicio){
 
 //implementar un metodopara mostrar los datos de unregistro a modificar
 public function mostrar($idservicio){
-	$sql="SELECT v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,p.rfc, p.direccion, p.email, p.telefono, p.tipo_precio, p.credito, u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.marca, v.modelo, v.ano, v.kms, v.color, v.placas, forma_pago,forma_pago2, forma_pago3,banco,banco2, banco3,importe, importe2, importe3,referencia, referencia2, referencia3 FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario INNER JOIN formas_pago fp ON fp.idservicio=v.idservicio WHERE v.idservicio='$idservicio'";
+	$sql="SELECT v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,p.rfc, p.direccion, p.email, p.telefono, p.tipo_precio, p.credito, u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio, v.pagado, v.impuesto,v.estado,v.marca, v.modelo, v.ano, v.kms, v.color, v.placas, forma_pago,forma_pago2, forma_pago3,banco,banco2, banco3,importe, importe2, importe3,referencia, referencia2, referencia3 FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario INNER JOIN formas_pago fp ON fp.idservicio=v.idservicio WHERE v.idservicio='$idservicio'";
 	sleep(1);
 	return ejecutarConsultaSimpleFila($sql);
 }
@@ -87,9 +162,9 @@ public function mostrarInfoAuto($idauto){
 	return ejecutarConsultaSimpleFila($sql);
 }
 
-//Lista los articulos de la venta
+//Lista los articulos de la servicio
 public function listarDetalle($idservicio){
-	$sql="SELECT dv.idservicio,dv.idarticulo,a.codigo,dv.cantidad,dv.fmsi, dv.descripcion,dv.precio_servicio,dv.descuento,(dv.cantidad*dv.precio_servicio-dv.descuento) as subtotal FROM detalle_servicio dv INNER JOIN articulo a ON dv.idarticulo=a.idarticulo WHERE dv.idservicio='$idservicio'";
+	$sql="SELECT dv.idservicio,dv.idarticulo,a.codigo,dv.cantidad,dv.fmsi, dv.descripcion,dv.precio_servicio,dv.descuento,(dv.cantidad*dv.precio_servicio-dv.descuento) as subtotal FROM detalle_servicio dv INNER JOIN articulo a ON dv.idarticulo=a.idarticulo WHERE dv.idservicio='$idservicio' AND dv.estado='0'";
 	return ejecutarConsulta($sql);
 }
 

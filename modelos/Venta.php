@@ -61,14 +61,43 @@ public function cobrarVenta($forma_pago, $forma_pago2, $forma_pago3, $banco, $ba
 }
 
 public function addProductoVenta($idarticulo,$articulo,$fmsi,$marca,$descripcion,$publico,$stock,$idVenta) {
+	$bandera = true;
 	$sql = "INSERT INTO detalle_venta 
 			(idventa,idarticulo,clave,fmsi,marca, descripcion,tipoMov,cantidad,precio_venta,descuento) 
-			VALUES('$idVenta','$idarticulo', '$articulo','$fmsi','$marca','$descripcion','VENTA','$stock','$publico','0')";
-	return ejecutarConsulta($sql);
+			VALUES('$idVenta','$idarticulo', '$articulo','$fmsi','$marca','$descripcion','VENTA','$stock','$publico','0')";			
+	ejecutarConsulta($sql);
+	$sql_venta = "UPDATE venta SET total_venta=total_venta+'$publico' WHERE idventa='$idVenta'";
+	ejecutarConsulta($sql_venta);	
+	sleep(1);
+	return $bandera;
 }
 
+public function mostrarProductoEdit($idarticulo, $idventa) {
+	$sql = "SELECT * FROM detalle_venta WHERE idventa='$idventa' AND idarticulo='$idarticulo'";
+	return ejecutarConsultaSimpleFila($sql);
+}
 
-public function eliminarProductoVenta($p1, $p2, $p3) {
+public function editarGuardarProductoVenta($p1, $p2, $p3, $idarticulo, $idventa, $precioViejo, $stockViejo) {
+	$bandera = true;
+	$sql_venta = "UPDATE venta SET total_venta=total_venta-($precioViejo*$stockViejo) WHERE idventa='$idventa'";
+	ejecutarConsulta($sql_venta);
+	$sql_articulo = "UPDATE articulo SET stock=stock+$stockViejo WHERE idarticulo='$idarticulo'";
+	ejecutarConsulta($sql_articulo);
+	sleep(1);
+
+	$sql = "UPDATE detalle_venta SET descripcion='$p1', cantidad='$p2', precio_venta='$p3' WHERE idventa='$idventa' AND idarticulo='$idarticulo'";
+	ejecutarConsulta($sql);	
+
+	$sql_ventaTotalNew = "UPDATE venta SET total_venta = total_venta + ($p2 * $p3) WHERE idventa='$idventa'";
+	ejecutarConsulta($sql_ventaTotalNew);
+
+	$sql_articuloStockNew = "UPDATE articulo SET stock=stock-$p2 WHERE idarticulo='$idarticulo'";
+	ejecutarConsulta($sql_articuloStockNew);
+	sleep(1);
+	return $bandera;
+}
+
+public function eliminarProductoVenta($p1, $p2, $p3, $p4) {
 	$sql = "UPDATE detalle_venta SET estado='1' WHERE idventa='$p1' AND idarticulo='$p2'";
 	$sw = true;
 	ejecutarConsulta($sql);
@@ -78,6 +107,9 @@ public function eliminarProductoVenta($p1, $p2, $p3) {
 
 	$sql_kardex = "UPDATE kardex SET estado='ANULADO' WHERE idventa='$p1'";
 	ejecutarConsulta($sql_kardex);
+
+	$sql_venta = "UPDATE venta SET total_venta=total_venta-($p3*$p4) WHERE idventa='$p1'";
+	ejecutarConsulta($sql_venta);
 
 	return $sw;
 }
@@ -122,7 +154,7 @@ public function mostrarInfoClient($idcliente){
 
 //implementar un metodopara mostrar los datos de unregistro a modificar
 public function mostrar($idventa){
-	$sql="SELECT v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente, p.rfc, p.direccion, p.email, p.telefono, p.telefono_local, p.tipo_precio, p.credito, u.idusuario,u.nombre as usuario, forma_pago,forma_pago2, forma_pago3,banco,banco2, banco3,importe, importe2, importe3,referencia, referencia2, referencia3,v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario INNER JOIN formas_pago fp ON fp.idventa=v.idventa WHERE v.idventa='$idventa'";
+	$sql="SELECT v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente, p.rfc, p.direccion, p.email, p.telefono, p.telefono_local, p.tipo_precio, p.credito, u.idusuario,u.nombre as usuario, forma_pago,forma_pago2, forma_pago3,banco,banco2, banco3,importe, importe2, importe3,referencia, referencia2, referencia3,v.tipo_comprobante,v.total_venta,v.impuesto,v.estado, v.pagado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario INNER JOIN formas_pago fp ON fp.idventa=v.idventa WHERE v.idventa='$idventa'";
 	sleep(1);
 	return ejecutarConsultaSimpleFila($sql);
 }
@@ -152,7 +184,6 @@ public function mostrarDetalleVenta($idventa) {
 	return ejecutarConsultaFila($sql);
 }
 
-
 //Lista los articulos de la venta
 public function listarDetalle($idventa){
 	$sql="SELECT dv.idventa,dv.idarticulo,a.codigo,dv.cantidad,dv.fmsi, dv.estado, dv.descripcion,dv.precio_venta,dv.descuento,(dv.cantidad*dv.precio_venta-dv.descuento) as subtotal FROM detalle_venta dv INNER JOIN articulo a ON dv.idarticulo=a.idarticulo WHERE dv.idventa='$idventa' AND dv.estado='0'";
@@ -165,20 +196,21 @@ public function listar(){
 	return ejecutarConsulta($sql);
 }
 
-
 public function ventacabecera($idventa){
 	$sql= "SELECT v.idventa, v.idcliente, p.nombre AS cliente, p.direccion, p.email, p.telefono, v.idusuario, u.nombre AS usuario, v.tipo_comprobante, DATE(v.fecha_hora) AS fecha, v.impuesto, v.total_venta FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE v.idventa='$idventa'";
 	return ejecutarConsulta($sql);
 }
 
 public function ventadetalles($idventa){
-	$sql="SELECT a.codigo AS articulo, a.codigo, d.cantidad,d.fmsi,d.marca, d.descripcion, d.precio_venta, d.descuento, d.clave, (d.cantidad*d.precio_venta-d.descuento) AS subtotal FROM detalle_venta d INNER JOIN articulo a ON d.idarticulo=a.idarticulo WHERE d.idventa='$idventa'";
+	$sql="SELECT a.codigo AS articulo, a.codigo, d.cantidad,d.fmsi,d.marca, d.descripcion, d.precio_venta, d.descuento, d.clave, (d.cantidad*d.precio_venta-d.descuento) AS subtotal FROM detalle_venta d INNER JOIN articulo a ON d.idarticulo=a.idarticulo WHERE d.idventa='$idventa' AND d.estado = 0";
     	return ejecutarConsulta($sql);
 }
+
 public function ultimaVenta() {
 	$sql = "SELECT * FROM venta ORDER BY idventa DESC limit 1";
 	return ejecutarConsulta($sql);
 }
+
 public function totalVentas() {
 	$sql = "SELECT COUNT(*) as totalVentas FROM venta WHERE estado != 'ANULADO'";
 	return ejecutarConsulta($sql);

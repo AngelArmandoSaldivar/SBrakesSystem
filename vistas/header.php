@@ -49,6 +49,10 @@ if (strlen(session_id())<1)
       display: none;
       text-align: center;
     }
+    .loaderSearch {
+      display: none;
+      text-align: center;
+    }
     .loaderInfoAuto {
       display: none;
       text-align: center;

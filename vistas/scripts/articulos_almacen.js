@@ -130,6 +130,24 @@ $(document).on('keyup', '#busqueda', function(){
 	}
 });
 
+setInterval(() => {	
+	console.log(document.getElementById("busqueda").value);
+	let busqueda = document.getElementById("busqueda").value;
+	if(busqueda != "") {
+		$('.loaderSearch').show();
+		setTimeout(() => {
+			obtener_registros(busqueda);
+			$('.loaderSearch').hide();
+		}, 500);		
+	} else {
+		$('.loaderSearch').show();		
+		setTimeout(() => {
+			obtener_registros();
+			$('.loaderSearch').hide();
+		}, 500);	
+	}
+}, 5000);
+
 //funcion para guardaryeditar
 function guardaryeditar(e){
 	e.preventDefault();//no se activara la accion predeterminada 

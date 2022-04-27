@@ -129,7 +129,7 @@ function paginaSiguiente() {
 
 }
 
-function paginaAnterior() {		
+function paginaAnterior() {
 	let cachaPaginaNumber = Number($("#pagina").val());
 	cachaPaginaNumber = cachaPaginaNumber - 1;
 	document.getElementById("pagina").value=cachaPaginaNumber;
@@ -179,7 +179,7 @@ function(){
 
 
 //funcion listar REGISTROS INGRESOS CREADOS
-function obtener_registros(ingresos){	
+function obtener_registros(ingresos){
 
 	busqueda = $("#busqueda").val();
 	fechaInicial = $("#fecha_inicio").val();

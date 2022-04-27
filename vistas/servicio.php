@@ -20,12 +20,16 @@ if ($_SESSION['servicios']==1) {
       <div class="col-md-12">
         <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
           <div class="box-header with-border">
-            <h1 class="box-title">Servicios <button title="Agregar nuevo servicio" class="btn btn-success" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
+            <h1 class="box-title">Servicios <button title="Agregar nuevo servicio"  id="btnagregarservicio" class="btn btn-success" onclick="crearServicio()"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
           <div class="box-tools pull-right"></div>          
           <div class="panel-body table-responsive" id="listadoregistros">
             <section>
               <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 16px; box-shadow: 5px 5px 8px #3300ff99;"></center><br><br>
-            </section>            
+            </section>  
+            <br><br>
+          <div class="loaderSearch">
+            <img src="../files/images/loader.gif" alt="" width="50px">
+          </div>          
             <section id="tabla_resultado"></section>
           </div>          
           <div class="panel-body" style="height: 400px;" id="formularioregistros">
@@ -47,7 +51,7 @@ if ($_SESSION['servicios']==1) {
               <div class="form-group col-lg-2 col-md-4 col-xs-12" id="addCliente">
                 <label for="">Agregar Cliente</label><br>
                   <a data-toggle="modal" href="#agregarCliente">
-                    <button id="btnAgregarArt" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Cliente</button>
+                    <button id="btnAgregarClient" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Cliente</button>
                   </a>
               </div>
 
@@ -274,6 +278,13 @@ if ($_SESSION['servicios']==1) {
                   <button id="btnAgregarArt" name="btnAgregarArt" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Articulos</button>
                 </a>
               </div>
+
+              <div class="form-group col-lg-8 col-md-3 col-sm-6 col-xs-12" id="btnAgregarArticulosEdit">
+                <a data-toggle="modal" href="#myModalProductsEdit">
+                  <button id="btnAgregarArticulosEdit" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Articulos</button>
+                </a>
+              </div>
+
               <div class="form-group col-lg-12 col-md-12 col-xs-12">         
                 <div class="panel-body table-responsive">
                 <table id="detalles" class="table table-striped table-bordered table-condensed table-hover">
@@ -302,11 +313,13 @@ if ($_SESSION['servicios']==1) {
                   <tbody>                
                   </tbody>
                 </table>
+                
                 </div>
               </div>
               <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i>  Guardar</button>
-                <button class="btn btn-danger" onclick="cancelarform()" type="button" id="btnCancelar"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
+                <!--<button class="btn btn-danger" onclick="cancelarform()" type="button" id="btnCancelar"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>-->
+                <button class="btn btn-info" onclick="salirForm()" type="button" id="btnRegresar"><i class="fa fa-arrow-circle-left"></i> Regresar</button>
                 <?php 
                   require('loader.php');
                 ?>
@@ -317,6 +330,13 @@ if ($_SESSION['servicios']==1) {
     </div>          
   </section>
 </div>
+
+
+<?php 
+  require("ediciones.php");
+?>
+
+
   <!--Modal-->
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="width: 95% !important;">
@@ -614,7 +634,7 @@ if ($_SESSION['servicios']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/servicios1.js"></script>
+ <script src="scripts/servicio.js"></script>
  <?php 
 }
 

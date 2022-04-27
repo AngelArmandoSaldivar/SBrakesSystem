@@ -3,6 +3,7 @@ require_once "../modelos/Venta.php";
 if (strlen(session_id())<1)
 	session_start();
 	$idsucursal = $_SESSION['idsucursal'];
+	$acceso = $_SESSION['acceso'];
 
 $venta = new Venta();
 
@@ -26,6 +27,11 @@ $ref=isset($_POST["ref"])? limpiarCadena($_POST["ref"]):"";
 $ref2=isset($_POST["ref2"])? limpiarCadena($_POST["ref2"]):"";
 $ref3=isset($_POST["ref3"])? limpiarCadena($_POST["ref3"]):"";
 $total_venta=isset($_POST["total_venta"])? limpiarCadena($_POST["total_venta"]):"";
+//EDICIÓN PRODUCTO
+$descripcion = isset($_POST["descripcion"])? limpiarCadena($_POST["descripcion"]):"";
+$cantidad = isset($_POST["cantidad"])? limpiarCadena($_POST["cantidad"]):"";
+$precio = isset($_POST["precio"])? limpiarCadena($_POST["precio"]):"";
+
 
 switch ($_GET["op"]) {
 	case 'guardaryeditar':
@@ -37,18 +43,28 @@ switch ($_GET["op"]) {
 		echo $rspta ? " Cobro exitoso!" : "No se pudo realizar el cobro";
 	}
 	break;
+
+	case 'editarGuardarProductoVenta':
+		$idarticulo=$_GET['idarticulo'];
+		$idventa=$_GET['idventa'];
+		$precioViejo=$_GET['precioViejo'];
+		$stockViejo=$_GET['stockViejo'];
+		$rspta=$venta->editarGuardarProductoVenta($descripcion, $cantidad, $precio, $idarticulo, $idventa, $precioViejo, $stockViejo);
+		echo $rspta ? "Producto actualizado correctamente": "No se pudo actualizar el producto";
+		break;
+
 	case 'guardarProductoVenta':
-		$idarticulo=$conexion->real_escape_string($_POST['idarticulo']);
-		$articulo=$conexion->real_escape_string($_POST['articulo']);
-		$fmsi=$conexion->real_escape_string($_POST['fmsi']);
-		$marca=$conexion->real_escape_string($_POST['marca']);
-		$descripcion=$conexion->real_escape_string($_POST['descripcion']);
-		$publico=$conexion->real_escape_string($_POST['publico']);
-		$stock=$conexion->real_escape_string($_POST['stock']);
-		$idVenta=$conexion->real_escape_string($_POST['idVenta']);
+		$idVenta=$_GET['idVenta'];
+		$idarticulo=$_GET['idArticulo'];
+		$articulo=$_GET['codigoArticulo'];
+		$fmsi=$_GET['fmsiArticulo'];
+		$marca=$_GET['marcaArticulo'];
+		$descripcion=$_GET['descripcionArticulo'];
+		$publico=$_GET['costoArticulo'];
+		$stock=$_GET['cantidadArticulo'];
 
 		$rspta=$venta->addProductoVenta($idarticulo,$articulo,$fmsi,$marca,$descripcion,$publico,$stock,$idVenta);
-		// echo $rspta ? "Producto agregado correctamente" : "No se pudo agregar el producto"
+		echo $rspta ? "Producto agregado correctamente" : "No se pudo agregar el producto";
 		break;
 
 	case 'ultimaVenta' :
@@ -66,12 +82,20 @@ switch ($_GET["op"]) {
 		$idventaProducto=$conexion->real_escape_string($_POST['idventa']);
 		$idProductoVenta = $conexion->real_escape_string($_POST['idarticulo']);
 		$stock = $conexion->real_escape_string($_POST['stock']);
+		$precio_venta = $conexion->real_escape_string($_POST['precio_venta']);
 		
-		$rspta=$venta->eliminarProductoVenta($idventaProducto, $idProductoVenta, $stock);
+		$rspta=$venta->eliminarProductoVenta($idventaProducto, $idProductoVenta, $stock, $precio_venta);		
 		break;
 	
 	case 'mostrar':
 		$rspta=$venta->mostrar($idventa);
+		echo json_encode($rspta);
+	break;
+
+	case 'mostrarProductoVenta':
+		$idarticulo=$_GET['idarticulo'];
+		$idVenta=$_GET['idVenta'];
+		$rspta=$venta->mostrarProductoEdit($idarticulo, $idVenta);
 		echo json_encode($rspta);
 	break;
 
@@ -86,15 +110,16 @@ switch ($_GET["op"]) {
 		<th>Clave</th>
 		<th>Fmsi</th>
 		<th>Marca</th>
-		<th>Descripción</th>       
+		<th>Descripción</th>
         <th>Cantidad</th>
         <th>Precio Venta</th>
         <th>Descuento</th>
         <th>Subtotal</th>
+		<th>Editar</th>
        </thead>';
 		while ($reg=$rspta->fetch_object()) {
-			echo '<tr class="filas" >
-			<td><button style="width: 40px;" type="button" class="btn btn-danger" onclick="eliminarProductoVenta('.$reg->idventa.', '.$reg->idarticulo.', '.$reg->cantidad.')">X</button></td>			
+			echo '<tr class="filas" id="filas">
+			<td><button style="width: 40px;" type="button" class="btn btn-danger" onclick="eliminarProductoVenta('.$reg->idventa.', '.$reg->idarticulo.', '.$reg->cantidad.', '.$reg->precio_venta.')">X</button></td>			
 			<td>'.$reg->idarticulo.'</td>
 			<td>'.$reg->codigo.'</td>
 			<td>'.$reg->fmsi.'</td>
@@ -103,8 +128,10 @@ switch ($_GET["op"]) {
 			<td>'.$reg->cantidad.'</td>
 			<td>$'.number_format($reg->precio_venta, 2).'</td>
 			<td>'.$reg->descuento.'</td>
-			<td>$'.number_format($reg->subtotal, 2).'</td></tr>';
-			number_format($total=$total+($reg->precio_venta*$reg->cantidad-$reg->descuento), 2);
+			<td>$'.number_format($reg->subtotal, 2).'</td>
+			<td><a data-toggle="modal" href="#editProductventa"><button style="width: 40px;" type="button" class="btn btn-warning" onclick="editarProductoVenta('.$reg->idarticulo.')"><i class="fa fa-pencil"></i></button></a></td></tr>'
+			;
+			number_format($total=$total+($reg->precio_venta*$reg->cantidad-$reg->descuento), 2);			
 		}
 		$cont++;
 		echo '<tfoot>
@@ -141,7 +168,7 @@ switch ($_GET["op"]) {
         <th>Subtotal</th>
        </thead>';
 		while ($reg=$rspta->fetch_object()) {
-			echo '<tr class="filas">
+			echo '<tr class="filas" id="filas">
 			<td></td>
 			<td>'.$reg->codigo.'</td>
 			<td>'.$reg->cantidad.'</td>
@@ -194,19 +221,69 @@ switch ($_GET["op"]) {
 						</tr>
 					</thead>
 				<tbody>";
-				while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){
-					if($fila["idsucursal"] == $idsucursal && $fila["estado"] != 'ANULADO') {
+
+				$resta = 0;
+
+					while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){
+						$resta = $fila["total_venta"] - $fila["pagado"];
+						if($fila["idsucursal"] == $idsucursal && $fila["estado"] != 'ANULADO' && $acceso === "admin") {
+								if ($fila["tipo_comprobante"]=='Ticket') {
+									$url='../reportes/exTicket.php?id=';
+								}else{
+									$url='../reportes/exFactura.php?id=';
+								}
+								$miles = (int)$fila['total_venta'];
+								$pagado = (int)$fila['pagado'];																					
+								$ventas_pagina = 3;
+								$paginas = 13;
+
+
+								if($fila["estado"] != 'ANULADO' && $fila["total_venta"] == intval($fila["pagado"])) {
+									echo "<tr>										
+											<td>".$fila['idventa']."</td>
+											<td>".$fila['fecha']."</td>
+											<td>"."PAGADO"."</td>
+											<td><p>".$fila['cliente']."</td>
+											<td><p>".$fila['usuario']."</td>
+											<td><p>$ ".$resta."</td>
+											<td><p>$ ".$miles."</td>
+											<td><div class='emergente'>
+											<span data-tooltip='Editar venta'><button class='btn btn-warning btn-xs' onclick='editar(".$fila["idventa"].")'><i class='fa fa-pencil'></i></button></span>
+											<span data-tooltip='Mostrar venta'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idventa"].")'><i class='fa fa-eye'></i></button></span>
+											<span data-tooltip='Cancelar venta'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idventa"].")'><i class='fa fa-close'></i></button></span>										
+											<span data-tooltip='Imprimir ticket'><a target='_blank' href='".$url.$fila["idventa"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a></span></div></td>
+										</tr>
+									";
+								} else {
+								$color = 'red';
+								echo "<tr style='color:".$color."'>									
+										<td>".$fila['idventa']."</td>
+										<td>".$fila['fecha']."</td>
+										<td>".$fila["estado"]."</td>
+										<td><p>".$fila['cliente']."</td>
+										<td><p>".$fila['usuario']."</td>
+										<td><p>$ ".(intval($miles) - intval($pagado))."</td>
+										<td><p>$ ".$miles."</td>
+										<td><div class='emergente'>
+										<span data-tooltip='Editar venta'><button class='btn btn-warning btn-xs' onclick='editar(".$fila["idventa"].")'><i class='fa fa-pencil'></i></button></span>
+										<span data-tooltip='Mostrar venta'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idventa"].")'><i class='fa fa-eye'></i></button></span>
+										<span data-tooltip='Cancelar venta'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idventa"].")'><i class='fa fa-close'></i></button></span>
+										<span data-tooltip='Cobrar venta'><button class='btn btn-default btn-xs' onclick='cobrarVenta(".$fila["idventa"].")'><i class='fa fa-credit-card'></i></button></span>
+										<span data-tooltip='Imprimir ticket'><a target='_blank' href='".$url.$fila["idventa"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a></span></div></td>
+									</tr>
+									";
+								}
+						} else {
 							if ($fila["tipo_comprobante"]=='Ticket') {
 								$url='../reportes/exTicket.php?id=';
 							}else{
 								$url='../reportes/exFactura.php?id=';
 							}
-							$miles = number_format($fila['total_venta']);
-							$pagado = number_format($fila['pagado']);
-
-							$suma = intval($miles) - intval($pagado);							
+							$miles = (int)$fila['total_venta'];
+							$pagado = (int)$fila['pagado'];																					
 							$ventas_pagina = 3;
 							$paginas = 13;
+
 
 							if($fila["estado"] != 'ANULADO' && $fila["total_venta"] == intval($fila["pagado"])) {
 								echo "<tr>										
@@ -215,10 +292,9 @@ switch ($_GET["op"]) {
 										<td>"."PAGADO"."</td>
 										<td><p>".$fila['cliente']."</td>
 										<td><p>".$fila['usuario']."</td>
-										<td><p>$ ".intval($miles) - intval($pagado)."</td>
+										<td><p>$ ".$resta."</td>
 										<td><p>$ ".$miles."</td>
-										<td><div class='emergente'>
-										<span data-tooltip='Editar venta'><button class='btn btn-warning btn-xs' onclick='editar(".$fila["idventa"].")'><i class='fa fa-pencil'></i></button></span>
+										<td><div class='emergente'>										
 										<span data-tooltip='Mostrar venta'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idventa"].")'><i class='fa fa-eye'></i></button></span>
 										<span data-tooltip='Cancelar venta'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idventa"].")'><i class='fa fa-close'></i></button></span>										
 										<span data-tooltip='Imprimir ticket'><a target='_blank' href='".$url.$fila["idventa"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a></span></div></td>
@@ -232,10 +308,9 @@ switch ($_GET["op"]) {
 									<td>".$fila["estado"]."</td>
 									<td><p>".$fila['cliente']."</td>
 									<td><p>".$fila['usuario']."</td>
-									<td><p>$ ".intval($miles) - intval($pagado)."</td>
+									<td><p>$ ".(intval($miles) - intval($pagado))."</td>
 									<td><p>$ ".$miles."</td>
-									<td><div class='emergente'>
-									<span data-tooltip='Editar venta'><button class='btn btn-warning btn-xs' onclick='editar(".$fila["idventa"].")'><i class='fa fa-pencil'></i></button></span>
+									<td><div class='emergente'>									
 									<span data-tooltip='Mostrar venta'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idventa"].")'><i class='fa fa-eye'></i></button></span>
 									<span data-tooltip='Cancelar venta'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idventa"].")'><i class='fa fa-close'></i></button></span>
 									<span data-tooltip='Cobrar venta'><button class='btn btn-default btn-xs' onclick='cobrarVenta(".$fila["idventa"].")'><i class='fa fa-credit-card'></i></button></span>
@@ -243,8 +318,8 @@ switch ($_GET["op"]) {
 								</tr>
 								";
 							}
-					}
-				}
+						}
+					} 			
 				echo "</tbody>
 				<tfoot>
 					<tr>					
