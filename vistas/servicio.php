@@ -24,14 +24,58 @@ if ($_SESSION['servicios']==1) {
           <div class="box-tools pull-right"></div>          
           <div class="panel-body table-responsive" id="listadoregistros">
             <section>
-              <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 16px; box-shadow: 5px 5px 8px #3300ff99;"></center><br><br>
-            </section>  
-            <br><br>
-          <div class="loaderSearch">
-            <img src="../files/images/loader.gif" alt="" width="50px">
-          </div>          
-            <section id="tabla_resultado"></section>
-          </div>          
+              <div class="form-group col-lg-4 col-md-6 col-xs-12">
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 16px; box-shadow: 5px 5px 8px #3300ff99;"></center>
+              </div>
+            </section>
+
+            <div class="form-group col-lg-4 col-md-6 col-xs-12">
+              <div class="loaderSearch">
+                <img src="../files/images/loader.gif" alt="" width="35px">
+              </div>
+            </div>            
+
+            <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <label>Fecha Inicio</label>
+              <input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" value="">
+            </div>
+
+          <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <label>Fecha Fin</label>
+            <input type="date" class="form-control" name="fecha_fin" id="fecha_fin" value="">
+          </div>
+
+          <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
+          <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
+          <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">
+            <select name="limite_registros" id="limite_registros" class="form-control selectpicker">
+              <option value="" disabled selected>Seleccionar limite</option>                  
+              <option value="5">50 / Registros</option>
+              <option value="10">100 / Registros</option>
+              <option value="20">200 / Registros</option>
+              <option value="50">500 / Registros</option>
+              <option value="100">1000 / Registros</option>
+            </select>
+          </div>
+
+          <br><br><br>
+          
+          <section id="tabla_resultado">                
+          </section>
+
+          <div class="form-group col-lg-12 col-md-6 col-xs-12">
+            <nav aria-label="Page navigation example" style="text-align:right; margin-right:5px">
+              <ul class="pagination">
+                <input type="button" class="btn btn-primary me-md-2" value="Anterior" id="anterior" name="anterior" onclick="paginaAnterior();">
+                  <li class="page-item"><input type="submit" id="pagina" class="btn btn-primary me-md-2" name="pagina" value="1" onclick="paginasClick(<?php echo $i;?>)"></li>
+                <input type="submit" class="btn btn-primary me-md-2" value="Siguiente" id="siguiente" name="siguiente" onclick="paginaSiguiente()">
+              </ul>
+            </nav>
+          </div>
+        </div>
+        
           <div class="panel-body" style="height: 400px;" id="formularioregistros">
             <form action="" name="formulario" id="formulario" method="POST">
 
@@ -164,114 +208,32 @@ if ($_SESSION['servicios']==1) {
                   <input class="form-control" type="text" name="estado" id="estado">
                 </div>
                 
-                <div class="form-group col-lg-12 col-md-4 col-xs-12">
-                  <label for=""><h3>Detalle Cobro </h3></label>
-                </div>                
-                <div class="form-group col-lg-2 col-md-4 col-xs-12" id="">
-                  <label for="">Importe</label>
-                  <input class="form-control" type="number" name="importe" id="importe" placeholder="$">
+                  <div class="form-group col-lg-12 col-md-6 col-xs-12">
+                    <center><h4 aling="center">Detalle cobro</h4></center>
+                  </div>              
+                  <div class="form-group col-lg-12 col-md-4 col-xs-12">
+                    <a data-toggle="modal" href="#modalAddCobro">
+                      <button class="btn btn-primary" type="submit" id="btnAddPago" onclick="infoPago()"> + </i>  Añadir método de pago</button>
+                    </a>
+                  </div>
+                  <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                    <div class="panel-body table-responsive">
+                      <table id="detallesPagos" class="table table-striped table-bordered table-condensed table-hover">
+                        <thead style="background-color:#A9D0F5; font-size: 12px;">
+                          <th>Opciones</th>
+                          <th>ID PAGO</th>
+                          <th>Importe</th>
+                          <th>Método pago</th>
+                          <th>Banco</th>
+                          <th>Referencia</th>                        
+                          <th>Acciones</th>
+                        </thead>                      
+                        <tbody>                
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
-                <div class="form-group col-lg-3 col-md-6 col-xs-12" id="">
-                <label for="">Forma de pago(*): </label>
-                  <select name="forma" id="forma" class="form-control selectpicker">
-                    <option value="" selected disabled hidden>Forma de pago</option>                  
-                    <option value="Cheque">CHEQUE</option>
-                    <option value="Tarjeta">TARJETA</option>
-                    <option value="Efectivo">EFECTIVO</option>
-                    <option value="Deposito">DEPÓSITO</option>
-                    <option value="Tarjeta">TARJETA</option>
-                    <option value="Transferencia">TRASFERENCIA</option>
-                  </select>
-                </div>
-                <div class="form-group col-lg-3 col-md-6 col-xs-12" id="">
-                <label for="">Banco(*): </label>
-                  <select name="banco" id="banco" class="form-control selectpicker">     
-                  <option value="" selected disabled hidden>Banco</option>                       
-                    <option value="IXE">IXE</option>
-                    <option value="HSBC">HSBC</option>
-                    <option value="BANORTE">BANORTE</option>
-                    <option value="BANAMEX">BANCOMER</option>
-                    <option value="SANTANDER">SANTANDER</option>
-                    <option value="SCOTIA BANK">SCOTIA BANK</option>                    
-                  </select>
-                </div>
-                <div class="form-group col-lg-3 col-md-4 col-xs-12" id="">
-                  <label for="">Referencia</label>
-                  <input class="form-control" type="text" name="ref" id="ref">
-                </div>
-                <div class="form-group col-lg-2 col-md-4 col-xs-12" id="">
-                  <label for="">Importe</label>
-                  <input class="form-control" type="number" name="importe2" id="importe2" placeholder="$">
-                </div>
-
-                <div class="form-group col-lg-3 col-md-6 col-xs-12" id="">
-                <label for="">Forma de pago(*): </label>
-                  <select name="forma2" id="forma2" class="form-control selectpicker">
-                    <option value="" selected disabled hidden>Forma de pago</option>
-                    <option value="Cheque">CHEQUE</option>
-                    <option value="Tarjeta">TARJETA</option>
-                    <option value="Efectivo">EFECTIVO</option>
-                    <option value="Deposito">DEPÓSITO</option>
-                    <option value="Tarjeta">TARJETA</option>
-                    <option value="Transferencia">TRASFERENCIA</option>                    
-                  </select>
-                </div>
-
-                <div class="form-group col-lg-3 col-md-6 col-xs-12" id="">
-                <label for="">Banco(*): </label>
-                  <select name="banco2" id="banco2" class="form-control selectpicker">  
-                    <option value="" selected disabled hidden>Banco</option>                          
-                    <option value="IXE">IXE</option>
-                    <option value="HSBC">HSBC</option>
-                    <option value="BANORTE">BANORTE</option>
-                    <option value="BANAMEX">BANCOMER</option>
-                    <option value="SANTANDER">SANTANDER</option>
-                    <option value="SCOTIA BANK">SCOTIA BANK</option>                    
-                  </select>
-                </div>
-
-                <div class="form-group col-lg-3 col-md-4 col-xs-12" id="">
-                  <label for="">Referencia</label>
-                  <input class="form-control" type="text" name="ref2" id="ref2">
-                </div>
-
-                <div class="form-group col-lg-2 col-md-4 col-xs-12" id="">
-                  <label for="">Importe</label>
-                  <input class="form-control" type="number" name="importe3" id="importe3" placeholder="$">
-                </div>
-
-                <div class="form-group col-lg-3 col-md-6 col-xs-12" id="">
-                <label for="">Forma de pago(*): </label>
-                  <select name="forma3" id="forma3" class="form-control selectpicker">
-                    <option value="" selected disabled hidden>Forma de pago</option>        
-                    <option value="Cheque">CHEQUE</option>
-                    <option value="Tarjeta">TARJETA</option>
-                    <option value="Efectivo">EFECTIVO</option>
-                    <option value="Deposito">DEPÓSITO</option>
-                    <option value="Tarjeta">TARJETA</option>
-                    <option value="Transferencia">TRASFERENCIA</option>                    
-                  </select>
-                </div>
-
-                <div class="form-group col-lg-3 col-md-6 col-xs-12" id="">
-                <label for="">Banco(*): </label>
-                  <select name="banco3" id="banco3" class="form-control selectpicker">
-                  <option value="" selected disabled hidden>Banco</option>
-                    <option value="IXE">IXE</option>
-                    <option value="HSBC">HSBC</option>
-                    <option value="BANORTE">BANORTE</option>
-                    <option value="BANAMEX">BANCOMER</option>
-                    <option value="SANTANDER">SANTANDER</option>
-                    <option value="SCOTIA BANK">SCOTIA BANK</option>                    
-                  </select>
-                </div>
-
-                <div class="form-group col-lg-3 col-md-4 col-xs-12" id="">
-                  <label for="">Referencia</label>
-                  <input class="form-control" type="text" name="ref3" id="ref3">
-                </div>
-                
-              </div>
 
               <div class="form-group col-lg-6 col-md-3 col-sm-6 col-xs-12">
                 <a data-toggle="modal" href="#myModal" id="btnAddArt">
@@ -285,21 +247,27 @@ if ($_SESSION['servicios']==1) {
                 </a>
               </div>
 
-              <div class="form-group col-lg-12 col-md-12 col-xs-12">         
+              <div class="form-group col-lg-12 col-md-12 col-xs-12">    
+              <div class="form-group col-lg-12 col-md-6 col-xs-12">
+                    <center><h4 aling="center">Productos servicio</h4></center>
+                  </div>      
                 <div class="panel-body table-responsive">
                 <table id="detalles" class="table table-striped table-bordered table-condensed table-hover">
-                  <thead style="background-color:#A9D0F5">
+                  <thead style="background-color:#A9D0F5; font-size: 12px;">
                     <th>Opciones</th>
                     <th>Código</th>
                     <th>Clave</th>
                     <th>Fmsi</th>
+                    <th>Marca</th>
                     <th>Descripción</th>
                     <th>Cantidad</th>
                     <th>Precio Venta</th>
                     <th>Descuento</th>
                     <th>Subtotal</th>
+                    <th>Acciones</th>
                   </thead>
-                  <tfoot>
+                  <tfoot style="background-color:#A9D0F5">
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -309,6 +277,7 @@ if ($_SESSION['servicios']==1) {
                     <th></th>
                     <th>TOTAL</th>
                     <th><h5 id="total">$ 0.00</h5><input type="hidden" name="total_servicio" id="total_servicio"></th>
+                    <th></th>
                   </tfoot>
                   <tbody>                
                   </tbody>
@@ -634,7 +603,7 @@ if ($_SESSION['servicios']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/servicio.js"></script>
+ <script src="scripts/servicios.js"></script>
  <?php 
 }
 

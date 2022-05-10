@@ -20,7 +20,7 @@ class Articulo{
 		usleep(140000);
 		return ejecutarConsulta($sql);
 	}
-	public function desactivar($idarticulo){	
+	public function desactivar($idarticulo){
 		$sql="UPDATE articulo SET estado='0' WHERE idarticulo='$idarticulo'";
 		usleep(140000);
 		return ejecutarConsulta($sql);
@@ -67,8 +67,8 @@ class Articulo{
 	}
 
 	public function articulosPagination($limit, $limit2, $busqueda) {
-		$sql = "SELECT * FROM articulo WHERE codigo LIKE '%$busqueda%' OR fmsi LIKE '%$busqueda%' OR marca LIKE '%$busqueda%' OR descripcion LIKE '%$busqueda%' ORDER BY stock DESC LIMIT $limit, $limit2";
-		usleep(140000);
+		$sql = "SELECT * FROM articulo WHERE codigo LIKE '%$busqueda%' OR fmsi LIKE '%$busqueda%' OR marca LIKE '%$busqueda%' OR descripcion LIKE '%$busqueda%' ORDER BY stock DESC LIMIT $limit OFFSET $limit2";
+		usleep(80000);
 		return ejecutarConsulta($sql);
 	}
 

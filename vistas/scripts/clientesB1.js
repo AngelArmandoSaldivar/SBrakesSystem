@@ -14,21 +14,28 @@ function init(){
 function limpiar(){
 
 	detalles=0;
-	$("#nombre").val("");
-	$("#num_documento").val("");
-	$("#direccion").val("");
-	$("#telefono").val("");
-	$("#telefono_local").val("");
-	$("#email").val("");
-	$("#rfc").val("");
-	$("#credito").val("");
+	$("#nombre").val("").prop("disabled", false);
+	$("#direccion").val("").prop("disabled", false);
+	$("#telefono").val("").prop("disabled", false);
+	$("#telefono_local").val("").prop("disabled", false);
+	$("#email").val("").prop("disabled", false);
+	$("#rfc").val("").prop("disabled", false);
+	$("#credito").val("").prop("disabled", false);
+	$("#tipo_precio").val("").prop("disabled", false);
+	$("#tipo_precio").selectpicker('refresh');
 	$("#idpersona").val("");
+	$(".filas").remove();
 	
 }
 
+function agregarCliente() {
+	mostrarform(true);	
+	$("#btnAgregarAuto").show();
+	$("#btnGuardar").show();
+}
+
 //funcion mostrar formulario 
-function mostrarform(flag){
-	limpiar();
+function mostrarform(flag){	
 	if(flag){
 		$("#listadoregistros").hide();
 		$("#formularioregistros").show();
@@ -80,6 +87,7 @@ function guardaryeditar(e){
      e.preventDefault();//no se activara la accion predeterminada 
      $("#btnGuardar").prop("disabled",true);
      var formData=new FormData($("#formulario")[0]);
+	 $("#btnAgregarAuto").show();
 
      $.ajax({
      	url: "../ajax/persona.php?op=guardaryeditar",
@@ -87,17 +95,26 @@ function guardaryeditar(e){
      	data: formData,
      	contentType: false,
      	processData: false,
-     	success: function(datos){
-     		bootbox.alert(datos);
-			obtener_registros();
-     		mostrarform(false);
-     	}
+		 
+		success: function(datos){
+		swal({
+			position: 'top-end',
+			type: 'success',
+			title: datos,
+			showConfirmButton: false,
+			timer: 1500
+		});
+		obtener_registros();
+		mostrarform(false);
+		}
      });
 
      limpiar();
 }
 function editar(idpersona) {	
 	$('.loader').show();
+	$("#btnAgregarAuto").show();
+	$("#btnGuardar").show();
 	$.post("../ajax/persona.php?op=mostrar",{idpersona : idpersona},
 		function(data,status)
 		{
@@ -124,6 +141,43 @@ function editar(idpersona) {
 		$("#detalles").html(r);
 	});
 }
+
+function detallesAuto(idpersona) {
+	$.post("../ajax/persona.php?op=listarAutos&id="+idpersona,function(r){
+		$("#detalles").html(r);
+	});
+}
+
+//funcion para desactivar
+function eliminar(idpersona){
+
+	swal({
+		title: '¿Está seguro de eliminar el cliente?',
+		text: "¡Si no lo está puede cancelar la accíón!",
+		type: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  cancelButtonText: 'Cancelar',
+		  confirmButtonText: 'Si, eliminar cliente!'
+	  }).then(function(result){
+	
+		if(result.value){
+	
+			$.post("../ajax/persona.php?op=eliminar", {idpersona : idpersona }, function(e){
+				swal({
+					title:'Cliente eliminado!',
+					text: 'Se elimino correctamente el cliente.',
+					type: 'success',
+					showConfirmButton: false,
+					timer: 1500
+				})
+				obtener_registros();
+			});	
+		}
+	})
+}
+
 function mostrar(idpersona){
 	$('.loader').show();
 	$.post("../ajax/persona.php?op=mostrar",{idpersona : idpersona},
@@ -152,34 +206,56 @@ function mostrar(idpersona){
 		$("#btnAgregarAuto").hide();
 		//btnAgregarAut
 	});
-	$.post("../ajax/persona.php?op=listarAutos&id="+idpersona,function(r){
-		$("#detalles").html(r);
-	});
-}
-
-
-//funcion para desactivar
-function eliminarCliente(idpersona){
-	bootbox.confirm("¿Esta seguro de eliminar este dato?", function(result){
-		if (result) {
-			$.post("../ajax/persona.php?op=eliminarCliente", {idpersona : idpersona }, function(e){
-				bootbox.alert(e);
-			});
-			obtener_registros();
-		}
-	})
+	detallesAuto(idpersona);
 }
 
 function eliminarAuto(idauto) {
-	// bootbox.confirm("¿Esta seguro de eliminar este auto?", function(result){
-		// if (result) {
-			$.post("../ajax/persona.php?op=eliminarAuto", {idauto : idauto }, function(e){
-				bootbox.alert(e);				
-			});
-		// }
-	// })
-}
 
+	let idpersona = document.getElementById("idpersona").value;
+
+	swal({
+		title: '¿Está seguro de eliminar el auto?',
+		text: "¡Si no lo está puede cancelar la accíón!",
+		type: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			cancelButtonText: 'Cancelar',
+			confirmButtonText: 'Si, eliminar!'
+		}).then(function(result){
+		if(result.value){
+			$.ajax({
+				url: "../ajax/persona.php?op=eliminarAuto&" + "idauto=" + idauto,
+				type: "POST",
+				data: "",
+				contentType: false,
+				processData: false,
+
+				success: function(datos){				
+				swal({
+					title: datos,
+					text: 'Se elimino correctamente el auto.',
+					type: 'success',
+					showConfirmButton: true,
+					//timer: 1500
+				})
+				detallesAuto(idpersona);
+				},
+			});
+		}
+	})
+
+}
+function limpiarFormAuto() {
+	console.log("Llegaste")
+	$("#placas").val("");
+	$("#marca").val("");
+	$("#modelo").val("");
+	$("#ano").val("");
+	$("#color").val("");
+	$("#kms").val("");
+
+}
 //placas, marca, modelo, ano, color, kms
 
 $("#placas").change(placasAuto);
@@ -201,7 +277,7 @@ function placasAuto() {
 					function kmsAuto() {
 						var kms = $("#kms").val();
 						()=> {
-							agregarDetalle(placas, marca, modelo, ano, color, kms);
+							agregarDetalleAuto(placas, marca, modelo, ano, color, kms);
 						}						
 					}			
 				}
@@ -213,11 +289,12 @@ function placasAuto() {
 var cont=0;
 var detalles=0;
 
-function agregarDetalle(placas, marca, modelo, ano, color, kms) {
-	// console.log(placas.value, marca.value, modelo.value, ano.value, color.value, kms.value);
+function agregarDetalleAuto(placas, marca, modelo, ano, color, kms) {
+	console.log(placas.value, marca.value, modelo.value, ano.value, color.value, kms.value);
 	if (kms != "") {
-		var fila='<tr class="filas" id="fila'+cont+'">'+
+		var fila='<tr class="filas" id="fila'+cont+'">'+		
         '<td><button style="width: 40px;" type="button" class="btn btn-danger" onclick="eliminarDetalle('+cont+')">X</button></td>'+
+		'<td></td>' +
 		'<td><input type="hidden" name="placas" value="'+placas.value+'">'+placas.value+'</td>'+
 		'<td><input type="hidden" name="marca" value="'+marca.value+'">'+marca.value+'</td>'+
 		'<td><input type="hidden" name="modelo" value="'+modelo.value+'">'+modelo.value+'</td>'+
@@ -230,6 +307,7 @@ function agregarDetalle(placas, marca, modelo, ano, color, kms) {
 		$('#detalles').append(fila);
 		$("#btnAgregarAut").hide();
 		// limpiarDetalle();
+		limpiarFormAuto();
 
 	}else{
 		alert("error al ingresar el detalle, revisar las datos del articulo ");

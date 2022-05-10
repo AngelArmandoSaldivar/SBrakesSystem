@@ -13,150 +13,161 @@ require 'header.php';
 if ($_SESSION['compras']==1) {
 
  ?>
-    <div class="content-wrapper">
-    <!-- Main content -->
-    <section class="content">
+<div class="content-wrapper">    
+  <section class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
+          <div class="box-header with-border">
+            <h1 class="box-title">Recepciones <button title="Agregar recepción" class="btn btn-success" onclick="agregarRecepcion()"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
+            <div class="box-tools pull-right">
+            </div>
+            <div class="panel-body table-responsive" id="listadoregistros">
+              <section>
+                <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                </div>
+                <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                  <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 16px; box-shadow: 5px 5px 8px #3300ff99;"></center>
+                </div>
+              </section>
 
-      <!-- Default box -->
-      <div class="row">
-        <div class="col-md-12">
-      <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
-<div class="box-header with-border">
-  <h1 class="box-title">Recepciones <button title="Agregar recepción" class="btn btn-success" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
-  <div class="box-tools pull-right">    
-  </div>
-</div>
-<!--box-header-->
-<!--centro-->
-<div class="panel-body table-responsive" id="listadoregistros">
-    <section>
-      <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 16px; box-shadow: 5px 5px 8px #3300ff99;"></center><br><br>
-    </section>   
-    <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-      <label>Fecha Inicio</label>
-      <input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" value="<?php echo date("Y-m-d"); ?>">
-    </div>
-    <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-      <label>Fecha Fin</label>
-      <input type="date" class="form-control" name="fecha_fin" id="fecha_fin" value="<?php echo date("Y-m-d"); ?>">
-    </div>
-    <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
-    <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
-    <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">
-     <select name="limite_registros" id="limite_registros" class="form-control selectpicker">
-      <option value="" disabled selected>Seleccionar limite</option>
-       <option value="51">50 / Registros</option>
-       <option value="101">100 / Registros</option>
-       <option value="201">200 / Registros</option>
-       <option value="501">500 / Registros</option>
-       <option value="1001">1000 / Registros</option>
-     </select>
-    </div>
-    <br>
-    <section id="tabla_resultado"></section>
+              <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                <div class="loaderSearch">
+                  <img src="../files/images/loader.gif" alt="" width="35px">
+                </div>
+              </div>            
 
-    <nav aria-label="Page navigation example" style="text-align:right">
-    <?php 
-    
-    $ingreso = new Ingreso();
-    $rspta=$ingreso->totalIngresos();
+              <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <label>Fecha Inicio</label>
+                <input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" value="">
+              </div>
 
-    while($res=$rspta->fetch_object()) {
-      //echo $res->totalIngresos;
-    }
-    
-    ?>
-      <ul class="pagination">
-        <input type="button" class="btn btn-primary me-md-2" value="Anterior" id="anterior" name="siguiente" onclick="paginaAnterior();">
-            <li class="page-item"><input type="submit" id="pagina" class="btn btn-primary me-md-2" name="pagina" value="1" onclick="paginasClick(<?php echo $i;?>)"></li>
-          <input type="submit" class="btn btn-primary me-md-2" value="Siguiente" id="siguiente" name="siguiente" onclick="paginaSiguiente()">
-      </ul>
-    </nav>
-    <input type="text" id="cachaPagina" name="cachaPagina" style="color:white; border:none;" value="">
-</div>
-<div class="panel-body" style="height: 400px;" id="formularioregistros">
-  <form action="" name="formulario" id="formulario" method="POST">    
-    <div class="form-group col-lg-4 col-md-8 col-xs-12">
-      <label for="">Proveedor(*):</label>
-      <input class="form-control" type="hidden" name="idingreso" id="idingreso">
-      <select name="idproveedor" id="idproveedor" class="form-control selectpicker" data-live-search="true" required>        
-      </select>
-    </div>
-    <div class="form-group col-lg-4 col-md-4 col-xs-12">
-    <label for="">Agregar proveedor</label><br>
-      <a data-toggle="modal" href="#agregarProveedor">
-        <button id="btnAgregarArt" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Proveedor</button>
-      </a>
-    </div>
-      <div class="form-group col-lg-4 col-md-4 col-xs-12">
-      <label for="">Fecha(*): </label>
-      <input class="form-control" type="date" name="fecha_hora" id="fecha_hora" required>
-    </div>
-     <div class="form-group col-lg-6 col-md-6 col-xs-12">
-      <label for="">Tipo Comprobante(*): </label>
-     <select name="tipo_comprobante" id="tipo_comprobante" class="form-control selectpicker" required>
-       <option value="Factura">Factura</option>
-     </select>
-    </div>
-     <div class="form-group col-lg-2 col-md-2 col-xs-6">
-      <label for="">Serie: </label>
-      <input class="form-control" type="text" name="serie_comprobante" id="serie_comprobante" maxlength="7" placeholder="Serie" required>
-    </div>
-    <div class="form-group col-lg-2 col-md-2 col-xs-6">
-      <label for="">Impuesto: </label>
-      <input class="form-control" type="text" name="impuesto" id="impuesto">
-    </div>
-    <div class="form-group col-lg-3 col-md-3 col-sm-6 col-xs-12">
-     <a data-toggle="modal" href="#myModal" >
-       <button id="btnAgregarArt" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Articulos</button>
-     </a>
-    </div>
-<div class="form-group col-lg-12 col-md-12 col-xs-12">
-<table id="detalles" class="table table-striped table-bordered table-condensed table-hover">
-  <thead style="background-color:#A9D0F5">
-    <th>Opciones</th>
-    <th>Código</th>
-    <th>Clave</th>
-    <th>Fmsi</th>
-    <th>Descripción</th>
-    <th>Cantidad</th>
-    <th>Costo</th>
-    <th>Descuento</th>
-    <th>Subtotal</th>
-  </thead>
-  <tfoot>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>        
-    <th>TOTAL</th>
-    <th><h5 id="total">$ 0.00</h5><input type="hidden" name="total_compra" id="total_compra"></th>
-  </tfoot>
-  <tbody>                
-  </tbody>
-</table>
-    </div>
-    <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-      <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i>  Guardar</button>
-      <button class="btn btn-danger" onclick="cancelarform()" type="button" id="btnCancelar"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
-      <?php 
-        require('loader.php');
-      ?>
-    </div>
-  </form>
-</div>
-<!--fin centro-->
+            <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <label>Fecha Fin</label>
+              <input type="date" class="form-control" name="fecha_fin" id="fecha_fin" value="">
+            </div>
+
+            <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
+            <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
+            <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">
+              <select name="limite_registros" id="limite_registros" class="form-control selectpicker">
+                <option value="" disabled selected>Seleccionar limite</option>                  
+                <option value="5">50 / Registros</option>
+                <option value="10">100 / Registros</option>
+                <option value="20">200 / Registros</option>
+                <option value="50">500 / Registros</option>
+                <option value="100">1000 / Registros</option>
+              </select>
+            </div>
+
+            <br><br><br>
+            
+            <section id="tabla_resultado">                
+            </section>
+
+            <div class="form-group col-lg-12 col-md-6 col-xs-12">
+              <nav aria-label="Page navigation example" style="text-align:right; margin-right:5px">
+                <ul class="pagination">
+                  <input type="button" class="btn btn-primary me-md-2" value="Anterior" id="anterior" name="anterior" onclick="paginaAnterior();">
+                    <li class="page-item"><input type="submit" id="pagina" class="btn btn-primary me-md-2" name="pagina" value="1" onclick="paginasClick(<?php echo $i;?>)"></li>
+                  <input type="submit" class="btn btn-primary me-md-2" value="Siguiente" id="siguiente" name="siguiente" onclick="paginaSiguiente()">
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+          <div class="panel-body" style="height: 400px;" id="formularioregistros">
+            <form action="" name="formulario" id="formulario" method="POST">
+              <div class="form-group col-lg-4 col-md-8 col-xs-12">
+                <label for="">Proveedor(*):</label>
+                <input class="form-control" type="hidden" name="idingreso" id="idingreso">
+                <select name="idproveedor" id="idproveedor" class="form-control selectpicker" data-live-search="true" required>        
+                </select>
+              </div>
+              <div class="form-group col-lg-4 col-md-4 col-xs-12" id="">
+                <label for="">Agregar proveedor</label><br>
+                <a data-toggle="modal" href="#agregarProveedor">
+                  <button id="btnAgregarProveedor" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Proveedor</button>
+                </a>
+              </div>
+              <div class="form-group col-lg-4 col-md-4 col-xs-12">
+                <label for="">Fecha(*): </label>
+                <input class="form-control" type="date" name="fecha_hora" id="fecha_hora" required>
+              </div>
+              <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                <label for="">Tipo Comprobante(*): </label>
+                <select name="tipo_comprobante" id="tipo_comprobante" class="form-control selectpicker" required>
+                  <option value="Factura">Factura</option>
+                </select>
+              </div>
+              <div class="form-group col-lg-2 col-md-2 col-xs-6">
+                <label for="">Serie: </label>
+                <input class="form-control" type="text" name="serie_comprobante" id="serie_comprobante" maxlength="7" placeholder="Serie" required>
+              </div>
+              <div class="form-group col-lg-2 col-md-2 col-xs-6">
+                <label for="">Impuesto: </label>
+                <input class="form-control" type="text" name="impuesto" id="impuesto">
+              </div>
+              <div class="form-group col-lg-3 col-md-3 col-sm-6 col-xs-12" id="btnAgregarArt">
+                <a data-toggle="modal" href="#myModal" >
+                  <button id="btnAgregarArt" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Articulos</button>
+                </a>
+              </div>
+              <div class="form-group col-lg-3 col-md-3 col-sm-6 col-xs-12" id="btnAgregarArticulosEdit">
+                <a data-toggle="modal" href="#myModalProductsEdit" >
+                  <button id="btnAgregarArticulosEdit" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Add Articulos</button>
+                </a>
+              </div>
+
+              <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                <table id="detalles" class="table table-striped table-bordered table-condensed table-hover">
+                  <thead style="background-color:#A9D0F5">
+                    <th>Opciones</th>
+                    <th>Código</th>
+                    <th>Clave</th>
+                    <th>Fmsi</th>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
+                    <th>Costo</th>
+                    <th>Descuento</th>
+                    <th>Subtotal</th>
+                    <th>Acciones</th>
+                  </thead>
+                  <tfoot style="background-color:#A9D0F5">
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>TOTAL</th>
+                    <th><p id="total">$ 0.00</p><input type="hidden" name="total_compra" id="total_compra"></th>
+                    <th></th>
+                  </tfoot>
+                  <tbody>                
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i>  Guardar</button>
+                <button class="btn btn-info" onclick="salirForm()" type="button" id="btnRegresar"><i class="fa fa-arrow-circle-left"></i> Regresar</button>
+                <?php 
+                  require('loader.php');
+                ?>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
-      </div>
-      </div>
-      <!-- /.box -->
+    </div>  
+  </section>
+</div>
 
-    </section>
-    <!-- /.content -->
-  </div>
+<?php 
+  require("ediciones.php");
+?>
 
    <!--Modal registrar nuevo proveedor-->
   <div class="modal fade" id="agregarProveedor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -382,7 +393,7 @@ if ($_SESSION['compras']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/ingresos.js"></script>
+ <script src="scripts/ingreso.js"></script>
  <?php 
 }
 

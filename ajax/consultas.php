@@ -37,6 +37,18 @@ switch ($_GET["op"]) {
       $fecha_inicio=$_REQUEST["fecha_inicio"];
       $fecha_fin=$_REQUEST["fecha_fin"];
 
+      function setInterval($f, $milliseconds)
+      {
+        echo "Hola";
+        $seconds=(int)$milliseconds/1000;
+        while(true)
+        {
+          $f();
+          sleep($seconds);
+          echo "Hola;";
+       }
+      }    
+
         $rspta=$consulta->ventasfechacliente($fecha_inicio,$fecha_fin);
         $data=Array();
 

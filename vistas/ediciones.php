@@ -115,6 +115,122 @@
   </div>
 </div>
 
+<div class="modal fade" id="editProductRecepcion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="width: 50% !important;">
+    <div class="modal-content" style="border-radius: 20px;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Editar producto</h4>
+      </div>
+      <!--<div class="modal-body">-->
+      <form action="" name="formularioProductoRecepcion" id="formularioProductoRecepcion" method="POST">
+        <div class="panel-body table-responsive">
+            <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
+              <label for="">ID</label>
+              <input class="form-control" type="text" id="idProductoRec" name="idProductoRec"></input>
+            </div>
+            <div class="form-group col-lg-6 col-md-2 col-xs-6" id="divImpuesto">
+              <label for="">Descripción </label>
+              <textarea class="form-control" id="descripcionProductoRec" name="descripcionProductoRec" rows="5" style="width: 280px;" required></textarea>
+            </div>
+            <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
+              <label for="">Cantidad </label>
+              <input class="form-control" type="number" name="cantidadProductoRec" id="cantidadProductoRec" required>
+            </div>
+            <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
+              <label for="">Precio </label>
+              <input class="form-control" type="number" name="precioProductoRec" id="precioProductoRec" required>
+            </div>
+        </div>
+      </form>
+        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <button class="btn btn-success" type="submit" name="btnGuardarProductoServicio" onclick="editarGuardarProductoRecepcion()">Guardar</button>
+          <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
+        </div>
+      <!--</div>-->
+      <div class="modal-footer">
+        <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalAddCobro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="width: 70% !important;">
+    <div class="modal-content" style="border-radius: 20px;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Añadir método de pago</h4>
+      </div>
+      <div class="panel-body table-responsive">
+        <div class="form-group col-lg-3 col-md-2 col-xs-6" id="">
+          <label for="">Fecha </label>
+          <input class="form-control" style="border:none; background-color: transparent; padding: 0;" id="" name="" type="" value="<?php echo date("Y-m-d"); ?>" disabled></input>
+        </div>
+        <div class="form-group col-lg-3 col-md-2 col-xs-6" id="">
+          <label for="">Cliente </label>
+          <input class="form-control" style="border:none; background-color: transparent; padding: 0;" id="clienteCobro" name="clienteCobro" type=""></input>
+        </div>
+        <div class="form-group col-lg-3 col-md-2 col-xs-6" id="">
+          <label for="">Total </label>
+          <input class="form-control" style="border:none; background-color: transparent; padding: 0;" id="totalCobro" name="totalCobro" type=""></input>
+        </div>
+        <div class="form-group col-lg-3 col-md-2 col-xs-6" id="">
+          <label for="">Por pagar </label>
+          <input class="form-control" style="border:none; background-color: transparent; padding: 0;" id="porPagar" name="porPagar" type=""></input>
+        </div>     
+      </div>
+      <!--<div class="modal-body">-->
+      <form action="" name="formularioAddCobro" id="formularioAddCobro" method="POST">
+        <div class="panel-body table-responsive">
+            <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
+              <label for="">Importe </label>
+              <input class="form-control" type="hidden" name="idpago" id="idpago">
+              <input class="form-control" id="importeCobro" name="importeCobro" type="number" placeholder="$" required></input>
+            </div>
+            <div class="form-group col-lg-4 col-md-6 col-xs-12" id="">
+              <label for="">Método pago: </label>
+              <select name="metodoPago" id="metodoPago" class="form-control selectpicker" required>
+                <option value="" selected disabled hidden>Forma de pago</option>
+                <option value="Cheque">CHEQUE</option>
+                <option value="Tarjeta">TARJETA</option>
+                <option value="Efectivo">EFECTIVO</option>
+                <option value="Deposito">DEPÓSITO</option>
+                <option value="Tarjeta">TARJETA</option>
+                <option value="Transferencia">TRASFERENCIA</option>
+              </select>
+            </div>
+            <div class="form-group col-lg-4 col-md-6 col-xs-12">
+              <label for="">Banco(*): </label>
+                <select name="banco" id="banco" class="form-control selectpicker">     
+                <option value="" selected disabled hidden>Banco</option>                       
+                  <option value="IXE">IXE</option>
+                  <option value="HSBC">HSBC</option>
+                  <option value="BANORTE">BANORTE</option>
+                  <option value="BANAMEX">BANCOMER</option>
+                  <option value="SANTANDER">SANTANDER</option>
+                  <option value="SCOTIA BANK">SCOTIA BANK</option>                    
+                </select>
+              </div>
+            <div class="form-group col-lg-12 col-md-2 col-xs-6" id="divImpuesto">
+              <label for="">Referencia </label>
+              <textarea class="form-control" id="referenciaCobro" name="referenciaCobro" rows="5" style="width: 100%;"></textarea>
+            </div>
+        </div>
+      </form>
+      <div class="panel-body table-responsive">
+        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <button class="btn btn-success" type="submit" name="btnGuardarCobro" id="btnGuardarCobro" onclick="guardarCobro()">Guardar</button>
+          <button class="btn btn-danger" type="button" data-dismiss="modal" onclick="cancelarFormPago()"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
+        </div>
+      </div>
+      <!--</div>-->
+      <div class="modal-footer">
+        <button class="btn btn-default" type="button" data-dismiss="modal" onclick="cancelarFormPago()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!--MODAL PRODUCTOS DE OTRAS SUCURSALES-->
 

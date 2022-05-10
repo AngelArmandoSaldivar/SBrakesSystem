@@ -15,8 +15,8 @@ if ($_SESSION['ventas']==1) {
       <div class="col-md-12">
         <div class="box">
           <div class="box-header with-border">
-            <h1 class="box-title">CLIENTES <button class="btn btn-success" onclick="mostrarform(true)" id="btnagregar"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
-              <div class="box-tools pull-right">    
+            <h1 class="box-title">CLIENTES <button class="btn btn-success" onclick="agregarCliente()" id="btnagregar"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
+              <div class="box-tools pull-right">
               </div>
           </div>
           <div class="panel-body table-responsive" id="listadoregistros">
@@ -68,7 +68,7 @@ if ($_SESSION['ventas']==1) {
                 </select>
               </div>
               <div class="form-group col-lg-6 col-md-3 col-sm-6 col-xs-12" id="btnAgregarAuto">
-                <a data-toggle="modal" href="#myModal">
+                <a data-toggle="modal" href="#addAuto">
                   <button id="btnAgregarAut" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Auto</button>
                 </a>
               </div>
@@ -80,6 +80,7 @@ if ($_SESSION['ventas']==1) {
                   <table id="detalles" class="table table-striped table-bordered table-condensed table-hover">
                     <thead style="background-color:#A9D0F5">
                       <th>Acciones</th>
+                      <th>No.</th>
                       <th>Placas</th>
                       <th>Marca</th>
                       <th>Modelo</th>
@@ -117,7 +118,8 @@ if ($_SESSION['ventas']==1) {
   </section>
 </div>
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" align="center">
+<!--AÑADIR AUTO-->
+<div class="modal fade" id="addAuto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" align="center">
   <div class="modal-dialog" style="width: 75% !important;">
     <div class="modal-content" style="border-radius: 20px;">
       <div class="modal-header">
@@ -155,24 +157,25 @@ if ($_SESSION['ventas']==1) {
             <label for="">Kms</label>
             <input class="form-control" type="number" name="kms" id="kms" min="0" placeholder="Kms" value="" required>
           </div>
-          <div class="form-group col-lg-6 col-md-3 col-sm-6 col-xs-12" id="">
-            <button id="btnAgregar" type="button" class="btn btn-primary" onclick="agregarDetalle(placas, marca, modelo, ano, color, kms)" data-dismiss="modal"><span class="fa fa-plus"></span>Agregar</button>
+          <div class="form-group col-lg-2 col-md-3 col-sm-6 col-xs-12" id="">
+            <button id="btnAgregar" type="button" class="btn btn-primary" onclick="agregarDetalleAuto(placas, marca, modelo, ano, color, kms)" data-dismiss="modal"><span class="fa fa-plus"></span>Agregar</button>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
+        <button class="btn btn-default" type="button" data-dismiss="modal" onclick="limpiarFormAuto()">Cerrar</button>
       </div>
     </div>
   </div>
 </div>
+
 <?php 
 }else{
  require 'noacceso.php'; 
 }
 require 'footer.php';
  ?>
- <script src="scripts/cliente.js"></script>
+ <script src="scripts/clientesB1.js"></script>
  <?php 
 }
 

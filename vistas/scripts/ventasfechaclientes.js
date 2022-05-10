@@ -70,6 +70,8 @@ var  fecha_inicio = $("#fecha_inicio").val();
 	}).DataTable();
 }
 
+
+
 function mostrar(idventa){
 	$('.loader').show();
 	$.post("../ajax/venta.php?op=mostrar",{idventa : idventa},

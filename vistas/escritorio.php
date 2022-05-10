@@ -244,7 +244,7 @@ if ($_SESSION['escritorio']==1) {
 
 <div class="panel-body">
 
-<div class="col-lg-12 col-md-6 col-sm-6 col-xs-12">
+<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
   <div class="box box-primary">
     <div class="box-header with-border">
       Productos más vendidos sección ventas

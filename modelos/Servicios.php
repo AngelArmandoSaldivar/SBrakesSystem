@@ -10,7 +10,7 @@ public function __construct(){
 }
 
 //metodo insertar registro
-public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$total_servicio,$marca, $modelo, $ano, $color, $kms,$placas,$idarticulo,$clave,$fmsi,$descripcion,$cantidad,$precio_servicio,$descuento, $idsucursal, $forma_pago, $forma_pago2, $forma_pago3, $banco, $banco2, $banco3, $importe, $importe2, $importe3, $ref, $ref2, $ref3){
+public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$total_servicio,$marca, $modelo, $ano, $color, $kms,$placas,$idarticulo,$clave,$fmsi,$descripcion,$cantidad,$precio_servicio,$descuento, $idsucursal){
 	$sql="INSERT INTO servicio (idcliente,idusuario,tipo_comprobante,fecha_hora,impuesto,total_servicio,pagado,marca, modelo, ano, color, kms, placas, estado,idsucursal,status) 
 						VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_hora','$impuesto','$total_servicio','0','$marca', '$modelo', '$ano', '$color', '$kms','$placas', 'PENDIENTE', '$idsucursal', 'PENDIENTE')";	
 	 $idservicionew=ejecutarConsulta_retornarID($sql);
@@ -23,47 +23,58 @@ public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$im
 		 $sql_kardex = "INSERT INTO kardex (fecha_hora, folio, clave, fmsi, idcliente_proveedor, cantidad, importe, tipoMov, estado) VALUES ('$fecha_hora', $idservicionew, '$clave[$num_elementos]', '$fmsi[$num_elementos]', '$idcliente', '$cantidad[$num_elementos]', '$precio_servicio[$num_elementos]', 'SERVICIO', 'ACTIVO')";
 		 ejecutarConsulta($sql_kardex) or $sw=false;
 	 	$num_elementos=$num_elementos+1;
-	 }
-
-	 $sql_formas_pago = "INSERT INTO formas_pago (forma_pago, forma_pago2, forma_pago3, banco, banco2, banco3, importe, importe2, importe3, referencia, referencia2, referencia3, idservicio, fecha_hora, idsucursal) VALUES('$forma_pago', '$forma_pago2', '$forma_pago3', '$banco', '$banco2', '$banco3', '$importe', '$importe2', '$importe3', '$ref', '$ref2', '$ref3', '$idservicionew', '$fecha_hora', '$idsucursal')";
-	 ejecutarConsulta($sql_formas_pago) or $sw=false;
-	 
+	 }	
 	 sleep(1);
 	 return $sw;
 }
 
-public function cobrarServicio($forma_pago, $forma_pago2, $forma_pago3, $banco, $banco2, $banco3, $importe, $importe2, $importe3, $ref, $ref2, $ref3, $idservicio){
-	echo $importe;
-	if($importe != "" && $importe2 == "" && $importe3 == "") {
-		$sql = "UPDATE servicio SET pagado='$importe' WHERE idservicio='$idservicio'";
-		ejecutarConsulta($sql);
-		$sw=true;
-		$sql_formas_pago = "UPDATE formas_pago SET forma_pago='$forma_pago', banco='$banco', importe='$importe', referencia='$ref' WHERE idservicio='$idservicio'";
-		ejecutarConsulta($sql_formas_pago) or $sw=false;
-		sleep(1);
-		return $sw;
-	} else if($importe != "" && $importe2 != "" && $importe3 == "") {
-		$suma = $importe + $importe2;
-		$sql = "UPDATE servicio SET pagado='$suma' WHERE idservicio='$idservicio'";
-		ejecutarConsulta($sql);
-		$sw=true;
-		$sql_formas_pago = "UPDATE formas_pago SET forma_pago='$forma_pago', forma_pago2='$forma_pago2', banco='$banco', banco2='$banco2', importe='$importe', importe2='$importe2', referencia='$ref', referencia2='$ref2' WHERE idservicio='$idservicio'";
-		ejecutarConsulta($sql_formas_pago) or $sw=false;
-		sleep(1);
-		return $sw;
-	} else if($importe != "" && $importe2 != "" && $importe3 != "") {
-		$suma = $importe + $importe2 + $importe3;
-		$sql = "UPDATE servicio SET pagado='$suma' WHERE idservicio='$idservicio'";
-		ejecutarConsulta($sql);
-		$sw=true;
-		$sql_formas_pago = "UPDATE formas_pago SET forma_pago='$forma_pago', forma_pago2='$forma_pago2', forma_pago3='$forma_pago3', banco='$banco', banco2='$banco2', banco3='$banco3', importe='$importe', importe2='$importe2', importe3='$importe3', referencia='$ref', referencia2='$ref2', referencia3='$ref3' WHERE idservicio='$idservicio'";
-		ejecutarConsulta($sql_formas_pago) or $sw=false;
-		sleep(1);
-		return $sw;
-	}
+public function editarPago($idpago, $metodoPago, $banco, $importeCobro, $referenciaCobro, $importeviejo, $idservicio) {	
+	$sw = true;
+	$sql = "UPDATE servicio SET pagado=pagado - $importeviejo WHERE idservicio='$idservicio'";
+	ejecutarConsulta($sql);
+	usleep(80000);
+
+	$sql_fp = "UPDATE formas_pago SET forma_pago='$metodoPago', banco='$banco', importe='$importeCobro', referencia='$referenciaCobro' WHERE idpago='$idpago'";
+	ejecutarConsulta($sql_fp);
+
+	$sql_servicio = "UPDATE servicio SET pagado=pagado + $importeCobro WHERE idservicio='$idservicio'";
+	ejecutarConsulta($sql_servicio);
+	
+	usleep(80000);
+	return $sw;
 }
 
-public function addProductoServicio($idarticulo,$articulo,$fmsi,$marca,$descripcion,$publico,$stock,$idServicio) {
+public function listarDetallesCobro($idservicio) {
+	$sql = "SELECT * FROM formas_pago WHERE idservicio='$idservicio'";
+	return ejecutarConsulta($sql);
+}
+
+public function mostrarPagoEdit($idpago) {
+	$sql="SELECT * FROM formas_pago WHERE idpago='$idpago'";
+	usleep(80000);
+	return ejecutarConsultaSimpleFila($sql);
+}
+
+public function eliminarCobro($idcobro, $importe, $idservicio) {
+	$sw = true;
+	$sql = "DELETE FROM formas_pago WHERE idpago='$idcobro'";
+	ejecutarConsulta($sql);
+	$sql_servicio = "UPDATE servicio SET pagado=pagado - '$importe' WHERE idservicio='$idservicio'";
+	ejecutarConsulta($sql_servicio);
+	return $sw;
+}
+
+public function guardarCobro($metodoPago, $banco, $importeCobro, $referenciaCobro, $idservicio, $fechaCobro, $idsucursal, $idcliente) {
+	$sw = true;
+	$sql = "UPDATE servicio SET pagado=pagado + '$importeCobro' WHERE idservicio='$idservicio'";
+	ejecutarConsulta($sql);
+
+	$sql_cobro = "INSERT INTO formas_pago (forma_pago, banco, importe, referencia, idservicio, fecha_hora, idsucursal, idcliente) VALUES ('$metodoPago', '$banco', '$importeCobro', '$referenciaCobro', '$idservicio', '$fechaCobro', '$idsucursal', '$idcliente')";
+	ejecutarConsulta($sql_cobro);
+	return $sw;
+}
+
+public function addProductoServicio($idarticulo,$articulo,$fmsi,$marca,$descripcion,$publico,$stock,$idServicio, $fecha, $idcliente) {
 	$bandera = true;
 	$sql = "INSERT INTO detalle_servicio 
 			(idservicio,idarticulo,clave,fmsi,marca, descripcion,tipoMov,cantidad,precio_servicio,descuento) 
@@ -71,6 +82,9 @@ public function addProductoServicio($idarticulo,$articulo,$fmsi,$marca,$descripc
 	ejecutarConsulta($sql);
 	$sql_servicio = "UPDATE servicio SET total_servicio=total_servicio+'$publico' WHERE idservicio='$idServicio'";
 	ejecutarConsulta($sql_servicio);
+	$sql_kardex = "INSERT INTO kardex (fecha_hora, folio, clave, fmsi, idcliente_proveedor, cantidad, importe, tipoMov, estado, idarticulo, idventa) 
+								VALUES ('$fecha', '$idServicio', '$articulo', '$fmsi', '$idcliente', '$stock', '$publico', 'SERVICIO','ACTIVO', '$idarticulo', '$idServicio')";
+	ejecutarConsulta($sql_kardex);
 	sleep(1);
 	return $bandera;
 }
@@ -91,6 +105,9 @@ public function editarGuardarProductoServicio($p1, $p2, $p3, $idarticulo, $idser
 	$sql = "UPDATE detalle_servicio SET descripcion='$p1', cantidad='$p2', precio_servicio='$p3' WHERE idservicio='$idservicio' AND idarticulo='$idarticulo'";
 	ejecutarConsulta($sql);	
 
+	$sql_kardex = "UPDATE kardex SET cantidad='$p2', importe='$p3' WHERE idventa='$idservicio' AND idarticulo='$idarticulo'";
+	ejecutarConsulta($sql_kardex);
+
 	$sql_servicioTotalNew = "UPDATE servicio SET total_servicio = total_servicio + ($p2 * $p3) WHERE idservicio='$idservicio'";
 	ejecutarConsulta($sql_servicioTotalNew);
 
@@ -108,13 +125,19 @@ public function eliminarProductoServicio($p1, $p2, $p3, $p4) {
 	$sql_producto = "UPDATE articulo SET stock=stock+'$p3' WHERE idarticulo='$p2'";
 	ejecutarConsulta($sql_producto);
 
-	$sql_kardex = "UPDATE kardex SET estado='ANULADO' WHERE idventa='$p1'";
+	$sql_kardex = "UPDATE kardex SET estado='ANULADO' WHERE idventa='$p1' AND idarticulo='$p2'";
 	ejecutarConsulta($sql_kardex);
 
 	$sql_servicio = "UPDATE servicio SET total_servicio=total_servicio-($p3*$p4) WHERE idservicio='$p1'";
 	ejecutarConsulta($sql_servicio);
 
 	return $sw;
+}
+
+public function actualizarKilometraje($idcliente, $idauto, $kmAuto) {
+	$sql = "UPDATE autos SET kms='$kmAuto' WHERE idcliente='$idcliente' AND idauto='$idauto'";
+	sleep(1);
+	ejecutarConsulta($sql);
 }
 
 public function anular($idservicio){
@@ -151,7 +174,7 @@ public function anular($idservicio){
 
 //implementar un metodopara mostrar los datos de unregistro a modificar
 public function mostrar($idservicio){
-	$sql="SELECT v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,p.rfc, p.direccion, p.email, p.telefono, p.tipo_precio, p.credito, u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio, v.pagado, v.impuesto,v.estado,v.marca, v.modelo, v.ano, v.kms, v.color, v.placas, forma_pago,forma_pago2, forma_pago3,banco,banco2, banco3,importe, importe2, importe3,referencia, referencia2, referencia3 FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario INNER JOIN formas_pago fp ON fp.idservicio=v.idservicio WHERE v.idservicio='$idservicio'";
+	$sql="SELECT v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,p.rfc, p.direccion, p.email, p.telefono, p.tipo_precio, p.credito, u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio, v.pagado, v.impuesto,v.estado,v.marca, v.modelo, v.ano, v.kms, v.color, v.placas FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE v.idservicio='$idservicio'";
 	sleep(1);
 	return ejecutarConsultaSimpleFila($sql);
 }
@@ -168,6 +191,11 @@ public function listarDetalle($idservicio){
 	return ejecutarConsulta($sql);
 }
 
+public function listarDetalleTodo($idservicio){
+	$sql="SELECT dv.idservicio,dv.idarticulo,a.codigo,dv.cantidad,dv.fmsi, dv.descripcion,dv.precio_servicio,dv.descuento,(dv.cantidad*dv.precio_servicio-dv.descuento) as subtotal FROM detalle_servicio dv INNER JOIN articulo a ON dv.idarticulo=a.idarticulo WHERE dv.idservicio='$idservicio'";
+	return ejecutarConsulta($sql);
+}
+
 //listar registros
 public function listar(){
 	$sql="SELECT v.idsucursal,v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.marca, v.modelo, v.ano, v.estado FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario ORDER BY v.idservicio DESC";
@@ -181,12 +209,44 @@ public function serviciocabecera($idservicio){
 }
 
 public function serviciodetalles($idservicio){
-	$sql="SELECT a.codigo AS articulo, a.codigo, d.cantidad,d.fmsi, d.descripcion, d.precio_servicio, d.descuento, d.clave, (d.cantidad*d.precio_servicio-d.descuento) AS subtotal FROM detalle_servicio d INNER JOIN articulo a ON d.idarticulo=a.idarticulo WHERE d.idservicio='$idservicio'";
+	$sql="SELECT a.codigo AS articulo, a.codigo, d.cantidad,d.fmsi, d.descripcion, d.precio_servicio, d.descuento, d.clave, (d.cantidad*d.precio_servicio-d.descuento) AS subtotal FROM detalle_servicio d INNER JOIN articulo a ON d.idarticulo=a.idarticulo WHERE d.idservicio='$idservicio' AND d.estado=0";
     	return ejecutarConsulta($sql);
 }
 
 public function ultimoServicio() {
 	$sql = "SELECT * FROM servicio ORDER BY idservicio DESC limit 1";
+	return ejecutarConsulta($sql);
+}
+
+public function filtroPaginado($limit, $limit2, $busqueda, $fecha_inicio, $fecha_fin) {
+
+	$sql = "SELECT v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario ORDER BY v.idservicio DESC LIMIT $limit OFFSET $limit2";	
+
+	if($busqueda != "" && $fecha_inicio == "" && $fecha_fin == "") {		
+		$sql = "SELECT v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE  tipo_comprobante LIKE '%$busqueda%' OR v.idservicio LIKE '%$busqueda%' OR p.nombre LIKE '%$busqueda%' OR v.modelo LIKE '%$busqueda%' OR v.marca LIKE '%$busqueda%' OR v.ano LIKE '%$busqueda%' ORDER BY v.idservicio DESC LIMIT $limit OFFSET $limit2";
+		
+	}
+	if($busqueda != "" && $fecha_inicio != "" && $fecha_fin == "") {		
+		$sql = "SELECT v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE DATE(v.fecha_hora) >= '$fecha_inicio' AND  tipo_comprobante LIKE '%$busqueda%' OR v.idservicio LIKE '%$busqueda%' OR p.nombre LIKE '%$busqueda%' OR v.modelo LIKE '%$busqueda%' OR v.marca LIKE '%$busqueda%' OR v.ano LIKE '%$busqueda%' ORDER BY v.idservicio DESC LIMIT $limit OFFSET $limit2";
+	}
+	if($busqueda == "" && $fecha_inicio != "" && $fecha_fin == "") {
+		$sql = "SELECT v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE DATE(v.fecha_hora) >= '$fecha_inicio' ORDER BY v.idservicio DESC LIMIT $limit OFFSET $limit2";
+		
+	}
+	if($busqueda == "" && $fecha_inicio == "" && $fecha_fin != "") {
+		$sql = "SELECT v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE DATE(v.fecha_hora) <= '$fecha_fin' ORDER BY v.idservicio DESC LIMIT $limit OFFSET $limit2";
+	}
+	if($busqueda != "" && $fecha_inicio == "" && $fecha_fin != "") {
+		$sql = "SELECT v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario  WHERE DATE(v.fecha_hora) <= '$fecha_fin' AND  tipo_comprobante LIKE '%$busqueda%' OR v.idservicio LIKE '%$busqueda%' OR p.nombre LIKE '%$busqueda%' OR v.modelo LIKE '%$busqueda%' OR v.marca LIKE '%$busqueda%' OR v.ano LIKE '%$busqueda%' ORDER BY v.idservicio DESC LIMIT $limit OFFSET $limit2";
+	}
+	if($busqueda == "" && $fecha_inicio != "" && $fecha_fin != "") {		
+		$sql = "SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE DATE(v.fecha_hora) >= '$fecha_inicio' AND DATE(v.fecha_hora) <= '$fecha_fin' ORDER BY v.idventa DESC LIMIT $limit OFFSET $limit2";		
+		$sql = "SELECT v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario  WHERE DATE(v.fecha_hora) <= '$fecha_fin' AND DATE(v.fecha_hora) <= '$fecha_fin' ORDER BY v.idservicio DESC LIMIT $limit OFFSET $limit2";
+	}
+	if($busqueda != "" && $fecha_inicio != "" && $fecha_fin != "") {		
+		$sql = "SELECT v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario  WHERE DATE(v.fecha_hora) <= '$fecha_fin' AND DATE(v.fecha_hora) <= '$fecha_fin' AND tipo_comprobante LIKE '%$busqueda%' OR v.idservicio LIKE '%$busqueda%' OR p.nombre LIKE '%$busqueda%' OR v.modelo LIKE '%$busqueda%' OR v.marca LIKE '%$busqueda%' OR v.ano LIKE '%$busqueda%' ORDER BY v.idservicio DESC LIMIT $limit OFFSET $limit2";
+	}
+	usleep(80000);
 	return ejecutarConsulta($sql);
 }
 

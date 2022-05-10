@@ -21,18 +21,19 @@ if(!isset($_SESSION["nombre"])) {
 
 	switch ($_GET["op"]) {
 		case 'guardaryeditar':
-		if (empty($idpersona) && empty($_POST["placas"])) {
-			$rspta=$persona->insertarCliente($tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$telefono_local,$email, $rfc, $credito);			
+		//SOLO INSERTA A LA PERSONA
+		if (empty($idpersona) && !empty($_POST["placas"])) {			
+			$rspta=$persona->insertar($idpersona,$tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$telefono_local,$email, $rfc, $credito, $_POST["placas"],$_POST["marca"],$_POST["modelo"],$_POST["ano"],$_POST["color"],$_POST["kms"]);			
 			echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
-		} else if(empty($idpersona) && $_POST["placas"] != "") {
-			$rspta = $persona->insertar($tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$telefono_local,$email, $rfc, $credito,$_POST["placas"],$_POST["marca"],$_POST["modelo"],$_POST["ano"],$_POST["color"],$_POST["kms"]);
+		}
+		if (empty($idpersona) && empty($_POST["placas"])) {			
+			$rspta=$persona->insertar($idpersona,$tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$telefono_local,$email, $rfc, $credito, "","","","","","");			
 			echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
-		} else if($idpersona != null && empty($_POST["placas"])) {
-			$rspta=$persona->editarPersona($idpersona,$tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$telefono_local,$email, $rfc, $credito);
-			echo $rspta ? "Datos actualizados correctamente" : "No se pudo actualizar los datos";
-		} else if($idpersona != null && $_POST["placas"] != ""){
+		}		
+		//PERSONA Y AUTO
+		else if(!empty($idpersona) && !empty($_POST["placas"])){			
 			$rspta = $persona->editar($idpersona,$tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$telefono_local,$email, $rfc, $credito, $_POST["placas"],$_POST["marca"],$_POST["modelo"],$_POST["ano"],$_POST["color"],$_POST["kms"]);
-			echo $rspta ? "Datos actualizados correctamente" : "No se pudo actualizar los datos";
+			echo $rspta ? "Datos guardados correctamente" : "No se pudo actualizar los datos";
 		}
 		break;
 		
@@ -41,8 +42,9 @@ if(!isset($_SESSION["nombre"])) {
 			echo $rspta ? "Datos eliminados correctamente" : "No se pudo eliminar los datos";
 			break;
 		case 'eliminarAuto':
-			$rspta=$persona->eliminarAuto($idauto);
-			// echo $rspta ? "Datos eliminados correctamente" : "No se pudo eliminar los datos";
+			$idAuto = $_GET["idauto"];
+			$rspta=$persona->eliminarAuto($idAuto);
+			echo $rspta ? "Auto eliminado correctamente" : "No se pudo eliminar el auto";
 		break;
 		
 		case 'mostrar':
@@ -69,7 +71,7 @@ if(!isset($_SESSION["nombre"])) {
 		</thead>';
 			while ($reg=$rspta->fetch_object()) {
 				echo '<tr class="filas">
-				<td> <button class="btn btn-danger btn-xs" onclick="eliminarAuto('.$reg->idauto.')"")>Eliminar</button></td>
+				<td><button style="width: 40px;" title="Eliminar" id="btnEliminarAuto" name="btnEliminarAuto" type="button" class="btn btn-danger" onclick="eliminarAuto('.$reg->idauto.')">X</button></td>				
 				<td>'.$reg->idauto.'</td>
 				<td>'.$reg->placas.'</td>
 				<td>'.$reg->marca.'</td>

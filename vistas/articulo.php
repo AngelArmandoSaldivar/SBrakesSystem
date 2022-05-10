@@ -28,27 +28,54 @@ if ($_SESSION['almacen']==1) {
 
 <div class="table-responsive" id="table-search">
   <section>
-    <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 16px; box-shadow: 5px 5px 8px #3300ff99;"></center>
-  </section>
-  <br>
-  <div class="form-group col-lg-2 col-md-6 col-xs-12" style="align-items:center;">
-    </div>
-    <br><br>
+      <div class="form-group col-lg-4 col-md-6 col-xs-12">
+      </div>
+      <div class="form-group col-lg-4 col-md-6 col-xs-12">
+        <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 16px; box-shadow: 5px 5px 8px #3300ff99;"></center>
+      </div>
+  </section>  
+
+  <div class="form-group col-lg-4 col-md-6 col-xs-12">
     <div class="loaderSearch">
-      <img src="../files/images/loader.gif" alt="" width="50px">
-    </div> 
+      <img src="../files/images/loader.gif" alt="" width="35px">
+    </div>
+  </div>
+
+  <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
+  <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
+
+  <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">
+    <select name="limite_registros" id="limite_registros" class="form-control selectpicker">
+      <option value="" disabled selected>Seleccionar limite</option>
+      <option value="51">50 / Registros</option>
+      <option value="101">100 / Registros</option>
+      <option value="201">200 / Registros</option>
+      <option value="501">500 / Registros</option>
+      <option value="1001">1000 / Registros</option>
+    </select>
+  </div>
+
   <section id="tabla_resultado"></section>
+
+  <div class="form-group col-lg-12 col-md-6 col-xs-12">
+    <nav aria-label="Page navigation example" style="text-align:right; margin-right:5px">
+      <ul class="pagination">
+        <input type="button" class="btn btn-primary me-md-2" value="Anterior" id="anterior" name="anterior" onclick="paginaAnterior();">
+          <li class="page-item"><input type="submit" id="pagina" class="btn btn-primary me-md-2" name="pagina" value="1" onclick="paginasClick(<?php echo $i;?>)"></li>
+        <input type="submit" class="btn btn-primary me-md-2" value="Siguiente" id="siguiente" name="siguiente" onclick="paginaSiguiente()">
+      </ul>
+    </nav>
+  </div>
 </div>
 
 <div class="panel-body" id="formularioregistros">  
   <form action="" name="formulario" id="formulario" method="POST">
-    <!--CLAVE DEL PRODUCTO-->
+    <!--CLAVE DEL PRODUCTO-->    
     <div class="form-group col-lg-4 col-md-6 col-xs-12">
       <label for="">Clave(*):</label>
       <input class="form-control" type="hidden" name="idarticulo" id="idarticulo">
       <input class="form-control" type="text" name="codigo" id="codigo" maxlength="100" placeholder="Clave" required>
-    </div>
-
+    </div>    
 
     <!--CLAVE DEL PRODUCTO-->
     <div class="form-group col-lg-4 col-md-6 col-xs-12">
@@ -161,7 +188,7 @@ require 'footer.php'
  ?>
  <script src="../public/js/JsBarcode.all.min.js"></script>
  <script src="../public/js/jquery.PrintArea.js"></script>
- <script src="scripts/articulos_almacen.js"></script>
+ <script src="scripts/articulos.js"></script>
  <!-- <script src="consulta.js"></script> -->
 
  <?php 

@@ -178,7 +178,7 @@ if ($_SESSION['consultav']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/ventasfechacliente.js"></script>
+ <script src="scripts/ventasfechaclientes.js"></script>
  <?php 
 }
 
