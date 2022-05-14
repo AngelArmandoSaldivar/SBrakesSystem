@@ -43,7 +43,11 @@ if ($_SESSION['almacen']==1) {
 
   <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
   <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
-
+  <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>  
+  <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">
+    <button class="btn btn-success" title="Exportar articulos a excel" onclick="exportarExcel()"><i class="fa fa-file-excel-o"></i> Exportar a Excel</button>
+  </div>
+  <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div> 
   <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">
     <select name="limite_registros" id="limite_registros" class="form-control selectpicker">
       <option value="" disabled selected>Seleccionar limite</option>
@@ -188,7 +192,7 @@ require 'footer.php'
  ?>
  <script src="../public/js/JsBarcode.all.min.js"></script>
  <script src="../public/js/jquery.PrintArea.js"></script>
- <script src="scripts/articulos.js"></script>
+ <script src="scripts/articuloB1.js"></script>
  <!-- <script src="consulta.js"></script> -->
 
  <?php 

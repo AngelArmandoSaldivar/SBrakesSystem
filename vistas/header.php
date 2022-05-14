@@ -21,15 +21,13 @@ if (strlen(session_id())<1)
 
   <link rel="stylesheet" href="../public/css/AdminLTESS.min.css">
   <link rel="stylesheet" href="../public/css/_all-skinss.min.css">
-  <!-- Morris chart --><!-- Daterange picker -->
- <link rel="stylesheet" href="img/apple-touch-ico.png">
- <link rel="stylesheet" href="img/favicon.ico">
+
 <!-- DATATABLES-->
 <link rel="stylesheet" href="../public/datatables/jquery.dataTables.min.css">
 <link rel="stylesheet" href="../public/datatables/buttons.dataTables.min.css">
 <link rel="stylesheet" href="../public/datatables/responsive.dataTables.min.css">
 <link rel="stylesheet" href="../public/css/bootstrap-select.min.css">
-<link rel="stylesheet" href="sweetalert2.min.css">  
+<!--<link rel="stylesheet" href="sweetalert2.min.css">-->
 
 
 <!-- MATERIAL UI-->

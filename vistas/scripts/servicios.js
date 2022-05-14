@@ -19,6 +19,30 @@ function init(){
 	}
 }
 
+function onBlurText() {
+	var busqueda = document.getElementById("searchSelect").value;
+	$.ajax({
+		url : '../ajax/persona.php?op=listarClientes',
+		type : 'POST',
+		dataType : 'html',			
+	}).done(function(data){
+		let array = JSON.parse(data);
+		const filterItems = query => {
+			return array.filter((el) =>
+				el.toLowerCase().indexOf(query.toLowerCase()) > -1
+			);
+		}
+		if(filterItems(busqueda).length > 0) {
+			console.log("Si existe en la bd");
+		} else {
+
+			$("#agregarCliente").modal('show');
+			$("#nombre").val(busqueda);
+			
+		}
+	})
+}
+
 /*========================================================================================== */
 /*===============================FILTROS==================================================== */
 /*========================================================================================== */
@@ -637,11 +661,11 @@ function selectCliente (){
 					function(data,status){
 						$('.loaderInfoAuto').hide();
 						data=JSON.parse(data);
-						$("#placas").val(data.placas).prop("disabled", false);
-						$("#marca").val(data.marca).prop("disabled", false);						
-						$("#modelo").val(data.modelo).prop("disabled", false);
-						$("#ano").val(data.ano).prop("disabled", false);
-						$("#color").val(data.color).prop("disabled", false);
+						$("#placas").val(data.placas).prop("disabled", true);
+						$("#marca").val(data.marca).prop("disabled", true);						
+						$("#modelo").val(data.modelo).prop("disabled", true);
+						$("#ano").val(data.ano).prop("disabled", true);
+						$("#color").val(data.color).prop("disabled", true);
 						$("#kms").val(data.kms).prop("disabled", false);
 				});	
 			}
@@ -1338,6 +1362,7 @@ function editar(idServicio){
 
 function guardarCliente() {
 	var formData=new FormData($("#formularioCliente")[0]);
+	var nombreCliente = document.getElementById("nombre").value;
 
      $.ajax({
      	url: "../ajax/persona.php?op=guardaryeditar",
@@ -1347,13 +1372,119 @@ function guardarCliente() {
      	processData: false,
 
      	success: function(datos){
-     		bootbox.alert(datos);
+			swal({
+				position: 'top-end',
+				type: 'success',
+				title: 'Se guardo correctamente el cliente',
+				showConfirmButton: false,
+				timer: 1500
+			});	
+
 			selectCliente();
 			$("#formulario")[0].reset();
 			$("#formularioCliente")[0].reset();
 			$("#agregarCliente").modal('hide');
+     		//bootbox.alert(datos);
+			//selectCliente();
+				$.post("../ajax/venta.php?op=ultimoCliente&nombreCliente=" + nombreCliente,
+				function(data,status)
+				{
+					let idCliente = data.replace(/['"]+/g, '');
+					console.log("ID CLIENTE: ", idCliente);
+					mostrarInfoClient(idCliente);
+					$("#idcliente").val(idCliente).prop("disabled", false);
+					$("#idcliente").selectpicker('refresh');	
+					
+				});
      	}
      });
+}
+
+function guardarAuto() {
+	let idcliente = document.getElementById("idcliente").value;
+	let placas = $("#placasAdd").val();
+	let marca =  $("#marcaAdd").val();
+	let modelo =  $("#modeloAdd").val();
+	let ano =  $("#anoAdd").val();
+	let color =  $("#colorAdd").val();
+	let kms =  $("#kmsAdd").val();
+	console.log("ID CLIENTE: ", idcliente);
+	console.log("PLACAS: ", placas);
+	console.log("MARCA: ", marca);
+	console.log("MODELO: ", modelo);
+	console.log("AÑO: ", ano);
+	console.log("COLOR: ", color);
+	console.log("KM: ", kms);
+
+	$.ajax({
+		url: "../ajax/servicio.php?op=guardarAuto&idcliente="+idcliente+"&placas="+placas
+		+"&marca="+marca+"&modelo="+modelo+"&ano="+ano
+		+"&color="+color + "&kms=" + kms,
+		type: "POST",
+		contentType: false,
+		processData: false,
+
+		success: function(datos){				
+			swal({
+				title: datos,
+				text: 'Se guardo correctamente el auto.',
+				type: 'success',
+				showConfirmButton: true,
+				//timer: 1500
+			})
+			$.post("../ajax/servicio.php?op=selectAuto&id="+idcliente,function(r){
+				$("#idauto").html(r);
+				$('#idauto').selectpicker('refresh');
+			});	
+			$.post("../ajax/servicio.php?op=ultimoAuto",
+			function(data,status)
+			{			
+				let ultimoIdAuto = data.replace(/['"]+/g, '');	
+				console.log("ID AUTO: ", ultimoIdAuto);
+				$("#idauto").val(ultimoIdAuto).prop("disabled", false);
+				$("#idauto").selectpicker('refresh');
+				
+				$.post("../ajax/servicio.php?op=mostrarInfoAuto",{idauto : ultimoIdAuto},
+					function(data,status){
+						$('.loaderInfoAuto').hide();
+						data=JSON.parse(data);
+						$("#placas").val(data.placas).prop("disabled", true);
+						$("#marca").val(data.marca).prop("disabled", true);						
+						$("#modelo").val(data.modelo).prop("disabled", true);
+						$("#ano").val(data.ano).prop("disabled", true);
+						$("#color").val(data.color).prop("disabled", true);
+						$("#kms").val(data.kms).prop("disabled", false);
+				});
+				
+			});
+
+			/*$.post("../ajax/servicio.php?op=selectAuto&id="+idcliente,function(r){
+				$("#idauto").html(r);
+				$('#idauto').selectpicker('refresh');
+			});				
+			$("#idauto").change(modIdAuto);
+			function modIdAuto() {	
+				$('.loaderInfoAuto').show();			
+				var idauto = $("#idauto option:selected").val();
+				$.post("../ajax/servicio.php?op=mostrarInfoAuto",{idauto : idauto},
+					function(data,status){
+						$('.loaderInfoAuto').hide();
+						data=JSON.parse(data);
+						$("#placas").val(data.placas).prop("disabled", true);
+						$("#marca").val(data.marca).prop("disabled", true);						
+						$("#modelo").val(data.modelo).prop("disabled", true);
+						$("#ano").val(data.ano).prop("disabled", true);
+						$("#color").val(data.color).prop("disabled", true);
+						$("#kms").val(data.kms).prop("disabled", false);
+				});
+			}*/
+
+
+			$("#addAuto").modal('hide');
+			selectCliente();
+		},
+	});
+
 }
 
 function guardaryeditarProducto() {

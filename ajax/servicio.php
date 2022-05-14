@@ -40,11 +40,27 @@ switch ($_GET["op"]) {
 	if (empty($idservicio)) {
 		$rspta=$servicio->insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$total_servicio,$marca, $modelo, $ano, $color, $kms, $placas, $_POST["idarticulo"],$_POST["clave"],$_POST["fmsi"],$_POST["descripcion"],$_POST["cantidad"],$_POST["precio_servicio"],$_POST["descuento"], $idsucursal, $forma, $forma2, $forma3, $banco, $banco2, $banco3, $importe, $importe2, $importe3, $ref, $ref2, $ref3);
 		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
-	}else{
-		$rspta=$servicio->cobrarServicio($forma, $forma2, $forma3, $banco, $banco2, $banco3, $importe, $importe2, $importe3, $ref, $ref2, $ref3, $idservicio);
-		echo $rspta ? " Cobro exitoso!" : "No se pudo realizar el cobro";
 	}
 	break;
+
+	case 'guardarAuto' :
+		$idcliente=$_GET['idcliente'];
+		$placas=$_GET['placas'];
+		$marca=$_GET['marca'];
+		$modelo=$_GET['modelo'];
+		$ano=$_GET['ano'];
+		$color=$_GET['color'];
+		$kms=$_GET['kms'];
+
+		$rspta=$servicio->guardarAuto($idcliente, $placas, $marca, $modelo, $ano, $color, $kms);
+		echo $rspta ? "Se guardo correctamente el auto": "No se pudo guardar";
+		break;
+	case 'ultimoAuto' :
+		$rspta=$servicio->ultimoAuto();		
+		while ($reg=$rspta->fetch_object()) {
+			echo json_encode($reg->idauto);
+		}
+		break;
 
 	case 'guardarCobro':		
 		$idservicio=$_GET['idservicio'];

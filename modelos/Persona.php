@@ -107,6 +107,11 @@ public function listarAutos($idpersona) {
 	return ejecutarConsulta($sql);
 }
 
+public function listarClientes() {
+	$sql = "SELECT nombre FROM persona WHERE tipo_persona = 'Cliente'";
+	return ejecutarConsulta($sql);
+}
+
 }
 
  ?>

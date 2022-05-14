@@ -357,7 +357,7 @@ if ($_SESSION['ventas']==1) {
             </form>
             <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <button class="btn btn-success" type="submit" name="btnGuardarProveedor" onclick="guardarCliente()">Guardar</button>
-              <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
+              <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left" onclick="cancelarCli()"></i> Cancelar</button>
             </div>
           </div>
           <div class="modal-footer">
@@ -536,7 +536,7 @@ if ($_SESSION['ventas']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/ventasB1.js"></script>
+ <script src="scripts/venta.js"></script>
  <?php 
 }
 

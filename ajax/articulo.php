@@ -49,6 +49,15 @@ if(!isset($_SESSION["nombre"])) {
 			$rspta=$articulo->mostrar($idarticulo);
 			echo json_encode($rspta);
 			break;	
+		case 'listarArticulos': 
+			$array = array();
+			$rspta=$articulo->listarArticulos();			
+			while ($reg=$rspta->fetch_object()) {
+				array_push($array, $reg->codigo);
+			}
+			//$arrayData = implode(',', $array);
+			echo json_encode($array);
+			break;
 
 		case 'listar':							
 

@@ -72,6 +72,11 @@ class Articulo{
 		return ejecutarConsulta($sql);
 	}
 
+	public function listarArticulos() {
+		$sql = "SELECT * FROM articulo";
+		return ejecutarConsulta($sql);
+	}
+
 }
 //B22-131614
 

@@ -128,13 +128,7 @@ if ($_SESSION['servicios']==1) {
                 <label for="">Días Crédito: </label>
                 <input class="form-control" type="text" name="credito" id="credito">
               </div>
-
-              <div class="form-group col-lg-3 col-md-2 col-xs-6" id="divImpuesto">
-                <label for="">Automovil: </label>
-                <select name="idauto" id="idauto" class="form-control selectpicker" data-live-search="true">
-                  <option value="" disabled selected>Seleccionar auto</option>
-                </select>
-              </div>
+              
               <input type="hidden" id="idclient" name="idclient" value="" style="border:none; color:white;">
 
               <div class="form-group col-lg-12 col-md-6 col-xs-12">
@@ -171,6 +165,20 @@ if ($_SESSION['servicios']==1) {
               
               <div class="form-group col-lg-12 col-md-6 col-xs-12">
                     <center><h4 aling="center">Información de auto</h4></center>
+              </div>
+
+              <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
+                <label for="">Automovil: </label>
+                <select name="idauto" id="idauto" class="form-control selectpicker" data-live-search="true">
+                  <option value="" disabled selected>Seleccionar auto</option>
+                </select>
+              </div>
+
+              <div class="form-group col-lg-8 col-md-2 col-xs-6" id="divImpuesto">
+                <label for="">Agregar auto</label><br>
+                <a data-toggle="modal" href="#addAuto">
+                  <button id="btnAgregarAuto" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Auto</button>
+                </a>
               </div>
 
               <div class="loaderInfoAuto form-group col-lg-1 col-md-8 col-xs-12" style="margin-top: 15px;">
@@ -570,6 +578,57 @@ if ($_SESSION['servicios']==1) {
     </div>
   </div>
   <!-- fin Modal-->
+
+  <!--AÑADIR AUTO-->
+<div class="modal fade" id="addAuto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" align="center">
+  <div class="modal-dialog" style="width: 75% !important;">
+    <div class="modal-content" style="border-radius: 20px;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Agregar automovil</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel-body table-responsive">
+          <div class="form-group col-lg-4 col-md-6 col-xs-12">
+            <label for="">Placas</label>
+            <input class="form-control" type="text" name="placasAdd" id="placasAdd" placeholder="Placas" value="" required>
+          </div>
+
+          <div class="form-group col-lg-4 col-md-6 col-xs-12">
+            <label for="">Marca</label>
+            <input class="form-control" type="text" name="marcaAdd" id="marcaAdd" placeholder="Marca" value="" required>
+          </div>
+
+          <div class="form-group col-lg-4 col-md-6 col-xs-12">
+            <label for="">Modelo</label>
+            <input class="form-control" type="text" name="modeloAdd" id="modeloAdd" placeholder="Modelo" value="" required>
+          </div>
+
+          <div class="form-group col-lg-4 col-md-6 col-xs-12">
+            <label for="">Año</label>
+            <input class="form-control" type="text" name="anoAdd" id="anoAdd" placeholder="Año" value="" required>
+          </div>
+
+          <div class="form-group col-lg-4 col-md-6 col-xs-12">
+            <label for="">Color</label>
+            <input class="form-control" type="text" name="colorAdd" id="colorAdd" placeholder="Color" value="" required>
+          </div>
+
+          <div class="form-group col-lg-4 col-md-6 col-xs-12">
+            <label for="">Kms</label>
+            <input class="form-control" type="number" name="kmsAdd" id="kmsAdd" min="0" placeholder="Kms" value="" required>
+          </div>
+          <div class="form-group col-lg-2 col-md-3 col-sm-6 col-xs-12" id="">
+            <button id="btnAgregar" type="button" class="btn btn-primary" onclick="guardarAuto()" data-dismiss="modal"><span class="fa fa-plus"></span>Agregar</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" type="button" data-dismiss="modal" onclick="limpiarFormAuto()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
   <!--Agregar productos de otra sucursal-->

@@ -250,6 +250,16 @@ public function filtroPaginado($limit, $limit2, $busqueda, $fecha_inicio, $fecha
 	return ejecutarConsulta($sql);
 }
 
+public function guardarAuto($idcliente, $placas, $marca, $modelo, $ano, $color, $kms) {
+	$sql_auto="INSERT INTO autos (placas, marca, modelo, ano, color, kms, idcliente) VALUES('$placas', '$marca', '$modelo', '$ano', '$color', '$kms', '$idcliente')";
+	return ejecutarConsulta($sql_auto);
+}
+
+public function ultimoAuto() {
+	$sql = "SELECT * FROM autos ORDER BY idauto DESC limit 1";
+	return ejecutarConsulta($sql);
+}
+
 
 }
 

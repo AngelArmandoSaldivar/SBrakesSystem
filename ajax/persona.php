@@ -46,6 +46,16 @@ if(!isset($_SESSION["nombre"])) {
 			$rspta=$persona->eliminarAuto($idAuto);
 			echo $rspta ? "Auto eliminado correctamente" : "No se pudo eliminar el auto";
 		break;
+
+		case 'listarClientes': 
+			$array = array();
+			$rspta=$persona->listarClientes();
+			while ($reg=$rspta->fetch_object()) {
+				array_push($array, $reg->nombre);
+			}
+			//$arrayData = implode(',', $array);
+			echo json_encode($array);
+			break;
 		
 		case 'mostrar':
 			$rspta=$persona->mostrar($idpersona);

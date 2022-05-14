@@ -231,6 +231,10 @@ public function ultimaVenta() {
 	$sql = "SELECT * FROM venta ORDER BY idventa DESC limit 1";
 	return ejecutarConsulta($sql);
 }
+public function ultimoCliente($nombre) {
+	$sql = "SELECT * FROM persona WHERE tipo_persona='Cliente' AND nombre = '$nombre' ORDER BY idpersona DESC limit 1";
+	return ejecutarConsulta($sql);
+}
 
 public function totalVentas() {
 	$sql = "SELECT COUNT(*) as totalVentas FROM venta WHERE estado != 'ANULADO'";

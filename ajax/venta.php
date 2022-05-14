@@ -95,6 +95,14 @@ switch ($_GET["op"]) {
 		echo json_encode($reg->idventa);
 	}
 	break;
+
+	case 'ultimoCliente' :		
+		$nombreCliente = $_GET["nombreCliente"];
+		$rspta=$venta->ultimoCliente($nombreCliente);	
+		while ($reg=$rspta->fetch_object()) {
+			echo $reg->idpersona;
+		}
+	break;
 		
 	case 'anular':
 		$rspta=$venta->anular($idventa);
@@ -311,7 +319,7 @@ switch ($_GET["op"]) {
 		 <th></th>
 		 <th></th>		 
          <th>TOTAL</th>
-         <th><p id="total">$ '.number_format($total, 2).'</p><input type="hidden" name="total_venta" id="total_venta"></th>
+         <th><p id="total">$ '.$total.'</p><input type="hidden" name="total_venta" id="total_venta"></th>
 		 <th></th>
        </tfoot>';
 
@@ -657,8 +665,8 @@ switch ($_GET["op"]) {
 											<td>"."PAGADO"."</td>
 											<td><p>".$fila['cliente']."</td>
 											<td><p>".$fila['usuario']."</td>
-											<td><p>$ ".$resta."</td>
-											<td><p>$ ".$miles."</td>
+											<td><p>$ ".number_format($resta, 2)."</td>
+											<td><p>$ ".number_format($miles,2)."</td>
 											<td><div class='emergente'>
 											<span data-tooltip='Editar venta'><button class='btn btn-warning btn-xs' onclick='editar(".$fila["idventa"].")'><i class='fa fa-pencil'></i></button></span>
 											<span data-tooltip='Mostrar venta'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idventa"].")'><i class='fa fa-eye'></i></button></span>
@@ -674,8 +682,8 @@ switch ($_GET["op"]) {
 										<td>".$fila["estado"]."</td>
 										<td><p>".$fila['cliente']."</td>
 										<td><p>".$fila['usuario']."</td>
-										<td><p>$ ".(intval($miles) - intval($pagado))."</td>
-										<td><p>$ ".$miles."</td>
+										<td><p>$ ".number_format((intval($miles) - intval($pagado)), 2)."</td>
+										<td><p>$ ".number_format($miles,2)."</td>
 										<td><div class='emergente'>
 										<span data-tooltip='Editar venta'><button class='btn btn-warning btn-xs' onclick='editar(".$fila["idventa"].")'><i class='fa fa-pencil'></i></button></span>
 										<span data-tooltip='Mostrar venta'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idventa"].")'><i class='fa fa-eye'></i></button></span>
@@ -694,8 +702,8 @@ switch ($_GET["op"]) {
 											<td>".$fila["estado"]."</td>
 											<td><p>".$fila['cliente']."</td>
 											<td><p>".$fila['usuario']."</td>
-											<td><p>$ ".$resta."</td>
-											<td><p>$ ".$miles."</td>
+											<td><p>$ ".number_format($resta,2)."</td>
+											<td><p>$ ".number_format($miles, 2)."</td>
 											<td><div class='emergente'>										
 											<span data-tooltip='Mostrar venta'><button class='btn btn-warning btn-xs' onclick='mostrarAnulado(".$fila["idventa"].")'><i class='fa fa-eye'></i></button></span>											
 										</tr>
@@ -722,8 +730,8 @@ switch ($_GET["op"]) {
 											<td>"."PAGADO"."</td>
 											<td><p>".$fila['cliente']."</td>
 											<td><p>".$fila['usuario']."</td>
-											<td><p>$ ".$resta."</td>
-											<td><p>$ ".$miles."</td>
+											<td><p>$ ".number_format($resta, 2)."</td>
+											<td><p>$ ".number_format($miles,2)."</td>
 											<td><div class='emergente'>											
 											<span data-tooltip='Mostrar venta'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idventa"].")'><i class='fa fa-eye'></i></button></span>
 											<span data-tooltip='Cancelar venta'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idventa"].")'><i class='fa fa-close'></i></button></span>										
@@ -738,8 +746,8 @@ switch ($_GET["op"]) {
 										<td>".$fila["estado"]."</td>
 										<td><p>".$fila['cliente']."</td>
 										<td><p>".$fila['usuario']."</td>
-										<td><p>$ ".(intval($miles) - intval($pagado))."</td>
-										<td><p>$ ".$miles."</td>
+										<td><p>$ ".number_format((intval($miles) - intval($pagado)),2)."</td>
+										<td><p>$ ".number_format($miles,2)."</td>
 										<td><div class='emergente'>										
 										<span data-tooltip='Mostrar venta'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idventa"].")'><i class='fa fa-eye'></i></button></span>
 										<span data-tooltip='Cancelar venta'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idventa"].")'><i class='fa fa-close'></i></button></span>
@@ -766,8 +774,8 @@ switch ($_GET["op"]) {
 										<td>".$fila["estado"]."</td>
 										<td><p>".$fila['cliente']."</td>
 										<td><p>".$fila['usuario']."</td>
-										<td><p>$ ".(intval($miles) - intval($pagado))."</td>
-										<td><p>$ ".$miles."</td>
+										<td><p>$ ".number_format((intval($miles) - intval($pagado)),2)."</td>
+										<td><p>$ ".number_format($miles,2)."</td>
 										<td><div class='emergente'>									
 										<span data-tooltip='Mostrar venta'><button class='btn btn-warning btn-xs' onclick='mostrarAnulado(".$fila["idventa"].")'><i class='fa fa-eye'></i></button></span>									
 									</tr>
