@@ -280,20 +280,22 @@ if ($_SESSION['ventas']==1) {
       </div>
       <div class="modal-body">
         <div class="panel-body table-responsive">
-          <div class="form-group col-lg-10 col-md-8 col-xs-12">
-            <section>            
-              <center><input class="form-control me-2" type="text" name="busquedaProduct" id="busquedaProduct" placeholder="Buscar..." style="width:250px"></center><br><br>
-            </section>
-          </div>
-          <div class="form-group col-lg-2 col-md-8 col-xs-12">              
+
+        <div class="form-group col-lg-4 col-md-8 col-xs-12">              
             <a data-toggle="modal" href="#agregarProducto">
-              <button id="btnAgregarArt" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Registrar Producto</button>
+              <button id="btnAgregarArt" type="button" class="btn btn-primary" onclick="cerrarModal()"><span class="fa fa-plus"></span> Registrar Producto</button>
             </a>
           </div>
 
-          <div class="form-group col-lg-2 col-md-8 col-xs-12">              
+          <div class="form-group col-lg-4 col-md-8 col-xs-12">
+            <section>            
+              <center><input class="form-control me-2" type="text" name="busquedaProduct" id="busquedaProduct" placeholder="Buscar..." style="width:250px"></center><br><br>
+            </section>
+          </div>          
+
+          <div class="form-group col-lg-4 col-md-8 col-xs-12">              
             <a data-toggle="modal" href="#agregarProductoAlmacen">
-              <button id="btnAgregarArt" type="button" class="btn btn-primary"><span class="fa fa-search-plus"></span>Buscar en otra sucursal</button>
+              <button id="btnAgregarArt" type="button" class="btn btn-primary" onclick="cerrarModal()"><span class="fa fa-search-plus"></span> Buscar en otra sucursal y/o almacen</button>
             </a>
           </div>
 
@@ -363,33 +365,6 @@ if ($_SESSION['ventas']==1) {
           <div class="modal-footer">
             <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- fin Modal-->
-
-  <!--MODAL PRODUCTOS DE OTRAS SUCURSALES-->
-
-  <div class="modal fade" id="agregarProductoAlmacen" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width: 95% !important;">
-      <div class="modal-content" style="border-radius: 20px;">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Seleccione un Articulo</h4>
-        </div>
-        <div class="modal-body">
-          <div class="panel-body table-responsive">
-            <div class="form-group col-lg-10 col-md-8 col-xs-12">
-              <section>            
-                <center><input class="form-control me-2" type="text" name="busquedaProductAlmacen" id="busquedaProductAlmacen" placeholder="Buscar..." style="width:250px"></center><br><br>
-              </section>
-            </div>
-            <section id="tabla_resultadoProducto_almacen"> </section>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
         </div>
       </div>
     </div>

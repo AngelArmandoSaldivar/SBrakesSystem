@@ -57,10 +57,10 @@ if ($_SESSION['almacen']==1) {
       <option value="501">500 / Registros</option>
       <option value="1001">1000 / Registros</option>
     </select>
-  </div>
+  </div>  
 
   <section id="tabla_resultado"></section>
-
+  
   <div class="form-group col-lg-12 col-md-6 col-xs-12">
     <nav aria-label="Page navigation example" style="text-align:right; margin-right:5px">
       <ul class="pagination">
@@ -192,7 +192,7 @@ require 'footer.php'
  ?>
  <script src="../public/js/JsBarcode.all.min.js"></script>
  <script src="../public/js/jquery.PrintArea.js"></script>
- <script src="scripts/articuloB1.js"></script>
+ <script src="scripts/articulos.js"></script>
  <!-- <script src="consulta.js"></script> -->
 
  <?php 

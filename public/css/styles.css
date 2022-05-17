@@ -78,3 +78,18 @@
     border: 1px solid #ddd;
     background: #fff;
 }
+
+#container {
+    overflow:scroll;
+    height:400px;
+    width:100%;
+}
+#container table {
+    width:100%;    
+}
+
+thead tr th {
+    position: sticky;
+    top: 0;
+    z-index: 0;
+}

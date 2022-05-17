@@ -412,6 +412,7 @@ switch ($_GET["op"]) {
 			$consultaBD=$consulta;
 			if($consultaBD->num_rows>=1){
 				echo "
+				<div id='container'>
 				<table class='responsive-table table table-hover table-bordered' style='font-size:12px' id='example'>
 					<thead class='table-light'>
 						<tr>							
@@ -447,11 +448,10 @@ switch ($_GET["op"]) {
 								<td><p>".$fila['usuario']."</td>
 								<td><p>$ ".$fila["total_compra"]."</td>
 								<td>
-									<div class='emergente'>
-										<span data-tooltip='Editar recepción'><button class='btn btn-warning btn-xs' onclick='editar(".$fila["idingreso"].")'><i class='fa fa-pencil'></i></button></span>
-										<span data-tooltip='Mostrar recepción'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idingreso"].")'><i class='fa fa-eye'></i></button></span>
-										<span data-tooltip='Eliminar recepción'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idingreso"].")'><i class='fa fa-close'></i></button></td></span>
-									</div>
+									<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar recepcion' data-placement='top' class='btn btn-warning btn-xs' onclick='editar(".$fila["idingreso"].")'><i class='fa fa-pencil'></i></button>
+									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar recepcion' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idingreso"].")'><i class='fa fa-eye'></i></button>
+									<button title='Cancelar' data-toggle='popover' data-trigger='hover' data-content='Cancelar recepcion' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idingreso"].")'><i class='fa fa-close'></i></button>
+								</td>
 							</tr>
 							";
 						} else {
@@ -495,7 +495,8 @@ switch ($_GET["op"]) {
 						<th class='bg-info' scope='col'>Acciones</th>
 					</tr>
 				</tfoot>
-				</table>";
+				</table>
+				</div>";
 			}else{
 				echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";
 			}
@@ -533,6 +534,7 @@ switch ($_GET["op"]) {
 					$consultaBD=$conexion->query($consulta);
 					if($consultaBD->num_rows>=1){
 						echo "
+						<div id='container'>
 						<table class='responsive-table table table-hover table-bordered' style='font-size:12px'>
 							<thead class='table-light'>
 								<tr>
@@ -607,7 +609,8 @@ switch ($_GET["op"]) {
 								<th class='bg-info' scope='col'>Acciones</th>
 							</tr>
 						</tfoot>
-						</table>";
+						</table>
+						</div>";
 					}else{
 						echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";						
 						echo "<br><br>";

@@ -141,6 +141,12 @@ function fechaFin() {
 	registrosFechaFin(fechas);
 }
 
+function activarPopover() {
+	$(function () {
+		$('[data-toggle="popover"]').popover()		
+	})
+}
+
 //funcion listar REGISTROS INGRESOS CREADOS
 function obtener_registros(ventas){
 
@@ -164,6 +170,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$("#tabla_resultado").html(resultado);
 			$('.loaderSearch').hide();
+			activarPopover()
 		})
 	} 
 	if(ventas == "" && limitesRegistros == null && paginado == 1 && fecha_inicio == "" && fecha_fin == "") {
@@ -178,6 +185,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$("#tabla_resultado").html(resultado);
 			$('.loaderSearch').hide();
+			activarPopover()
 		})
 	}
 	if(ventas != "" && limitesRegistros > 0 && paginado == 1 && fecha_inicio == "" && fecha_fin == "") {
@@ -194,6 +202,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$("#tabla_resultado").html(resultado);
 			$('.loaderSearch').hide();
+			activarPopover()
 		})
 
 	}
@@ -210,6 +219,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$("#tabla_resultado").html(resultado);
 			$('.loaderSearch').hide();
+			activarPopover()
 		})
 	}
 	if(ventas != "" && limitesRegistros > 0 && paginado == 1 && fecha_inicio != "" && fecha_fin == "") {
@@ -225,6 +235,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$("#tabla_resultado").html(resultado);
 			$('.loaderSearch').hide();
+			activarPopover()
 		})
 	}	
 	if(ventas != "" && limitesRegistros == null && paginado == 1 && fecha_inicio != "" && fecha_fin == "") {
@@ -241,6 +252,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(ventas == "" && limitesRegistros == null && paginado == 1 && fecha_inicio != "" && fecha_fin == "") {
@@ -259,6 +271,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(ventas == "" && limitesRegistros > 0 && paginado == 1 && fecha_inicio != "" && fecha_fin == "") {
@@ -274,6 +287,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$("#tabla_resultado").html(resultado);
 			$('.loaderSearch').hide();
+			activarPopover()
 		})
 	}
 	if(ventas == "" && limitesRegistros == null && paginado > 1 && fecha_inicio == "" && fecha_fin == "") {		
@@ -288,6 +302,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(ventas != "" && limitesRegistros == null && paginado > 1 && fecha_inicio == "" && fecha_fin == "") {
@@ -302,6 +317,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(ventas != "" && limitesRegistros != null && paginado > 1 && fecha_inicio == "" && fecha_fin == "") {
@@ -316,6 +332,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(ventas != "" && limitesRegistros != null && paginado > 1 && fecha_inicio != "" && fecha_fin == "") {		
@@ -330,6 +347,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(ventas != "" && limitesRegistros == null && paginado > 1 && fecha_inicio != "" && fecha_fin == "") {		
@@ -344,6 +362,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(ventas == "" && limitesRegistros == null && paginado > 1 && fecha_inicio != "" && fecha_fin == "") {			
@@ -358,6 +377,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(ventas == "" && limitesRegistros != null && paginado > 1 && fecha_inicio == "" && fecha_fin == "") {			
@@ -372,6 +392,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(ventas == "" && limitesRegistros != null && paginado > 1 && fecha_inicio != "" && fecha_fin == "") {			
@@ -386,6 +407,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 
@@ -401,6 +423,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha fin, busqueda, pagina 1
@@ -414,6 +437,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha fin, busqueda, limite, pagina 1
@@ -427,6 +451,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha fin,limite, pagina 1
@@ -440,6 +465,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha inicio, fecha fin
@@ -453,6 +479,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha inicio, fecha fin, busquedas
@@ -466,6 +493,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha inicio, fecha fin, busquedas, limites
@@ -480,6 +508,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha inicio, fecha fin, limites
@@ -494,6 +523,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha fin, pagina
@@ -509,6 +539,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha fin, pagina, limites
@@ -524,6 +555,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha fin, pagina, limites
@@ -539,6 +571,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha fin, pagina, limites
@@ -554,6 +587,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha fin, pagina, limites, busqueda
@@ -569,6 +603,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha inicio, fecha fin, pagina, busquedas
@@ -584,6 +619,7 @@ function obtener_registros(ventas){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 }
@@ -872,6 +908,14 @@ function guardaryeditar(e){
      });
 }
 
+function cerrarModal() {
+	$("#myModal").modal('hide');
+}
+
+function regresarMiSucursal() {
+	$("#agregarProductoAlmacen").modal('hide');
+}
+
 function guardarCliente() {
 	var formData=new FormData($("#formularioCliente")[0]);
 	var nombreCliente = document.getElementById("nombre").value;
@@ -906,13 +950,12 @@ function guardarCliente() {
 					console.log("ID CLIENTE: ", idCliente);
 					mostrarInfoClient(idCliente);
 					$("#idcliente").val(idCliente).prop("disabled", false);
-					$("#idcliente").selectpicker('refresh');	
+					$("#idcliente").selectpicker('refresh');
 					
 				});
      	}		 
      });
 }
-
 
 function guardaryeditarProducto() {
 	var formData=new FormData($("#formularioProduct")[0]);

@@ -63,28 +63,34 @@ if(!isset($_SESSION["nombre"])) {
 
 			$cantidad = '';			
 			$termino= "";
+									
 			$consulta = $articulo->articulosPagination(50, 0, "");
 
-			if(!empty($_POST['articulos']) && empty($_POST['limites']))
-			{				
+			if(!empty($_POST['articulos']) && empty($_POST['limites']) && empty($_POST['inicio_registros']) && empty($_POST["total_registros"])) {				
 				$termino=$conexion->real_escape_string($_POST['articulos']);
+				usleep(100000);				
+				echo $termino." 1";
 				$consulta=$articulo->articulosPagination(50,0, $termino);
 
-			} else if(!empty($_POST['articulos']) && !empty($_POST['limites'])) {	
-
+			} 
+			else if(!empty($_POST['articulos']) && !empty($_POST['limites'])) {	
+				usleep(100000);				
+				echo $termino. " 2";
 				$termino=$conexion->real_escape_string($_POST['articulos']);
 				$limites=$conexion->real_escape_string($_POST['limites']);
 				$consulta=$articulo->articulosPagination($limites,0, $termino);
 
 			} else if(!empty($_POST['busqueda']) && !empty($_POST['inicio_registros']) && !empty($_POST["total_registros"])) {								
-
+				usleep(100000);				
+				echo $termino. "3";
 				$busqueda=$conexion->real_escape_string($_POST['busqueda']);
 				$inicio=$conexion->real_escape_string($_POST['inicio_registros']);
 				$fin=$conexion->real_escape_string($_POST['total_registros']);				
 				$consulta=$articulo->articulosPagination($fin,$inicio, $busqueda);
 
 			} else if(!empty($_POST['inicio_registros']) && !empty($_POST["total_registros"])) {
-
+				usleep(100000);
+				echo $termino . "4";
 				$inicio=$conexion->real_escape_string($_POST['inicio_registros']);
 				$fin=$conexion->real_escape_string($_POST['total_registros']);				
 				$consulta=$articulo->articulosPagination($fin,$inicio, "");
@@ -95,10 +101,10 @@ if(!isset($_SESSION["nombre"])) {
 			//2000000
 			if($consultaBD->num_rows>=1){
 				echo "
-				<table class='responsive-table table table-hover table-bordered' style='border-radius: 15px;'>
+				<table class='responsive-table table table-hover table-bordered' style='border-radius: 15px;' id='tableArticulos'>
 					<thead class='table-light' style='font-size:12px'>
 						<tr background: linear-gradient(337deg, rgba(0, 1, 255, 0.682) 0%, rgba(255, 0, 0, 0.71) 50%, rgba(0, 246, 144, 0.737) 100%);>
-							<th class='bg-info' scope='col'>Clave</th>
+							<th class='bg-info w-50' scope='col'>Clave</th>
 							<th class='bg-info' scope='col'>FMSI</th>
 							<th class='bg-info' scope='col'>Marca</th>
 							<th class='bg-info' scope='col'>Descripción</th>
@@ -137,15 +143,14 @@ if(!isset($_SESSION["nombre"])) {
 								<td><p>$ ".$mayoreoMiles."</p></td>
 								<td><p>".$fila['stock']."pz</td>
 								<td>
-									<div class='emergente'>
-										<span data-tooltip='Mostrar articulo'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button></span>
-										<span data-tooltip='Editar articulo'><button class='btn btn-warning btn-xs' onclick='editarArticulo(".$fila["idarticulo"].")'><i class='fa fa-pencil'></i></button></span>
-										<span data-tooltip='Desactivar articulo'><button class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idarticulo"].")')><i class='fa fa-close'></i></button></span>
-										<span data-tooltip='Solicitar articulo'><button class='btn btn-info btn-xs' onclick='solicitar(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button></span>
-										<!--<span data-tooltip='Activar articulo'><button class='btn btn-primary btn-xs' onclick='activar(".$fila["idarticulo"].")'><i class='fa fa-check'></i></button></span>-->
-									</div>
+										<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
+										<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar articulo' data-placement='bottom' class='btn btn-warning btn-xs' onclick='editarArticulo(".$fila["idarticulo"].")'><i class='fa fa-pencil'></i></button>
+										<button title='Eliminar' data-toggle='popover' data-trigger='hover' data-content='Eliminar articulo' data-placement='top' class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idarticulo"].")')><i class='fa fa-close'></i></button>
+										<button title='Solicitar' data-toggle='popover' data-trigger='hover' data-content='Solicitar articulo' data-placement='bottom' class='btn btn-info btn-xs' onclick='solicitar(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button>
+										<!--<span data-tooltip='Activar articulo'><button class='btn btn-primary btn-xs' onclick='activar(".$fila["idarticulo"].")'><i class='fa fa-check'></i></button></span>-->									
 								</td>
-							</tr>";							
+							</tr>
+							";							
 						} else if($fila["stock"] <=0){							
 								echo "<tr style='color:red; font-size:11px;'>
 								<td>".$fila['codigo']."</td>
@@ -159,12 +164,10 @@ if(!isset($_SESSION["nombre"])) {
 								<td><p>$ ".$mayoreoMiles."</p></td>
 								<td><p>".$fila['stock']."pz</td>
 								<td>
-									<div class='emergente'>
-										<span data-tooltip='Mostrar articulo'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button></span>
-										<span data-tooltip='Editar articulo'><button class='btn btn-warning btn-xs' onclick='editarArticulo(".$fila["idarticulo"].")'><i class='fa fa-pencil'></i></button></span>
-										<span data-tooltip='Desactivar articulo'><button class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idarticulo"].")')><i class='fa fa-close'></i></button></span>
-										<span data-tooltip='Solicitar articulo'><button class='btn btn-info btn-xs' onclick='solicitar(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button></span>
-									</div>
+									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
+									<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar articulo' data-placement='bottom' class='btn btn-warning btn-xs' onclick='editarArticulo(".$fila["idarticulo"].")'><i class='fa fa-pencil'></i></button>
+									<button title='Eliminar' data-toggle='popover' data-trigger='hover' data-content='Eliminar articulo' data-placement='top' class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idarticulo"].")')><i class='fa fa-close'></i></button>
+									<button title='Solicitar' data-toggle='popover' data-trigger='hover' data-content='Solicitar articulo' data-placement='bottom' class='btn btn-info btn-xs' onclick='solicitar(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button>
 								</td>
 							</tr>";								
 						}
@@ -183,10 +186,8 @@ if(!isset($_SESSION["nombre"])) {
 								<td><p>$ ".$mayoreoMiles."</p></td>
 								<td><p>".$fila['stock']."pz</td>
 								<td>
-								<div class='emergente'>
-									<span data-tooltip='Mostrar articulo'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button></span>
-									<span data-tooltip='Solicitar articulo'><button class='btn btn-info btn-xs' onclick='solicitar(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button></span>
-								</td>
+									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
+									<button title='Solicitar' data-toggle='popover' data-trigger='hover' data-content='Solicitar articulo' data-placement='bottom' class='btn btn-info btn-xs' onclick='solicitar(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button>
 							</tr>";
 						} 						
 						else if($fila["stock"] <=0) {
@@ -202,10 +203,8 @@ if(!isset($_SESSION["nombre"])) {
 								<td><p>$ ".$mayoreoMiles."</p></td>
 								<td><p>".$fila['stock']."pz</td>
 								<td>
-									<div class='emergente'>
-										<span data-tooltip='Mostrar articulo'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button></span>
-										<span data-tooltip='Solicitar articulo'><button class='btn btn-info btn-xs' onclick='solicitar(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button></span>
-									<div>
+								<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
+								<button title='Solicitar' data-toggle='popover' data-trigger='hover' data-content='Solicitar articulo' data-placement='bottom' class='btn btn-info btn-xs' onclick='solicitar(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button>
 							</tr>";	
 						}	
 					}
@@ -226,7 +225,8 @@ if(!isset($_SESSION["nombre"])) {
 						<th class='bg-info' scope='col'>Acciones</th>
 					</tr>
 						</tfoot>
-				</table>";
+				</table>				
+				";
 			}else{
 				echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";
 			}

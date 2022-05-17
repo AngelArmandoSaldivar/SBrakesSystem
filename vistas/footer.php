@@ -30,6 +30,11 @@
 
 <!-- SCRIPT MATERIAL UI -->
 <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();   
+});
+</script>
 <!-- CIERRE MATERIAL UI -->
 
 <!--SWEETALERT -->

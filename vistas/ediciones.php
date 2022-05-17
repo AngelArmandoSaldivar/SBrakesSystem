@@ -239,15 +239,21 @@
       <div class="modal-content" style="border-radius: 20px;">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Seleccione un Articulo</h4>
+          <h4 class="modal-title">Articulos sucursales y/o almacenes</h4>
         </div>
         <div class="modal-body">
           <div class="panel-body table-responsive">
             <div class="form-group col-lg-10 col-md-8 col-xs-12">
-              <section>            
+              <section>
                 <center><input class="form-control me-2" type="text" name="busquedaProductAlmacen" id="busquedaProductAlmacen" placeholder="Buscar..." style="width:250px"></center><br><br>
               </section>
             </div>
+            <div class="form-group col-lg-2 col-md-8 col-xs-12">              
+            <a data-toggle="modal" href="#myModal">
+              <button id="btnAgregarArt" type="button" class="btn btn-primary" onclick="regresarMiSucursal()"><span class="fa fa-arrow-left"></span> Regresar a mi almacen</button>
+            </a>
+          </div>
+
             <section id="tabla_resultadoProducto_almacen"> </section>
           </div>
         </div>

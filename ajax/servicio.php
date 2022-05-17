@@ -645,7 +645,7 @@ switch ($_GET["op"]) {
 			$consultaBD=$consulta;
 			if($consultaBD->num_rows>=1){
 				echo "
-				<table class='responsive-table table table-hover table-bordered' style='font-size:12px' id='example'>
+				<table class='responsive-table table table-hover table-bordered' style='font-size:12px' id='tableArticulos'>
 					<thead class='table-light'>
 						<tr>
 							<th class='bg-info' scope='col'>Folio</th>
@@ -686,12 +686,11 @@ switch ($_GET["op"]) {
 								<td><p>$ ".number_format($totalServicio=$fila["total_servicio"] - $fila["pagado"], 2)."</td>
 								<td><p>$ ".$miles."</td>
 								<td>
-									<div class='emergente'>
-										<span data-tooltip='Editar servicio'><button class='btn btn-warning btn-xs' onclick='editar(".$fila["idservicio"].")'><i class='fa fa-pencil'></i></button></span>
-										<span data-tooltip='Mostrar servicio'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button></span>
-										<span data-tooltip='Anular servicio'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button></span>							
-										<span data-tooltip='Imprimir remisión'><a target='_blank' href='".$url.$fila["idservicio"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a></div></span>
-									</td>
+									<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar servicio' data-placement='top' class='btn btn-warning btn-xs' onclick='editar(".$fila["idservicio"].")'><i class='fa fa-pencil'></i></button>
+									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
+									<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>															
+									<a target='_blank' href='".$url.$fila["idservicio"]."'> <button title='Imprimir' data-toggle='popover' data-trigger='hover' data-content='Imprimir servicio' data-placement='top' class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a>																			
+								</td>
 								</tr>
 								";
 							} else {
@@ -705,13 +704,12 @@ switch ($_GET["op"]) {
 								<td><p>$ ".$totalServicio=$fila["total_servicio"] - $fila["pagado"]."</td>
 								<td><p>$ ".$miles."</td>
 								<td>
-									<div class='emergente'>
-										<span data-tooltip='Editar servicio'><button class='btn btn-warning btn-xs' onclick='editar(".$fila["idservicio"].")'><i class='fa fa-pencil'></i></button></span>
-										<span data-tooltip='Mostrar servicio'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button></span>
-										<span data-tooltip='Anular servicio'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button></span>							
-										<span data-tooltip='Cobrar servicio'><button class='btn btn-default btn-xs' onclick='cobrarServicio(".$fila["idservicio"].")'><i class='fa fa-credit-card'></i></button></span>
-										<span data-tooltip='Imprimir remisión'><a target='_blank' href='".$url.$fila["idservicio"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a></div></span>
-									</div>
+									<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar servicio' data-placement='top' class='btn btn-warning btn-xs' onclick='editar(".$fila["idservicio"].")'><i class='fa fa-pencil'></i></button>
+									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
+									<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>															
+									<button title='Cobrar' data-toggle='popover' data-trigger='hover' data-content='Cobrar articulo' data-placement='top' class='btn btn-default btn-xs' onclick='cobrarServicio(".$fila["idservicio"].")'><i class='fa fa-credit-card'></i></button>
+									<a target='_blank' href='".$url.$fila["idservicio"]."'> <button title='Imprimir' data-toggle='popover' data-trigger='hover' data-content='Imprimir servicio' data-placement='top' class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a>										
+								</div>
 								</td>
 								</tr>
 								";
@@ -729,8 +727,8 @@ switch ($_GET["op"]) {
 								<td><p>$ ".$totalServicio=$fila["total_servicio"] - $fila["pagado"]."</td>
 								<td><p>$ ".$miles."</td>
 								<td>
-									<div class='emergente'>										
-										<span data-tooltip='Mostrar servicio'><button class='btn btn-warning btn-xs' onclick='mostrarAnulado(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button></span>										
+									<div class='emergente'>																												
+										<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrarAnulado(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>		
 									</div>
 								</td>
 								</tr>
@@ -761,11 +759,10 @@ switch ($_GET["op"]) {
 								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
 								<td><p>$ ".number_format($totalServicio=$fila["total_servicio"] - $fila["pagado"], 2)."</td>
 								<td><p>$ ".$miles."</td>
-								<td>
-									<div class='emergente'>										
-										<span data-tooltip='Mostrar servicio'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button></span>
-										<span data-tooltip='Anular servicio'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button></span>							
-										<span data-tooltip='Imprimir remisión'><a target='_blank' href='".$url.$fila["idservicio"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a></div></span>
+								<td>								
+									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
+									<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>															
+									<a target='_blank' href='".$url.$fila["idservicio"]."'> <button title='Imprimir' data-toggle='popover' data-trigger='hover' data-content='Imprimir servicio' data-placement='top' class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a>
 									</td>
 								</tr>
 								";
@@ -779,13 +776,11 @@ switch ($_GET["op"]) {
 								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
 								<td><p>$ ".$totalServicio=$fila["total_servicio"] - $fila["pagado"]."</td>
 								<td><p>$ ".$miles."</td>
-								<td>
-									<div class='emergente'>										
-										<span data-tooltip='Mostrar servicio'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button></span>
-										<span data-tooltip='Anular servicio'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button></span>							
-										<span data-tooltip='Cobrar servicio'><button class='btn btn-default btn-xs' onclick='cobrarServicio(".$fila["idservicio"].")'><i class='fa fa-credit-card'></i></button></span>
-										<span data-tooltip='Imprimir remisión'><a target='_blank' href='".$url.$fila["idservicio"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a></div></span>
-									</div>
+								<td>																
+									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
+									<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>						
+									<button title='Cobrar' data-toggle='popover' data-trigger='hover' data-content='Cobrar articulo' data-placement='top' class='btn btn-default btn-xs' onclick='cobrarServicio(".$fila["idservicio"].")'><i class='fa fa-credit-card'></i></button>
+									<a target='_blank' href='".$url.$fila["idservicio"]."'> <button title='Imprimir' data-toggle='popover' data-trigger='hover' data-content='Imprimir servicio' data-placement='top' class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a>
 								</td>
 								</tr>
 								";
@@ -803,9 +798,7 @@ switch ($_GET["op"]) {
 								<td><p>$ ".$totalServicio=$fila["total_servicio"] - $fila["pagado"]."</td>
 								<td><p>$ ".$miles."</td>
 								<td>
-									<div class='emergente'>										
-										<span data-tooltip='Mostrar servicio'><button class='btn btn-warning btn-xs' onclick='mostrarAnulado(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button></span>										
-									</div>
+									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrarAnulado(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
 								</td>
 								</tr>
 								";
@@ -853,7 +846,8 @@ switch ($_GET["op"]) {
 				$consultaBD=$conexion->query($consulta);
 				if($consultaBD->num_rows>=1){
 					echo "
-					<table class='responsive-table table table-hover table-bordered' style='font-size:12px'>
+					<div id='container'>
+					<table class='responsive-table table table-hover table-bordered' style='font-size:12px' <div id='container'>>
 						<thead class='table-light'>
 							<tr>
 								<th class='bg-info' scope='col'>Claves</th>
@@ -946,7 +940,7 @@ switch ($_GET["op"]) {
 							<th class='bg-info' scope='col'>Acciones</th>
 						</tr>
 					</tfoot>
-					</table>";
+					</table></div>";
 				}else{
 					echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";						
 					echo "<br><br>";
@@ -999,7 +993,8 @@ switch ($_GET["op"]) {
 					$consultaBD=$conexion->query($consulta);
 					if($consultaBD->num_rows>=1){
 						echo "
-						<table class='responsive-table table table-hover table-bordered' style='font-size:12px'>
+						<div id='container'>
+						<table class='responsive-table table table-hover table-bordered' style='font-size:12px' id='tableArticulos'>
 							<thead class='table-light'>
 								<tr>
 									<th class='bg-info' scope='col'>Clave</th>
@@ -1090,7 +1085,7 @@ switch ($_GET["op"]) {
 								<th class='bg-info' scope='col'>Acciones</th>
 							</tr>
 						</tfoot>
-						</table>";
+						</table></div>";
 					}else{
 						echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";						
 						echo "<br><br>";
@@ -1116,7 +1111,8 @@ switch ($_GET["op"]) {
 						$consultaBD=$conexion->query($consulta);
 						if($consultaBD->num_rows>=1){
 							echo "
-							<table class='responsive-table table table-hover table-bordered' style='font-size:12px'>
+							<div id='container'>
+							<table class='responsive-table table table-hover table-bordered' style='font-size:12px' id='tableArticulos'>
 								<thead class='table-light'>
 									<tr>
 										<th class='bg-info' scope='col'>Sucursal</th>
@@ -1199,7 +1195,7 @@ switch ($_GET["op"]) {
 									<th class='bg-info' scope='col'>Acciones</th>
 								</tr>
 							</tfoot>
-							</table>";
+							</table></div>";
 						}else{
 							echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";						
 							echo "<br><br>";

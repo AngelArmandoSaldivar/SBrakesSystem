@@ -667,11 +667,12 @@ switch ($_GET["op"]) {
 											<td><p>".$fila['usuario']."</td>
 											<td><p>$ ".number_format($resta, 2)."</td>
 											<td><p>$ ".number_format($miles,2)."</td>
-											<td><div class='emergente'>
-											<span data-tooltip='Editar venta'><button class='btn btn-warning btn-xs' onclick='editar(".$fila["idventa"].")'><i class='fa fa-pencil'></i></button></span>
-											<span data-tooltip='Mostrar venta'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idventa"].")'><i class='fa fa-eye'></i></button></span>
-											<span data-tooltip='Cancelar venta'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idventa"].")'><i class='fa fa-close'></i></button></span>										
-											<span data-tooltip='Imprimir ticket'><a target='_blank' href='".$url.$fila["idventa"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a></span></div></td>
+											<td>
+												<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar venta' data-placement='top' class='btn btn-warning btn-xs' onclick='editar(".$fila["idventa"].")'><i class='fa fa-pencil'></i></button>
+												<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar venta' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idventa"].")'><i class='fa fa-eye'></i></button>
+												<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular venta' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idventa"].")'><i class='fa fa-close'></i></button>										
+												<a target='_blank' href='".$url.$fila["idventa"]."'> <button title='Imprimir' data-toggle='popover' data-trigger='hover' data-content='Imprimir ticket' data-placement='top' class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a>
+											</td>
 										</tr>
 									";
 								} else {
@@ -684,12 +685,13 @@ switch ($_GET["op"]) {
 										<td><p>".$fila['usuario']."</td>
 										<td><p>$ ".number_format((intval($miles) - intval($pagado)), 2)."</td>
 										<td><p>$ ".number_format($miles,2)."</td>
-										<td><div class='emergente'>
-										<span data-tooltip='Editar venta'><button class='btn btn-warning btn-xs' onclick='editar(".$fila["idventa"].")'><i class='fa fa-pencil'></i></button></span>
-										<span data-tooltip='Mostrar venta'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idventa"].")'><i class='fa fa-eye'></i></button></span>
-										<span data-tooltip='Cancelar venta'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idventa"].")'><i class='fa fa-close'></i></button></span>
-										<span data-tooltip='Cobrar venta'><button class='btn btn-default btn-xs' onclick='cobrarVenta(".$fila["idventa"].")'><i class='fa fa-credit-card'></i></button></span>
-										<span data-tooltip='Imprimir ticket'><a target='_blank' href='".$url.$fila["idventa"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a></span></div></td>
+										<td>										
+											<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar venta' data-placement='top' class='btn btn-warning btn-xs' onclick='editar(".$fila["idventa"].")'><i class='fa fa-pencil'></i></button>
+											<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar venta' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idventa"].")'><i class='fa fa-eye'></i></button>
+											<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular venta' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idventa"].")'><i class='fa fa-close'></i></button>	
+											<button title='Cobrar' data-toggle='popover' data-trigger='hover' data-content='Cobrar venta' data-placement='top' class='btn btn-default btn-xs' onclick='cobrarVenta(".$fila["idventa"].")'><i class='fa fa-credit-card'></i></button>									
+											<a target='_blank' href='".$url.$fila["idventa"]."'> <button title='Imprimir' data-toggle='popover' data-trigger='hover' data-content='Imprimir ticket' data-placement='top' class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a>
+										</td>
 									</tr>
 									";
 								}
@@ -704,8 +706,9 @@ switch ($_GET["op"]) {
 											<td><p>".$fila['usuario']."</td>
 											<td><p>$ ".number_format($resta,2)."</td>
 											<td><p>$ ".number_format($miles, 2)."</td>
-											<td><div class='emergente'>										
-											<span data-tooltip='Mostrar venta'><button class='btn btn-warning btn-xs' onclick='mostrarAnulado(".$fila["idventa"].")'><i class='fa fa-eye'></i></button></span>											
+											<td>											
+												<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar venta' data-placement='top' class='btn btn-success btn-xs' onclick='mostrarAnulado(".$fila["idventa"].")'><i class='fa fa-eye'></i></button>
+											</td>											
 										</tr>
 									";								
 							}								
@@ -732,10 +735,11 @@ switch ($_GET["op"]) {
 											<td><p>".$fila['usuario']."</td>
 											<td><p>$ ".number_format($resta, 2)."</td>
 											<td><p>$ ".number_format($miles,2)."</td>
-											<td><div class='emergente'>											
-											<span data-tooltip='Mostrar venta'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idventa"].")'><i class='fa fa-eye'></i></button></span>
-											<span data-tooltip='Cancelar venta'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idventa"].")'><i class='fa fa-close'></i></button></span>										
-											<span data-tooltip='Imprimir ticket'><a target='_blank' href='".$url.$fila["idventa"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a></span></div></td>
+											<td>																						
+												<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar venta' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idventa"].")'><i class='fa fa-eye'></i></button>
+												<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular venta' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idventa"].")'><i class='fa fa-close'></i></button>											
+												<a target='_blank' href='".$url.$fila["idventa"]."'> <button title='Imprimir' data-toggle='popover' data-trigger='hover' data-content='Imprimir ticket' data-placement='top' class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a>
+											</td>
 										</tr>
 									";
 								} else {
@@ -748,11 +752,12 @@ switch ($_GET["op"]) {
 										<td><p>".$fila['usuario']."</td>
 										<td><p>$ ".number_format((intval($miles) - intval($pagado)),2)."</td>
 										<td><p>$ ".number_format($miles,2)."</td>
-										<td><div class='emergente'>										
-										<span data-tooltip='Mostrar venta'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idventa"].")'><i class='fa fa-eye'></i></button></span>
-										<span data-tooltip='Cancelar venta'><button class='btn btn-danger btn-xs' onclick='anular(".$fila["idventa"].")'><i class='fa fa-close'></i></button></span>
-										<span data-tooltip='Cobrar venta'><button class='btn btn-default btn-xs' onclick='cobrarVenta(".$fila["idventa"].")'><i class='fa fa-credit-card'></i></button></span>
-										<span data-tooltip='Imprimir ticket'><a target='_blank' href='".$url.$fila["idventa"]."'> <button class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a></span></div></td>
+										<td>
+											<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar venta' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idventa"].")'><i class='fa fa-eye'></i></button>
+											<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular venta' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idventa"].")'><i class='fa fa-close'></i></button>	
+											<button title='Cobrar' data-toggle='popover' data-trigger='hover' data-content='Cobrar venta' data-placement='top' class='btn btn-default btn-xs' onclick='cobrarVenta(".$fila["idventa"].")'><i class='fa fa-credit-card'></i></button>									
+											<a target='_blank' href='".$url.$fila["idventa"]."'> <button title='Imprimir' data-toggle='popover' data-trigger='hover' data-content='Imprimir ticket' data-placement='top' class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a>
+										</td>
 									</tr>
 									";
 								}
@@ -776,8 +781,9 @@ switch ($_GET["op"]) {
 										<td><p>".$fila['usuario']."</td>
 										<td><p>$ ".number_format((intval($miles) - intval($pagado)),2)."</td>
 										<td><p>$ ".number_format($miles,2)."</td>
-										<td><div class='emergente'>									
-										<span data-tooltip='Mostrar venta'><button class='btn btn-warning btn-xs' onclick='mostrarAnulado(".$fila["idventa"].")'><i class='fa fa-eye'></i></button></span>									
+										<td>							
+											<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar venta' data-placement='top' class='btn btn-success btn-xs' onclick='mostrarAnulado(".$fila["idventa"].")'><i class='fa fa-eye'></i></button>
+										</td>									
 									</tr>
 									";
 							}
@@ -835,7 +841,8 @@ switch ($_GET["op"]) {
 					$consultaBD=$conexion->query($consulta);
 					if($consultaBD->num_rows>=1){
 						echo "
-						<table class='responsive-table table table-hover table-bordered' style='font-size:12px'>
+						<div id='container'>
+						<table class='responsive-table table table-hover table-bordered' style='font-size:12px' id='tableArticulos'>
 							<thead class='table-light'>
 								<tr>
 									<th class='bg-info' scope='col'>Clave</th>
@@ -928,7 +935,7 @@ switch ($_GET["op"]) {
 								<th class='bg-info' scope='col'>Acciones</th>
 							</tr>
 						</tfoot>
-						</table>";
+						</table></div>";
 					}else{
 						echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";						
 						echo "<br><br>";
@@ -957,7 +964,8 @@ switch ($_GET["op"]) {
 						$consultaBD=$conexion->query($consulta);
 						if($consultaBD->num_rows>=1){
 							echo "
-							<table class='responsive-table table table-hover table-bordered' style='font-size:12px'>
+							<div id='container'>
+							<table class='responsive-table table table-hover table-bordered' style='font-size:12px' id='tableArticulos'>
 								<thead class='table-light'>
 									<tr>
 										<th class='bg-info' scope='col'>Claves</th>
@@ -1050,7 +1058,7 @@ switch ($_GET["op"]) {
 									<th class='bg-info' scope='col'>Acciones</th>
 								</tr>
 							</tfoot>
-							</table>";
+							</table></div>";
 						}else{
 							echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";						
 							echo "<br><br>";
@@ -1076,7 +1084,8 @@ switch ($_GET["op"]) {
 						$consultaBD=$conexion->query($consulta);
 						if($consultaBD->num_rows>=1){
 							echo "
-							<table class='responsive-table table table-hover table-bordered' style='font-size:12px'>
+							<div id='container'>
+							<table class='responsive-table table table-hover table-bordered' style='font-size:12px' id='tableArticulos'>
 								<thead class='table-light'>
 									<tr>
 										<th class='bg-info' scope='col'>Sucursal</th>
@@ -1159,7 +1168,7 @@ switch ($_GET["op"]) {
 									<th class='bg-info' scope='col'>Acciones</th>
 								</tr>
 							</tfoot>
-							</table>";
+							</table></div>";
 						}else{
 							echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";						
 							echo "<br><br>";

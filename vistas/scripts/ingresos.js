@@ -34,7 +34,7 @@ function selectProvider() {
 /*===============================FILTROS==================================================== */
 /*========================================================================================== */
 
-function paginaSiguiente() {	
+function paginaSiguiente() {
 
 	let cachaPaginaNumber = Number($("#pagina").val());
 	cachaPaginaNumber = cachaPaginaNumber + 1;
@@ -127,6 +127,12 @@ function fechaFin() {
 	registrosFechaFin(fechas);
 }
 
+function activarPopover() {
+	$(function () {
+		$('[data-toggle="popover"]').popover()		
+	})
+}
+
 //funcion listar REGISTROS INGRESOS CREADOS
 function obtener_registros(ingresos){	
 
@@ -150,6 +156,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$("#tabla_resultado").html(resultado);
 			$('.loaderSearch').hide();
+			activarPopover()
 		})
 	} 
 	if(ingresos == "" && limitesRegistros == null && paginado == 1 && fecha_inicio == "" && fecha_fin == "") {
@@ -164,6 +171,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$("#tabla_resultado").html(resultado);
 			$('.loaderSearch').hide();
+			activarPopover()
 		})
 	}
 	if(ingresos != "" && limitesRegistros > 0 && paginado == 1 && fecha_inicio == "" && fecha_fin == "") {
@@ -180,6 +188,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$("#tabla_resultado").html(resultado);
 			$('.loaderSearch').hide();
+			activarPopover()
 		})
 
 	}
@@ -196,6 +205,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$("#tabla_resultado").html(resultado);
 			$('.loaderSearch').hide();
+			activarPopover()
 		})
 	}
 	if(ingresos != "" && limitesRegistros > 0 && paginado == 1 && fecha_inicio != "" && fecha_fin == "") {
@@ -211,6 +221,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$("#tabla_resultado").html(resultado);
 			$('.loaderSearch').hide();
+			activarPopover()
 		})
 	}	
 	if(ingresos != "" && limitesRegistros == null && paginado == 1 && fecha_inicio != "" && fecha_fin == "") {
@@ -227,6 +238,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(ingresos == "" && limitesRegistros == null && paginado == 1 && fecha_inicio != "" && fecha_fin == "") {
@@ -245,6 +257,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(ingresos == "" && limitesRegistros > 0 && paginado == 1 && fecha_inicio != "" && fecha_fin == "") {
@@ -260,6 +273,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$("#tabla_resultado").html(resultado);
 			$('.loaderSearch').hide();
+			activarPopover()
 		})
 	}
 	if(ingresos == "" && limitesRegistros == null && paginado > 1 && fecha_inicio == "" && fecha_fin == "") {		
@@ -274,6 +288,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(ingresos != "" && limitesRegistros == null && paginado > 1 && fecha_inicio == "" && fecha_fin == "") {
@@ -288,6 +303,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(ingresos != "" && limitesRegistros != null && paginado > 1 && fecha_inicio == "" && fecha_fin == "") {
@@ -302,6 +318,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(ingresos != "" && limitesRegistros != null && paginado > 1 && fecha_inicio != "" && fecha_fin == "") {		
@@ -316,6 +333,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(ingresos != "" && limitesRegistros == null && paginado > 1 && fecha_inicio != "" && fecha_fin == "") {		
@@ -330,6 +348,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(ingresos == "" && limitesRegistros == null && paginado > 1 && fecha_inicio != "" && fecha_fin == "") {			
@@ -344,6 +363,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(ingresos == "" && limitesRegistros != null && paginado > 1 && fecha_inicio == "" && fecha_fin == "") {			
@@ -358,6 +378,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(ingresos == "" && limitesRegistros != null && paginado > 1 && fecha_inicio != "" && fecha_fin == "") {			
@@ -372,6 +393,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 
@@ -387,6 +409,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha fin, busqueda, pagina 1
@@ -400,6 +423,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha fin, busqueda, limite, pagina 1
@@ -413,6 +437,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha fin,limite, pagina 1
@@ -426,6 +451,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha inicio, fecha fin
@@ -439,6 +465,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha inicio, fecha fin, busquedas
@@ -452,6 +479,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha inicio, fecha fin, busquedas, limites
@@ -466,6 +494,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha inicio, fecha fin, limites
@@ -480,6 +509,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha fin, pagina
@@ -495,6 +525,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha fin, pagina, limites
@@ -510,6 +541,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha fin, pagina, limites
@@ -525,6 +557,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha fin, pagina, limites
@@ -540,6 +573,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha fin, pagina, limites, busqueda
@@ -555,6 +589,7 @@ function obtener_registros(ingresos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 
@@ -566,14 +601,24 @@ $(document).on('keyup', '#busqueda', function(){
 	if (valorBusqueda!="")
 	{
 		obtener_registros(valorBusqueda);
+		if(window.scrollY) {
+			console.log("LLEGASTE: ", scrollY);
+			window.scroll(0,scrollY)
+		}
 	}
 	else
 	{
+		window.scroll({
+			top: 50, 
+			left: 0, 
+			behavior: 'smooth'
+		});
 		obtener_registros();
 	}
 });
 
-setInterval(() => {
+setInterval(() => {	
+	
 	let busqueda = document.getElementById("busqueda").value;
 	$('.loaderSearch').show();
 	setTimeout(() => {

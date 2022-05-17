@@ -140,6 +140,12 @@ function fechaFin() {
 	registrosFechaFin(fechas);
 }
 
+function activarPopover() {
+	$(function () {
+		$('[data-toggle="popover"]').popover()		
+	})
+}
+
 //funcion listar REGISTROS INGRESOS CREADOS
 function obtener_registros(servicios){
 
@@ -163,6 +169,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$("#tabla_resultado").html(resultado);
 			$('.loaderSearch').hide();
+			activarPopover()
 		})
 	} 
 	if(servicios == "" && limitesRegistros == null && paginado == 1 && fecha_inicio == "" && fecha_fin == "") {
@@ -177,6 +184,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$("#tabla_resultado").html(resultado);
 			$('.loaderSearch').hide();
+			activarPopover()
 		})
 	}
 	if(servicios != "" && limitesRegistros > 0 && paginado == 1 && fecha_inicio == "" && fecha_fin == "") {
@@ -193,6 +201,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$("#tabla_resultado").html(resultado);
 			$('.loaderSearch').hide();
+			activarPopover()
 		})
 
 	}
@@ -209,6 +218,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$("#tabla_resultado").html(resultado);
 			$('.loaderSearch').hide();
+			activarPopover()
 		})
 	}
 	if(servicios != "" && limitesRegistros > 0 && paginado == 1 && fecha_inicio != "" && fecha_fin == "") {
@@ -224,6 +234,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$("#tabla_resultado").html(resultado);
 			$('.loaderSearch').hide();
+			activarPopover()
 		})
 	}	
 	if(servicios != "" && limitesRegistros == null && paginado == 1 && fecha_inicio != "" && fecha_fin == "") {
@@ -240,6 +251,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(servicios == "" && limitesRegistros == null && paginado == 1 && fecha_inicio != "" && fecha_fin == "") {
@@ -258,6 +270,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(servicios == "" && limitesRegistros > 0 && paginado == 1 && fecha_inicio != "" && fecha_fin == "") {
@@ -273,6 +286,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$("#tabla_resultado").html(resultado);
 			$('.loaderSearch').hide();
+			activarPopover()
 		})
 	}
 	if(servicios == "" && limitesRegistros == null && paginado > 1 && fecha_inicio == "" && fecha_fin == "") {		
@@ -287,6 +301,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(servicios != "" && limitesRegistros == null && paginado > 1 && fecha_inicio == "" && fecha_fin == "") {
@@ -301,6 +316,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(servicios != "" && limitesRegistros != null && paginado > 1 && fecha_inicio == "" && fecha_fin == "") {
@@ -315,6 +331,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(servicios != "" && limitesRegistros != null && paginado > 1 && fecha_inicio != "" && fecha_fin == "") {		
@@ -329,6 +346,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(servicios != "" && limitesRegistros == null && paginado > 1 && fecha_inicio != "" && fecha_fin == "") {		
@@ -343,6 +361,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(servicios == "" && limitesRegistros == null && paginado > 1 && fecha_inicio != "" && fecha_fin == "") {			
@@ -357,6 +376,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(servicios == "" && limitesRegistros != null && paginado > 1 && fecha_inicio == "" && fecha_fin == "") {			
@@ -371,6 +391,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	if(servicios == "" && limitesRegistros != null && paginado > 1 && fecha_inicio != "" && fecha_fin == "") {			
@@ -385,6 +406,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 
@@ -400,6 +422,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha fin, busqueda, pagina 1
@@ -413,6 +436,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha fin, busqueda, limite, pagina 1
@@ -426,6 +450,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha fin,limite, pagina 1
@@ -439,6 +464,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha inicio, fecha fin
@@ -452,6 +478,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha inicio, fecha fin, busquedas
@@ -465,6 +492,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha inicio, fecha fin, busquedas, limites
@@ -479,6 +507,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha inicio, fecha fin, limites
@@ -493,6 +522,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha fin, pagina
@@ -508,6 +538,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha fin, pagina, limites
@@ -523,6 +554,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha fin, pagina, limites
@@ -538,6 +570,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha fin, pagina, limites
@@ -553,6 +586,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha fin, pagina, limites, busqueda
@@ -568,6 +602,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 	//Fecha inicio, fecha fin, pagina, busquedas
@@ -583,6 +618,7 @@ function obtener_registros(servicios){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 	}
 }
@@ -611,6 +647,14 @@ setInterval(() => {
 /*========================================================================================== */
 /*===============================FIN FILTROS================================================ */
 /*========================================================================================== */
+function cerrarModal() {
+	$("#myModal").modal('hide');
+}
+
+function regresarMiSucursal() {
+	$("#agregarProductoAlmacen").modal('hide');
+}
+
 
 function mostrarInfoClient(idcliente) {
 	$('.loader').show();
@@ -1408,13 +1452,6 @@ function guardarAuto() {
 	let ano =  $("#anoAdd").val();
 	let color =  $("#colorAdd").val();
 	let kms =  $("#kmsAdd").val();
-	console.log("ID CLIENTE: ", idcliente);
-	console.log("PLACAS: ", placas);
-	console.log("MARCA: ", marca);
-	console.log("MODELO: ", modelo);
-	console.log("AÑO: ", ano);
-	console.log("COLOR: ", color);
-	console.log("KM: ", kms);
 
 	$.ajax({
 		url: "../ajax/servicio.php?op=guardarAuto&idcliente="+idcliente+"&placas="+placas

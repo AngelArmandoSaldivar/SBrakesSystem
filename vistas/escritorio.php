@@ -102,9 +102,9 @@ if ($_SESSION['escritorio']==1) {
   </div>
 </div> -->
 
+<div class="shadow p-3 mb-5 bg-body rounded">Regular shadow</div>
 
-
-<div class="col-lg-3 col-xs-6">
+<div class="col-lg-3 col-xs-6 shadow p-3 mb-5 bg-body rounded">
   <div class="small-box bg-red">    
     <div class="inner">
     
@@ -126,7 +126,7 @@ if ($_SESSION['escritorio']==1) {
   </div>
 </div>
 
-<div class="col-lg-3 col-xs-6">
+<div class="col-lg-3 col-xs-6 shadow p-3 mb-5 bg-body rounded">
 
   <div class="small-box bg-aqua">
     

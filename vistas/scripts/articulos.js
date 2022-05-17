@@ -2,11 +2,12 @@ var tabla;
 
 //funcion que se ejecuta al inicio
 function init(){
-   mostrarform(false);
-   obtener_registros();
-   $("#formulario").on("submit",function(e){
-   	guardaryeditar(e);
-   })
+	mostrarform(false);
+	obtener_registros();		
+	
+	$("#formulario").on("submit",function(e){
+		guardaryeditar(e);
+	})
 
    //cargamos los items al select categoria
    $.post("../ajax/articulo.php?op=selectCategoria", function(r){	
@@ -24,9 +25,9 @@ function init(){
 	let cachaPaginaNumber = Number($("#pagina").val());	
 	if(cachaPaginaNumber <= 1) {
 		$("#anterior").hide();
-	}
-}
+	}	
 
+}
 
 /*========================================================================================== */
 /*===============================FILTROS==================================================== */
@@ -245,7 +246,6 @@ function mostrarRegistrosLimite(limites) {
 	}	
 }
 
-
 var select = document.getElementById('limite_registros');
 select.addEventListener('change',
 function(){
@@ -257,12 +257,28 @@ function(){
 
 });
 
+function activarPopover() {
+	$(function () {
+		$('[data-toggle="popover"]').popover()		
+	})
+}
+
+function obtenerScrollY(scrollnumber) {
+	$('#container').scroll(0,scrollnumber);
+}
+
+
 function obtener_registros(articulos){	
 
-	let limitesRegistros = $("#limite_registros").val();
-	let paginado = $("#pagina").val();
+	var busqueda = articulos;
 
-	if(articulos != "" && limitesRegistros == null && paginado == 1) {
+	let limitesRegistros = $("#limite_registros").val();
+	let paginado = $("#pagina").val();		
+
+	if(articulos == undefined && limitesRegistros == null && paginado == 1) {		
+		//var ContainerElement = document.getElementById("container");
+		//var y = ContainerElement.scrollTop;
+		//ContainerElement.scroll(0,1000)
 
 		$("#siguiente").show();
 		$('.loaderSearch').show();
@@ -272,14 +288,45 @@ function obtener_registros(articulos){
 			dataType : 'html',
 			data : { articulos: articulos},
 		})
-		.done(function(resultado){			
+		.done(function(resultado){		
+			//$('#container').scroll(0,1000);			
+
+			$("#tabla_resultado").html(resultado);
+			$('.loaderSearch').hide();	
+			activarPopover();
+		})
+
+		
+	}	
+		
+	if(articulos != undefined && limitesRegistros == null && paginado == 1) {
+
+		console.log("Busqueda: ", articulos);
+
+		$("#siguiente").show();
+		$('.loaderSearch').show();
+		$.ajax({
+			url : '../ajax/articulo.php?op=listar',
+			type : 'POST',
+			dataType : 'html',
+			data : { articulos: busqueda},
+		})
+		.done(function(resultado){
+			/*let y = $( "#container" ).scrollTop();
+			let x = $( "#container" ).scrollLeft();
+			console.log("X: ", x);
+			let numero = 0;
+			
+			$('#container').scroll(x,y);
+			console.log("SCROLL TOP: ", y);*/
+
 			$("#tabla_resultado").html(resultado);
 			$('.loaderSearch').hide();
+			activarPopover()
 		})
 
 	}
-	if(articulos != "" && limitesRegistros > 0 && paginado == 1) {
-		
+	if(articulos != undefined && limitesRegistros > 0 && paginado == 1) {			
 		$('.loaderSearch').show();
 		$("#siguiente").show();
 		$.ajax({
@@ -291,11 +338,11 @@ function obtener_registros(articulos){
 		.done(function(resultado){
 			$("#tabla_resultado").html(resultado);
 			$('.loaderSearch').hide();
+			activarPopover()
 		})
 	} 
 	
-	if(articulos != "" && limitesRegistros > 0 && paginado > 1) {
-
+	if(articulos != undefined && limitesRegistros > 0 && paginado > 1) {			
 		let total_registros = Number(((limitesRegistros * paginado) - paginado) + 1);		
 		let inicio_registros = (total_registros - limitesRegistros) + 1;
 	
@@ -308,12 +355,12 @@ function obtener_registros(articulos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 
 	} 
 
-	if(articulos != "" && limitesRegistros == null && paginado > 1) {
-
+	if(articulos != "" && limitesRegistros == null && paginado > 1) {			
 		let total_registros = Number(50 * paginado);
 		let inicio_registros = (total_registros - 50);
 
@@ -326,6 +373,7 @@ function obtener_registros(articulos){
 		.done(function(resultado){
 			$('.loaderSearch').hide();
 			$("#tabla_resultado").html(resultado);
+			activarPopover()
 		})
 
 	}
@@ -334,25 +382,24 @@ function obtener_registros(articulos){
 //Filtro busqueda
 $(document).on('keyup', '#busqueda', function(){
 	
-	var valorBusqueda=$(this).val();
+	var valorBusqueda=$(this).val();	
 	
 	if (valorBusqueda!="")
 	{		
-		obtener_registros(valorBusqueda);
-	} else {
+		obtener_registros(valorBusqueda);		
+
+	} else {				
 		obtener_registros();
 	}
 });
 
 setInterval(() => {
 	let busqueda = document.getElementById("busqueda").value;
-
-		$('.loaderSearch').show();
-		setTimeout(() => {
-			obtener_registros(busqueda);
-			$('.loaderSearch').hide();
-		}, 500);	
-		
+	$('.loaderSearch').show();
+	setTimeout(() => {
+		obtener_registros(busqueda);
+		$('.loaderSearch').hide();
+	}, 500);
 }, 5000);
 
 /*========================================================================================== */

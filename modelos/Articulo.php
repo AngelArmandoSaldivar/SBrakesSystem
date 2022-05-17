@@ -68,7 +68,7 @@ class Articulo{
 
 	public function articulosPagination($limit, $limit2, $busqueda) {
 		$sql = "SELECT * FROM articulo WHERE codigo LIKE '%$busqueda%' OR fmsi LIKE '%$busqueda%' OR marca LIKE '%$busqueda%' OR descripcion LIKE '%$busqueda%' ORDER BY stock DESC LIMIT $limit OFFSET $limit2";
-		usleep(80000);
+		//usleep(90000);
 		return ejecutarConsulta($sql);
 	}
 
