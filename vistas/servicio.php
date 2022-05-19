@@ -191,7 +191,7 @@ if ($_SESSION['servicios']==1) {
               </div>
               <div class="form-group col-lg-2 col-md-2 col-xs-6">
                 <label for="">Marca: </label>
-                <input class="form-control" type="text" name="marca" id="marca" placeholder="Marca">
+                <input class="form-control" type="text" name="marcaAuto" id="marcaAuto" placeholder="Marca">
               </div>
               <div class="form-group col-lg-2 col-md-2 col-xs-6">
                 <label for="">Modelo: </label>
@@ -258,12 +258,11 @@ if ($_SESSION['servicios']==1) {
               <div class="form-group col-lg-12 col-md-12 col-xs-12">    
               <div class="form-group col-lg-12 col-md-6 col-xs-12">
                     <center><h4 aling="center">Productos servicio</h4></center>
-                  </div>      
+                  </div>
                 <div class="panel-body table-responsive">
                 <table id="detalles" class="table table-striped table-bordered table-condensed table-hover">
                   <thead style="background-color:#A9D0F5; font-size: 12px;">
-                    <th>Opciones</th>
-                    <th>Código</th>
+                    <th>Opciones</th>                    
                     <th>Clave</th>
                     <th>Fmsi</th>
                     <th>Marca</th>
@@ -274,8 +273,7 @@ if ($_SESSION['servicios']==1) {
                     <th>Subtotal</th>
                     <th>Acciones</th>
                   </thead>
-                  <tfoot style="background-color:#A9D0F5">
-                    <th></th>
+                  <tfoot style="background-color:#A9D0F5">                    
                     <th></th>
                     <th></th>
                     <th></th>
@@ -640,7 +638,7 @@ if ($_SESSION['servicios']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/servicio.js"></script>
+ <script src="scripts/servicios.js"></script>
  <?php 
 }
 

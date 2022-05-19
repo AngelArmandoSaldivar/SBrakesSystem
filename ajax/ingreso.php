@@ -19,7 +19,7 @@ switch ($_GET["op"]) {
 
 	case 'guardaryeditar':
 	if (empty($idingreso)) {		
-		$rspta=$ingreso->insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_comprobante,$fecha_hora,$impuesto,$total_compra,$_POST["idarticulo"],$_POST["clave"],$_POST["fmsi"],$_POST["descripcion"],$_POST["cantidad"],$_POST["precio_compra"], $idsucursal);
+		$rspta=$ingreso->insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_comprobante,$fecha_hora,$impuesto,$total_compra,$_POST["idarticulo"],$_POST["clave"],$_POST["fmsi"],$_POST["descripcion"],$_POST["cantidad"],$_POST["precio_compra"], $idsucursal, $_POST["idarticuloSucursal"]);
 		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
 	}else{
         
@@ -38,7 +38,8 @@ switch ($_GET["op"]) {
 		$idproveedor=$_GET['idproveedor'];
 		$datetime=$_GET['dateTime'];
 		$folio=$_GET['serieComprobante'];
-		$rspta=$ingreso->addProductoIngreso($idarticulo,$articulo,$fmsi,$marca,$descripcion,$publico,$stock,$idIngreso, $idproveedor, $datetime, $folio);
+		$idarticuloSucursal=$_GET['idarticuloSucursal'];
+		$rspta=$ingreso->addProductoIngreso($idarticulo,$articulo,$fmsi,$marca,$descripcion,$publico,$stock,$idIngreso, $idproveedor, $datetime, $folio, $idsucursal, $idarticuloSucursal);
 		echo $rspta ? "Producto agregado correctamente" : "No se pudo agregar el producto";
 		break;
 	case 'editarGuardarProductoIngreso':
@@ -411,8 +412,7 @@ switch ($_GET["op"]) {
 
 			$consultaBD=$consulta;
 			if($consultaBD->num_rows>=1){
-				echo "
-				<div id='container'>
+				echo "				
 				<table class='responsive-table table table-hover table-bordered' style='font-size:12px' id='example'>
 					<thead class='table-light'>
 						<tr>							
@@ -496,7 +496,7 @@ switch ($_GET["op"]) {
 					</tr>
 				</tfoot>
 				</table>
-				</div>";
+				";
 			}else{
 				echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";
 			}
@@ -574,7 +574,7 @@ switch ($_GET["op"]) {
 										<td><p>$ ".$creditoMiles."</p></td>
 										<td><p>$ ".$mayoreoMiles."</p></td>
 										<td><p>".$fila["stock"]." pz</p></td>										
-										<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\" )'><span class='fa fa-plus'></span></button></td>
+										<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["idsucursal"]."\" )'><span class='fa fa-plus'></span></button></td>
 									</tr>";
 								} else {
 									echo "<tr style='color:red;'>
@@ -588,7 +588,7 @@ switch ($_GET["op"]) {
 										<td><p>$ ".$creditoMiles."</p></td>
 										<td><p>$ ".$mayoreoMiles."</p></td>
 										<td><p>".$fila["stock"]." pz</p></td>										
-										<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\" )'><span class='fa fa-plus'></span></button></td>
+										<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["idsucursal"]."\" )'><span class='fa fa-plus'></span></button></td>
 									</tr>";
 								}					
 							}
@@ -676,7 +676,7 @@ switch ($_GET["op"]) {
 									<td><p>$ ".$creditoMiles."</p></td>
 									<td><p>$ ".$mayoreoMiles."</p></td>
 									<td><p>".$fila["stock"]." pz</p></td>										
-									<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalleEdit(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["marca"]."\", \"".$fila["descripcion"]."\", \"".$fila["costo"]."\", \"".$fila["stock"]."\")'><span class='fa fa-plus'></span></button></td>
+									<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalleEdit(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["marca"]."\", \"".$fila["descripcion"]."\", \"".$fila["costo"]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
 								</tr>";
 							} else if($fila["stock"] < 1){
 								echo "<tr style='color:red;'>
@@ -690,7 +690,7 @@ switch ($_GET["op"]) {
 									<td><p>$ ".$creditoMiles."</p></td>
 									<td><p>$ ".$mayoreoMiles."</p></td>
 									<td><p>".$fila["stock"]." pz</p></td>
-									<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalleEdit(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["marca"]."\", \"".$fila["descripcion"]."\", \"".$fila["costo"]."\", \"".$fila["stock"]."\")'><span class='fa fa-plus'></span></button></td>";
+									<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalleEdit(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["marca"]."\", \"".$fila["descripcion"]."\", \"".$fila["costo"]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>";
 							}
 						}
 					}

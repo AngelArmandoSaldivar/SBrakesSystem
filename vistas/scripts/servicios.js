@@ -644,11 +644,45 @@ setInterval(() => {
 	}, 500);
 }, 5000);
 
+function almacenEdit(productosEdit){
+
+	var tiposPrecios = document.getElementById("caja_valor").value;
+	
+	$.ajax({
+		url : '../ajax/servicio.php?op=listarProductosAlmacenEdit',
+		type : 'POST',
+		dataType : 'html',
+		data : { productosEdit: productosEdit, types: tiposPrecios },
+	})
+	.done(function(resultado){
+		$("#tabla_resultadoProductoAlmacenEdit").html(resultado);
+	})
+}
+
+$(document).on('keyup', '#busquedaProductAlmacenEdit', function(){	
+	var valorBusqueda=$(this).val();
+
+	console.log(valorBusqueda);
+	
+	if (valorBusqueda!="")
+	{	
+		almacenEdit(valorBusqueda);
+	}
+	else
+	{
+		almacenEdit();
+	}
+});
+
 /*========================================================================================== */
 /*===============================FIN FILTROS================================================ */
 /*========================================================================================== */
 function cerrarModal() {
 	$("#myModal").modal('hide');
+}
+
+function cerrarModalEdit() {
+	$("#myModalProductsEdit").modal('hide');
 }
 
 function regresarMiSucursal() {
@@ -705,11 +739,11 @@ function selectCliente (){
 					function(data,status){
 						$('.loaderInfoAuto').hide();
 						data=JSON.parse(data);
-						$("#placas").val(data.placas).prop("disabled", true);
-						$("#marca").val(data.marca).prop("disabled", true);						
-						$("#modelo").val(data.modelo).prop("disabled", true);
-						$("#ano").val(data.ano).prop("disabled", true);
-						$("#color").val(data.color).prop("disabled", true);
+						$("#placas").val(data.placas).prop("disabled", false);
+						$("#marcaAuto").val(data.marca).prop("disabled", false);						
+						$("#modelo").val(data.modelo).prop("disabled", false);
+						$("#ano").val(data.ano).prop("disabled", false);
+						$("#color").val(data.color).prop("disabled", false);
 						$("#kms").val(data.kms).prop("disabled", false);
 				});	
 			}
@@ -1019,7 +1053,7 @@ function viewClient(idservicio) {
 			$("#tipo_comprobante").selectpicker('refresh');	
 			$("#fecha_hora").val(data.fecha).prop("disabled", true);
 			$("#impuesto").val(data.impuesto).prop("disabled", true);
-			$("#marca").val(data.marca).prop("disabled", true);
+			$("#marcaAuto").val(data.marca).prop("disabled", true);
 			$("#placas").val(data.placas).prop("disabled", true);
 			$("#modelo").val(data.modelo).prop("disabled", true);
 			$("#color").val(data.color).prop("disabled", true);
@@ -1485,40 +1519,18 @@ function guardarAuto() {
 					function(data,status){
 						$('.loaderInfoAuto').hide();
 						data=JSON.parse(data);
-						$("#placas").val(data.placas).prop("disabled", true);
-						$("#marca").val(data.marca).prop("disabled", true);						
-						$("#modelo").val(data.modelo).prop("disabled", true);
-						$("#ano").val(data.ano).prop("disabled", true);
-						$("#color").val(data.color).prop("disabled", true);
+						$("#placas").val(data.placas).prop("disabled", false);
+						$("#marcaAuto").val(data.marca).prop("disabled", false);						
+						$("#modelo").val(data.modelo).prop("disabled", false);
+						$("#ano").val(data.ano).prop("disabled", false);
+						$("#color").val(data.color).prop("disabled", false);
 						$("#kms").val(data.kms).prop("disabled", false);
 				});
 				
 			});
-
-			/*$.post("../ajax/servicio.php?op=selectAuto&id="+idcliente,function(r){
-				$("#idauto").html(r);
-				$('#idauto').selectpicker('refresh');
-			});				
-			$("#idauto").change(modIdAuto);
-			function modIdAuto() {	
-				$('.loaderInfoAuto').show();			
-				var idauto = $("#idauto option:selected").val();
-				$.post("../ajax/servicio.php?op=mostrarInfoAuto",{idauto : idauto},
-					function(data,status){
-						$('.loaderInfoAuto').hide();
-						data=JSON.parse(data);
-						$("#placas").val(data.placas).prop("disabled", true);
-						$("#marca").val(data.marca).prop("disabled", true);						
-						$("#modelo").val(data.modelo).prop("disabled", true);
-						$("#ano").val(data.ano).prop("disabled", true);
-						$("#color").val(data.color).prop("disabled", true);
-						$("#kms").val(data.kms).prop("disabled", false);
-				});
-			}*/
-
-
+			
 			$("#addAuto").modal('hide');
-			selectCliente();
+			//selectCliente();
 		},
 	});
 
@@ -1604,7 +1616,8 @@ function marcarImpuesto(){
 	}
 }
 
-function agregarDetalle(idarticulo,articulo,fmsi, descripcion,marca,publico){
+function agregarDetalle(idarticulo,articulo,fmsi, descripcion,marca,publico, stock, idsucursal){
+	console.log("ID SUCURSAL PRODUCTO: ", idsucursal);
 	console.log("id Articulo: ", idarticulo);
 	console.log("Codigo: ", articulo);
 	console.log("Fmsi: ", fmsi);
@@ -1615,13 +1628,12 @@ function agregarDetalle(idarticulo,articulo,fmsi, descripcion,marca,publico){
 
 	if (idarticulo!="") {
 		var fila='<tr class="filas" id="fila'+cont+'">'+
-        '<td><button style="width: 40px;" title="Eliminar" type="button" class="btn btn-danger" onclick="eliminarDetalle('+cont+')">X</button></td>'+
-        '<td><input type="hidden" name="idarticulo[]" value="'+idarticulo+'">'+idarticulo+'</td>'+
-		'<td><input type="hidden" name="clave[]" value="'+articulo+'">'+articulo+'</td>'+
+        '<td><button style="width: 40px;" title="Eliminar" type="button" class="btn btn-danger" onclick="eliminarDetalle('+cont+')">X</button></td>'+        
+		'<td><input type="hidden" name="clave[]" value="'+articulo+'"> <input class="form-control" type="hidden" name="idsucursalArticulo[]" value="'+idsucursal+'"> <input class="form-control" type="hidden" name="idarticulo[]" value="'+idarticulo+'">'+articulo+'</td>'+
 		'<td><input type="hidden" name="fmsi[]" id="fmsi[]" value="'+fmsi+'">'+fmsi+'</td>'+
 		'<td><input type="hidden" name="marca[]" id="marca[]" value="'+marca+'">'+marca+'</td>'+
 		'<td><textarea class="form-control" id="descripcion[]" name="descripcion[]"rows="3" style="width: 150px;" value="'+descripcion+'">'+descripcion+'</textarea></td>'+
-        '<td><input style="width: 55px;" type="number" name="cantidad[]" id="cantidad[]" value="'+cantidad+'"></td>'+
+        '<td><input style="width: 55px;" type="number" name="cantidad[]" id="cantidad[]" value="'+cantidad+'" max="'+stock+'" min="1"></td>'+
         '<td><input style="width: 70px;" type="number" name="precio_servicio[]" id="precio_servicio[]" value="'+publico+'"></td>'+
         '<td><input style="width: 70px;" type="number" name="descuento[]" value="'+descuento+'"></td>'+
         '<td><span id="subtotal'+cont+'" name="subtotal">'+publico*cantidad+'</span></td>'+
@@ -1637,7 +1649,7 @@ function agregarDetalle(idarticulo,articulo,fmsi, descripcion,marca,publico){
 	}
 }
 
-function agregarDetalleEdit(idarticulo,articulo,fmsi, marca, descripcion,publico, stock){	
+function agregarDetalleEdit(idarticulo,articulo,fmsi, marca, descripcion,publico, stock, idarticuloSucursal){	
 	stock = 1;
 
 	//console.log("ID ARTICULO: ", idarticulo, "\nCÓDIGO: ", articulo, "\nFMSI: ", fmsi, "\nMARCA: ", marca, "\nDESCRIPCIÓN: ", descripcion, "\nCOSTO: ", publico, "\nCANTIDAD: ", stock);	
@@ -1656,7 +1668,7 @@ function agregarDetalleEdit(idarticulo,articulo,fmsi, marca, descripcion,publico
 			url: "../ajax/servicio.php?op=guardarProductoServicio&idservicios=" + idservicio + "&idArticulo=" + idarticulo + "&codigoArticulo="+articulo
 			+ "&fmsiArticulo="+ fmsi + "&marcaArticulo="+marca + "&descripcionArticulo="+descripcion
 			+ "&costoArticulo="+publico + "&cantidadArticulo="+stock+"&servicioId="+idservicio + "&dateTime=" + today
-			+ "&idcliente=" + idcliente,
+			+ "&idcliente=" + idcliente + "&idarticuloSucursal=" + idarticuloSucursal,
 			type: "POST",			
 		   beforeSend: function() {
 		   },

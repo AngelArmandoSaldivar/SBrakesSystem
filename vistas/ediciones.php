@@ -14,13 +14,13 @@
           </div>
           <div class="form-group col-lg-2 col-md-8 col-xs-12">              
             <a data-toggle="modal" href="#agregarProducto">
-              <button id="btnAgregarArt" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Registrar Producto</button>
+              <button id="btnAgregarArt" type="button" class="btn btn-primary" onclick="cerrarModalEdit()"><span class="fa fa-plus"></span>Registrar Producto</button>
             </a>
           </div>
 
-          <div class="form-group col-lg-2 col-md-8 col-xs-12">              
-            <a data-toggle="modal" href="#agregarProductoAlmacen">
-              <button id="btnAgregarArt" type="button" class="btn btn-primary"><span class="fa fa-search-plus"></span>Buscar en otra sucursal</button>
+          <div class="form-group col-lg-2 col-md-8 col-xs-12">
+            <a data-toggle="modal" href="#myModalProductsAlmacenEdit">
+              <button id="btnAgregarArt" type="button" class="btn btn-primary" onclick="cerrarModalEdit()"><span class="fa fa-search-plus"></span>Buscar en otra sucursal</button>
             </a>
           </div>
 
@@ -233,6 +233,41 @@
 </div>
 
 <!--MODAL PRODUCTOS DE OTRAS SUCURSALES-->
+
+<div class="modal fade" id="myModalProductsAlmacenEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="width: 95% !important;">
+    <div class="modal-content" style="border-radius: 20px;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Seleccionar articulos</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel-body table-responsive">
+          <div class="form-group col-lg-10 col-md-8 col-xs-12">
+            <section>            
+              <center><input class="form-control me-2" type="text" name="busquedaProductAlmacenEdit" id="busquedaProductAlmacenEdit" placeholder="Buscar..." style="width:250px"></center><br><br>
+            </section>
+          </div>
+          <div class="form-group col-lg-2 col-md-8 col-xs-12">              
+            <a data-toggle="modal" href="#agregarProducto">            
+            </a>
+          </div>
+
+          <div class="form-group col-lg-2 col-md-8 col-xs-12">
+            <a data-toggle="modal" href="#myModalProductsEdit">
+              <button id="btnAgregarArt" type="button" class="btn btn-primary" onclick="cerrarSucursalesEdit()"><span class="fa fa-arrow-left"></span> Regresar a mi almacen</button>
+            </a>
+          </div>
+
+          <section id="tabla_resultadoProductoAlmacenEdit"> </section>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="modal fade" id="agregarProductoAlmacen" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="width: 95% !important;">

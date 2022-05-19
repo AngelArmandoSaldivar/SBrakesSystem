@@ -1035,7 +1035,7 @@ function marcarImpuesto(){
 	}
 }
 
-function agregarDetalle(idarticulo,articulo,fmsi, descripcion,costo){
+function agregarDetalle(idarticulo,articulo,fmsi, descripcion,costo, idarticuloSucursal){
 	var cantidad=1;	
 	var descuento = 0;
 
@@ -1045,7 +1045,7 @@ function agregarDetalle(idarticulo,articulo,fmsi, descripcion,costo){
 		var fila='<tr class="filas" id="fila'+cont+'">'+
         '<td><button style="width: 40px;" type="button" class="btn btn-danger" onclick="eliminarDetalle('+cont+')">X</button></td>'+
         '<td><input type="hidden" name="idarticulo[]" value="'+idarticulo+'">'+idarticulo+'</td>'+
-		'<td><input type="hidden" name="clave[]" value="'+articulo+'">'+articulo+'</td>'+
+		'<td><input type="hidden" name="idarticuloSucursal[]" id="idarticuloSucursal[]" value="'+idarticuloSucursal+'"><input type="hidden" name="clave[]" value="'+articulo+'">'+articulo+'</td>'+
 		'<td><input type="hidden" name="fmsi[]" id="fmsi[]" value="'+fmsi+'">'+fmsi+'</td>'+
 		'<td><textarea class="form-control" id="descripcion[]" name="descripcion[]"rows="3" style="width: 150px;" value="'+descripcion+'">'+descripcion+'</textarea></td>'+
         '<td><input style="width: 55px;" type="number" name="cantidad[]" id="cantidad[]" value="'+cantidad+'"></td>'+
@@ -1064,7 +1064,7 @@ function agregarDetalle(idarticulo,articulo,fmsi, descripcion,costo){
 	}
 }
 
-function agregarDetalleEdit(idarticulo,articulo,fmsi, marca, descripcion,publico, stock){	
+function agregarDetalleEdit(idarticulo,articulo,fmsi, marca, descripcion,publico, stock, idarticuloSucursal){	
 	stock = 1;
 	var now = new Date();
 	var day =("0"+now.getDate()).slice(-2);
@@ -1081,7 +1081,8 @@ function agregarDetalleEdit(idarticulo,articulo,fmsi, marca, descripcion,publico
 		$.ajax({
 			url: "../ajax/ingreso.php?op=guardarProductoIngreso&idingreso=" + idingreso + "&idArticulo=" + idarticulo + "&codigoArticulo="+articulo
 			+ "&fmsiArticulo="+ fmsi + "&marcaArticulo="+marca + "&descripcionArticulo="+descripcion
-			+ "&costoArticulo="+publico + "&cantidadArticulo="+stock+ "&idproveedor="+idproveedor + "&dateTime=" + today + "&serieComprobante=" + folio,
+			+ "&costoArticulo="+publico + "&cantidadArticulo="+stock+ "&idproveedor="+idproveedor + "&dateTime=" + today + "&serieComprobante=" + folio
+			+ "&idarticuloSucursal=" + idarticuloSucursal,
 			type: "POST",			
 		   beforeSend: function() {
 		   },

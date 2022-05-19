@@ -30,8 +30,10 @@ if ($_SESSION['almacen']==1) {
   <section>
       <div class="form-group col-lg-4 col-md-6 col-xs-12">
       </div>
-      <div class="form-group col-lg-4 col-md-6 col-xs-12">
-        <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 16px; box-shadow: 5px 5px 8px #3300ff99;"></center>
+      <div class="form-group col-lg-4 col-md-6 col-xs-12" style="position:relative;">
+        <center>
+          <input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 16px; box-shadow: 5px 5px 8px #3300ff99;">          
+        </center>
       </div>
   </section>  
 

@@ -1,7 +1,12 @@
 <?php 
 require_once "../modelos/Consultas.php";
 
+if (strlen(session_id())<1)
+	session_start();
+	$idsucursal = $_SESSION['idsucursal'];
+
 $consulta = new Consultas();
+
 
 switch ($_GET["op"]) {
 	
@@ -38,8 +43,7 @@ switch ($_GET["op"]) {
       $fecha_fin=$_REQUEST["fecha_fin"];
 
       function setInterval($f, $milliseconds)
-      {
-        echo "Hola";
+      {        
         $seconds=(int)$milliseconds/1000;
         while(true)
         {
@@ -85,27 +89,29 @@ switch ($_GET["op"]) {
         echo json_encode($results);
         break;
 
-        case 'kardex':
+        case 'kardex':          
           $fecha_inicio=$_REQUEST["fecha_inicio"];
           $fecha_fin=$_REQUEST["fecha_fin"];
 
           $rspta=$consulta->kardex($fecha_inicio,$fecha_fin);
-          $data=Array();
+          $data=Array();          
 
           while ($reg=$rspta->fetch_object()) {
-            if($reg->estado != 'ANULADO') {
+            if($reg->estado != 'ANULADO' && $reg->idsucursalArticulo == $idsucursal) {             
             $importe = number_format($reg->importe);
             $totalImporte = number_format($reg->importe * $reg->cantidad);
             $data[]=array(
                   "0"=>$reg->fecha,
-                  "1"=>$reg->tipoMov,
-                  "2"=>$reg->folio,
-                  "3"=>$reg->clave,
-                  "4"=>$reg->fmsi,
-                  "5"=>$reg->nombre,
-                  "6"=>($reg->tipoMov=='RECEPCION')?'<center><span class="label bg-green">+'.$reg->cantidad.'</span></center>' : '<center><span class="label bg-red">-'.$reg->cantidad.'</span></center>',
-                  "7"=>"$".$importe,
-                  "8"=>"$".$totalImporte
+                  "1"=>$reg->articuloSucursal,
+                  "2"=>$reg->sucursalVenta,
+                  "3"=>$reg->tipoMov,
+                  "4"=>$reg->folio,
+                  "5"=>$reg->clave,
+                  "6"=>$reg->fmsi,
+                  "7"=>$reg->nombre,
+                  "8"=>($reg->tipoMov=='RECEPCION')?'<center><span class="label bg-green">+'.$reg->cantidad.'</span></center>' : '<center><span class="label bg-red">-'.$reg->cantidad.'</span></center>',
+                  "9"=>"$".$importe,
+                  "10"=>"$".$totalImporte
                     );
             }
           }

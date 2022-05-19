@@ -218,8 +218,7 @@ if ($_SESSION['ventas']==1) {
                   <div class="panel-body table-responsive">
                     <table id="detalles" class="table table-striped table-bordered table-condensed table-hover">
                       <thead style="background-color:#A9D0F5; font-size: 12px;">
-                        <th>Opciones</th>
-                        <th>Código</th>
+                        <th>Opciones</th>                        
                         <th>Clave</th>
                         <th>Fmsi</th>
                         <th>Marca</th>
@@ -230,8 +229,7 @@ if ($_SESSION['ventas']==1) {
                         <th>Subtotal</th>
                         <th>Acciones</th>
                       </thead>
-                      <tfoot style="background-color:#A9D0F5">
-                        <th></th>
+                      <tfoot style="background-color:#A9D0F5">                        
                         <th></th>
                         <th></th>
                         <th></th>
@@ -511,7 +509,7 @@ if ($_SESSION['ventas']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/venta.js"></script>
+ <script src="scripts/ventas.js"></script>
  <?php 
 }
 

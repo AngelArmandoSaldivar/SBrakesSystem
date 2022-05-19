@@ -40,6 +40,8 @@ if ($_SESSION['consultac']==1) {
   <table id="tbllistado" class="table table-striped table-bordered table-condensed table-hover">
     <thead>
       <th>Fecha</th>
+      <th>Almacen</th>
+      <th>Sucursal venta/compra</th>
       <th>Tipo Mov.</th>
       <th>Folio</th>
       <th>Clave</th>
@@ -53,6 +55,8 @@ if ($_SESSION['consultac']==1) {
     </tbody>
     <tfoot>
     <th>Fecha</th>
+      <th>Almacen</th>
+      <th>Sucursal venta/compra</th>
       <th>Tipo Mov.</th>
       <th>Folio</th>
       <th>Clave</th>

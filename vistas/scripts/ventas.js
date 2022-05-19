@@ -832,6 +832,39 @@ $(document).on('keyup', '#busquedaProductEdit', function(){
 	}
 });
 
+
+function almacenEdit(productosEdit){
+
+	var tiposPrecios = document.getElementById("caja_valor").value;
+	
+	$.ajax({
+		url : '../ajax/venta.php?op=listarProductosAlmacenEdit',
+		type : 'POST',
+		dataType : 'html',
+		data : { productosEdit: productosEdit, types: tiposPrecios },
+	})
+	.done(function(resultado){
+		$("#tabla_resultadoProductoAlmacenEdit").html(resultado);
+	})
+}
+
+$(document).on('keyup', '#busquedaProductAlmacenEdit', function(){	
+	var valorBusqueda=$(this).val();
+
+	console.log(valorBusqueda);
+	
+	if (valorBusqueda!="")
+	{	
+		almacenEdit(valorBusqueda);
+	}
+	else
+	{
+		almacenEdit();
+	}
+});
+
+
+
 function obtener_registrosProductos_almacen(productos){		
 
 	var tiposPrecios = document.getElementById("caja_valor").value;
@@ -912,8 +945,17 @@ function cerrarModal() {
 	$("#myModal").modal('hide');
 }
 
+function cerrarModalEdit() {
+	$("#myModalProductsEdit").modal('hide');
+}
+
+
 function regresarMiSucursal() {
 	$("#agregarProductoAlmacen").modal('hide');
+}
+
+function cerrarSucursalesEdit() {
+	$("#myModalProductsAlmacenEdit").modal('hide');
 }
 
 function guardarCliente() {
@@ -1533,7 +1575,9 @@ function marcarImpuesto(){
 	}
 }
 
-function agregarDetalle(idarticulo,articulo,fmsi, marca, descripcion,publico, stock){
+function agregarDetalle(idarticulo,articulo,fmsi, marca, descripcion,publico, stock, idsucursal){
+
+	console.log("ID SUCURSAL: ", idsucursal);
 
 	var cantidad=1;
 	var descuento=0;
@@ -1541,9 +1585,8 @@ function agregarDetalle(idarticulo,articulo,fmsi, marca, descripcion,publico, st
 
 	if (idarticulo!="") {
 		var fila='<tr class="filas" id="fila'+cont+'">'+
-        '<td><button style="width: 40px;" title="Eliminar" type="button" class="btn btn-danger" onclick="eliminarDetalle('+cont+')">X</button></td>'+
-        '<td><input type="hidden" name="idarticulo[]" value="'+idarticulo+'">'+idarticulo+'</td>'+
-		'<td><input type="hidden" name="clave[]" value="'+articulo+'">'+articulo+'</td>'+
+        '<td><button style="width: 40px;" title="Eliminar" type="button" class="btn btn-danger" onclick="eliminarDetalle('+cont+')">X</button></td>'+        
+		'<td><input type="hidden" name="clave[]" value="'+articulo+'"> <input class="form-control" type="hidden" name="idsucursalArticulo[]" value="'+idsucursal+'"> <input class="form-control" type="hidden" name="idarticulo[]" value="'+idarticulo+'">'+articulo+'</td>'+
 		'<td><input type="hidden" name="fmsi[]" id="fmsi[]" value="'+fmsi+'">'+fmsi+'</td>'+
 		'<td><input type="hidden" name="marca[]" id="marca[]" value="'+marca+'">'+marca+'</td>'+
 		'<td><textarea class="form-control" id="descripcion[]" name="descripcion[]"rows="3" style="width: 150px;" value="'+descripcion+'">'+descripcion+'</textarea></td>'+
@@ -1612,7 +1655,7 @@ function eliminarDetalle(indice){
 	detalles=detalles-1;
 }
 
-function agregarDetalleEdit(idarticulo,articulo,fmsi, marca, descripcion,publico, stock){	
+function agregarDetalleEdit(idarticulo,articulo,fmsi, marca, descripcion,publico, stock, idsucursalArticulo){	
 	stock = 1;
 
 	//console.log("ID ARTICULO: ", idarticulo, "\nCÓDIGO: ", articulo, "\nFMSI: ", fmsi, "\nMARCA: ", marca, "\nDESCRIPCIÓN: ", descripcion, "\nCOSTO: ", publico, "\nCANTIDAD: ", stock);	
@@ -1628,7 +1671,7 @@ function agregarDetalleEdit(idarticulo,articulo,fmsi, marca, descripcion,publico
 		$.ajax({
 			url: "../ajax/venta.php?op=guardarProductoVenta&idVenta=" + idVenta + "&idArticulo=" + idarticulo + "&codigoArticulo="+articulo
 			+ "&fmsiArticulo="+ fmsi + "&marcaArticulo="+marca + "&descripcionArticulo="+descripcion
-			+ "&costoArticulo="+publico + "&cantidadArticulo="+stock + "&fecha=" + today + "&idcliente=" + idcliente,
+			+ "&costoArticulo="+publico + "&cantidadArticulo="+stock + "&fecha=" + today + "&idcliente=" + idcliente +"&idsucursalArticulo=" + idsucursalArticulo,
 			type: "POST",			
 		   beforeSend: function() {
 		   },

@@ -10,17 +10,17 @@ public function __construct(){
 }
 
 //metodo insertar registro
-public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$total_servicio,$marca, $modelo, $ano, $color, $kms,$placas,$idarticulo,$clave,$fmsi,$descripcion,$cantidad,$precio_servicio,$descuento, $idsucursal){
+public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$total_servicio,$marca, $modelo, $ano, $color, $kms,$placas,$idarticulo,$clave,$marcaArticulo,$fmsi,$descripcion,$cantidad,$precio_servicio,$descuento, $idsucursal, $idsucursalproducto){
 	$sql="INSERT INTO servicio (idcliente,idusuario,tipo_comprobante,fecha_hora,impuesto,total_servicio,pagado,marca, modelo, ano, color, kms, placas, estado,idsucursal,status) 
 						VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_hora','$impuesto','$total_servicio','0','$marca', '$modelo', '$ano', '$color', '$kms','$placas', 'PENDIENTE', '$idsucursal', 'PENDIENTE')";	
 	 $idservicionew=ejecutarConsulta_retornarID($sql);
 	 $num_elementos=0;
 	 $sw=true;
 	 while ($num_elementos < count($idarticulo)) {
-	 	$sql_detalle="INSERT INTO detalle_servicio (idservicio,idarticulo,clave,fmsi,descripcion,tipoMov,cantidad,precio_servicio,descuento) VALUES('$idservicionew','$idarticulo[$num_elementos]', '$clave[$num_elementos]','$fmsi[$num_elementos]','$descripcion[$num_elementos]','SERVICIO','$cantidad[$num_elementos]','$precio_servicio[$num_elementos]','$descuento[$num_elementos]')";
+	 	$sql_detalle="INSERT INTO detalle_servicio (idservicio,idarticulo,clave,fmsi,descripcion,tipoMov,cantidad,precio_servicio,descuento, marca) VALUES('$idservicionew','$idarticulo[$num_elementos]', '$clave[$num_elementos]','$fmsi[$num_elementos]','$descripcion[$num_elementos]','SERVICIO','$cantidad[$num_elementos]','$precio_servicio[$num_elementos]','$descuento[$num_elementos]', '$marcaArticulo[$num_elementos]')";
 	 	ejecutarConsulta($sql_detalle) or $sw=false;
 
-		 $sql_kardex = "INSERT INTO kardex (fecha_hora, folio, clave, fmsi, idcliente_proveedor, cantidad, importe, tipoMov, estado) VALUES ('$fecha_hora', $idservicionew, '$clave[$num_elementos]', '$fmsi[$num_elementos]', '$idcliente', '$cantidad[$num_elementos]', '$precio_servicio[$num_elementos]', 'SERVICIO', 'ACTIVO')";
+		 $sql_kardex = "INSERT INTO kardex (fecha_hora, folio, clave, fmsi, idcliente_proveedor, cantidad, importe, tipoMov, estado, idsucursalArticulo, idsucursalVenta) VALUES ('$fecha_hora', $idservicionew, '$clave[$num_elementos]', '$fmsi[$num_elementos]', '$idcliente', '$cantidad[$num_elementos]', '$precio_servicio[$num_elementos]', 'SERVICIO', 'ACTIVO', '$idsucursalproducto[$num_elementos]', '$idsucursal')";
 		 ejecutarConsulta($sql_kardex) or $sw=false;
 	 	$num_elementos=$num_elementos+1;
 	 }	
@@ -74,7 +74,7 @@ public function guardarCobro($metodoPago, $banco, $importeCobro, $referenciaCobr
 	return $sw;
 }
 
-public function addProductoServicio($idarticulo,$articulo,$fmsi,$marca,$descripcion,$publico,$stock,$idServicio, $fecha, $idcliente) {
+public function addProductoServicio($idarticulo,$articulo,$fmsi,$marca,$descripcion,$publico,$stock,$idServicio, $fecha, $idcliente, $idsucursalArticulo, $idsucursal) {
 	$bandera = true;
 	$sql = "INSERT INTO detalle_servicio 
 			(idservicio,idarticulo,clave,fmsi,marca, descripcion,tipoMov,cantidad,precio_servicio,descuento) 
@@ -82,8 +82,8 @@ public function addProductoServicio($idarticulo,$articulo,$fmsi,$marca,$descripc
 	ejecutarConsulta($sql);
 	$sql_servicio = "UPDATE servicio SET total_servicio=total_servicio+'$publico' WHERE idservicio='$idServicio'";
 	ejecutarConsulta($sql_servicio);
-	$sql_kardex = "INSERT INTO kardex (fecha_hora, folio, clave, fmsi, idcliente_proveedor, cantidad, importe, tipoMov, estado, idarticulo, idventa) 
-								VALUES ('$fecha', '$idServicio', '$articulo', '$fmsi', '$idcliente', '$stock', '$publico', 'SERVICIO','ACTIVO', '$idarticulo', '$idServicio')";
+	$sql_kardex = "INSERT INTO kardex (fecha_hora, folio, clave, fmsi, idcliente_proveedor, cantidad, importe, tipoMov, estado, idarticulo, idventa, idsucursalArticulo, idsucursalVenta) 
+								VALUES ('$fecha', '$idServicio', '$articulo', '$fmsi', '$idcliente', '$stock', '$publico', 'SERVICIO','ACTIVO', '$idarticulo', '$idServicio', '$idsucursalArticulo', '$idsucursal')";
 	ejecutarConsulta($sql_kardex);
 	sleep(1);
 	return $bandera;
@@ -187,7 +187,7 @@ public function mostrarInfoAuto($idauto){
 
 //Lista los articulos de la servicio
 public function listarDetalle($idservicio){
-	$sql="SELECT dv.idservicio,dv.idarticulo,a.codigo,dv.cantidad,dv.fmsi, dv.descripcion,dv.precio_servicio,dv.descuento,(dv.cantidad*dv.precio_servicio-dv.descuento) as subtotal FROM detalle_servicio dv INNER JOIN articulo a ON dv.idarticulo=a.idarticulo WHERE dv.idservicio='$idservicio' AND dv.estado='0'";
+	$sql="SELECT dv.idservicio,dv.idarticulo,a.codigo,dv.cantidad,dv.fmsi, dv.descripcion,dv.precio_servicio,dv.descuento,(dv.cantidad*dv.precio_servicio-dv.descuento) as subtotal, dv.marca FROM detalle_servicio dv INNER JOIN articulo a ON dv.idarticulo=a.idarticulo WHERE dv.idservicio='$idservicio' AND dv.estado='0'";
 	return ejecutarConsulta($sql);
 }
 

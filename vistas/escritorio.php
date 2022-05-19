@@ -102,8 +102,6 @@ if ($_SESSION['escritorio']==1) {
   </div>
 </div> -->
 
-<div class="shadow p-3 mb-5 bg-body rounded">Regular shadow</div>
-
 <div class="col-lg-3 col-xs-6 shadow p-3 mb-5 bg-body rounded">
   <div class="small-box bg-red">    
     <div class="inner">
@@ -244,16 +242,6 @@ if ($_SESSION['escritorio']==1) {
 
 <div class="panel-body">
 
-<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-  <div class="box box-primary">
-    <div class="box-header with-border">
-      Productos más vendidos sección ventas
-    </div>
-    <div class="box-body">
-      <canvas id="ventasProductos" width="400" height="300"></canvas>
-    </div>
-  </div>
-</div>
 
 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
   <div class="box box-primary">
@@ -277,6 +265,7 @@ if ($_SESSION['escritorio']==1) {
   </div>
 </div>
 
+
 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
   <div class="box box-primary">
     <div class="box-header with-border">
@@ -284,6 +273,17 @@ if ($_SESSION['escritorio']==1) {
     </div>
     <div class="box-body">
       <canvas id="productosMasVendidos" width="400" height="300"></canvas>      
+    </div>
+  </div>
+</div>
+
+<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+  <div class="box box-primary">
+    <div class="box-header with-border">
+      Productos más vendidos sección ventas
+    </div>
+    <div class="box-body">
+      <canvas id="ventasProductos" width="400" height="300"></canvas>
     </div>
   </div>
 </div>
@@ -308,6 +308,52 @@ require 'footer.php';
  <script src="../public/js/Chart.bundle.min.js"></script>
  <script src="../public/js/Chart.min.js"></script>
  <script>
+   var ctx = document.getElementById("compras").getContext('2d');
+var compras = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: [<?php echo $fechasc ?>],
+        datasets: [{
+            label: '# Compras en $ de los últimos 10 dias',
+            data: [<?php echo $totalesc ?>],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+
     var ctx = document.getElementById("ventasProductos").getContext('2d');
     var compras = new Chart(ctx, {
         type: 'bar',
