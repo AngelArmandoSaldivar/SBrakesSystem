@@ -25,7 +25,7 @@ if ($_SESSION['compras']==1) {
             <div class="panel-body table-responsive" id="listadoregistros">
               <section>
                 <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                  <button title="Agregar recepción" class="btn btn-success" onclick="agregarRecepcion()"><i class="fa fa-plus-circle"></i> Agregar Nuevo</button>
+                  <button title="Registrar" id="btnagregarservicio" data-toggle='popover' data-trigger='hover' data-content='Registrar nueva recepción' data-placement='right' class='btn btn-success' onclick="agregarRecepcion()"><i class="fa fa-plus-circle"></i> Agregar Nuevo</button>
                 </div>
                 <div class="form-group col-lg-4 col-md-6 col-xs-12">
                   <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;"></center>
@@ -72,9 +72,9 @@ if ($_SESSION['compras']==1) {
             <div class="form-group col-lg-12 col-md-6 col-xs-12">
               <nav aria-label="Page navigation example" style="text-align:right; margin-right:5px">
                 <ul class="pagination">
-                  <input type="button" class="btn btn-primary me-md-2" value="Anterior" id="anterior" name="anterior" onclick="paginaAnterior();">
-                    <li class="page-item"><input type="submit" id="pagina" class="btn btn-primary me-md-2" name="pagina" value="1" onclick="paginasClick(<?php echo $i;?>)"></li>
-                  <input type="submit" class="btn btn-primary me-md-2" value="Siguiente" id="siguiente" name="siguiente" onclick="paginaSiguiente()">
+                  <input type="button" title="Anterior" data-toggle='popover' data-trigger='hover' data-content='Pagina anterior' data-placement='top' class='btn btn-primary me-md-2' value="Anterior" id="anterior" name="anterior" onclick="paginaAnterior();">
+                  <li class="page-item"><input title="Pagina" data-toggle='popover' data-trigger='hover' data-content='Pagina actual' data-placement='top' class='btn btn-primary me-md-2' type="submit" id="pagina" name="pagina" value="1" onclick="paginasClick(<?php echo $i;?>)"></li>
+                  <input type="submit" title="Siguiente" data-toggle='popover' data-trigger='hover' data-content='Pagina siguiente' data-placement='top' class='btn btn-primary me-md-2' value="Siguiente" id="siguiente" name="siguiente" onclick="paginaSiguiente()">                
                 </ul>
               </nav>
             </div>
@@ -237,18 +237,26 @@ if ($_SESSION['compras']==1) {
         </div>
         <div class="modal-body">
         <div class="modal-body">        
-          <div class="panel-body table-responsive">            
-            <div class="form-group col-lg-10 col-md-8 col-xs-12">
-              <section>            
-                <center><input class="form-control me-2" type="text" name="busquedaProduct" id="busquedaProduct" placeholder="Buscar..." style="width:250px"></center><br><br>
-              </section>
-            </div>     
-            <div class="form-group col-lg-2 col-md-8 col-xs-12">              
-              <a data-toggle="modal" href="#agregarProducto">
-                <button id="btnAgregarArt" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Registrar Producto</button>
-              </a>
-            </div>       
-            <section id="tabla_resultadoProducto"> </section>
+          <div class="panel-body table-responsive">   
+
+          <div class="form-group col-lg-4 col-md-8 col-xs-12">
+          </div>      
+
+          <div class="form-group col-lg-4 col-md-8 col-xs-12">
+            <section>            
+              <center><input class="form-control me-2" type="text" name="busquedaProduct" id="busquedaProduct" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;"></center><br><br>
+            </section>
+          </div>     
+          <div class="form-group col-lg-4 col-md-8 col-xs-12" style="text-align:right">              
+            <a data-toggle="modal" href="#agregarProducto">
+              <button id="btnAgregarArt" type="button" class="btn btn-primary" onclick="cerrarModal()"><span class="fa fa-plus"></span>Registrar Producto</button>
+            </a>
+          </div>       
+            <div id="global">
+              <div id="tablaResultadosModal">
+                <section id="tabla_resultadoProducto"> </section>
+              </div>
+            </div>
           </div>
         </div>
         </div>
@@ -401,7 +409,7 @@ if ($_SESSION['compras']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/ingresos.js"></script>
+ <script src="scripts/recepciones.js"></script>
  <?php 
 }
 

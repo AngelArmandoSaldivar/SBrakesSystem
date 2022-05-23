@@ -801,7 +801,6 @@ $(document).on('keyup', '#busquedaProduct', function(){
 	}
 });
 
-
 function obtener_registrosProductosEdit(productosEdit){
 
 	var tiposPrecios = document.getElementById("caja_valor").value;
@@ -863,8 +862,6 @@ $(document).on('keyup', '#busquedaProductAlmacenEdit', function(){
 	}
 });
 
-
-
 function obtener_registrosProductos_almacen(productos){		
 
 	var tiposPrecios = document.getElementById("caja_valor").value;
@@ -892,6 +889,19 @@ $(document).on('keyup', '#busquedaProductAlmacen', function(){
 		obtener_registrosProductos_almacen();
 	}
 });
+
+setInterval(() => {	
+	let productos = document.getElementById("busquedaProduct").value;		
+	let productosEdit = document.getElementById("busquedaProductEdit").value;
+	let productosAlmacenEdit = document.getElementById("busquedaProductAlmacenEdit").value;
+	let productosAlmacen = document.getElementById("busquedaProductAlmacen").value;
+	
+	obtener_registrosProductos(productos);
+	obtener_registrosProductosEdit(productosEdit);
+	almacenEdit(productosAlmacenEdit);
+	obtener_registrosProductos_almacen(productosAlmacen);
+
+}, 5000);
 
 //funcion para guardaryeditar
 function guardaryeditar(e){
@@ -1256,8 +1266,9 @@ function infoPago() {
 	});	
 }
 
-function mostrarPagoEdit(idpago) {
-	let idventa = document.getElementById("idventa").value;
+function mostrarPagoEdit(idpago) {	
+
+	let idventa = document.getElementById("idventa").value;	
 	$.post("../ajax/venta.php?op=mostrar",{idventa : idventa},
 	function(data,status)
 	{
@@ -1584,17 +1595,17 @@ function agregarDetalle(idarticulo,articulo,fmsi, marca, descripcion,publico, st
 	var sub = document.getElementsByName("subtotal");
 
 	if (idarticulo!="") {
-		var fila='<tr class="filas" id="fila'+cont+'">'+
-        '<td><button style="width: 40px;" title="Eliminar" type="button" class="btn btn-danger" onclick="eliminarDetalle('+cont+')">X</button></td>'+        
+		var fila='<tr style="font-size:12px" class="filas" id="fila'+cont+'">'+
+        '<td><button style="width: 40px;" title="Eliminar" type="button" class="btn btn-danger btn-xs" onclick="eliminarDetalle('+cont+')">X</button></td>'+        
 		'<td><input type="hidden" name="clave[]" value="'+articulo+'"> <input class="form-control" type="hidden" name="idsucursalArticulo[]" value="'+idsucursal+'"> <input class="form-control" type="hidden" name="idarticulo[]" value="'+idarticulo+'">'+articulo+'</td>'+
 		'<td><input type="hidden" name="fmsi[]" id="fmsi[]" value="'+fmsi+'">'+fmsi+'</td>'+
 		'<td><input type="hidden" name="marca[]" id="marca[]" value="'+marca+'">'+marca+'</td>'+
-		'<td><textarea class="form-control" id="descripcion[]" name="descripcion[]"rows="3" style="width: 150px;" value="'+descripcion+'">'+descripcion+'</textarea></td>'+
+		'<td><textarea class="form-control" id="descripcion[]" name="descripcion[]" rows="2" style="width: 280px;" value="'+descripcion+'">'+descripcion+'</textarea></td>'+
         '<td><input style="width: 55px;" type="number" name="cantidad[]" id="cantidad[]" value="'+cantidad+'" max="'+stock+'" min="1"></td>'+		
         '<td><input style="width: 70px;" type="number" name="precio_venta[]" id="precio_venta[]" value="'+publico+'"></td>'+
         '<td><input style="width: 70px;" type="number" name="descuento[]" value="'+descuento+'"></td>'+
         '<td><span id="subtotal'+cont+'" name="subtotal" value="'+sub+'"></span></td>'+
-        '<td><button type="button" title="Actualizar" onclick="modificarSubtotales()" class="btn btn-info"><i class="fa fa-refresh"></i></button></td>'+
+        '<td><button type="button" title="Actualizar" onclick="modificarSubtotales()" class="btn btn-info btn-xs" style="width: 40px;"><i class="fa fa-refresh"></i></button></td>'+
 		'</tr>';
 		cont++;
 		detalles++;

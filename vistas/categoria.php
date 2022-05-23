@@ -28,7 +28,7 @@ if ($_SESSION['almacen']==1) {
 
     <div class="panel-body table-responsive" id="listadoregistros">
     <div class="form-group col-lg-4 col-md-6 col-xs-12">
-    <button class="btn btn-success" title="Agregar nueva categoria" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i> Agregar Nuevo</button></h1>
+    <button title="Registrar" id="btnagregarservicio" data-toggle='popover' data-trigger='hover' data-content='Registrar nueva categoria' data-placement='right' class='btn btn-success' onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i> Agregar Nuevo</button></h1>
     </div>
     <div class="form-group col-lg-4 col-md-6 col-xs-12">
     <section>
@@ -75,7 +75,7 @@ if ($_SESSION['almacen']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/categorias.js"></script>
+ <script src="scripts/categoria.js"></script>
  <?php 
 }
 

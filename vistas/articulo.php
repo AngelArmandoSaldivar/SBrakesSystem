@@ -30,7 +30,7 @@ if ($_SESSION['almacen']==1) {
 <div class="table-responsive" id="table-search">
   <section>
       <div class="form-group col-lg-4 col-md-6 col-xs-12">
-      <button class="btn btn-success" title="Agregar nuevo articulo" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i> Agregar Nuevo</button></h1>
+      <button title="Registrar" id="btnagregarservicio" data-toggle='popover' data-trigger='hover' data-content='Registrar nueva articulo' data-placement='bottom' class='btn btn-success' title="Agregar nuevo articulo" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i> Agregar Nuevo</button></h1>
       </div>
       <div class="form-group col-lg-4 col-md-6 col-xs-12" style="position:relative;">
         <center>
@@ -49,7 +49,7 @@ if ($_SESSION['almacen']==1) {
   <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
   <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>  
   <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">
-    <button class="btn btn-success" title="Exportar articulos a excel" onclick="exportarExcel()"><i class="fa fa-file-excel-o"></i> Exportar a Excel</button>
+    <button title="Exportar" id="btnagregarservicio" data-toggle='popover' data-trigger='hover' data-content='Exportar articulos a Excel' data-placement='right' class='btn btn-success' title="Agregar nuevo articulo" onclick="exportarExcel()"><i class="fa fa-file-excel-o"></i> Exportar a Excel</button>
   </div>
   <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div> 
   <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">
@@ -64,17 +64,17 @@ if ($_SESSION['almacen']==1) {
   </div>  
 
   <div id="global">
-  <div id="tablaResultados">
-    <section id="tabla_resultado"></section>
-  </div>
+    <div id="tablaResultados">
+      <section id="tabla_resultado"></section>
+    </div>
   </div>
     
   <div class="form-group col-lg-12 col-md-6 col-xs-12">
     <nav aria-label="Page navigation example" style="text-align:right; margin-right:5px">
       <ul class="pagination">
-        <input type="button" class="btn btn-primary me-md-2" value="Anterior" id="anterior" name="anterior" onclick="paginaAnterior();">
-          <li class="page-item"><input type="submit" id="pagina" class="btn btn-primary me-md-2" name="pagina" value="1" onclick="paginasClick(<?php echo $i;?>)"></li>
-        <input type="submit" class="btn btn-primary me-md-2" value="Siguiente" id="siguiente" name="siguiente" onclick="paginaSiguiente()">
+        <input type="button" title="Anterior" data-toggle='popover' data-trigger='hover' data-content='Pagina anterior' data-placement='top' class='btn btn-primary me-md-2' value="Anterior" id="anterior" name="anterior" onclick="paginaAnterior();">
+        <li class="page-item"><input title="Pagina" data-toggle='popover' data-trigger='hover' data-content='Pagina actual' data-placement='top' class='btn btn-primary me-md-2' type="submit" id="pagina" name="pagina" value="1" onclick="paginasClick(<?php echo $i;?>)"></li>
+        <input type="submit" title="Siguiente" data-toggle='popover' data-trigger='hover' data-content='Pagina siguiente' data-placement='top' class='btn btn-primary me-md-2' value="Siguiente" id="siguiente" name="siguiente" onclick="paginaSiguiente()">                
       </ul>
     </nav>
   </div>

@@ -16,20 +16,33 @@ if ($_SESSION['compras']==1) {
       <!-- Default box -->
       <div class="row">
         <div class="col-md-12">
-      <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
-<div class="box-header with-border">
-  <h1 class="box-title">Proveedor <button title="Agregar nuevo proveedor" class="btn btn-success" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
-  <div class="box-tools pull-right">
-    
-  </div>
-</div>
+          <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
+            <div class="box-header with-border">
+              <center><h1 class="box-title">Proveedor </h1></center>
+            <div class="box-tools pull-right">
+          </div>
+        </div>
 <!--box-header-->
 <!--centro-->
 <div class="panel-body table-responsive" id="listadoregistros">
-    <section>
-      <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 16px; box-shadow: 5px 5px 8px #3300ff99;"></center><br><br>
-    </section>            
-    <section id="tabla_resultado"></section>
+   <div class="form-group col-lg-4 col-md-6 col-xs-12">
+      <button title="Registrar" id="btnagregarservicio" data-toggle='popover' data-trigger='hover' data-content='Registrar nuevo proveedor' data-placement='right' class='btn btn-success' onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i> Agregar Nuevo</button>
+    </div>
+    <div class="form-group col-lg-4 col-md-6 col-xs-12" style="position:relative;">
+      <section>
+        <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;"></center><br><br>
+      </section>        
+    </div>     
+    <div class="form-group col-lg-4 col-md-6 col-xs-12">
+      <div class="loaderSearch">
+        <img src="../files/images/loader.gif" alt="" width="35px">
+      </div>
+    </div>
+    <div id="global">
+      <div id="tablaResultados">
+        <section id="tabla_resultado"></section>
+      </div>
+    </div>
 </div>
 <div class="panel-body" style="height: 400px;" id="formularioregistros">
   <form action="" name="formulario" id="formulario" method="POST">
@@ -77,7 +90,7 @@ if ($_SESSION['compras']==1) {
 }
 require 'footer.php';
  ?>
- <script src="scripts/proveedores.js"></script>
+ <script src="scripts/proveedor.js"></script>
  <?php 
 }
 

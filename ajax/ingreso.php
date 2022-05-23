@@ -492,8 +492,7 @@ switch ($_GET["op"]) {
 					}
 					$consultaBD=$conexion->query($consulta);
 					if($consultaBD->num_rows>=1){
-						echo "
-						<div id='container'>
+						echo "						
 						<table class='responsive-table table table-hover table-bordered' style='font-size:12px'>
 							<thead class='table-light'>
 								<tr>
@@ -568,8 +567,7 @@ switch ($_GET["op"]) {
 								<th class='bg-info' scope='col'>Acciones</th>
 							</tr>
 						</tfoot>
-						</table>
-						</div>";
+						</table>";
 					}else{
 						echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";						
 						echo "<br><br>";

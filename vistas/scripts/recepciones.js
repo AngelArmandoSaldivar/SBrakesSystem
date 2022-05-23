@@ -722,8 +722,16 @@ $(document).on('keyup', '#busquedaProduct', function(){
 	}
 });
 
-function obtener_registrosProductosEdit(productosEdit){	
-	
+setInterval(() => {
+	let producto = document.getElementById("busquedaProduct").value;
+	obtener_registrosProductos(producto);
+}, 5000);
+
+function cerrarModal() {
+	$("#myModal").modal('hide');
+}
+
+function obtener_registrosProductosEdit(productosEdit){		
 	$.ajax({
 		url : '../ajax/ingreso.php?op=listarProductosEdit',
 		type : 'POST',
@@ -1047,7 +1055,7 @@ function agregarDetalle(idarticulo,articulo,fmsi, descripcion,costo, idarticuloS
         '<td><input type="hidden" name="idarticulo[]" value="'+idarticulo+'">'+idarticulo+'</td>'+
 		'<td><input type="hidden" name="idarticuloSucursal[]" id="idarticuloSucursal[]" value="'+idarticuloSucursal+'"><input type="hidden" name="clave[]" value="'+articulo+'">'+articulo+'</td>'+
 		'<td><input type="hidden" name="fmsi[]" id="fmsi[]" value="'+fmsi+'">'+fmsi+'</td>'+
-		'<td><textarea class="form-control" id="descripcion[]" name="descripcion[]"rows="2" style="width: 280px;" value="'+descripcion+'">'+descripcion+'</textarea></td>'+
+		'<td><textarea class="form-control" id="descripcion[]" name="descripcion[]" rows="2" style="width: 280px;" value="'+descripcion+'">'+descripcion+'</textarea></td>'+
         '<td><input style="width: 55px;" type="number" name="cantidad[]" id="cantidad[]" value="'+cantidad+'"></td>'+
         '<td><input style="width: 70px;" type="number" name="precio_compra[]" id="precio_compra[]" value="'+costo+'"></td>'+
         '<td><input style="width: 70px;" type="number" name="descuento[]" value="'+descuento+'"></td>'+

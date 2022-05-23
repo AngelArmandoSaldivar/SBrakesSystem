@@ -88,27 +88,22 @@ switch ($_GET["op"]) {
 								<td><p>".$fila['login']."</td>
 								<td><p>".$fila['acceso']."</td>
 								<td><p>".$status."</td>
-								<td>
-									<div class='emergente'>
-										<span data-tooltip='Mostrar usuario'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idusuario"].")'><i class='fa fa-eye'></i></button></span>
-										<span data-tooltip='Eliminar usuario'><button class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idusuario"].")'><i class='fa fa-close'></i></button></span>										
-									</div>
+								<td>									
+									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar usuario' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idusuario"].")'><i class='fa fa-eye'></i></button>
+									<button title='Eliminar' data-toggle='popover' data-trigger='hover' data-content='Eliminar usuario' data-placement='top' class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idusuario"].")'><i class='fa fa-close'></i></button>
 								</td>
 							</tr>
 							";
 					} else {						
-						echo "<tr>								
+						echo "<tr>
 								<td>".$fila['nombre']."</td>
 								<td>".$fila['telefono']."</td>
 								<td><p>".$fila['email']."</td>
 								<td><p>".$fila['login']."</td>
 								<td><p>".$fila['acceso']."</td>
 								<td><p>".$fila["condicion"] = 0 ? 'ACTIVO' : 'INACTIVO'."</td>
-								<td>
-									<div class='emergente'>
-										<span data-tooltip='Mostrar usuario'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idusuario"].")'><i class='fa fa-eye'></i></button></span>										
-										<span data-tooltip='Activar usuario'><button class='btn btn-primary btn-xs' onclick='activar(".$fila["idusuario"].")'><i class='fa fa-check'></i></button></span>
-									</div>
+								<td>									
+									<button title='Activar' data-toggle='popover' data-trigger='hover' data-content='Activar usuario' data-placement='top' class='btn btn-primary btn-xs' onclick='activar(".$fila["idusuario"].")'><i class='fa fa-check'></i></button>																			
 								</td>
 							</tr>
 							";

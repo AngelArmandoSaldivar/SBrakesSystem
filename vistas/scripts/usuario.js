@@ -22,6 +22,12 @@ $.post("../ajax/usuario.php?op=selectSucursal", function(r){
 });
 }
 
+function activarPopover() {
+	$(function () {
+		$('[data-toggle="popover"]').popover()		
+	})
+}
+
 //funcion limpiar
 function limpiar(){
 	$("#nombre").val("");    
@@ -71,6 +77,7 @@ function obtener_registros(usuarios){
 	)
 	.done(function(resultado){
 		$("#tabla_resultado").html(resultado);
+		activarPopover();
 	})
 }
 
@@ -193,6 +200,5 @@ function activar(idusuario){
 		  }
 		})
 }
-
 
 init();

@@ -9,7 +9,7 @@
         <div class="panel-body table-responsive">
           <div class="form-group col-lg-10 col-md-8 col-xs-12">
             <section>            
-              <center><input class="form-control me-2" type="text" name="busquedaProductEdit" id="busquedaProductEdit" placeholder="Buscar..." style="width:250px"></center><br><br>
+              <center><input class="form-control me-2" type="text" name="busquedaProductEdit" id="busquedaProductEdit" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;"></center><br><br>
             </section>
           </div>
           <div class="form-group col-lg-2 col-md-8 col-xs-12">              
@@ -20,11 +20,14 @@
 
           <div class="form-group col-lg-2 col-md-8 col-xs-12">
             <a data-toggle="modal" href="#myModalProductsAlmacenEdit">
-              <button id="btnAgregarArt" type="button" class="btn btn-primary" onclick="cerrarModalEdit()"><span class="fa fa-search-plus"></span>Buscar en otra sucursal</button>
+              <button id="btnAgregarArt" type="button" class="btn btn-primary" onclick="cerrarModalEdit()"><span class="fa fa-search-plus"></span>Buscar en otro almacen</button>
             </a>
           </div>
-
-          <section id="tabla_resultadoProductoEdit"> </section>
+          <div id="global">
+            <div id="tablaResultadosModal">
+              <section id="tabla_resultadoProductoEdit"> </section>
+            </div>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -80,7 +83,12 @@
     <div class="modal-content" style="border-radius: 20px;">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Editar producto</h4>
+        <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
+          <h4 class="modal-title">Editar producto</h4>
+        </div>
+        <div class="form-group col-lg-6 col-md-2 col-xs-6" id="divImpuesto">
+          <input class="form-control" type="text" id="claveProduct" name="claveProduct" style="border:none; background-color:transparent; color:black"></input>
+        </div>
       </div>
       <!--<div class="modal-body">-->
       <form action="" name="formularioProductoServicio" id="formularioProductoServicio" method="POST">
@@ -160,7 +168,7 @@
     <div class="modal-content" style="border-radius: 20px;">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Añadir método de pago</h4>
+        <h4 class="modal-title">Método pago</h4>
       </div>
       <div class="panel-body table-responsive">
         <div class="form-group col-lg-3 col-md-2 col-xs-6" id="">
@@ -245,7 +253,7 @@
         <div class="panel-body table-responsive">
           <div class="form-group col-lg-10 col-md-8 col-xs-12">
             <section>            
-              <center><input class="form-control me-2" type="text" name="busquedaProductAlmacenEdit" id="busquedaProductAlmacenEdit" placeholder="Buscar..." style="width:250px"></center><br><br>
+              <center><input class="form-control me-2" type="text" name="busquedaProductAlmacenEdit" id="busquedaProductAlmacenEdit" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;"></center><br><br>
             </section>
           </div>
           <div class="form-group col-lg-2 col-md-8 col-xs-12">              
@@ -258,8 +266,11 @@
               <button id="btnAgregarArt" type="button" class="btn btn-primary" onclick="cerrarSucursalesEdit()"><span class="fa fa-arrow-left"></span> Regresar a mi almacen</button>
             </a>
           </div>
-
-          <section id="tabla_resultadoProductoAlmacenEdit"> </section>
+          <div id="global">
+            <div id="tablaResultadosModal">
+              <section id="tabla_resultadoProductoAlmacenEdit"> </section>
+            </div>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -280,7 +291,7 @@
           <div class="panel-body table-responsive">
             <div class="form-group col-lg-10 col-md-8 col-xs-12">
               <section>
-                <center><input class="form-control me-2" type="text" name="busquedaProductAlmacen" id="busquedaProductAlmacen" placeholder="Buscar..." style="width:250px"></center><br><br>
+                <center><input class="form-control me-2" type="text" name="busquedaProductAlmacen" id="busquedaProductAlmacen" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;"></center><br><br>
               </section>
             </div>
             <div class="form-group col-lg-2 col-md-8 col-xs-12">              
@@ -288,8 +299,12 @@
               <button id="btnAgregarArt" type="button" class="btn btn-primary" onclick="regresarMiSucursal()"><span class="fa fa-arrow-left"></span> Regresar a mi almacen</button>
             </a>
           </div>
+          <div id="global">
+            <div id="tablaResultadosModal">
+              <section id="tabla_resultadoProducto_almacen"> </section>
+            </div> 
+          </div> 
 
-            <section id="tabla_resultadoProducto_almacen"> </section>
           </div>
         </div>
         <div class="modal-footer">

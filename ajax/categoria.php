@@ -60,11 +60,9 @@ switch ($_GET["op"]) {
 						echo "<tr>
 								<td>".$fila['nombre']."</td>
 								<td>".$fila['descripcion']."</td>
-								<td>
-									<div class='emergente'>
-										<span data-tooltip='Editar categoria'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idcategoria"].")'><i class='fa fa-pencil'></i></button></span> 
-										<span data-tooltip='Eliminar categoria'><button class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idcategoria"].")')><i class='fa fa-close'></i></button></span>										
-									</div>
+								<td>							
+									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar categoria' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idcategoria"].")'><i class='fa fa-pencil'></i></button>
+									<button title='Eliminar' data-toggle='popover' data-trigger='hover' data-content='Desactivar categoria' data-placement='top' class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idcategoria"].")')><i class='fa fa-close'></i></button>									
 								</td>
 							</tr>";
 					} else {
@@ -73,8 +71,7 @@ switch ($_GET["op"]) {
 								<td>".$fila['descripcion']."</td>
 								<td>
 									<div class='emergente'>
-										<span data-tooltip='Editar categoria'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idcategoria"].")'><i class='fa fa-pencil'></i></button></span> 										
-										<span data-tooltip='Activar categoria'><button class='btn btn-primary btn-xs' onclick='activar(".$fila["idcategoria"].")'><i class='fa fa-check'></i></button></span>
+										<button title='Activar' data-toggle='popover' data-trigger='hover' data-content='Activar categoria' data-placement='top' class='btn btn-primary btn-xs' onclick='activar(".$fila["idcategoria"].")'><i class='fa fa-check'></i></button></span>
 									</div>
 								</td>
 							</tr>";

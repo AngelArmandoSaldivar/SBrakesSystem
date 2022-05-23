@@ -1,6 +1,7 @@
  <?php 
 if (strlen(session_id())<1) 
   session_start();
+  require "../config/Conexion.php";
 
   ?>
  <!DOCTYPE html>
@@ -14,7 +15,7 @@ if (strlen(session_id())<1)
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="../public/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../public/css/styless.css">
+  <link rel="stylesheet" href="../public/css/styleCSS.css">
   <!-- Font Awesome -->
 
   <link rel="stylesheet" href="../public/css/font-awesome.min.css">
@@ -69,8 +70,8 @@ if (strlen(session_id())<1)
         <span class="logo-mini"><b>B1S</b> Sys</span>
         <!-- logo for regular state and mobile devices -->      
           <img src="../files/images/MainLogo.png" alt="" width="130px" style="box-shadow: -13px 10px 22px black;">      
-      </a>
-    </div>
+      </a>      
+    </div>    
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top" >
       <!-- Sidebar toggle button-->
@@ -78,9 +79,8 @@ if (strlen(session_id())<1)
         <span class="sr-only">NAVEGACIÓN</span>
       </a>
 
-      <div class="navbar-custom-menu">
-        <ul class="nav navbar-nav">
-
+      <div class="navbar-custom-menu">        
+        <ul class="nav navbar-nav">    
           <li class="dropdown user user-menu" style="border-radius: 5px">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">              
               <span class="hidden-xs"><?php echo $_SESSION['nombre']; ?></span>
@@ -116,8 +116,16 @@ if (strlen(session_id())<1)
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree" style="">
-
-<br>
+      <?php 
+        $idsucursal = $_SESSION['idsucursal'];
+        $sql="SELECT * FROM sucursal WHERE idsucursal='$idsucursal'";
+        $result = ejecutarConsulta($sql);
+        while($row = $result->fetch_assoc()) {
+          echo '<div style="text-align:center">';
+          echo "<h4  style='font-family: ui-serif; color:black; font-size:16px'> Sucursal: ".$row["nombre"]."</h4>";
+          echo '</div>';
+        }
+       ?>     
        <?php 
 if ($_SESSION['escritorio']==1) {
   echo ' <li><a href="escritorio.php"><i class="fa  fa-dashboard (alias)"></i> <span>Escritorio</span></a>
@@ -222,37 +230,6 @@ if ($_SESSION['sucursal']==1) {
         </li>';
 }
         ?> 
-                                     <?php 
-if ($_SESSION['consultac']==1) {
-  echo '     <li class="treeview">
-          <a href="#">
-            <i class="fa fa-bar-chart"></i> <span>Consulta Compras</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="comprasfecha.php"><i class="fa fa-circle-o"></i>Compras por fechas</a></li>
-          </ul>
-        </li>';
-}
-        ?>  
-                                                <?php 
-if ($_SESSION['consultav']==1) {
-  echo '<li class="treeview">
-          <a href="#">
-            <i class="fa fa-bar-chart"></i> <span>Consulta Ventas</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="ventasfechacliente.php"><i class="fa fa-circle-o"></i> Consulta Ventas</a></li>
-
-          </ul>
-        </li>';
-}
-        ?>     
             
         
         <!-- <li><a href="#"><i class="fa fa-question-circle"></i> <span>Ayuda</span><small class="label pull-right bg-yellow">PDF</small></a></li>

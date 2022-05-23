@@ -20,69 +20,62 @@ if ($_SESSION['servicios']==1) {
       <div class="col-md-12">
         <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
           <div class="box-header with-border">
-            <h1 class="box-title">Servicios <button title="Agregar nuevo servicio"  id="btnagregarservicio" class="btn btn-success" onclick="crearServicio()"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
+            <center><h1 class="box-title">Servicios </h1></center>
           <div class="box-tools pull-right"></div>          
           <div class="panel-body table-responsive" id="listadoregistros">
             <section>
               <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                <button title="Registrar"  id="btnagregarservicio" title='Editar' data-toggle='popover' data-trigger='hover' data-content='Registrar nuevo servicio' data-placement='right' class='btn btn-success' onclick="crearServicio()"><i class="fa fa-plus-circle"></i> Agregar Nuevo</button>
               </div>
               <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 16px; box-shadow: 5px 5px 8px #3300ff99;"></center>
+                <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;"></center>
               </div>
             </section>
-
             <div class="form-group col-lg-4 col-md-6 col-xs-12">
               <div class="loaderSearch">
                 <img src="../files/images/loader.gif" alt="" width="35px">
               </div>
-            </div>            
-
+            </div>
             <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
               <label>Fecha Inicio</label>
               <input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" value="">
             </div>
-
-          <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <label>Fecha Fin</label>
-            <input type="date" class="form-control" name="fecha_fin" id="fecha_fin" value="">
-          </div>
-
+            <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <label>Fecha Fin</label>
+              <input type="date" class="form-control" name="fecha_fin" id="fecha_fin" value="">
+            </div>
           <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
           <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
           <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">
-            <select name="limite_registros" id="limite_registros" class="form-control selectpicker">
+            <select name="limite_registros" id="limite_registros" class="form-control selectpicker" >
               <option value="" disabled selected>Seleccionar limite</option>                  
-              <option value="5">50 / Registros</option>
-              <option value="10">100 / Registros</option>
-              <option value="20">200 / Registros</option>
-              <option value="50">500 / Registros</option>
-              <option value="100">1000 / Registros</option>
+              <option value="50">50 / Registros</option>
+              <option value="100">100 / Registros</option>
+              <option value="200">200 / Registros</option>
+              <option value="500">500 / Registros</option>
+              <option value="1000">1000 / Registros</option>
             </select>
           </div>
-
-          <br><br><br>
-          
-          <section id="tabla_resultado">                
-          </section>
-
+          <div id="global">
+            <div id="tablaResultados">
+              <section id="tabla_resultado"></section>
+            </div>
+          </div>
           <div class="form-group col-lg-12 col-md-6 col-xs-12">
             <nav aria-label="Page navigation example" style="text-align:right; margin-right:5px">
               <ul class="pagination">
-                <input type="button" class="btn btn-primary me-md-2" value="Anterior" id="anterior" name="anterior" onclick="paginaAnterior();">
-                  <li class="page-item"><input type="submit" id="pagina" class="btn btn-primary me-md-2" name="pagina" value="1" onclick="paginasClick(<?php echo $i;?>)"></li>
-                <input type="submit" class="btn btn-primary me-md-2" value="Siguiente" id="siguiente" name="siguiente" onclick="paginaSiguiente()">
+                <input type="button" title="Anterior" data-toggle='popover' data-trigger='hover' data-content='Pagina anterior' data-placement='top' class='btn btn-primary me-md-2' value="Anterior" id="anterior" name="anterior" onclick="paginaAnterior();">
+                  <li class="page-item"><input title="Pagina" data-toggle='popover' data-trigger='hover' data-content='Pagina actual' data-placement='top' class='btn btn-primary me-md-2' type="submit" id="pagina" name="pagina" value="1" onclick="paginasClick(<?php echo $i;?>)"></li>
+                <input type="submit" title="Siguiente" data-toggle='popover' data-trigger='hover' data-content='Pagina siguiente' data-placement='top' class='btn btn-primary me-md-2' value="Siguiente" id="siguiente" name="siguiente" onclick="paginaSiguiente()">                
               </ul>
             </nav>
           </div>
-        </div>
-        
+        </div>        
           <div class="panel-body" style="height: 400px;" id="formularioregistros">
             <form action="" name="formulario" id="formulario" method="POST">
-
             <div class="form-group col-lg-12 col-md-6 col-xs-12">
                 <center><h4 aling="center">Información del cliente</h4></center>
               </div>
-
               <div class="form-group col-lg-4 col-md-8 col-xs-12">
                 <label for="">Cliente(*):</label>
                 <input class="form-control" type="hidden" name="idservicio" id="idservicio">
@@ -169,7 +162,7 @@ if ($_SESSION['servicios']==1) {
 
               <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
                 <label for="">Automovil: </label>
-                <select name="idauto" id="idauto" class="form-control selectpicker" data-live-search="true">
+                <select name="idauto" id="idauto" class="form-control selectpicker" data-live-search="true" required>
                   <option value="" disabled selected>Seleccionar auto</option>
                 </select>
               </div>
@@ -245,7 +238,7 @@ if ($_SESSION['servicios']==1) {
 
               <div class="form-group col-lg-6 col-md-3 col-sm-6 col-xs-12">
                 <a data-toggle="modal" href="#myModal" id="btnAddArt">
-                  <button id="btnAgregarArt" name="btnAgregarArt" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Articulos</button>
+                  <button id="btnAgregarArt" name="btnAgregarArt" type="button" class="btn btn-primary" required><span class="fa fa-plus"></span>Agregar Articulos</button>
                 </a>
               </div>
 
@@ -331,16 +324,19 @@ if ($_SESSION['servicios']==1) {
 
           <div class="form-group col-lg-4 col-md-8 col-xs-12">
             <section>            
-              <center><input class="form-control me-2" type="text" name="busquedaProduct" id="busquedaProduct" placeholder="Buscar..." style="width:250px"></center><br><br>
+              <center><input class="form-control me-2" type="text" name="busquedaProduct" id="busquedaProduct" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;"></center><br><br>
             </section>
-          </div>   
-
-          <div class="form-group col-lg-2 col-md-8 col-xs-12">              
+          </div>
+          <div class="form-group col-lg-4 col-md-8 col-xs-12"  style="text-align:right">              
             <a data-toggle="modal" href="#agregarProductoAlmacen">
-              <button id="btnAgregarArt" type="button" class="btn btn-primary" onclick="cerrarModal()"><span class="fa fa-search-plus"></span> Buscar en otra sucursal y/o almacen</button>
+              <button id="btnAgregarArt" type="button" class="btn btn-primary" onclick="cerrarModal()"><span class="fa fa-search-plus"></span> Buscar en otro almacen</button>
             </a>
           </div>
-          <section id="tabla_resultadoProducto"> </section>
+          <div id="global">
+            <div id="tablaResultadosModal">
+              <section id="tabla_resultadoProducto"> </section>
+            </div>
+          </div>
         </div>
         </div>
         <div class="modal-footer">
@@ -638,7 +634,7 @@ if ($_SESSION['servicios']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/servicios.js"></script>
+ <script src="scripts/servicies.js"></script>
  <?php 
 }
 

@@ -644,35 +644,6 @@ setInterval(() => {
 	}, 500);
 }, 5000);
 
-function almacenEdit(productosEdit){
-
-	var tiposPrecios = document.getElementById("caja_valor").value;
-	
-	$.ajax({
-		url : '../ajax/servicio.php?op=listarProductosAlmacenEdit',
-		type : 'POST',
-		dataType : 'html',
-		data : { productosEdit: productosEdit, types: tiposPrecios },
-	})
-	.done(function(resultado){
-		$("#tabla_resultadoProductoAlmacenEdit").html(resultado);
-	})
-}
-
-$(document).on('keyup', '#busquedaProductAlmacenEdit', function(){	
-	var valorBusqueda=$(this).val();
-
-	console.log(valorBusqueda);
-	
-	if (valorBusqueda!="")
-	{	
-		almacenEdit(valorBusqueda);
-	}
-	else
-	{
-		almacenEdit();
-	}
-});
 
 /*========================================================================================== */
 /*===============================FIN FILTROS================================================ */
@@ -687,6 +658,9 @@ function cerrarModalEdit() {
 
 function regresarMiSucursal() {
 	$("#agregarProductoAlmacen").modal('hide');
+}
+function cerrarSucursalesEdit() {
+	$("#myModalProductsAlmacenEdit").modal('hide');
 }
 
 
@@ -756,7 +730,6 @@ function selectCliente (){
 		document.getElementById("caja_valor").value=tipo_precio;	
 	}
 }
-
 
 //funcion limpiar
 function limpiar() {
@@ -849,6 +822,36 @@ function salirForm() {
 	mostrarform(false);	
 }
 
+function almacenEdit(productosEdit){
+
+	var tiposPrecios = document.getElementById("caja_valor").value;
+	
+	$.ajax({
+		url : '../ajax/servicio.php?op=listarProductosAlmacenEdit',
+		type : 'POST',
+		dataType : 'html',
+		data : { productosEdit: productosEdit, types: tiposPrecios },
+	})
+	.done(function(resultado){
+		$("#tabla_resultadoProductoAlmacenEdit").html(resultado);
+	})
+}
+
+$(document).on('keyup', '#busquedaProductAlmacenEdit', function(){	
+	var valorBusqueda=$(this).val();
+
+	console.log(valorBusqueda);
+	
+	if (valorBusqueda!="")
+	{	
+		almacenEdit(valorBusqueda);
+	}
+	else
+	{
+		almacenEdit();
+	}
+});
+
 function obtener_registrosProductos(productos){	
 
 	var tiposPrecios = document.getElementById("caja_valor").value;
@@ -876,7 +879,6 @@ $(document).on('keyup', '#busquedaProduct', function(){
 		obtener_registrosProductos();
 	}
 });
-
 
 //Productos de otros almaneces
 function obtener_registrosProductos_almacen(productos){		
@@ -938,6 +940,20 @@ $(document).on('keyup', '#busquedaProductEdit', function(){
 		obtener_registrosProductosEdit();
 	}
 });
+
+
+setInterval(() => {
+	let articulo = document.getElementById("busquedaProduct").value;
+	let articuloAlmacen = document.getElementById("busquedaProductAlmacen").value;
+	let articuloEdit = document.getElementById("busquedaProductEdit").value;
+	let articuloAlmacenEdit = document.getElementById("busquedaProductAlmacenEdit").value;
+
+	obtener_registrosProductos(articulo);
+	obtener_registrosProductos_almacen(articuloAlmacen);
+	obtener_registrosProductosEdit(articuloEdit);
+	almacenEdit(articuloAlmacenEdit);
+
+}, 5000);
 
 //funcion para guardaryeditar
 function guardaryeditar(e){
@@ -1159,6 +1175,7 @@ function editarProductoServicio(idarticulo) {
 	var idServicio = document.getElementById("idservicio").value;
 	$.post("../ajax/servicio.php?op=mostrarProductoServicio&idarticulo="+idarticulo+"&idServicio="+idServicio,function(data){		
 		data = JSON.parse(data);
+		$("#claveProduct").val(data.codigo).prop("disabled", true);
 		$("#idProducto").val(data.idarticulo).prop("disabled", true);
 		$("#descripcionProducto").val(data.descripcion).prop("disabled", false);
 		$("#cantidadProducto").val(data.cantidad).prop("disabled", false);
@@ -1617,27 +1634,21 @@ function marcarImpuesto(){
 }
 
 function agregarDetalle(idarticulo,articulo,fmsi, descripcion,marca,publico, stock, idsucursal){
-	console.log("ID SUCURSAL PRODUCTO: ", idsucursal);
-	console.log("id Articulo: ", idarticulo);
-	console.log("Codigo: ", articulo);
-	console.log("Fmsi: ", fmsi);
-	console.log("Descripción: ", descripcion);
-	console.log("Precio: ", publico);
 	var cantidad=1;
 	var descuento=0;
 
 	if (idarticulo!="") {
-		var fila='<tr class="filas" id="fila'+cont+'">'+
-        '<td><button style="width: 40px;" title="Eliminar" type="button" class="btn btn-danger" onclick="eliminarDetalle('+cont+')">X</button></td>'+        
+		var fila='<tr style="font-size:12px" class="filas" id="fila'+cont+'">'+
+        '<td><button style="width: 40px;" title="Eliminar" type="button" class="btn btn-danger btn-xs" onclick="eliminarDetalle('+cont+')">X</button></td>'+        
 		'<td><input type="hidden" name="clave[]" value="'+articulo+'"> <input class="form-control" type="hidden" name="idsucursalArticulo[]" value="'+idsucursal+'"> <input class="form-control" type="hidden" name="idarticulo[]" value="'+idarticulo+'">'+articulo+'</td>'+
 		'<td><input type="hidden" name="fmsi[]" id="fmsi[]" value="'+fmsi+'">'+fmsi+'</td>'+
 		'<td><input type="hidden" name="marca[]" id="marca[]" value="'+marca+'">'+marca+'</td>'+
-		'<td><textarea class="form-control" id="descripcion[]" name="descripcion[]"rows="3" style="width: 150px;" value="'+descripcion+'">'+descripcion+'</textarea></td>'+
+		'<td><textarea class="form-control" id="descripcion[]" name="descripcion[]" rows="2" style="width: 280px;" value="'+descripcion+'">'+descripcion+'</textarea></td>'+
         '<td><input style="width: 55px;" type="number" name="cantidad[]" id="cantidad[]" value="'+cantidad+'" max="'+stock+'" min="1"></td>'+
         '<td><input style="width: 70px;" type="number" name="precio_servicio[]" id="precio_servicio[]" value="'+publico+'"></td>'+
         '<td><input style="width: 70px;" type="number" name="descuento[]" value="'+descuento+'"></td>'+
         '<td><span id="subtotal'+cont+'" name="subtotal">'+publico*cantidad+'</span></td>'+
-        '<td><button type="button" title="Actualizar" onclick="modificarSubtotales()" class="btn btn-info"><i class="fa fa-refresh"></i></button></td>'+
+        '<td><button type="button" title="Actualizar" onclick="modificarSubtotales()" style="width: 40px;" class="btn btn-info btn-xs"><i class="fa fa-refresh"></i></button></td>'+
 		'</tr>';
 		cont++;
 		detalles++;

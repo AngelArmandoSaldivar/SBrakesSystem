@@ -55,6 +55,12 @@ function cancelarform(){
 	mostrarform(false);
 }
 
+function activarPopover() {
+	$(function () {
+		$('[data-toggle="popover"]').popover()		
+	})
+}
+
 //funcion listar
 function obtener_registros(clientes){
 	$.ajax({
@@ -65,6 +71,7 @@ function obtener_registros(clientes){
 	})
 	.done(function(resultado){
 		$("#tabla_resultado").html(resultado);
+		activarPopover();
 	})
 }
 

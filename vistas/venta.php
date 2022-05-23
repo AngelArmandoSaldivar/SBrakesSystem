@@ -21,16 +21,16 @@ if ($_SESSION['ventas']==1) {
       <div class="col-md-12">
         <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
           <div class="box-header with-border">    
-              <h1 class="box-title">Ventas 
-                <button class="btn btn-success" title="Agregar nueva venta" onclick="crearVenta(true)"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
+              <center><h1 class="box-title">Ventas </h1></center>
               <div class="box-tools pull-right"></div>
             <div class="panel-body table-responsive" id="listadoregistros">
             
             <section>
               <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                <button title="Registrar" id="btnagregarservicio" data-toggle='popover' data-trigger='hover' data-content='Registrar nueva venta' data-placement='right' class='btn btn-success' onclick="crearVenta(true)"><i class="fa fa-plus-circle"></i> Agregar Nuevo</button>
               </div>
               <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 16px; box-shadow: 5px 5px 8px #3300ff99;"></center>
+                <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;"></center>
               </div>
             </section>
 
@@ -61,19 +61,18 @@ if ($_SESSION['ventas']==1) {
               <option value="50">500 / Registros</option>
               <option value="100">1000 / Registros</option>
             </select>
+          </div>   
+          <div id="global">
+            <div id="tablaResultados">
+              <section id="tabla_resultado"></section>
+            </div>
           </div>
-
-          <br><br><br>
-          
-          <section id="tabla_resultado">                
-          </section>
-
           <div class="form-group col-lg-12 col-md-6 col-xs-12">
             <nav aria-label="Page navigation example" style="text-align:right; margin-right:5px">
               <ul class="pagination">
-                <input type="button" class="btn btn-primary me-md-2" value="Anterior" id="anterior" name="anterior" onclick="paginaAnterior();">
-                  <li class="page-item"><input type="submit" id="pagina" class="btn btn-primary me-md-2" name="pagina" value="1" onclick="paginasClick(<?php echo $i;?>)"></li>
-                <input type="submit" class="btn btn-primary me-md-2" value="Siguiente" id="siguiente" name="siguiente" onclick="paginaSiguiente()">
+              <input type="button" title="Anterior" data-toggle='popover' data-trigger='hover' data-content='Pagina anterior' data-placement='top' class='btn btn-primary me-md-2' value="Anterior" id="anterior" name="anterior" onclick="paginaAnterior();">
+                  <li class="page-item"><input title="Pagina" data-toggle='popover' data-trigger='hover' data-content='Pagina actual' data-placement='top' class='btn btn-primary me-md-2' type="submit" id="pagina" name="pagina" value="1" onclick="paginasClick(<?php echo $i;?>)"></li>
+                <input type="submit" title="Siguiente" data-toggle='popover' data-trigger='hover' data-content='Pagina siguiente' data-placement='top' class='btn btn-primary me-md-2' value="Siguiente" id="siguiente" name="siguiente" onclick="paginaSiguiente()">                
               </ul>
             </nav>
           </div>
@@ -287,17 +286,20 @@ if ($_SESSION['ventas']==1) {
 
           <div class="form-group col-lg-4 col-md-8 col-xs-12">
             <section>            
-              <center><input class="form-control me-2" type="text" name="busquedaProduct" id="busquedaProduct" placeholder="Buscar..." style="width:250px"></center><br><br>
+              <center><input class="form-control me-2" type="text" name="busquedaProduct" id="busquedaProduct" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;"></center><br><br>
             </section>
           </div>          
 
-          <div class="form-group col-lg-4 col-md-8 col-xs-12">              
+          <div class="form-group col-lg-4 col-md-8 col-xs-12" style="text-align:right">              
             <a data-toggle="modal" href="#agregarProductoAlmacen">
-              <button id="btnAgregarArt" type="button" class="btn btn-primary" onclick="cerrarModal()"><span class="fa fa-search-plus"></span> Buscar en otra sucursal y/o almacen</button>
+              <button id="btnAgregarArt" type="button" class="btn btn-primary" onclick="cerrarModal()"><span class="fa fa-search-plus"></span> Buscar en otro almacen</button>
             </a>
           </div>
-
-          <section id="tabla_resultadoProducto"> </section>
+          <div id="global">
+            <div id="tablaResultadosModal">
+              <section id="tabla_resultadoProducto"> </section>
+            </div>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -368,8 +370,7 @@ if ($_SESSION['ventas']==1) {
     </div>
   </div>
 
-  <!--Modal registrar nuevo producto-->
-  <div class="modal fade" id="agregarProducto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal fade" id="agregarCliente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="width: 80% !important; box-shadow:5px 5px 5px 5px rgba(0, 0, 0, 0.2);">
       <div class="modal-content" style="border-radius: 20px;">
         <div class="modal-header">
@@ -377,9 +378,7 @@ if ($_SESSION['ventas']==1) {
           <h4 class="modal-title">Registrar Producto</h4>
         </div>
         <div class="modal-body">
-        <div class="modal-body">
           <div class="panel-body table-responsive">
-
           <form action="" name="formularioProduct" id="formularioProduct" method="POST">
             <!--CLAVE DEL PRODUCTO-->
             <div class="form-group col-lg-4 col-md-6 col-xs-12">
@@ -387,7 +386,6 @@ if ($_SESSION['ventas']==1) {
               <input class="form-control" type="hidden" name="idarticulo" id="idarticulo">
               <input class="form-control" type="text" name="codigo" id="codigo" maxlength="100" placeholder="Clave" required>
             </div>
-
 
             <!--CLAVE DEL PRODUCTO-->
             <div class="form-group col-lg-4 col-md-6 col-xs-12">
@@ -401,15 +399,12 @@ if ($_SESSION['ventas']==1) {
               <label for="">Categoria(*):</label>
               <select name="idcategoria" id="idcategoria" class="form-control selectpicker" data-Live-search="true" required>
 
-              <?php 
-              
+              <?php               
                 $sql="SELECT * FROM categoria";
                 $result = ejecutarConsulta($sql);
-
                 while($row = $result->fetch_assoc()) {
                   echo "<option value='$row[idcategoria]'>$row[nombre]</option>";
-                }
-              
+                }              
               ?>
               </select>
             </div>
@@ -448,7 +443,7 @@ if ($_SESSION['ventas']==1) {
             </div>    
 
             <!--STOCK DEL PRODUCTO-->
-              <div class="form-group col-lg-4 col-md-6 col-xs-12">
+            <div class="form-group col-lg-4 col-md-6 col-xs-12">
               <label for="">Stock</label>
               <input class="form-control" type="number" name="stock" id="stock"  required>
             </div>    
@@ -479,27 +474,27 @@ if ($_SESSION['ventas']==1) {
             <div class="form-group col-lg-2 col-md-6 col-xs-12">
               <label for="">Mayoreo</label>
               <input class="form-control" type="number" name="mayoreo" id="mayoreo"  required placeholder="$">
-            </div>    
-
+            </div>
             <div class="form-group col-lg-6 col-md-6 col-xs-12">
               <label for="">Codigo barras:</label>
               <input class="form-control" type="text" name="barcode" id="barcode" placeholder="Código del producto" >              
             </div>            
           </form>
 
-          <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <button class="btn btn-success" type="submit" name="btnGuardarProveedor" onclick="guardaryeditarProducto()">Guardar</button>
-            <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
+            <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <button class="btn btn-success" type="submit" name="btnGuardarProveedor" onclick="guardaryeditarProducto()">Guardar</button>
+              <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
+            </div>
           </div>
+          <div class="modal-footer">
+            <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
           </div>
-        </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
         </div>
       </div>
     </div>
   </div>
+
+  
   <!-- fin Modal-->
 
 <?php 

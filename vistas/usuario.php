@@ -15,16 +15,25 @@ if ($_SESSION['accesos']==1) {
           <div class="col-md-12">
             <div class="box">
               <div class="box-header with-border">
-                <h1 class="box-title">Usuarios <button title="Agregar nuevo usuario" class="btn btn-success" onclick="mostrarform(true)" id="btnagregar"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
+                <h1 class="box-title">Usuarios </h1>
                   <div class="box-tools pull-right">    
                   </div>
               </div>
 
               <div class="panel-body table-responsive" id="listadoregistros">
-                <section>
-                  <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px"></center><br><br>
-                </section>            
-                <section id="tabla_resultado"></section>
+                <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                  <button title="Agregar nuevo usuario" class="btn btn-success" onclick="mostrarform(true)" id="btnagregar"><i class="fa fa-plus-circle"></i>Agregar</button>
+                </div>
+                <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                  <section>
+                    <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;"></center><br><br>
+                  </section>  
+                </div>    
+                <div id="global">
+                  <div id="tablaResultados">                      
+                    <section id="tabla_resultado"></section>
+                  </div>
+                </div>
               </div> 
               <div class="panel-body" id="formularioregistros">
                 <form action="" name="formulario" id="formulario" method="POST">
@@ -98,7 +107,7 @@ if ($_SESSION['accesos']==1) {
 }
 require 'footer.php';
  ?>
- <script src="scripts/usuarios.js"></script>
+ <script src="scripts/usuario.js"></script>
  <?php 
 }
 

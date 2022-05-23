@@ -236,7 +236,7 @@ switch ($_GET["op"]) {
        </thead>';
 		while ($reg=$rspta->fetch_object()) {
 			echo '<tr class="filas" id="filas">
-			<td><button style="width: 40px;" title="Eliminar" type="button" class="btn btn-danger" onclick="eliminarProductoVenta('.$reg->idventa.', '.$reg->idarticulo.', '.$reg->cantidad.', '.$reg->precio_venta.')">X</button></td>						
+			<td><button style="width: 40px;" title="Eliminar" type="button" class="btn btn-danger btn-xs" onclick="eliminarProductoVenta('.$reg->idventa.', '.$reg->idarticulo.', '.$reg->cantidad.', '.$reg->precio_venta.')">X</button></td>						
 			<td> <input type="hidden" value="'.$reg->idarticulo.'" id="idarticulo" name="idarticulo"></input>'.$reg->codigo.'</td>
 			<td>'.$reg->fmsi.'</td>
 			<td>'.$reg->marca.'</td>
@@ -245,7 +245,7 @@ switch ($_GET["op"]) {
 			<td>$'.number_format($reg->precio_venta, 2).'</td>
 			<td>'.$reg->descuento.'</td>
 			<td>$'.number_format($reg->subtotal, 2).'</td>
-			<td><a data-toggle="modal" title="Editar" href="#editProductventa"><button style="width: 40px;" type="button" class="btn btn-warning" onclick="editarProductoVenta('.$reg->idarticulo.')"><i class="fa fa-pencil"></i></button></a></td></tr>'
+			<td><a data-toggle="modal" title="Editar" href="#editProductventa"><button style="width: 40px;" type="button" class="btn btn-warning btn-xs" onclick="editarProductoVenta('.$reg->idarticulo.')"><i class="fa fa-pencil"></i></button></a></td></tr>'
 			;
 			number_format($total=$total+($reg->precio_venta*$reg->cantidad-$reg->descuento), 2);			
 		}
@@ -832,8 +832,7 @@ switch ($_GET["op"]) {
 					}
 					$consultaBD=$conexion->query($consulta);
 					if($consultaBD->num_rows>=1){
-						echo "
-						<div id='container'>
+						echo "						
 						<table class='responsive-table table table-hover table-bordered' style='font-size:12px' id='tableArticulos'>
 							<thead class='table-light'>
 								<tr>
@@ -927,10 +926,10 @@ switch ($_GET["op"]) {
 								<th class='bg-info' scope='col'>Acciones</th>
 							</tr>
 						</tfoot>
-						</table></div>";
+						</table>";
 					}else{
 						echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";						
-						echo "<br><br>";
+						echo "<img src='../public/img/discoBrembo.jpg'>";
 					}
 				break;
 
@@ -955,8 +954,7 @@ switch ($_GET["op"]) {
 						}
 						$consultaBD=$conexion->query($consulta);
 						if($consultaBD->num_rows>=1){
-							echo "
-							<div id='container'>
+							echo "							
 							<table class='responsive-table table table-hover table-bordered' style='font-size:12px' id='tableArticulos'>
 								<thead class='table-light'>
 									<tr>
@@ -1050,7 +1048,7 @@ switch ($_GET["op"]) {
 									<th class='bg-info' scope='col'>Acciones</th>
 								</tr>
 							</tfoot>
-							</table></div>";
+							</table>";
 						}else{
 							echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";						
 							echo "<br><br>";
@@ -1079,8 +1077,7 @@ switch ($_GET["op"]) {
 							}
 							$consultaBD=$conexion->query($consulta);
 							if($consultaBD->num_rows>=1){
-								echo "
-								<div id='container'>
+								echo "								
 								<table class='responsive-table table table-hover table-bordered' style='font-size:12px' id='tableArticulos'>
 									<thead class='table-light'>
 										<tr>
@@ -1174,7 +1171,7 @@ switch ($_GET["op"]) {
 										<th class='bg-info' scope='col'>Acciones</th>
 									</tr>
 								</tfoot>
-								</table></div>";
+								</table>";
 							}else{
 								echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";						
 								echo "<br><br>";

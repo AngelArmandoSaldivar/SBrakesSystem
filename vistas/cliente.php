@@ -14,16 +14,25 @@ if ($_SESSION['ventas']==1) {
     <div class="row">
       <div class="col-md-12">
         <div class="box">
-          <div class="box-header with-border">
-            <h1 class="box-title">CLIENTES <button class="btn btn-success" onclick="agregarCliente()" id="btnagregar"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
-              <div class="box-tools pull-right">
-              </div>
-          </div>
+            <div class="box-header with-border">
+              <center><h1 class="box-title">Clientes </h1></center>
+            <div class="box-tools pull-right">
+        </div>
+      </div>
           <div class="panel-body table-responsive" id="listadoregistros">
-            <section>
-              <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 16px; box-shadow: 5px 5px 8px #3300ff99;"></center>
-            </section><br><br>
-            <section id="tabla_resultado"></section>
+          <div class="form-group col-lg-4 col-md-6 col-xs-12">
+            <button title="Registrar" id="btnagregarservicio" data-toggle='popover' data-trigger='hover' data-content='Registrar nuevo cliente' data-placement='right' class='btn btn-success' onclick="agregarCliente()" id="btnagregar"><i class="fa fa-plus-circle"></i> Agregar Nuevo</button>
+          </div>
+            <div class="form-group col-lg-4 col-md-6 col-xs-12">
+              <section>
+                <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;"></center>
+              </section>
+            </div>
+            <div id="global">
+              <div id="tablaResultados">
+                <section id="tabla_resultado"></section>
+              </div>
+            </div>
           </div>
           <div class="panel-body" id="formularioregistros">
             <form action="" name="formulario" id="formulario" method="POST">
@@ -175,7 +184,7 @@ if ($_SESSION['ventas']==1) {
 }
 require 'footer.php';
  ?>
- <script src="scripts/clientesB1.js"></script>
+ <script src="scripts/clientesP.js"></script>
  <?php 
 }
 
