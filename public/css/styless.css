@@ -44,7 +44,6 @@
 [data-tooltip]:hover::after
 { display:block;} 
 
-
 .emergente [data-tooltip]::before {
     display:block;
     opacity:0;
@@ -92,4 +91,9 @@ thead tr th {
     position: sticky;
     top: 0;
     z-index: 0;
+}
+#tablaResultados {
+	height: 400px;
+	width: 100%;	
+	overflow-y: scroll;
 }

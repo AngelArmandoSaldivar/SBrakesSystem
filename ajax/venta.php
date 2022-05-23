@@ -28,8 +28,8 @@ $ref2=isset($_POST["ref2"])? limpiarCadena($_POST["ref2"]):"";
 $ref3=isset($_POST["ref3"])? limpiarCadena($_POST["ref3"]):"";
 $total_venta=isset($_POST["total_venta"])? limpiarCadena($_POST["total_venta"]):"";
 //EDICIÓN PRODUCTO
-$descripcion = isset($_POST["descripcion"])? limpiarCadena($_POST["descripcion"]):"";
-$cantidad = isset($_POST["cantidad"])? limpiarCadena($_POST["cantidad"]):"";
+$descripcion = isset($_POST["descripcionEdit"])? limpiarCadena($_POST["descripcionEdit"]):"";
+$cantidad = isset($_POST["cantidadEdit"])? limpiarCadena($_POST["cantidadEdit"]):"";
 $precio = isset($_POST["precio"])? limpiarCadena($_POST["precio"]):"";
 
 

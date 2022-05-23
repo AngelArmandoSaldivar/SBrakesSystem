@@ -17,22 +17,24 @@ if ($_SESSION['almacen']==1) {
       <div class="row">
         <div class="col-md-12">
           <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
-            <div class="box-header with-border">
+          <center>
+            <div class="box-header with-border">              
                 <h1 class="box-title">Articulos 
-                <button class="btn btn-success" title="Agregar nuevo articulo" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
-                <div class="box-tools pull-right">            
-                </div>    
+                <!--<button class="btn btn-success" title="Agregar nuevo articulo" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i>Agregar</button></h1>-->
+                
             </div>
+          </center>
 <!--box-header-->
 
 
 <div class="table-responsive" id="table-search">
   <section>
       <div class="form-group col-lg-4 col-md-6 col-xs-12">
+      <button class="btn btn-success" title="Agregar nuevo articulo" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i> Agregar Nuevo</button></h1>
       </div>
       <div class="form-group col-lg-4 col-md-6 col-xs-12" style="position:relative;">
         <center>
-          <input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 16px; box-shadow: 5px 5px 8px #3300ff99;">          
+          <input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;">          
         </center>
       </div>
   </section>  
@@ -61,8 +63,12 @@ if ($_SESSION['almacen']==1) {
     </select>
   </div>  
 
-  <section id="tabla_resultado"></section>
-  
+  <div id="global">
+  <div id="tablaResultados">
+    <section id="tabla_resultado"></section>
+  </div>
+  </div>
+    
   <div class="form-group col-lg-12 col-md-6 col-xs-12">
     <nav aria-label="Page navigation example" style="text-align:right; margin-right:5px">
       <ul class="pagination">

@@ -75,7 +75,7 @@ switch ($_GET["op"]) {
 		break;
 	case 'editarCobro':
 		$idpago=$_GET['idpago'];
-		$idservicio=$_GET['idservicio'];		
+		$idservicio=$_GET['idservicio'];
 		$importeCobro=$_GET['importeCobro'];
 		$metodoPago=$_GET['metodoPago'];
 		$banco=$_GET['banco'];	
@@ -280,8 +280,7 @@ switch ($_GET["op"]) {
 			</tr>'
 			;
 			number_format($total=$total+($reg->precio_servicio*$reg->cantidad-$reg->descuento), 2);			
-		}
-		$cont++;
+		}		
 		echo '<tfoot style="background-color:#A9D0F5; font-size: 12px;">         
          <th></th>
          <th></th>

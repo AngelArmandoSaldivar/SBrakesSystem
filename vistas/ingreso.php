@@ -19,15 +19,16 @@ if ($_SESSION['compras']==1) {
       <div class="col-md-12">
         <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
           <div class="box-header with-border">
-            <h1 class="box-title">Recepciones <button title="Agregar recepción" class="btn btn-success" onclick="agregarRecepcion()"><i class="fa fa-plus-circle"></i>Agregar</button></h1>
+            <center><h1 class="box-title">Recepciones </h1></center>
             <div class="box-tools pull-right">
             </div>
             <div class="panel-body table-responsive" id="listadoregistros">
               <section>
                 <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                  <button title="Agregar recepción" class="btn btn-success" onclick="agregarRecepcion()"><i class="fa fa-plus-circle"></i> Agregar Nuevo</button>
                 </div>
                 <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                  <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 16px; box-shadow: 5px 5px 8px #3300ff99;"></center>
+                  <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;"></center>
                 </div>
               </section>
 
@@ -61,9 +62,12 @@ if ($_SESSION['compras']==1) {
             </div>
 
             <br><br><br>
-            
-            <section id="tabla_resultado">                
-            </section>
+            <div id="global">
+              <div id="tablaResultados">
+                <section id="tabla_resultado">                
+                </section>
+              </div>
+            </div>
 
             <div class="form-group col-lg-12 col-md-6 col-xs-12">
               <nav aria-label="Page navigation example" style="text-align:right; margin-right:5px">
@@ -118,6 +122,10 @@ if ($_SESSION['compras']==1) {
                   <button id="btnAgregarArticulosEdit" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Add Articulos</button>
                 </a>
               </div>
+
+              <div class="form-group col-lg-12 col-md-6 col-xs-12">
+                  <center><h4 aling="center">Productos Recepción</h4></center>
+                </div>
 
               <div class="form-group col-lg-12 col-md-12 col-xs-12">
                 <table id="detalles" class="table table-striped table-bordered table-condensed table-hover">
@@ -393,7 +401,7 @@ if ($_SESSION['compras']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/ingreso.js"></script>
+ <script src="scripts/ingresos.js"></script>
  <?php 
 }
 

@@ -1043,16 +1043,16 @@ function agregarDetalle(idarticulo,articulo,fmsi, descripcion,costo, idarticuloS
 
 	if (idarticulo!="") {
 		var fila='<tr class="filas" id="fila'+cont+'">'+
-        '<td><button style="width: 40px;" type="button" class="btn btn-danger" onclick="eliminarDetalle('+cont+')">X</button></td>'+
+        '<td><button style="width: 40px;" type="button" class="btn btn-danger btn-xs" onclick="eliminarDetalle('+cont+')">X</button></td>'+
         '<td><input type="hidden" name="idarticulo[]" value="'+idarticulo+'">'+idarticulo+'</td>'+
 		'<td><input type="hidden" name="idarticuloSucursal[]" id="idarticuloSucursal[]" value="'+idarticuloSucursal+'"><input type="hidden" name="clave[]" value="'+articulo+'">'+articulo+'</td>'+
 		'<td><input type="hidden" name="fmsi[]" id="fmsi[]" value="'+fmsi+'">'+fmsi+'</td>'+
-		'<td><textarea class="form-control" id="descripcion[]" name="descripcion[]"rows="3" style="width: 150px;" value="'+descripcion+'">'+descripcion+'</textarea></td>'+
+		'<td><textarea class="form-control" id="descripcion[]" name="descripcion[]"rows="2" style="width: 280px;" value="'+descripcion+'">'+descripcion+'</textarea></td>'+
         '<td><input style="width: 55px;" type="number" name="cantidad[]" id="cantidad[]" value="'+cantidad+'"></td>'+
         '<td><input style="width: 70px;" type="number" name="precio_compra[]" id="precio_compra[]" value="'+costo+'"></td>'+
         '<td><input style="width: 70px;" type="number" name="descuento[]" value="'+descuento+'"></td>'+
         '<td><span id="subtotal'+cont+'" name="subtotal">'+costo*cantidad+'</span></td>'+
-        '<td><button type="button" onclick="modificarSubtotales()" class="btn btn-info"><i class="fa fa-refresh"></i></button></td>'+
+        '<td><button style="width: 40px;" type="button" onclick="modificarSubtotales()" class="btn btn-info btn-xs"><i class="fa fa-refresh"></i></button></td>'+
 		'</tr>';
 		cont++;
 		detalles++;

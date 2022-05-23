@@ -60,7 +60,7 @@ public function addProductoVenta($idarticulo,$articulo,$fmsi,$marca,$descripcion
 }
 
 public function mostrarProductoEdit($idarticulo, $idventa) {
-	$sql = "SELECT * FROM detalle_venta WHERE idventa='$idventa' AND idarticulo='$idarticulo'";
+	$sql = "SELECT * FROM detalle_venta WHERE idventa='$idventa' AND idarticulo='$idarticulo' AND estado='0'";
 	return ejecutarConsultaSimpleFila($sql);
 }
 
@@ -72,10 +72,10 @@ public function editarGuardarProductoVenta($p1, $p2, $p3, $idarticulo, $idventa,
 	ejecutarConsulta($sql_articulo);
 	sleep(1);
 
-	$sql = "UPDATE detalle_venta SET descripcion='$p1', cantidad='$p2', precio_venta='$p3' WHERE idventa='$idventa' AND idarticulo='$idarticulo'";
+	$sql = "UPDATE detalle_venta SET descripcion='$p1', cantidad='$p2', precio_venta='$p3' WHERE idventa='$idventa' AND idarticulo='$idarticulo' AND estado='0'";
 	ejecutarConsulta($sql);	
 
-	$sql_kardex = "UPDATE kardex SET cantidad='$p2', importe='$p3' WHERE idventa='$idventa' AND idarticulo='$idarticulo'";
+	$sql_kardex = "UPDATE kardex SET cantidad='$p2', importe='$p3' WHERE idventa='$idventa' AND idarticulo='$idarticulo' AND estado='ACTIVO'";
 	ejecutarConsulta($sql_kardex);
 
 	$sql_ventaTotalNew = "UPDATE venta SET total_venta = total_venta + ($p2 * $p3) WHERE idventa='$idventa'";

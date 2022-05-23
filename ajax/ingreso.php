@@ -98,17 +98,17 @@ switch ($_GET["op"]) {
 		<th>Acciones</th>
 		</thead>';
 		while ($reg=$rspta->fetch_object()) {
-			echo '<tr class="filas" id="filas">
-			<td><button style="width: 40px;" title="Eliminar" type="button" class="btn btn-danger" onclick="eliminarProductoIngreso('.$reg->idingreso.', '.$reg->idarticulo.', '.$reg->cantidad.', '.$reg->precio_compra.')">X</button></td>			
+			echo '<tr class="filas" id="filas" style="font-size:12px;">
+			<td><button style="width: 40px;" title="Eliminar" type="button" class="btn btn-danger btn-xs" onclick="eliminarProductoIngreso('.$reg->idingreso.', '.$reg->idarticulo.', '.$reg->cantidad.', '.$reg->precio_compra.')">X</button></td>			
 			<td>'.$reg->idarticulo.'</td>
 			<td>'.$reg->codigo.'</td>
 			<td>'.$reg->fmsi.'</td>
-			<td>'.$reg->descripcion.'</td>
+			<td>'.substr($reg->descripcion, 0, 30).'</td>
 			<td>'.$reg->cantidad.'</td>
 			<td>$'.number_format($reg->precio_compra, 2).'</td>
 			<td>'."0".'</td>
 			<td>$'.number_format($reg->subtotal, 2).'</td>
-			<td><a data-toggle="modal" title="Editar" href="#editProductRecepcion"><button style="width: 40px;" type="button" class="btn btn-warning" onclick="editarProductoRecepcion('.$reg->idarticulo.')"><i class="fa fa-pencil"></i></button></a></td></tr>'
+			<td><a data-toggle="modal" title="Editar" href="#editProductRecepcion"><button style="width: 40px;" type="button" class="btn btn-warning btn-xs" onclick="editarProductoRecepcion('.$reg->idarticulo.')"><i class="fa fa-pencil"></i></button></a></td></tr>'
 			;
 			number_format($total=$total+($reg->precio_compra*$reg->cantidad), 2);
 		}
@@ -146,16 +146,16 @@ switch ($_GET["op"]) {
 		<th>Acciones</th>
        </thead>';
 		while ($reg=$rspta->fetch_object()) {
-			echo '<tr class="filas" id="filas">
+			echo '<tr class="filas" id="filas" style="font-size:12px;">
 			<td></td>
 			<td>'.$reg->idarticulo.'</td>
 			<td>'.$reg->codigo.'</td>
 			<td>'.$reg->fmsi.'</td>
-			<td>'.$reg->descripcion.'</td>	
+			<td>'.substr($reg->descripcion, 0, 30).'</td>	
 			<td>'.$reg->cantidad.'</td>
-			<td>'.$reg->precio_compra.'</td>
+			<td>$'.number_format($reg->precio_compra,2).'</td>
 			<td>'."0".'</td>
-			<td>'.$reg->precio_compra*$reg->cantidad.'</td>	
+			<td>$'.number_format($reg->precio_compra*$reg->cantidad,2).'</td>	
 			<td></td>		
 			</tr>';
 			$total=$total+($reg->precio_compra*$reg->cantidad);
@@ -169,7 +169,7 @@ switch ($_GET["op"]) {
 		 <th></th>
          <th></th>
 		 <th>Total</th>		 		 
-         <th><p id="total">$'.$total.'</p><input type="hidden" name="total_compra" id="total_compra"></th>
+         <th><p id="total">$'.number_format($total,2).'</p><input type="hidden" name="total_compra" id="total_compra"></th>
 		 <th></th>
        </tfoot>';
 		break;
@@ -180,26 +180,22 @@ switch ($_GET["op"]) {
 			$consulta = $ingreso->filtroPaginado(50, 0, "", "", "");
 			$termino= "";
 			
-			if(!empty($_POST['ingresos']) && empty($_POST['total_registros']) && empty($_POST['inicio_registros']) && empty($_POST["fecha_inicio"]) && empty($_POST["fecha_fin"])){
-				echo "Llegaste 1";
+			if(!empty($_POST['ingresos']) && empty($_POST['total_registros']) && empty($_POST['inicio_registros']) && empty($_POST["fecha_inicio"]) && empty($_POST["fecha_fin"])){				
 				$termino=$conexion->real_escape_string($_POST['ingresos']);
 				$consulta=$ingreso->filtroPaginado(5,0, $termino, "", "");
 			}
-			else if(empty($_POST['ingresos']) && !empty($_POST['total_registros']) && empty($_POST["fecha_inicio"]) && empty($_POST['inicio_registros']) && empty($_POST["fecha_fin"])) {
-				echo "solo limites";
+			else if(empty($_POST['ingresos']) && !empty($_POST['total_registros']) && empty($_POST["fecha_inicio"]) && empty($_POST['inicio_registros']) && empty($_POST["fecha_fin"])) {				
 				$limites=$conexion->real_escape_string($_POST['total_registros']);				
 				$consulta=$ingreso->filtroPaginado($limites,0, "", "", "");
 			}
-			else if(!empty($_POST['ingresos']) && !empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"]) && empty($_POST['inicio_registros']) && empty($_POST["fecha_fin"])){				
-				echo "Filtro busqueda, limites y fecha inicio";
+			else if(!empty($_POST['ingresos']) && !empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"]) && empty($_POST['inicio_registros']) && empty($_POST["fecha_fin"])){								
 				$termino=$conexion->real_escape_string($_POST['ingresos']);
 				$limites=$conexion->real_escape_string($_POST['total_registros']);				
 				$fecha_inicio = $conexion->real_escape_string($_POST['fecha_inicio']);
 				
 				$consulta=$ingreso->filtroPaginado($limites,0, $termino, $fecha_inicio, "");
 			}
-			else if(!empty($_POST['busqueda']) && !empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"]) && !empty($_POST['inicio_registros']) && empty($_POST["fecha_fin"])){				
-				echo "Filtro busqueda, limites, fecha inicio e inicio registros";
+			else if(!empty($_POST['busqueda']) && !empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"]) && !empty($_POST['inicio_registros']) && empty($_POST["fecha_fin"])){								
 				$termino=$conexion->real_escape_string($_POST['busqueda']);
 				$limites=$conexion->real_escape_string($_POST['total_registros']);				
 				$fecha_inicio = $conexion->real_escape_string($_POST['fecha_inicio']);
@@ -207,99 +203,75 @@ switch ($_GET["op"]) {
 				
 				$consulta=$ingreso->filtroPaginado($limites,$inicio_registros, $termino, $fecha_inicio, "");
 			}
-			else if(empty($_POST['ingresos']) && !empty($_POST['total_registros']) && empty($_POST["inicio_registros"]) && !empty($_POST["fecha_inicio"]) && empty($_POST["fecha_fin"])){				
-				echo "Filtro solo limites y fecha inicio";				
-				$limites=$conexion->real_escape_string($_POST['total_registros']);
-				echo $limites;				
+			else if(empty($_POST['ingresos']) && !empty($_POST['total_registros']) && empty($_POST["inicio_registros"]) && !empty($_POST["fecha_inicio"]) && empty($_POST["fecha_fin"])){								
+				$limites=$conexion->real_escape_string($_POST['total_registros']);							
 				$fecha_inicio = $conexion->real_escape_string($_POST['fecha_inicio']);
 				
 				$consulta=$ingreso->filtroPaginado($limites,0, "", $fecha_inicio, "");
 			}
 			else if(!empty($_POST['ingresos']) && !empty($_POST['total_registros']) && empty($_POST["fecha_inicio"])){
-				echo "Llegaste 2";
 				$termino=$conexion->real_escape_string($_POST['ingresos']);
 				$limites=$conexion->real_escape_string($_POST['total_registros']);
 				$consulta=$ingreso->filtroPaginado($limites,0, $termino, "", "");
 			}
 			else if(!empty($_POST['busqueda']) && empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"]) && empty($_POST['inicio_registros']) && empty($_POST["fecha_fin"])) {					
-				echo "Llegaste 3";
-
 				$busqueda=$conexion->real_escape_string($_POST['busqueda']);				
 				$fecha_inicio=$conexion->real_escape_string($_POST['fecha_inicio']);
-				
 				$consulta=$ingreso->filtroPaginado(5,0, $busqueda, $fecha_inicio, "");
 
 			}
 			else if(!empty($_POST["fecha_inicio"]) && empty($_POST['busqueda']) && empty($_POST['total_registros']) && empty($_POST['inicio_registros']) && empty($_POST["fecha_fin"])) {
-				echo "Solo fecha";
-
 				$fecha_inicio=$conexion->real_escape_string($_POST['fecha_inicio']);														
 				$consulta=$ingreso->filtroPaginado(5,0, "", $fecha_inicio, "");
 
 			}
 			else if(empty($_POST["fecha_inicio"]) && empty($_POST['busqueda']) && !empty($_POST['inicio_registros']) && empty($_POST['total_registros']) && empty($_POST["fecha_fin"])) {
-				echo "Solo paginado > 2";
 				$inicio_registros=$conexion->real_escape_string($_POST['inicio_registros']);				
-
 				$consulta=$ingreso->filtroPaginado(5,$inicio_registros, "", "", "");
 
 			}
 			else if(empty($_POST["fecha_inicio"]) && !empty($_POST['busqueda']) && !empty($_POST['inicio_registros']) && empty($_POST['total_registros']) && empty($_POST["fecha_fin"])) {
-				echo "Paginado > 1 y busqueda";
 				$inicio_registros=$conexion->real_escape_string($_POST['inicio_registros']);				
 				$busqueda=$conexion->real_escape_string($_POST['busqueda']);
-
 				$consulta=$ingreso->filtroPaginado(5,$inicio_registros, $busqueda, "", "");
 
 			}
-			else if(empty($_POST["fecha_inicio"]) && !empty($_POST['busqueda']) && !empty($_POST['total_registros']) && !empty($_POST['inicio_registros']) && empty($_POST["fecha_fin"])) {
-				echo "Paginado > 1, busqueda y limites ";
+			else if(empty($_POST["fecha_inicio"]) && !empty($_POST['busqueda']) && !empty($_POST['total_registros']) && !empty($_POST['inicio_registros']) && empty($_POST["fecha_fin"])) {				
 				$inicio_registros=$conexion->real_escape_string($_POST['inicio_registros']);
 				$limites=$conexion->real_escape_string($_POST['total_registros']);
 				$busqueda=$conexion->real_escape_string($_POST['busqueda']);
-
 				$consulta=$ingreso->filtroPaginado($limites,$inicio_registros, $busqueda, "", "");
 
 			}
 			else if(!empty($_POST['busqueda']) && empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"]) && !empty($_POST['inicio_registros']) && empty($_POST["fecha_fin"])) {
-				echo "Paginado > 1, busqueda y fecha inicio ";
 				$inicio_registros=$conexion->real_escape_string($_POST['inicio_registros']);				
 				$busqueda=$conexion->real_escape_string($_POST['busqueda']);
 				$fecha_inicio=$conexion->real_escape_string($_POST['fecha_inicio']);
-
 				$consulta=$ingreso->filtroPaginado(5,$inicio_registros, $busqueda, $fecha_inicio, "");
 
 			}
-			else if(empty($_POST['busqueda']) && empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"]) && !empty($_POST['inicio_registros']) && empty($_POST["fecha_fin"])) {
-				echo "Paginado > 1 y fecha inicio ";
+			else if(empty($_POST['busqueda']) && empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"]) && !empty($_POST['inicio_registros']) && empty($_POST["fecha_fin"])) {				
 				$inicio_registros=$conexion->real_escape_string($_POST['inicio_registros']);								
 				$fecha_inicio=$conexion->real_escape_string($_POST['fecha_inicio']);
-
 				$consulta=$ingreso->filtroPaginado(5,$inicio_registros, "", $fecha_inicio, "");
 
 			}
-			else if(empty($_POST['busqueda']) && empty($_POST["fecha_inicio"]) && !empty($_POST['inicio_registros']) && !empty($_POST['total_registros']) && empty($_POST["fecha_fin"])) {
-				echo "Paginado > 1 total registros ";
+			else if(empty($_POST['busqueda']) && empty($_POST["fecha_inicio"]) && !empty($_POST['inicio_registros']) && !empty($_POST['total_registros']) && empty($_POST["fecha_fin"])) {				
 				$inicio_registros=$conexion->real_escape_string($_POST['inicio_registros']);								
 				$total_registros=$conexion->real_escape_string($_POST['total_registros']);
-
 				$consulta=$ingreso->filtroPaginado($total_registros,$inicio_registros, "", "", "");
 
 			}
-			else if(empty($_POST['busqueda']) && empty($_POST["fecha_inicio"]) && !empty($_POST['inicio_registros']) && !empty($_POST['total_registros']) && empty($_POST["fecha_fin"])) {
-				echo "Paginado > 1 total registros ";
+			else if(empty($_POST['busqueda']) && empty($_POST["fecha_inicio"]) && !empty($_POST['inicio_registros']) && !empty($_POST['total_registros']) && empty($_POST["fecha_fin"])) {				
 				$inicio_registros=$conexion->real_escape_string($_POST['inicio_registros']);								
 				$total_registros=$conexion->real_escape_string($_POST['total_registros']);
-
 				$consulta=$ingreso->filtroPaginado($total_registros,$inicio_registros, "", "", "");
 
 			}
 			else if(empty($_POST['busqueda']) && !empty($_POST["fecha_inicio"]) && !empty($_POST['inicio_registros']) && !empty($_POST['total_registros']) && empty($_POST["fecha_fin"])) {
-				echo "Paginado > 1 total registros y fecha inicio ";
 				$inicio_registros=$conexion->real_escape_string($_POST['inicio_registros']);								
 				$total_registros=$conexion->real_escape_string($_POST['total_registros']);
 				$fecha_inicio=$conexion->real_escape_string($_POST['fecha_inicio']);
-
 				$consulta=$ingreso->filtroPaginado($total_registros,$inicio_registros, "", $fecha_inicio, "");
 
 			}
@@ -307,21 +279,18 @@ switch ($_GET["op"]) {
 			//FECHAS FIN
 
 			//Solo fecha fin, pagina 1
-			else if(empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && empty($_POST['inicio_registros']) && empty($_POST['total_registros']) && empty($_POST["fecha_inicio"])) {
-				echo "Solo fecha final";
+			else if(empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && empty($_POST['inicio_registros']) && empty($_POST['total_registros']) && empty($_POST["fecha_inicio"])) {				
 				$fecha_fin=$conexion->real_escape_string($_POST['fecha_fin']);				
 				$consulta=$ingreso->filtroPaginado(5,0, "", "", $fecha_fin);
 			}
 			//Fecha fin y busqueda , pagina 1
 			else if(!empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && empty($_POST['inicio_registros']) && empty($_POST['total_registros']) && empty($_POST["fecha_inicio"])) {
-				echo "Fecha fin y busqueda";
 				$fecha_fin=$conexion->real_escape_string($_POST['fecha_fin']);
 				$busqueda=$conexion->real_escape_string($_POST['busqueda']);
 				$consulta=$ingreso->filtroPaginado(50,0, $busqueda, "", $fecha_fin);
 			}
 			//Fecha fin, busqueda, limites, pagina 1
 			else if(!empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && empty($_POST['inicio_registros']) && !empty($_POST['total_registros']) && empty($_POST["fecha_inicio"])) {
-				echo "Fecha fin, busqueda y limites";
 				$fecha_fin=$conexion->real_escape_string($_POST['fecha_fin']);
 				$busqueda=$conexion->real_escape_string($_POST['busqueda']);
 				$total_registros=$conexion->real_escape_string($_POST['total_registros']);
@@ -329,21 +298,18 @@ switch ($_GET["op"]) {
 			}
 			//Fecha fin, limites, pagina 1
 			else if(empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && empty($_POST['inicio_registros']) && !empty($_POST['total_registros']) && empty($_POST["fecha_inicio"])) {
-				echo "Fecha fin, limites";
 				$fecha_fin=$conexion->real_escape_string($_POST['fecha_fin']);				
 				$total_registros=$conexion->real_escape_string($_POST['total_registros']);
 				$consulta=$ingreso->filtroPaginado($total_registros,0, "", "", $fecha_fin);
 			}
 			//Solo fecha inicio, fecha fin
 			else if(empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && empty($_POST['inicio_registros']) && empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"])) {
-				echo "Solo fecha inicio y fecha fin";
 				$fecha_fin=$conexion->real_escape_string($_POST['fecha_fin']);
 				$fecha_inicio=$conexion->real_escape_string($_POST['fecha_inicio']);				
 				$consulta=$ingreso->filtroPaginado(5,0, "", $fecha_inicio, $fecha_fin);
 			}
 			//Solo fecha inicio, fecha fin, busquedas
 			else if(!empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && empty($_POST['inicio_registros']) && empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"])) {
-				echo "Solo fecha inicio, fecha fin y busqueda";
 				$fecha_fin=$conexion->real_escape_string($_POST['fecha_fin']);
 				$fecha_inicio=$conexion->real_escape_string($_POST['fecha_inicio']);
 				$busqueda=$conexion->real_escape_string($_POST['busqueda']);
@@ -351,7 +317,6 @@ switch ($_GET["op"]) {
 			}
 			//Solo fecha inicio, fecha fin, busquedas, limites
 			else if(!empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && empty($_POST['inicio_registros']) && !empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"])) {
-				echo "Solo fecha inicio, fecha fin, busqueda y limites";
 				$fecha_fin=$conexion->real_escape_string($_POST['fecha_fin']);
 				$fecha_inicio=$conexion->real_escape_string($_POST['fecha_inicio']);
 				$busqueda=$conexion->real_escape_string($_POST['busqueda']);
@@ -360,7 +325,6 @@ switch ($_GET["op"]) {
 			}
 			//Solo fecha inicio, fecha fin, limites
 			else if(empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && empty($_POST['inicio_registros']) && !empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"])) {
-				echo "Solo fecha inicio, fecha fin y limites";
 				$fecha_fin=$conexion->real_escape_string($_POST['fecha_fin']);
 				$fecha_inicio=$conexion->real_escape_string($_POST['fecha_inicio']);				
 				$total_registros=$conexion->real_escape_string($_POST['total_registros']);
@@ -368,14 +332,12 @@ switch ($_GET["op"]) {
 			}
 			//Solo fecha fin, pagina
 			else if(empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && !empty($_POST['inicio_registros']) && empty($_POST['total_registros']) && empty($_POST["fecha_inicio"])) {
-				echo "Solo fecha fin y pagina > 1";
 				$fecha_fin=$conexion->real_escape_string($_POST['fecha_fin']);
 				$inicio_registros=$conexion->real_escape_string($_POST['inicio_registros']);
 				$consulta=$ingreso->filtroPaginado(5,$inicio_registros, "", "", $fecha_fin);
 			}
 			//Solo fecha inicio, pagina, limites
 			else if(empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && !empty($_POST['inicio_registros']) && !empty($_POST['total_registros']) && empty($_POST["fecha_inicio"])) {
-				echo "Solo fecha fin, pagina, limites";
 				$fecha_fin=$conexion->real_escape_string($_POST['fecha_fin']);
 				$inicio_registros=$conexion->real_escape_string($_POST['inicio_registros']);
 				$total_registros=$conexion->real_escape_string($_POST['total_registros']);
@@ -383,7 +345,6 @@ switch ($_GET["op"]) {
 			}
 			//Solo fecha inicio, fecha fin, pagina, limites
 			else if(empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && !empty($_POST['inicio_registros']) && !empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"])) {
-				echo "Solo fecha fin, fecha inicio, pagina, limites";
 				$fecha_fin=$conexion->real_escape_string($_POST['fecha_fin']);
 				$fecha_inicio=$conexion->real_escape_string($_POST['fecha_inicio']);
 				$inicio_registros=$conexion->real_escape_string($_POST['inicio_registros']);
@@ -392,7 +353,6 @@ switch ($_GET["op"]) {
 			}
 			//Solo fecha inicio, fecha fin, pagina, limites, busqueda
 			else if(!empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && !empty($_POST['inicio_registros']) && !empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"])) {
-				echo "Solo fecha fin, fecha inicio, pagina, limites, busqueda";
 				$fecha_fin=$conexion->real_escape_string($_POST['fecha_fin']);
 				$fecha_inicio=$conexion->real_escape_string($_POST['fecha_inicio']);
 				$inicio_registros=$conexion->real_escape_string($_POST['inicio_registros']);
@@ -402,7 +362,6 @@ switch ($_GET["op"]) {
 			}
 			//Solo fecha fin, pagina, limites, busqueda
 			else if(!empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && !empty($_POST['inicio_registros']) && !empty($_POST['total_registros']) && empty($_POST["fecha_inicio"])) {
-				echo "Solo fecha fin, pagina, limites, busqueda";
 				$fecha_fin=$conexion->real_escape_string($_POST['fecha_fin']);				
 				$inicio_registros=$conexion->real_escape_string($_POST['inicio_registros']);
 				$total_registros=$conexion->real_escape_string($_POST['total_registros']);

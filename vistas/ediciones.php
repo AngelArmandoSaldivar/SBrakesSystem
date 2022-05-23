@@ -50,11 +50,11 @@
             </div>
             <div class="form-group col-lg-6 col-md-2 col-xs-6" id="divImpuesto">
               <label for="">Descripción </label>
-              <textarea class="form-control" id="descripcion" name="descripcion" rows="5" style="width: 280px;" required></textarea>
+              <textarea class="form-control" id="descripcionEdit" name="descripcionEdit" rows="5" style="width: 280px;" required></textarea>
             </div>
             <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
               <label for="">Cantidad </label>
-              <input class="form-control" type="number" name="cantidad" id="cantidad" required>
+              <input class="form-control" type="number" name="cantidadEdit" id="cantidadEdit" required>
             </div>
             <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
               <label for="">Precio Venta </label>

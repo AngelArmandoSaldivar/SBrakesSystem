@@ -68,29 +68,25 @@ if(!isset($_SESSION["nombre"])) {
 
 			if(!empty($_POST['articulos']) && empty($_POST['limites']) && empty($_POST['inicio_registros']) && empty($_POST["total_registros"])) {				
 				$termino=$conexion->real_escape_string($_POST['articulos']);
-				usleep(100000);				
-				echo $termino." 1";
+				usleep(100000);								
 				$consulta=$articulo->articulosPagination(50,0, $termino);
 
 			} 
 			else if(!empty($_POST['articulos']) && !empty($_POST['limites'])) {	
-				usleep(100000);				
-				echo $termino. " 2";
+				usleep(100000);								
 				$termino=$conexion->real_escape_string($_POST['articulos']);
 				$limites=$conexion->real_escape_string($_POST['limites']);
 				$consulta=$articulo->articulosPagination($limites,0, $termino);
 
 			} else if(!empty($_POST['busqueda']) && !empty($_POST['inicio_registros']) && !empty($_POST["total_registros"])) {								
 				usleep(100000);				
-				echo $termino. "3";
 				$busqueda=$conexion->real_escape_string($_POST['busqueda']);
 				$inicio=$conexion->real_escape_string($_POST['inicio_registros']);
 				$fin=$conexion->real_escape_string($_POST['total_registros']);				
 				$consulta=$articulo->articulosPagination($fin,$inicio, $busqueda);
 
 			} else if(!empty($_POST['inicio_registros']) && !empty($_POST["total_registros"])) {
-				usleep(100000);
-				echo $termino . "4";
+				usleep(100000);				
 				$inicio=$conexion->real_escape_string($_POST['inicio_registros']);
 				$fin=$conexion->real_escape_string($_POST['total_registros']);				
 				$consulta=$articulo->articulosPagination($fin,$inicio, "");

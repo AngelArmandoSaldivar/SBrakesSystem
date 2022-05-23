@@ -1388,8 +1388,8 @@ function editarProductoVenta(idarticulo) {
 		data = JSON.parse(data);
 		console.log(data);
 		$("#idproducto").val(data.idarticulo).prop("disabled", true);
-		$("#descripcion").val(data.descripcion).prop("disabled", false);
-		$("#cantidad").val(data.cantidad).prop("disabled", false);
+		$("#descripcionEdit").val(data.descripcion).prop("disabled", false);
+		$("#cantidadEdit").val(data.cantidad).prop("disabled", false);
 		$("#precio").val(data.precio_venta).prop("disabled", false);		
 	});	
 }

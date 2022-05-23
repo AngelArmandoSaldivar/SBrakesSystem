@@ -17,7 +17,7 @@ public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$im
 	 $num_elementos=0;
 	 $sw=true;
 	 while ($num_elementos < count($idarticulo)) {
-	 	$sql_detalle="INSERT INTO detalle_servicio (idservicio,idarticulo,clave,fmsi,descripcion,tipoMov,cantidad,precio_servicio,descuento, marca) VALUES('$idservicionew','$idarticulo[$num_elementos]', '$clave[$num_elementos]','$fmsi[$num_elementos]','$descripcion[$num_elementos]','SERVICIO','$cantidad[$num_elementos]','$precio_servicio[$num_elementos]','$descuento[$num_elementos]', '$marcaArticulo[$num_elementos]')";
+	 	$sql_detalle="INSERT INTO detalle_servicio (idservicio,idarticulo,codigo,fmsi,descripcion,tipoMov,cantidad,precio_servicio,descuento, marca) VALUES('$idservicionew','$idarticulo[$num_elementos]', '$clave[$num_elementos]','$fmsi[$num_elementos]','$descripcion[$num_elementos]','SERVICIO','$cantidad[$num_elementos]','$precio_servicio[$num_elementos]','$descuento[$num_elementos]', '$marcaArticulo[$num_elementos]')";
 	 	ejecutarConsulta($sql_detalle) or $sw=false;
 
 		 $sql_kardex = "INSERT INTO kardex (fecha_hora, folio, clave, fmsi, idcliente_proveedor, cantidad, importe, tipoMov, estado, idsucursalArticulo, idsucursalVenta) VALUES ('$fecha_hora', $idservicionew, '$clave[$num_elementos]', '$fmsi[$num_elementos]', '$idcliente', '$cantidad[$num_elementos]', '$precio_servicio[$num_elementos]', 'SERVICIO', 'ACTIVO', '$idsucursalproducto[$num_elementos]', '$idsucursal')";
@@ -77,7 +77,7 @@ public function guardarCobro($metodoPago, $banco, $importeCobro, $referenciaCobr
 public function addProductoServicio($idarticulo,$articulo,$fmsi,$marca,$descripcion,$publico,$stock,$idServicio, $fecha, $idcliente, $idsucursalArticulo, $idsucursal) {
 	$bandera = true;
 	$sql = "INSERT INTO detalle_servicio 
-			(idservicio,idarticulo,clave,fmsi,marca, descripcion,tipoMov,cantidad,precio_servicio,descuento) 
+			(idservicio,idarticulo,codigo,fmsi,marca, descripcion,tipoMov,cantidad,precio_servicio,descuento) 
 			VALUES('$idServicio','$idarticulo', '$articulo','$fmsi','$marca','$descripcion','SERVICIO','$stock','$publico','0')";			
 	ejecutarConsulta($sql);
 	$sql_servicio = "UPDATE servicio SET total_servicio=total_servicio+'$publico' WHERE idservicio='$idServicio'";
@@ -90,7 +90,7 @@ public function addProductoServicio($idarticulo,$articulo,$fmsi,$marca,$descripc
 }
 
 public function mostrarProductoEdit($idarticulo, $idservicio) {
-	$sql = "SELECT * FROM detalle_servicio WHERE idservicio='$idservicio' AND idarticulo='$idarticulo'";
+	$sql = "SELECT * FROM detalle_servicio WHERE idservicio='$idservicio' AND idarticulo='$idarticulo' AND estado='0'";
 	return ejecutarConsultaSimpleFila($sql);
 }
 
@@ -102,10 +102,10 @@ public function editarGuardarProductoServicio($p1, $p2, $p3, $idarticulo, $idser
 	ejecutarConsulta($sql_articulo);
 	sleep(1);
 
-	$sql = "UPDATE detalle_servicio SET descripcion='$p1', cantidad='$p2', precio_servicio='$p3' WHERE idservicio='$idservicio' AND idarticulo='$idarticulo'";
+	$sql = "UPDATE detalle_servicio SET descripcion='$p1', cantidad='$p2', precio_servicio='$p3' WHERE idservicio='$idservicio' AND idarticulo='$idarticulo' AND estado='0'";
 	ejecutarConsulta($sql);	
 
-	$sql_kardex = "UPDATE kardex SET cantidad='$p2', importe='$p3' WHERE idventa='$idservicio' AND idarticulo='$idarticulo'";
+	$sql_kardex = "UPDATE kardex SET cantidad='$p2', importe='$p3' WHERE idventa='$idservicio' AND idarticulo='$idarticulo' AND estado='ACTIVO'";
 	ejecutarConsulta($sql_kardex);
 
 	$sql_servicioTotalNew = "UPDATE servicio SET total_servicio = total_servicio + ($p2 * $p3) WHERE idservicio='$idservicio'";
@@ -209,7 +209,7 @@ public function serviciocabecera($idservicio){
 }
 
 public function serviciodetalles($idservicio){
-	$sql="SELECT a.codigo AS articulo, a.codigo, d.cantidad,d.fmsi, d.descripcion, d.precio_servicio, d.descuento, d.clave, (d.cantidad*d.precio_servicio-d.descuento) AS subtotal FROM detalle_servicio d INNER JOIN articulo a ON d.idarticulo=a.idarticulo WHERE d.idservicio='$idservicio' AND d.estado=0";
+	$sql="SELECT a.codigo AS articulo, a.codigo, d.cantidad,d.fmsi, d.descripcion, d.precio_servicio, d.descuento, d.codigo, (d.cantidad*d.precio_servicio-d.descuento) AS subtotal FROM detalle_servicio d INNER JOIN articulo a ON d.idarticulo=a.idarticulo WHERE d.idservicio='$idservicio' AND d.estado=0";
     	return ejecutarConsulta($sql);
 }
 
