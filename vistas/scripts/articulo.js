@@ -514,14 +514,66 @@ function guardaryeditar(e){
 	
 }
 
-function solicitar() {
-	swal({
+function mostrarArticuloSolicitud(idarticulo) {
+	console.log("Solicitar", idarticulo);
+	$.post("../ajax/articulo.php?op=mostrar",{idarticulo : idarticulo},
+		function(data,status)
+		{
+			data=JSON.parse(data);
+			console.log(data);
+			$("#clave_producto").val(data.codigo).prop("disabled", true)
+			$("#marcaProducto").val(data.marca).prop("disabled", true)
+			$("#idarticuloPedido").val(data.idarticulo);
+	})
+	/*swal({
 		position: 'top-end',
 		type: 'success',
 		title: 'Función aun no disponible',
 		showConfirmButton: false,
 		timer: 1500
-	});
+	});*/
+}
+
+function guardarSolicitudArticulo() {
+	var idarticulo = $("#idarticuloPedido").val();
+	var marcaproducto = $("#marcaProducto").val();
+	var claveProducto = $("#clave_producto").val();
+	var cantidad = $("#cantidad").val();
+	var fechaSolicitud = $("#fechaSolicitud").val();
+	var estadoSolicitud = $("#estado_solicitud").val();
+	var notaAdicional = $("#notaAdicional").val();
+	var now = new Date();
+	var day =("0"+now.getDate()).slice(-2);
+	var month=("0"+(now.getMonth()+1)).slice(-2);
+	var today=now.getFullYear()+"-"+(month)+"-"+(day);
+
+	$.ajax({
+		url: "../ajax/articulo.php?op=guardarSolicitud&" + "idarticulo=" + idarticulo + "&marca=" + marcaproducto + 
+		"&clave=" + claveProducto + "&cantidad=" + cantidad + "&fecha=" + fechaSolicitud + "&estadoPedido=" + estadoSolicitud +
+		"&nota=" + notaAdicional + "&fecha_registro=" + today,
+		method: "POST",		
+		success: function(data) {
+			swal({
+				title: data,
+				text: 'Se guardo correctamente el pedido.',
+				type: 'success',
+				showConfirmButton: false,
+				timer: 1500
+			});
+			$("#clave_producto").val("");
+			$("#marcaProducto").val("");
+			$("#cantidad").val("");
+			$("#fechaSolicitud").val("");
+			$("#estado_solicitud").val("");
+			$("#notaAdicional").val("");
+			$("#solicitarArticulo").modal('hide');
+			
+		},
+		error: function(request, status, error) {
+			alert("Error: ", error);
+		}
+	})
+	
 }
 
 function mostrar(idarticulo){

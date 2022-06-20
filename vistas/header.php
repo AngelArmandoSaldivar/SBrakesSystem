@@ -145,6 +145,7 @@ if ($_SESSION['almacen']==1) {
             <li><a href="articulo.php"><i class="fa fa-circle-o"></i> Articulos</a></li>
             <li><a href="kardex.php"><i class="fa fa-circle-o"></i> Kardex</a></li>
             <li><a href="categoria.php"><i class="fa fa-circle-o"></i> Categorias</a></li>
+            <li><a href="pedidos.php"><i class="fa fa-circle-o"></i> Pedidos</a></li>
           </ul>
         </li>';
 }
@@ -160,6 +161,8 @@ if ($_SESSION['compras']==1) {
           </a>
           <ul class="treeview-menu">
             <li><a href="ingreso.php"><i class="fa fa-circle-o"></i> Recepciones</a></li>
+            <li><a href="gastos.php"><i class="fa fa-circle-o"></i> Gastos</a></li>
+            <li><a href="devoluciones.php"><i class="fa fa-circle-o"></i> Devoluciones</a></li>
             <li><a href="proveedor.php"><i class="fa fa-circle-o"></i> Proveedores</a></li>
           </ul>
         </li>';
@@ -203,7 +206,7 @@ if ($_SESSION['servicios']==1) {
 if ($_SESSION['accesos']==1) {
   echo '  <li class="treeview">
           <a href="#">
-            <i class="fa fa-folder"></i> <span>Accesos</span>
+            <i class="fa fa-users"></i> <span>Accesos</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -219,7 +222,7 @@ if ($_SESSION['accesos']==1) {
 if ($_SESSION['sucursal']==1) {
   echo '  <li class="treeview">
           <a href="#">
-            <i class="fa fa-street-view"></i> <span>Sucursal</span>
+            <i class="fa fa-map-marker"></i> <span>Sucursal</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>

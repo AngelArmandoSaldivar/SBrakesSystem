@@ -9,7 +9,7 @@ if (!isset($_SESSION['nombre'])) {
 
 require 'header.php';
 
-if ($_SESSION['kardex']==1) {
+if ($_SESSION['almacen']==1) {
 
  ?>
     <div class="content-wrapper">
@@ -21,10 +21,10 @@ if ($_SESSION['kardex']==1) {
         <div class="col-md-12">
       <div class="box">
 <div class="box-header with-border">
-  <h1 class="box-title">Kardex</h1>
+  <h1 class="box-title">Pedidos <a class="btn btn-success" href="pedidos.php"><i class="fa fa-refresh"></i> Recargar Pagina</a></h1>
   <div class="box-tools pull-right">
     
-  </div>
+  </div>            
 </div>
 <!--box-header-->
 <!--centro-->
@@ -37,35 +37,30 @@ if ($_SESSION['kardex']==1) {
     <label>Fecha Fin</label>
     <input type="date" class="form-control" name="fecha_fin" id="fecha_fin" value="<?php echo date("Y-m-d"); ?>">
   </div>
-  <table id="tbllistado" class="table table-striped table-bordered table-condensed table-hover">
+  <div class='loader'>
+    <img src='../files/images/loader.gif' alt=''>
+  </div>
+  <table id="tbllistado" class="responsive-table table table-hover table-bordered' style='border-radius: 15px;'">
     <thead>
-      <th>Fecha</th>
-      <th>Almacen</th>
-      <th>Sucursal venta/compra</th>
-      <th>Tipo Mov.</th>
-      <th>Folio</th>
+      <th>Acciones</th>
       <th>Clave</th>
-      <th>FMSI</th>
-      <th>Cliente / Proovedor</th>
+      <th>Marca</th>
       <th>Cantidad</th>
-      <th>Precio</th>
-      <th>Importe</th>
+      <th>Fecha Llegada</th>
+      <th>Estado Pedido</th>
+      <th>Notas</th>
     </thead>
     <tbody>
     </tbody>
     <tfoot>
-    <th>Fecha</th>
-      <th>Almacen</th>
-      <th>Sucursal venta/compra</th>
-      <th>Tipo Mov.</th>
-      <th>Folio</th>
+      <th>Acciones</th>
       <th>Clave</th>
-      <th>FMSI</th>
-      <th>Cliente / Proovedor</th>
+      <th>Marca</th>
       <th>Cantidad</th>
-      <th>Precio</th>
-      <th>Importe</th>
-    </tfoot>   
+      <th>Fecha Llegada</th>
+      <th>Estado Pedido</th>
+      <th>Notas</th>
+    </tfoot>
   </table>
 </div>
 
@@ -85,7 +80,7 @@ if ($_SESSION['kardex']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/kardex.js"></script>
+ <script src="scripts/pedidosB1.js"></script>
  <?php 
 }
 

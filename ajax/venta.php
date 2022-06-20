@@ -1199,7 +1199,7 @@ switch ($_GET["op"]) {
 							barcode LIKE '%".$termino."%' OR
 							descripcion LIKE '%".$termino."%' OR
 							marca LIKE '%".$termino."%' AND stock > 0 ORDER BY stock DESC LIMIT 100";
-						}					
+						}
 						$consultaBD=$conexion->query($consulta);
 						if($consultaBD->num_rows>=1){
 							echo "

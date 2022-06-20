@@ -14,6 +14,13 @@ class Articulo{
 		return ejecutarConsulta($sql);
 	}
 
+	public function guardarPedido($clave, $marca, $cantidad, $fecha, $estadoPedido, $notas, $fecha_registro) {
+		$sql = "INSERT INTO pedidos (clave, marca, cantidad, fecha_pedido, fecha_registro, estadoPedido, notas, status) VALUES 
+									('$clave', '$marca', '$cantidad', '$fecha', '$fecha_registro', '$estadoPedido', '$notas', '1')";
+		usleep(140000);
+		return ejecutarConsulta($sql);
+	}
+		
 	public function editar($idarticulo,$codigo,$costo, $barcode, $credito_taller,$descripcion,$fmsi,$idcategoria, $idproveedor, $marca,$mayoreo,$pasillo,$publico,$stock,$taller,$unidades){
 		$sql="UPDATE articulo SET codigo='$codigo', costo='$costo', barcode='$barcode', credito_taller='$credito_taller', descripcion='$descripcion', fmsi='$fmsi', idcategoria='$idcategoria', idproveedor='$idproveedor', marca='$marca', mayoreo='$mayoreo', pasillo='$pasillo', publico='$publico', stock='$stock', taller='$taller', unidades='$unidades'
 		WHERE idarticulo='$idarticulo'";

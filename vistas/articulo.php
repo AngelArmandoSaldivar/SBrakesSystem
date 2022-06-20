@@ -166,16 +166,20 @@ if ($_SESSION['almacen']==1) {
       <label for="">Mayoreo</label>
       <input class="form-control" type="number" name="mayoreo" id="mayoreo"  required placeholder="$">
     </div>    
-
-    <div class="form-group col-lg-6 col-md-6 col-xs-12">
-      <label for="">Codigo:</label>
-      <input class="form-control" type="text" name="barcode" id="barcode" placeholder="Código del producto" >
+    <div class="form-group col-lg-4 col-md-6 col-xs-12 text-center">
+    </div>
+    <div class="form-group col-lg-4 col-md-6 col-xs-12 text-center">
+      <label for="">Código de barras:</label>
+      <input class="form-control" type="text" name="barcode" id="barcode" placeholder="Código de barras" >
+      <br>
       <button class="btn btn-success" type="button" onclick="generarbarcode()">Generar</button>
       <button class="btn btn-info" type="button" onclick="imprimir()">Imprimir</button>
-      <div id="print">
+      <div id="print" class="text-center">
         <svg id="barras"></svg>
       </div>
     </div>
+    <div class="form-group col-lg-4 col-md-6 col-xs-12 text-center">
+    </div>    
     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
       <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i>  Guardar</button>
 
@@ -192,6 +196,9 @@ if ($_SESSION['almacen']==1) {
     </section>
     <!-- /.content -->
   </div>
+  <?php 
+    require('ediciones.php')
+  ?>
 <?php 
 }else{
  require 'noacceso.php'; 
@@ -200,7 +207,7 @@ require 'footer.php'
  ?>
  <script src="../public/js/JsBarcode.all.min.js"></script>
  <script src="../public/js/jquery.PrintArea.js"></script>
- <script src="scripts/articulos.js"></script>
+ <script src="scripts/articulo.js"></script>
  <!-- <script src="consulta.js"></script> -->
 
  <?php 

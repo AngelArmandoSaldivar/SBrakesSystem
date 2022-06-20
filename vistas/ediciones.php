@@ -285,16 +285,28 @@
       <div class="modal-content" style="border-radius: 20px;">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Articulos sucursales y/o almacenes</h4>
+          <h4 class="modal-title">Articulos almacenes</h4>
         </div>
         <div class="modal-body">
           <div class="panel-body table-responsive">
-            <div class="form-group col-lg-10 col-md-8 col-xs-12">
+            <div class="form-group col-lg-4 col-md-8 col-xs-12">              
+            <select name="limite_registros"  id="idsucursal" class="form-control selectpicker">
+              <option value="" disabled selected>Filtrar por almacen</option>
+              <?php               
+                $sql="SELECT * FROM sucursal WHERE idsucursal != '$idsucursal'";
+                $result = ejecutarConsulta($sql);
+                while($row = $result->fetch_assoc()) {
+                  echo "<option value='$row[idsucursal]'>$row[nombre]</option>";
+                }
+              ?>
+            </select>
+            </div>
+            <div class="form-group col-lg-4 col-md-8 col-xs-12">
               <section>
                 <center><input class="form-control me-2" type="text" name="busquedaProductAlmacen" id="busquedaProductAlmacen" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;"></center><br><br>
               </section>
             </div>
-            <div class="form-group col-lg-2 col-md-8 col-xs-12">              
+            <div class="form-group col-lg-4 col-md-8 col-xs-12 text-right">              
             <a data-toggle="modal" href="#myModal">
               <button id="btnAgregarArt" type="button" class="btn btn-primary" onclick="regresarMiSucursal()"><span class="fa fa-arrow-left"></span> Regresar a mi almacen</button>
             </a>
@@ -315,138 +327,200 @@
   </div>
 
   <!--Modal registrar nuevo producto-->
-  <div class="modal fade" id="agregarProducto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width: 80% !important; box-shadow:5px 5px 5px 5px rgba(0, 0, 0, 0.2);">
-      <div class="modal-content" style="border-radius: 20px;">
-        <div class="modal-header">
-          <button name="addProduct" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Registrar Producto</h4>
-        </div>
-        <div class="modal-body">
-        <div class="modal-body">
-          <div class="panel-body table-responsive">
+<div class="modal fade" id="agregarProducto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="width: 80% !important; box-shadow:5px 5px 5px 5px rgba(0, 0, 0, 0.2);">
+    <div class="modal-content" style="border-radius: 20px;">
+      <div class="modal-header">
+        <button name="addProduct" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Registrar Producto</h4>
+      </div>
+      <div class="modal-body">
+      <div class="modal-body">
+        <div class="panel-body table-responsive">
 
-          <form action="" name="formularioProduct" id="formularioProduct" method="POST">
-            <!--CLAVE DEL PRODUCTO-->
-            <div class="form-group col-lg-4 col-md-6 col-xs-12">
-              <label for="">Clave(*):</label>
-              <input class="form-control" type="hidden" name="idarticulo" id="idarticulo">
-              <input class="form-control" type="text" name="codigo" id="codigo" maxlength="100" placeholder="Clave" required>
-            </div>
-
-
-            <!--CLAVE DEL PRODUCTO-->
-            <div class="form-group col-lg-4 col-md-6 col-xs-12">
-              <label for="">Fmsi(*):</label>
-              <input class="form-control" type="text" name="fmsi" id="fmsi" maxlength="100" placeholder="Fmsi">
-            </div>
+        <form action="" name="formularioProduct" id="formularioProduct" method="POST">
+          <!--CLAVE DEL PRODUCTO-->
+          <div class="form-group col-lg-4 col-md-6 col-xs-12">
+            <label for="">Clave(*):</label>
+            <input class="form-control" type="hidden" name="idarticulo" id="idarticulo">
+            <input class="form-control" type="text" name="codigo" id="codigo" maxlength="100" placeholder="Clave" required>
+          </div>
 
 
-            <!--CATEGORIA DEL PRODUCTO-->
-            <div class="form-group col-lg-4 col-md-6 col-xs-12">
-              <label for="">Categoria(*):</label>
-              <select name="idcategoria" id="idcategoria" class="form-control selectpicker" data-Live-search="true" required>
+          <!--CLAVE DEL PRODUCTO-->
+          <div class="form-group col-lg-4 col-md-6 col-xs-12">
+            <label for="">Fmsi(*):</label>
+            <input class="form-control" type="text" name="fmsi" id="fmsi" maxlength="100" placeholder="Fmsi">
+          </div>
 
+
+          <!--CATEGORIA DEL PRODUCTO-->
+          <div class="form-group col-lg-4 col-md-6 col-xs-12">
+            <label for="">Categoria(*):</label>
+            <select name="idcategoria" id="idcategoria" class="form-control selectpicker" data-Live-search="true" required>
+
+            <?php 
+            
+              $sql="SELECT * FROM categoria";
+              $result = ejecutarConsulta($sql);
+
+              while($row = $result->fetch_assoc()) {
+                echo "<option value='$row[idcategoria]'>$row[nombre]</option>";
+              }
+            
+            ?>
+            </select>
+          </div>
+
+          <!--MARCA DEL PRODUCTO-->
+          <div class="form-group col-lg-6 col-md-6 col-xs-12">
+            <label for="">Marca(*):</label>
+            <input class="form-control" type="text" name="marca" id="marca" maxlength="100" placeholder="Marca" required>
+          </div>
+
+          <!--PROVEEDOR DEL PRODUCTO-->
+          <div class="form-group col-lg-6 col-md-8 col-xs-12">
+            <label for="">Proveedor(*):</label>
+            <select name="idproveedor" id="idproveedor" class="form-control selectpicker" data-live-search="true" required>
               <?php 
-              
-                $sql="SELECT * FROM categoria";
+                $sql="SELECT * FROM persona WHERE tipo_persona='Proveedor'";
                 $result = ejecutarConsulta($sql);
 
                 while($row = $result->fetch_assoc()) {
-                  echo "<option value='$row[idcategoria]'>$row[nombre]</option>";
+                  echo "<option value='$row[idpersona]'>$row[nombre]</option>";
                 }
-              
+            
               ?>
-              </select>
-            </div>
+            </select>
+          </div>  
 
-            <!--MARCA DEL PRODUCTO-->
-            <div class="form-group col-lg-6 col-md-6 col-xs-12">
-              <label for="">Marca(*):</label>
-              <input class="form-control" type="text" name="marca" id="marca" maxlength="100" placeholder="Marca" required>
-            </div>
+          <div class="form-group col-lg-12 col-md-6 col-xs-12">
+            <label for="">Descripción(*):</label>
+            <input class="form-control" type="text" name="descripcion" id="descripcion" maxlength="500" placeholder="Unidades (JUEGO / SET / PIEZA)" required>
+          </div> 
 
-            <!--PROVEEDOR DEL PRODUCTO-->
-            <div class="form-group col-lg-6 col-md-8 col-xs-12">
-              <label for="">Proveedor(*):</label>
-              <select name="idproveedor" id="idproveedor" class="form-control selectpicker" data-live-search="true" required>
-                <?php 
-                  $sql="SELECT * FROM persona WHERE tipo_persona='Proveedor'";
-                  $result = ejecutarConsulta($sql);
+          <!--UNIDADES DEL PRODUCTO-->
+          <div class="form-group col-lg-4 col-md-6 col-xs-12">
+            <label for="">Unidades(*):</label>
+            <input class="form-control" type="text" name="unidades" id="unidades" maxlength="50" placeholder="Unidades (JUEGO / SET / PIEZA)" required>
+          </div>    
 
-                  while($row = $result->fetch_assoc()) {
-                    echo "<option value='$row[idpersona]'>$row[nombre]</option>";
-                  }
-              
-                ?>
-              </select>
-            </div>  
-
-            <div class="form-group col-lg-12 col-md-6 col-xs-12">
-              <label for="">Descripción(*):</label>
-              <input class="form-control" type="text" name="descripcion" id="descripcion" maxlength="500" placeholder="Unidades (JUEGO / SET / PIEZA)" required>
-            </div> 
-
-            <!--UNIDADES DEL PRODUCTO-->
+          <!--STOCK DEL PRODUCTO-->
             <div class="form-group col-lg-4 col-md-6 col-xs-12">
-              <label for="">Unidades(*):</label>
-              <input class="form-control" type="text" name="unidades" id="unidades" maxlength="50" placeholder="Unidades (JUEGO / SET / PIEZA)" required>
-            </div>    
+            <label for="">Stock</label>
+            <input class="form-control" type="number" name="stock" id="stock"  required>
+          </div>    
 
-            <!--STOCK DEL PRODUCTO-->
-              <div class="form-group col-lg-4 col-md-6 col-xs-12">
-              <label for="">Stock</label>
-              <input class="form-control" type="number" name="stock" id="stock"  required>
-            </div>    
-
-            <!--PASILLO DEL PRODUCTO-->
-            <div class="form-group col-lg-4 col-md-6 col-xs-12">
-              <label for="">Pasillo(*):</label>
-              <input class="form-control" type="text" name="pasillo" id="pasillo" maxlength="50" placeholder="Pasillo / Corredor" required>
-            </div>
-
-            <!--COSTOS DEL PRODUCTO-->
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-              <label for="">Costo</label>
-              <input class="form-control" type="number" name="costo" id="costo"  required placeholder="$">
-            </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-              <label for="">Precio Público</label>
-              <input class="form-control" type="number" name="publico" id="publico"  required placeholder="$">
-            </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">  
-              <label for="">Precio Taller</label>
-              <input class="form-control" type="number" name="taller" id="taller"  required placeholder="$">
-            </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-              <label for="">Precio Credito Taller</label>
-              <input class="form-control" type="number" name="credito_taller" id="credito_taller"  required placeholder="$">
-            </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-              <label for="">Mayoreo</label>
-              <input class="form-control" type="number" name="mayoreo" id="mayoreo"  required placeholder="$">
-            </div>    
-
-            <div class="form-group col-lg-6 col-md-6 col-xs-12">
-              <label for="">Codigo barras:</label>
-              <input class="form-control" type="text" name="barcode" id="barcode" placeholder="Código del producto" >              
-            </div>            
-          </form>
-
-          <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <button class="btn btn-success" type="submit" name="btnGuardarProveedor" onclick="guardaryeditarProducto()">Guardar</button>
-            <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
+          <!--PASILLO DEL PRODUCTO-->
+          <div class="form-group col-lg-4 col-md-6 col-xs-12">
+            <label for="">Pasillo(*):</label>
+            <input class="form-control" type="text" name="pasillo" id="pasillo" maxlength="50" placeholder="Pasillo / Corredor" required>
           </div>
+
+          <!--COSTOS DEL PRODUCTO-->
+          <div class="form-group col-lg-2 col-md-6 col-xs-12">
+            <label for="">Costo</label>
+            <input class="form-control" type="number" name="costo" id="costo"  required placeholder="$">
           </div>
+          <div class="form-group col-lg-2 col-md-6 col-xs-12">
+            <label for="">Precio Público</label>
+            <input class="form-control" type="number" name="publico" id="publico"  required placeholder="$">
+          </div>
+          <div class="form-group col-lg-2 col-md-6 col-xs-12">  
+            <label for="">Precio Taller</label>
+            <input class="form-control" type="number" name="taller" id="taller"  required placeholder="$">
+          </div>
+          <div class="form-group col-lg-2 col-md-6 col-xs-12">
+            <label for="">Precio Credito Taller</label>
+            <input class="form-control" type="number" name="credito_taller" id="credito_taller"  required placeholder="$">
+          </div>
+          <div class="form-group col-lg-2 col-md-6 col-xs-12">
+            <label for="">Mayoreo</label>
+            <input class="form-control" type="number" name="mayoreo" id="mayoreo"  required placeholder="$">
+          </div>    
+
+          <div class="form-group col-lg-6 col-md-6 col-xs-12">
+            <label for="">Codigo barras:</label>
+            <input class="form-control" type="text" name="barcode" id="barcode" placeholder="Código del producto" >              
+          </div>            
+        </form>
+
+        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <button class="btn btn-success" type="submit" name="btnGuardarProveedor" onclick="guardaryeditarProducto()">Guardar</button>
+          <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
         </div>
         </div>
-        <div class="modal-footer">
-          <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
-        </div>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
   </div>
+</div>
   <!-- fin Modal-->
+
+<div class="modal fade" id="solicitarArticulo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="width: 60% !important; box-shadow:5px 5px 5px 5px rgba(0, 0, 0, 0.2);">
+    <div class="modal-content" style="border-radius: 20px;">
+      <div class="modal-header">
+        <button name="addProduct" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Solicitar Articulo </h4>
+      </div>
+      <div class="modal-body">
+      <div class="modal-body">
+        <div class="panel-body table-responsive">
+
+        <form action="" name="formularioProduct" id="formularioProduct" method="POST">
+          <div class="form-group col-lg-6 col-md-6 col-xs-12">
+            <label for="">Clave:</label>            
+            <input class="form-control" type="hidden" name="idarticuloPedido" id="idarticuloPedido">
+            <input class="form-control" type="text" name="clave_producto" id="clave_producto" style="background-color:transparent; border:none;padding: 0px;">            
+          </div>
+
+          <div class="form-group col-lg-6 col-md-6 col-xs-12">
+            <label for="">Marca:</label>
+            <input class="form-control" type="text" name="marcaProducto" id="marcaProducto" style="background-color:transparent; border:none;padding: 0px;">            
+          </div>
+
+          <!--CLAVE DEL PRODUCTO-->
+          <div class="form-group col-lg-4 col-md-6 col-xs-12">
+            <label for="">Cantidad(*):</label>
+            <input class="form-control" type="hidden" name="idarticulo" id="idarticulo">
+            <input class="form-control" type="number" name="cantidad" id="cantidad" placeholder="Cantidad" required>
+          </div>      
+          <div class="form-group col-lg-4 col-md-6 col-xs-12">
+            <label for="">Solicitar para el día:</label>
+              <input class="form-control" type="date" name="fechaSolicitud" id="fechaSolicitud" required>
+          </div>
+          <div class="form-group col-lg-4 col-md-6 col-xs-12">
+            <label for="">Estado de solicitud</label>
+              <select name="estado_solicitud" id="estado_solicitud" class="form-control selectpicker">
+              <option value="" disabled selected>Estado de solicitud</option>                    
+                <option value="Bajo">Bajo</option>
+                <option value="Regular">Regular</option>
+                <option value="Urgente">Urgente</option>
+              </select>
+          </div> 
+          <div class="form-group col-lg-12 col-md-6 col-xs-12">
+            <label for="">Nota adicional:</label>
+            <textarea class="form-control" id="notaAdicional" name="notaAdicional" rows="5" style="width: 100%;"></textarea>
+          </div>
+        </form>
+
+        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <button class="btn btn-success" type="submit" name="btnGuardarProveedor" onclick="guardarSolicitudArticulo()">Guardar</button>
+          <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
+        </div>
+        </div>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 

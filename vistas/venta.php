@@ -5,6 +5,7 @@ ob_start();
 session_start();
 if (!isset($_SESSION['nombre'])) {
   header("Location: login.html");
+  $idsucursal = $_SESSION['idsucursal'];
 }else{
 
 
@@ -504,7 +505,7 @@ if ($_SESSION['ventas']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/venta.js"></script>
+ <script src="scripts/ventas.js"></script>
  <?php 
 }
 

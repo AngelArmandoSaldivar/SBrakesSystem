@@ -37,6 +37,19 @@ if(!isset($_SESSION["nombre"])) {
 					echo $rspta ? " Articulo actualizado correctamente" : "No se pudo actualizar los datos";
 				}
 		break;	
+		case 'guardarSolicitud':
+			$idarticulo=$_GET['idarticulo'];
+			$marca=$_GET['marca'];
+			$clave=$_GET['clave'];
+			$cantidad=$_GET['cantidad'];
+			$fecha=$_GET['fecha'];
+			$estadoPedido=$_GET['estadoPedido'];
+			$nota=$_GET['nota'];
+			$fecha_registro=$_GET['fecha_registro'];
+
+			$rspta=$articulo->guardarPedido($clave, $marca, $cantidad, $fecha, $estadoPedido, $nota, $fecha_registro);
+			echo $rspta ? "Se guardo correctamente el pedido" : "No se pudo guardar el pedido";
+			break;
 		case 'desactivar':
 			$rspta=$articulo->desactivar($idarticulo);
 			echo $rspta ? "Datos desactivados correctamente" : "No se pudo desactivar los datos";
@@ -142,7 +155,9 @@ if(!isset($_SESSION["nombre"])) {
 										<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
 										<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar articulo' data-placement='bottom' class='btn btn-warning btn-xs' onclick='editarArticulo(".$fila["idarticulo"].")'><i class='fa fa-pencil'></i></button>
 										<button title='Eliminar' data-toggle='popover' data-trigger='hover' data-content='Eliminar articulo' data-placement='top' class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idarticulo"].")')><i class='fa fa-close'></i></button>
-										<button title='Solicitar' data-toggle='popover' data-trigger='hover' data-content='Solicitar articulo' data-placement='bottom' class='btn btn-info btn-xs' onclick='solicitar(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button>
+										<a data-toggle='modal' href='#solicitarArticulo'>
+											<button title='Solicitar' data-toggle='popover' data-trigger='hover' data-content='Solicitar articulo' data-placement='bottom' class='btn btn-info btn-xs' onclick='mostrarArticuloSolicitud(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button>
+										</a>										
 										<!--<span data-tooltip='Activar articulo'><button class='btn btn-primary btn-xs' onclick='activar(".$fila["idarticulo"].")'><i class='fa fa-check'></i></button></span>-->									
 								</td>
 							</tr>
@@ -163,7 +178,9 @@ if(!isset($_SESSION["nombre"])) {
 									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
 									<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar articulo' data-placement='bottom' class='btn btn-warning btn-xs' onclick='editarArticulo(".$fila["idarticulo"].")'><i class='fa fa-pencil'></i></button>
 									<button title='Eliminar' data-toggle='popover' data-trigger='hover' data-content='Eliminar articulo' data-placement='top' class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idarticulo"].")')><i class='fa fa-close'></i></button>
-									<button title='Solicitar' data-toggle='popover' data-trigger='hover' data-content='Solicitar articulo' data-placement='bottom' class='btn btn-info btn-xs' onclick='solicitar(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button>
+									<a data-toggle='modal' href='#solicitarArticulo'>
+										<button title='Solicitar' data-toggle='popover' data-trigger='hover' data-content='Solicitar articulo' data-placement='bottom' class='btn btn-info btn-xs' onclick='mostrarArticuloSolicitud(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button>
+									</a>
 								</td>
 							</tr>";								
 						}
@@ -183,7 +200,9 @@ if(!isset($_SESSION["nombre"])) {
 								<td><p>".$fila['stock']."pz</td>
 								<td>
 									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
-									<button title='Solicitar' data-toggle='popover' data-trigger='hover' data-content='Solicitar articulo' data-placement='bottom' class='btn btn-info btn-xs' onclick='solicitar(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button>
+									<a data-toggle='modal' href='#solicitarArticulo'>
+										<button title='Solicitar' data-toggle='popover' data-trigger='hover' data-content='Solicitar articulo' data-placement='bottom' class='btn btn-info btn-xs' onclick='mostrarArticuloSolicitud(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button>
+									</a>
 							</tr>";
 						} 						
 						else if($fila["stock"] <=0) {
@@ -200,7 +219,9 @@ if(!isset($_SESSION["nombre"])) {
 								<td><p>".$fila['stock']."pz</td>
 								<td>
 								<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
-								<button title='Solicitar' data-toggle='popover' data-trigger='hover' data-content='Solicitar articulo' data-placement='bottom' class='btn btn-info btn-xs' onclick='solicitar(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button>
+								<a data-toggle='modal' href='#solicitarArticulo'>
+									<button title='Solicitar' data-toggle='popover' data-trigger='hover' data-content='Solicitar articulo' data-placement='bottom' class='btn btn-info btn-xs' onclick='solicitar(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button>
+								</a>
 							</tr>";	
 						}	
 					}

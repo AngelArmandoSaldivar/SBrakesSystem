@@ -862,19 +862,46 @@ $(document).on('keyup', '#busquedaProductAlmacenEdit', function(){
 	}
 });
 
+
+var select = document.getElementById('idsucursal');
+select.addEventListener('change',
+function(){
+	$('.loaderSearch').show();
+	let selectedOption = this.options[select.selectedIndex];
+	let sucursalId = selectedOption.value;
+	let productos = document.getElementById("busquedaProductAlmacen").value;
+	obtener_registrosProductos_almacen(productos)
+
+});
+
 function obtener_registrosProductos_almacen(productos){		
 
 	var tiposPrecios = document.getElementById("caja_valor").value;
-	
-	$.ajax({
-		url : '../ajax/venta.php?op=listarProductosSucursal',
-		type : 'POST',
-		dataType : 'html',
-		data : { productos: productos, types: tiposPrecios },
-	})
-	.done(function(resultado){
-		$("#tabla_resultadoProducto_almacen").html(resultado);
-	})
+	let idsucursal = document.getElementById("idsucursal").value;
+
+	if(productos != "" && idsucursal == "") {
+		$.ajax({
+			url : '../ajax/venta.php?op=listarProductosSucursal',
+			type : 'POST',
+			dataType : 'html',
+			data : { productos: productos, types: tiposPrecios },
+		})
+		.done(function(resultado){
+			$("#tabla_resultadoProducto_almacen").html(resultado);
+		})
+	}
+	if(productos != "" && idsucursal != "") {
+		$.ajax({
+			url : '../ajax/venta.php?op=listarProductosSucursal',
+			type : 'POST',
+			dataType : 'html',
+			data : { productos: productos, types: tiposPrecios, idsucursal:  idsucursal },
+		})
+		.done(function(resultado){
+			$("#tabla_resultadoProducto_almacen").html(resultado);
+		})
+	}
+
 }
 
 $(document).on('keyup', '#busquedaProductAlmacen', function(){	
