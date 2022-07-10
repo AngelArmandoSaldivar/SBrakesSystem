@@ -18,7 +18,7 @@ if ($_SESSION['compras']==1) {
         <div class="col-md-12">
           <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
             <div class="box-header with-border">
-              <center><h1 class="box-title">Proveedor </h1></center>
+              <center><h4 class="box-title">Proveedor </h4></center>
             <div class="box-tools pull-right">
           </div>
         </div>

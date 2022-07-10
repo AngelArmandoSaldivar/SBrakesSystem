@@ -22,7 +22,7 @@ if ($_SESSION['almacen']==1) {
         <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
         <center>
           <div class="box-header with-border">
-              <h1 class="box-title">Categorias                                  
+              <h4 class="box-title">Categorias</h4>
           </div>
         </center>
 

@@ -152,10 +152,8 @@ if ($_SESSION['escritorio']==1) {
 
 </div>
 
-<div class="col-lg-3 col-xs-6">
-
-  <div class="small-box bg-yellow">
-    
+<div class="col-lg-3 col-xs-6 shadow p-3 mb-5 bg-body rounded">
+  <div class="small-box bg-yellow">    
     <div class="inner">
     
       <h3><?php echo number_format($totalClientes); ?></h3>
@@ -181,10 +179,8 @@ if ($_SESSION['escritorio']==1) {
 </div>
 
 
-<div class="col-lg-3 col-xs-6">
-
-  <div class="small-box bg-red">
-  
+<div class="col-lg-3 col-xs-6 shadow p-3 mb-5 bg-body rounded">
+  <div class="small-box bg-red">    
     <div class="inner">
     
       <h3><?php echo number_format($totalProductos); ?></h3>
@@ -210,10 +206,8 @@ if ($_SESSION['escritorio']==1) {
 </div>
 
 
-<div class="col-lg-6 col-xs-6">
-
-  <div class="small-box bg-blue">
-  
+<div class="col-lg-3 col-xs-6 shadow p-3 mb-5 bg-body rounded">
+  <div class="small-box bg-blue">    
     <div class="inner">
     
       <h3>$<?php echo number_format($totalServicios); ?></h3>
@@ -288,6 +282,52 @@ if ($_SESSION['escritorio']==1) {
   </div>
 </div>
 
+<section class="col-lg-5 connectedSortable">
+
+            <!-- Map card -->
+            <div class="card bg-gradient-primary">
+              <div class="card-header border-0">
+                <h3 class="card-title">
+                  <i class="fas fa-map-marker-alt mr-1"></i>
+                  Visitors
+                </h3>
+                <!-- card tools -->
+                <div class="card-tools">
+                  <button type="button" class="btn btn-primary btn-sm daterange" title="Date range">
+                    <i class="far fa-calendar-alt"></i>
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
+                <!-- /.card-tools -->
+              </div>
+              <div class="card-body">
+                <div id="world-map" style="height: 250px; width: 100%;"></div>
+              </div>
+              <!-- /.card-body-->
+              <div class="card-footer bg-transparent">
+                <div class="row">
+                  <div class="col-4 text-center">
+                    <div id="sparkline-1"></div>
+                    <div class="text-white">Visitors</div>
+                  </div>
+                  <!-- ./col -->
+                  <div class="col-4 text-center">
+                    <div id="sparkline-2"></div>
+                    <div class="text-white">Online</div>
+                  </div>
+                  <!-- ./col -->
+                  <div class="col-4 text-center">
+                    <div id="sparkline-3"></div>
+                    <div class="text-white">Sales</div>
+                  </div>
+                  <!-- ./col -->
+                </div>
+                <!-- /.row -->
+              </div>
+            </div>
+
 </div>
 <!--fin centro-->
       </div>
@@ -309,50 +349,50 @@ require 'footer.php';
  <script src="../public/js/Chart.min.js"></script>
  <script>
    var ctx = document.getElementById("compras").getContext('2d');
-var compras = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: [<?php echo $fechasc ?>],
-        datasets: [{
-            label: '# Compras en $ de los últimos 10 dias',
-            data: [<?php echo $totalesc ?>],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-                 'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        }
-    }
-});
+  var compras = new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: [<?php echo $fechasc ?>],
+          datasets: [{
+              label: '# Compras en $ de los últimos 10 dias',
+              data: [<?php echo $totalesc ?>],
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)',
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255,99,132,1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)',
+                  'rgba(255,99,132,1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)'
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      beginAtZero:true
+                  }
+              }]
+          }
+      }
+  });
 
     var ctx = document.getElementById("ventasProductos").getContext('2d');
     var compras = new Chart(ctx, {
@@ -477,6 +517,14 @@ var compras = new Chart(ctx, {
         }
     }
     });
+
+</script>
+
+<script>
+
+navigator.geolocation.getCurrentPosition(position => {
+    console.log(position);
+});
 
 </script>
 

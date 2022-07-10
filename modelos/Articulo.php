@@ -14,9 +14,9 @@ class Articulo{
 		return ejecutarConsulta($sql);
 	}
 
-	public function guardarPedido($clave, $marca, $cantidad, $fecha, $estadoPedido, $notas, $fecha_registro) {
-		$sql = "INSERT INTO pedidos (clave, marca, cantidad, fecha_pedido, fecha_registro, estadoPedido, notas, status) VALUES 
-									('$clave', '$marca', '$cantidad', '$fecha', '$fecha_registro', '$estadoPedido', '$notas', '1')";
+	public function guardarPedido($clave, $marca, $cantidad, $fecha, $estadoPedido, $notas, $fecha_registro, $idsucursalProducto, $idsucursal) {
+		$sql = "INSERT INTO pedidos (clave, marca, cantidad, idsucursalProducto, idsucursal, fecha_pedido, fecha_registro, estadoPedido, notas, status) VALUES 
+									('$clave', '$marca', '$cantidad', '$idsucursalProducto', '$idsucursal', '$fecha', '$fecha_registro', '$estadoPedido', '$notas', '1')";
 		usleep(140000);
 		return ejecutarConsulta($sql);
 	}
@@ -74,7 +74,29 @@ class Articulo{
 	}
 
 	public function articulosPagination($limit, $limit2, $busqueda) {
-		$sql = "SELECT * FROM articulo WHERE codigo LIKE '%$busqueda%' OR fmsi LIKE '%$busqueda%' OR marca LIKE '%$busqueda%' OR descripcion LIKE '%$busqueda%' ORDER BY stock DESC LIMIT $limit OFFSET $limit2";
+		$sql = "SELECT c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
+		a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor,
+		a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock
+		FROM articulo a INNER JOIN categoria c ON a.idcategoria=c.idcategoria
+		WHERE a.codigo LIKE '%$busqueda%' OR
+		a.fmsi LIKE '%$busqueda%' OR
+		a.marca LIKE '%$busqueda%' OR
+		a.descripcion LIKE '%$busqueda%'
+		ORDER BY a.stock DESC LIMIT $limit OFFSET $limit2";
+		//usleep(90000);
+		return ejecutarConsulta($sql);
+	}
+
+	public function filtroArticulosCopy($busqueda) {
+		$sql = "SELECT c.nombre AS categoria, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
+		a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor,
+		a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock
+		FROM articulo a INNER JOIN categoria c ON a.idcategoria=c.idcategoria
+		WHERE a.codigo LIKE '%$busqueda%' OR
+		a.fmsi LIKE '%$busqueda%' OR
+		a.marca LIKE '%$busqueda%' OR
+		a.descripcion LIKE '%$busqueda%'
+		ORDER BY a.stock DESC";
 		//usleep(90000);
 		return ejecutarConsulta($sql);
 	}

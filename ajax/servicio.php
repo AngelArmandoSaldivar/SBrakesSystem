@@ -1,5 +1,6 @@
 <?php 
 require_once "../modelos/Servicios.php";
+require_once "../modelos/Persona.php";
 if (strlen(session_id())<1)
 	session_start();
 	//SESIONES
@@ -7,13 +8,16 @@ if (strlen(session_id())<1)
 	$acceso = $_SESSION['acceso'];
 
 $servicio = new Servicios();
+$persona=new Persona();
 
 $idservicio=isset($_POST["idservicio"])? limpiarCadena($_POST["idservicio"]):"";
 $idauto=isset($_POST["idauto"])? limpiarCadena($_POST["idauto"]):"";
 $idcliente=isset($_POST["idcliente"])? limpiarCadena($_POST["idcliente"]):"";
 $idusuario=$_SESSION["idusuario"];
 $tipo_comprobante=isset($_POST["tipo_comprobante"])? limpiarCadena($_POST["tipo_comprobante"]):"";
-$fecha_hora=isset($_POST["fecha_hora"])? limpiarCadena($_POST["fecha_hora"]):"";
+$fecha_entrada=isset($_POST["fecha_entrada"])? limpiarCadena($_POST["fecha_entrada"]):"";
+$fecha_salida=isset($_POST["fecha_salida"])? limpiarCadena($_POST["fecha_salida"]):"";
+$remision=isset($_POST["remision"])? limpiarCadena($_POST["remision"]):"";
 $impuesto=isset($_POST["impuesto"])? limpiarCadena($_POST["impuesto"]):"";
 $forma=isset($_POST["forma"])? limpiarCadena($_POST["forma"]):"";
 $forma2=isset($_POST["forma2"])? limpiarCadena($_POST["forma2"]):"";
@@ -38,10 +42,115 @@ $placas=isset($_POST["placas"])? limpiarCadena($_POST["placas"]):"";
 switch ($_GET["op"]) {
 	case 'guardaryeditar':
 	if (empty($idservicio)) {
-		$rspta=$servicio->insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$total_servicio,$marca, $modelo, $ano, $color, $kms, $placas, $_POST["idarticulo"],$_POST["clave"],$_POST["marca"], $_POST["fmsi"],$_POST["descripcion"],$_POST["cantidad"],$_POST["precio_servicio"],$_POST["descuento"], $idsucursal, $_POST["idsucursalArticulo"]);		
+		$rspta=$servicio->insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_entrada,$fecha_salida, $remision, $impuesto,$total_servicio,$marca, $modelo, $ano, $color, $kms, $placas, $_POST["idarticulo"],$_POST["clave"],$_POST["marca"], $_POST["fmsi"],$_POST["descripcion"],$_POST["cantidad"],$_POST["precio_servicio"],$_POST["descuento"], $idsucursal, $_POST["idsucursalArticulo"]);		
 		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
 	}
 	break;
+
+	case 'guardarGarantia':
+		$idservicio=$_GET['idservicio'];
+		$idarticulo=$_GET['idarticulo'];
+		$descripcion=$_GET['descripcion'];
+		$cantidad=$_GET['cantidad'];
+		$fecha_hora=$_GET['fecha_hora'];
+		$precioGarantia=$_GET['precioGarantia'];
+		$rspta=$servicio->guardarGarantia($idservicio, $idarticulo, $descripcion, $cantidad, $idsucursal, $fecha_hora, $precioGarantia);
+		echo $rspta ? "Se guardo correctamente la garantia" : "No se pudo guardar la garantia";
+		break;
+
+	case 'listarDetalleGarantias':
+		$id=$_GET['id'];
+		$rspta=$servicio->listarDetalle($id);
+		$total=0;
+		echo ' <thead style="background-color:#A9D0F5; font-size: 12px;">		
+		<th>Clave</th>
+		<th>Fmsi</th>
+		<th>Marca</th>
+		<th>Descripción</th>       
+        <th>Cantidad</th>
+        <th>Precio Venta</th>
+        <th>Descuento</th>
+        <th>Subtotal</th>
+		<th>Acciones</th>
+       </thead>';
+		while ($reg=$rspta->fetch_object()) {
+			echo '<tr class="filas" id="filas" style="font-size:12px">			
+			<td><input type="hidden" value="'.$reg->idarticulo.'" id="idarticulo" name="idarticulo"></input>'.$reg->codigo.'</td>
+			<td>'.$reg->fmsi.'</td>
+			<td>'.$reg->marca.'</td>
+			<td>'.$reg->descripcion.'</td>
+			<td>'.$reg->cantidad.'</td>
+			<td>$'.number_format($reg->precio_servicio, 2).'</td>
+			<td>'.$reg->descuento.'</td>
+			<td>$'.number_format($reg->subtotal, 2).'</td>
+			<td>
+			<a data-toggle="modal" href="#editProductServicioGarantia">
+				<button style="width: 40px;" type="button" title="Editar" class="btn btn-warning btn-xs" onclick="mostrarArticuloGarantia('.$reg->idarticulo.', \''.$reg->descripcion.'\',\''.$reg->cantidad.'\', \''.$reg->idservicio.'\', \''.$reg->subtotal.'\')">
+					<i class="fa fa-pencil"></i>
+				</button>
+			</a>
+			</td>';
+			$total=$total+($reg->precio_servicio*$reg->cantidad-$reg->descuento);
+			//agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\" )
+		}
+		echo '<tfoot style="background-color:#A9D0F5; font-size: 12px;">
+		<th></th>
+		<th></th>
+		<th></th>
+		<th></th>
+		<th></th>
+		<th></th>
+		<th>TOTAL</th>
+        <th><p id="total">$ '.number_format($total, 2).'</p><input type="hidden" name="total_servicio" id="total_servicio"></th>
+		<th></th>
+       </tfoot>';
+		break;
+
+	case 'guardarCliente':
+		$nombreCliente=$_GET['nombreCliente'];
+		$tipo_precio=$_GET['tipo_precio'];
+		$direccion=$_GET['direccion'];
+		$telefono=$_GET['telefono'];
+		$telefono_local=$_GET['telefono_local'];
+		$email=$_GET['email'];
+		$rfc=$_GET['rfc'];
+		$credito=$_GET['credito'];
+		$rspta=$persona->insertar("","Cliente",$nombreCliente,$tipo_precio,$direccion,$telefono,$telefono_local,$email, $rfc, $credito, "","","","","","");			
+		echo "CREDITO: ". $credito;
+		echo $rspta ? "Cliente registrado correctamente" : "No se pudo registrar el cliente";
+		break;
+
+	case 'guardarDetalleServicio':
+		$idservicio=$_GET['idservicio'];
+		$is_rem=$_GET['is_rem'];
+		$remision=$_GET['remision'];
+		$fecha_salida=$_GET['fecha_salida'];
+		$fecha_entrada=$_GET['fecha_entrada'];
+		$idcliente=$_GET['idcliente'];
+		$rspta = $servicio->editarDetalleServicio($idservicio, $idcliente, $fecha_entrada, $fecha_salida, $is_rem, $remision);
+		echo $rspta ? "Se guardo correctamente el detalle": "No se pudo guardar el detalle";		
+		break;
+
+	case 'editarFechaSalida':
+		$idservicio=$_GET["idservicio"];
+		$fechaSalida=$_GET["fechaSalida"];
+		$rspta=$servicio->editarFechaSalida($idservicio, $fechaSalida);
+		echo $rspta ? "Remision actualizada" : "No se pudo actualizar la remisión";
+		break;
+
+	case 'editarRemision':
+		$idservicio=$_GET["idservicio"];
+		$remision=$_GET["remision"];
+		$rspta=$servicio->editarRemision($idservicio, $remision);
+		echo $rspta ? "Remision actualizada" : "No se pudo actualizar la remisión";
+		break;
+
+	case 'maxRemision' :
+		$rspta=$servicio->maxRemision();
+		while ($reg=$rspta->fetch_object()) {
+			echo $reg->maxRemision;
+		}
+		break;
 
 	case 'guardarAuto' :
 		$idcliente=$_GET['idcliente'];
@@ -223,7 +332,7 @@ switch ($_GET["op"]) {
 	case 'ultimoServicio' :
 	$rspta=$servicio->ultimoServicio();		
 	while ($reg=$rspta->fetch_object()) {
-		echo json_encode($reg->idservicio);
+		echo json_encode($reg);
 	}
 	break;
 
@@ -640,6 +749,7 @@ switch ($_GET["op"]) {
 					<thead class='table-light'>
 						<tr>
 							<th class='bg-info' scope='col'>Folio</th>
+							<th class='bg-info' scope='col'>Entrada</th>
 							<th class='bg-info' scope='col'>Salida</th>
 							<th class='bg-info' scope='col'>Estatus</th>
 							<th class='bg-info' scope='col'>Cliente</th>
@@ -647,12 +757,13 @@ switch ($_GET["op"]) {
 							<th class='bg-info' scope='col'>Auto</th>
 							<th class='bg-info' scope='col'>Saldo pendiente</th>
 							<th class='bg-info' scope='col'>Total</th>
+							<th class='bg-info' scope='col'>Remisión</th>
 							<th class='bg-info' scope='col'>Acciones</th>
 						</tr>
 					</thead>
 				<tbody>";				
 				while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){
-					if($fila["idsucursal"] == $idsucursal && $acceso ==="admin") {
+					if($fila["idsucursal"] == $idsucursal && $acceso ==="admin") {	
 						if($fila["status"] != 'ANULADO') {
 							if ($fila["tipo_comprobante"]=='Ticket') {
 								$url='../reportes/exTicket.php?id=';
@@ -665,66 +776,119 @@ switch ($_GET["op"]) {
 							$totalServicio = 0;
 							$importeTotal = 0;
 
-							if($fila["total_servicio"] == intval($fila["pagado"])) {
-								$color = "#0C9B00";
-								echo "<tr style='color:".$color."'>
+							$color = "";
+							$estadoVenta = "";
+							$botones = "";
+							$remision = "";
+							$fechaSalida = "";
+
+
+							if($fila["is_remision"] == 0 && $fila["remision"] == 0 && $fila["fecha_salida"] != '') {
+									
+								$color = "black";
+								$estadoVenta = "PENDIENTE";
+								$remision = "";
+								$fechaSalida = $fila["fecha_salida"];
+								$botones = "
+								<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar servicio' data-placement='top' class='btn btn-warning btn-xs' onclick='editar(".$fila["idservicio"].")'><i class='fa fa-pencil'></i></button>
+								<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
+								<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
+								<a data-toggle='modal' href='#remOrSalida'>
+									<button title='Remisionar o dar salida' data-toggle='popover' data-trigger='hover' data-content='Remisionar o dar salida' data-placement='top' class='btn btn-default btn-xs' onclick='remisionarOrSalida(".$fila["idservicio"].")'><i class='fa fa-tag'></i></button>
+								</a>
+								<a data-toggle='modal' href='#garantias'>
+									<button title='Garantias' data-toggle='popover' data-trigger='hover' data-content='Enviar articulo(s) a garantias' data-placement='top' class='btn btn-default btn-xs' onclick='mostrarArticulosGarantias(".$fila["idservicio"].")'><i class='fa fa-reply'></i></button>
+								</a>";
+							} else if($fila["is_remision"] == 0 && $fila["fecha_salida"] == '') {
+								
+								$color = "blue";
+								$estadoVenta = "PENDIENTE";
+								$fechaSalida = "";
+								$botones = "<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar servicio' data-placement='top' class='btn btn-warning btn-xs' onclick='editar(".$fila["idservicio"].")'><i class='fa fa-pencil'></i></button>
+								<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
+								<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
+								<a data-toggle='modal' href='#remOrSalida'>
+									<button title='Remisionar o dar salida' data-toggle='popover' data-trigger='hover' data-content='Remisionar o dar salida' data-placement='top' class='btn btn-default btn-xs' onclick='remisionarOrSalida(".$fila["idservicio"].")'><i class='fa fa-tag'></i></button>
+								</a>
+								<a data-toggle='modal' href='#garantias'>
+									<button title='Garantias' data-toggle='popover' data-trigger='hover' data-content='Enviar articulo(s) a garantias' data-placement='top' class='btn btn-default btn-xs' onclick='mostrarArticulosGarantias(".$fila["idservicio"].")'><i class='fa fa-reply'></i></button>
+								</a>
+								";
+
+
+							} else if(intval($fila["pagado"]) == $fila["total_servicio"] && $fila["is_remision"] == 1 && $fila["fecha_salida"] != '') {
+								$color = "black";
+								$estadoVenta = "PAGADO";
+								$fechaSalida = $fila["fecha_salida"];
+								$botones = "<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar servicio' data-placement='top' class='btn btn-warning btn-xs' onclick='editar(".$fila["idservicio"].")'><i class='fa fa-pencil'></i></button>
+								<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
+								<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
+								<a target='_blank' href='".$url.$fila["idservicio"]."'> <button title='Imprimir' data-toggle='popover' data-trigger='hover' data-content='Imprimir factura' data-placement='top' class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a>
+								<a data-toggle='modal' href='#garantias'>
+									<button title='Garantias' data-toggle='popover' data-trigger='hover' data-content='Enviar articulo(s) a garantias' data-placement='top' class='btn btn-default btn-xs' onclick='mostrarArticulosGarantias(".$fila["idservicio"].")'><i class='fa fa-reply'></i></button>
+								</a>";
+								$remision = "R-".$fila["remision"];
+							} else if(intval($fila["pagado"]) < $fila["total_servicio"] && $fila["is_remision"] == 1 && $fila["fecha_salida"] != '' && $fila["remision"] > 0 ) {
+								$color = "red";
+								$fechaSalida = $fila["fecha_salida"];
+								$botones = "<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar servicio' data-placement='top' class='btn btn-warning btn-xs' onclick='editar(".$fila["idservicio"].")'><i class='fa fa-pencil'></i></button>
+								<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
+								<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
+								<button title='Cobrar' data-toggle='popover' data-trigger='hover' data-content='Cobrar servicio' data-placement='top' class='btn btn-default btn-xs' onclick='cobrarServicio(".$fila["idservicio"].")'><i class='fa fa-credit-card'></i></button>
+								<a target='_blank' href='".$url.$fila["idservicio"]."'><button title='Imprimir' data-toggle='popover' data-trigger='hover' data-content='Imprimir factura' data-placement='top' class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a>
+								<a data-toggle='modal' href='#garantias'>
+									<button title='Garantias' data-toggle='popover' data-trigger='hover' data-content='Enviar articulo(s) a garantias' data-placement='top' class='btn btn-default btn-xs' onclick='mostrarArticulosGarantias(".$fila["idservicio"].")'><i class='fa fa-reply'></i></button>
+								</a>";
+								$estadoVenta = "PENDIENTE";
+								$remision = "R-".$fila["remision"];
+							} else if(intval($fila["pagado"]) < $fila["total_servicio"] && $fila["is_remision"] == 1 && $fila["fecha_salida"] != '' && $fila["remision"] == 0 ) {
+								$color = "red";
+								$fechaSalida = $fila["fecha_salida"];
+								$botones = "<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar servicio' data-placement='top' class='btn btn-warning btn-xs' onclick='editar(".$fila["idservicio"].")'><i class='fa fa-pencil'></i></button>
+								<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
+								<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
+								<a data-toggle='modal' href='#garantias'>
+									<button title='Garantias' data-toggle='popover' data-trigger='hover' data-content='Enviar articulo(s) a garantias' data-placement='top' class='btn btn-default btn-xs' onclick='mostrarArticulosGarantias(".$fila["idservicio"].")'><i class='fa fa-reply'></i></button>
+								</a>";
+								$estadoVenta = "PENDIENTE";
+								$remision = "";
+							} 
+
+							echo "
+							<tr style='color:".$color."'>
 								<td>".$fila['idservicio']."</td>
-								<td>".$fila['fecha']."</td>
-								<td>"."PAGADO"."</td>
+								<td>".$fila['fecha_entrada']."</td>
+								<td>".$fechaSalida."</td>
+								<td>".$estadoVenta."</td>
 								<td><p>".$fila['cliente']."</td>
 								<td><p>".$fila['usuario']."</td>								
 								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
 								<td style='width:12px'><p>$ ".number_format($totalServicio=$fila["total_servicio"] - $fila["pagado"], 2)."</td>
 								<td><p>$ ".$miles."</td>
-								<td>
-									<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar servicio' data-placement='top' class='btn btn-warning btn-xs' onclick='editar(".$fila["idservicio"].")'><i class='fa fa-pencil'></i></button>
-									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
-									<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>															
-									<a target='_blank' href='".$url.$fila["idservicio"]."'> <button title='Imprimir' data-toggle='popover' data-trigger='hover' data-content='Imprimir servicio' data-placement='top' class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a>																			
-								</td>
-								</tr>
-								";
-							} else {
-								echo "<tr style='color:red'>								
-								<td>".$fila['idservicio']."</td>
-								<td>".$fila['fecha']."</td>
-								<td>"."PENDIENTE"."</td>
-								<td><p>".$fila['cliente']."</td>
-								<td><p>".$fila['usuario']."</td>								
-								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
-								<td><p>$ ".$totalServicio=$fila["total_servicio"] - $fila["pagado"]."</td>
-								<td><p>$ ".$miles."</td>
-								<td>
-									<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar servicio' data-placement='top' class='btn btn-warning btn-xs' onclick='editar(".$fila["idservicio"].")'><i class='fa fa-pencil'></i></button>
-									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
-									<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>															
-									<button title='Cobrar' data-toggle='popover' data-trigger='hover' data-content='Cobrar articulo' data-placement='top' class='btn btn-default btn-xs' onclick='cobrarServicio(".$fila["idservicio"].")'><i class='fa fa-credit-card'></i></button>
-									<a target='_blank' href='".$url.$fila["idservicio"]."'> <button title='Imprimir' data-toggle='popover' data-trigger='hover' data-content='Imprimir servicio' data-placement='top' class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a>										
-								</div>
-								</td>
-								</tr>
-								";
-							}
+								<td><p> ".$remision."</td>
+								<td>.$botones.</td>
+							</tr>
+							";		
 						} else {
 							$miles = number_format($fila['total_servicio'], 2);														
 							$totalServicio = 0;							
-							echo "<tr style='color:black'>								
+							echo "<tr style='color:black'>
 								<td>".$fila['idservicio']."</td>
-								<td>".$fila['fecha']."</td>
+								<td>".$fila['fecha_entrada']."</td>
+								<td>".""."</td>
 								<td>".$fila["status"]."</td>
 								<td><p>".$fila['cliente']."</td>
 								<td><p>".$fila['usuario']."</td>								
 								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
-								<td><p>$ ".$totalServicio=$fila["total_servicio"] - $fila["pagado"]."</td>
+								<td><p>$ ".number_format($totalServicio=$fila["total_servicio"] - $fila["pagado"])."</td>
 								<td><p>$ ".$miles."</td>
+								<td><p> ".""."</td>
 								<td>
-									<div class='emergente'>																												
-										<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrarAnulado(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>		
-									</div>
+									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrarAnulado(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
 								</td>
 								</tr>
 								";
-						}
+						}					
 							
 					} else if($fila["idsucursal"] == $idsucursal && $acceso != "admin"){
 						if($fila["status"] != 'ANULADO') {
@@ -739,54 +903,104 @@ switch ($_GET["op"]) {
 							$totalServicio = 0;
 							$importeTotal = 0;
 
-							if($fila["total_servicio"] == intval($fila["pagado"])) {
-								$color = "#0C9B00";
-								echo "<tr style='color:".$color."'>
+							$color = "";
+							$estadoVenta = "";
+							$botones = "";
+							$remision = "";
+							$fechaSalida = "";
+
+							if($fila["is_remision"] == 0 && $fila["remision"] == 0 && $fila["fecha_salida"] != '') {
+									
+								$color = "black";
+								$estadoVenta = "PENDIENTE";
+								$remision = "";
+								$fechaSalida = $fila["fecha_salida"];
+								$botones = "
+								<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
+								<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
+								<a data-toggle='modal' href='#remOrSalida'>
+									<button title='Remisionar o dar salida' data-toggle='popover' data-trigger='hover' data-content='Remisionar o dar salida' data-placement='top' class='btn btn-default btn-xs' onclick='remisionarOrSalida(".$fila["idservicio"].")'><i class='fa fa-tag'></i></button>
+								</a>
+								<a data-toggle='modal' href='#garantias'>
+									<button title='Garantias' data-toggle='popover' data-trigger='hover' data-content='Enviar articulo(s) a garantias' data-placement='top' class='btn btn-default btn-xs' onclick='mostrarArticulosGarantias(".$fila["idservicio"].")'><i class='fa fa-reply'></i></button>
+								</a>";
+							} else if($fila["is_remision"] == 0 && $fila["fecha_salida"] == '') {
+								
+								$color = "blue";
+								$estadoVenta = "PENDIENTE";
+								$fechaSalida = "";
+								$botones = "<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
+								<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
+								<a data-toggle='modal' href='#remOrSalida'>
+									<button title='Remisionar o dar salida' data-toggle='popover' data-trigger='hover' data-content='Remisionar o dar salida' data-placement='top' class='btn btn-default btn-xs' onclick='remisionarOrSalida(".$fila["idservicio"].")'><i class='fa fa-tag'></i></button>
+								</a>
+								<a data-toggle='modal' href='#garantias'>
+									<button title='Garantias' data-toggle='popover' data-trigger='hover' data-content='Enviar articulo(s) a garantias' data-placement='top' class='btn btn-default btn-xs' onclick='mostrarArticulosGarantias(".$fila["idservicio"].")'><i class='fa fa-reply'></i></button>
+								</a>";
+
+
+							} else if(intval($fila["pagado"]) == $fila["total_servicio"] && $fila["is_remision"] == 1 && $fila["fecha_salida"] != '') {
+								$color = "black";
+								$estadoVenta = "PAGADO";
+								$fechaSalida = $fila["fecha_salida"];
+								$botones = "<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
+								<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
+								<a target='_blank' href='".$url.$fila["idservicio"]."'> <button title='Imprimir' data-toggle='popover' data-trigger='hover' data-content='Imprimir factura' data-placement='top' class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a>
+								<a data-toggle='modal' href='#garantias'>
+									<button title='Garantias' data-toggle='popover' data-trigger='hover' data-content='Enviar articulo(s) a garantias' data-placement='top' class='btn btn-default btn-xs' onclick='mostrarArticulosGarantias(".$fila["idservicio"].")'><i class='fa fa-reply'></i></button>
+								</a>";
+								$remision = "R-".$fila["remision"];
+							} else if(intval($fila["pagado"]) < $fila["total_servicio"] && $fila["is_remision"] == 1 && $fila["fecha_salida"] != '' && $fila["remision"] > 0 ) {
+								$color = "red";
+								$fechaSalida = $fila["fecha_salida"];
+								$botones = "<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
+								<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
+								<button title='Cobrar' data-toggle='popover' data-trigger='hover' data-content='Cobrar servicio' data-placement='top' class='btn btn-default btn-xs' onclick='cobrarServicio(".$fila["idservicio"].")'><i class='fa fa-credit-card'></i></button>
+								<a target='_blank' href='".$url.$fila["idservicio"]."'><button title='Imprimir' data-toggle='popover' data-trigger='hover' data-content='Imprimir factura' data-placement='top' class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a>
+								<a data-toggle='modal' href='#garantias'>
+									<button title='Garantias' data-toggle='popover' data-trigger='hover' data-content='Enviar articulo(s) a garantias' data-placement='top' class='btn btn-default btn-xs' onclick='mostrarArticulosGarantias(".$fila["idservicio"].")'><i class='fa fa-reply'></i></button>
+								</a>";
+								$estadoVenta = "PENDIENTE";
+								$remision = "R-".$fila["remision"];
+							} else if(intval($fila["pagado"]) < $fila["total_servicio"] && $fila["is_remision"] == 1 && $fila["fecha_salida"] != '' && $fila["remision"] == 0 ) {
+								$color = "red";
+								$fechaSalida = $fila["fecha_salida"];
+								$botones = "<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
+								<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
+								<a data-toggle='modal' href='#garantias'>
+									<button title='Garantias' data-toggle='popover' data-trigger='hover' data-content='Enviar articulo(s) a garantias' data-placement='top' class='btn btn-default btn-xs' onclick='mostrarArticulosGarantias(".$fila["idservicio"].")'><i class='fa fa-reply'></i></button>
+								</a>";
+								$estadoVenta = "PENDIENTE";
+								$remision = "";
+							} 
+
+							echo "
+							<tr style='color:".$color."'>
 								<td>".$fila['idservicio']."</td>
-								<td>".$fila['fecha']."</td>
-								<td>"."PAGADO"."</td>
+								<td>".$fila['fecha_entrada']."</td>
+								<td>".$fechaSalida."</td>
+								<td>".$estadoVenta."</td>
 								<td><p>".$fila['cliente']."</td>
 								<td><p>".$fila['usuario']."</td>								
 								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
-								<td><p>$ ".number_format($totalServicio=$fila["total_servicio"] - $fila["pagado"], 2)."</td>
+								<td style='width:12px'><p>$ ".number_format($totalServicio=$fila["total_servicio"] - $fila["pagado"], 2)."</td>
 								<td><p>$ ".$miles."</td>
-								<td>								
-									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
-									<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>															
-									<a target='_blank' href='".$url.$fila["idservicio"]."'> <button title='Imprimir' data-toggle='popover' data-trigger='hover' data-content='Imprimir servicio' data-placement='top' class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a>
-									</td>
-								</tr>
-								";
-							} else {
-								echo "<tr style='color:red'>								
-								<td>".$fila['idservicio']."</td>
-								<td>".$fila['fecha']."</td>
-								<td>"."PENDIENTE"."</td>
-								<td><p>".$fila['cliente']."</td>
-								<td><p>".$fila['usuario']."</td>								
-								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
-								<td><p>$ ".$totalServicio=$fila["total_servicio"] - $fila["pagado"]."</td>
-								<td><p>$ ".$miles."</td>
-								<td>																
-									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
-									<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>						
-									<button title='Cobrar' data-toggle='popover' data-trigger='hover' data-content='Cobrar articulo' data-placement='top' class='btn btn-default btn-xs' onclick='cobrarServicio(".$fila["idservicio"].")'><i class='fa fa-credit-card'></i></button>
-									<a target='_blank' href='".$url.$fila["idservicio"]."'> <button title='Imprimir' data-toggle='popover' data-trigger='hover' data-content='Imprimir servicio' data-placement='top' class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a>
-								</td>
-								</tr>
-								";
-							}
+								<td><p> ".$remision."</td>
+								<td>.$botones.</td>
+							</tr>
+							";
+
 						} else {
 							$miles = number_format($fila['total_servicio'], 2);														
 							$totalServicio = 0;							
 							echo "<tr style='color:black'>								
-								<td>".$fila['idservicio']."</td>
-								<td>".$fila['fecha']."</td>
+								<td>".$fila['fecha_entrada']."</td>
+								<td>".$fechaSalida."</td>
 								<td>".$fila["status"]."</td>
 								<td><p>".$fila['cliente']."</td>
 								<td><p>".$fila['usuario']."</td>								
 								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
-								<td><p>$ ".$totalServicio=$fila["total_servicio"] - $fila["pagado"]."</td>
+								<td><p>$ ".number_format($totalServicio=$fila["total_servicio"] - $fila["pagado"])."</td>
 								<td><p>$ ".$miles."</td>
 								<td>
 									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrarAnulado(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
@@ -799,8 +1013,9 @@ switch ($_GET["op"]) {
 				}
 				echo "</tbody>
 				<tfoot>
-					<tr>					
+					<tr>
 							<th class='bg-info' scope='col'>Folio</th>
+							<th class='bg-info' scope='col'>Entrada</th>
 							<th class='bg-info' scope='col'>Salida</th>
 							<th class='bg-info' scope='col'>Estatus</th>
 							<th class='bg-info' scope='col'>Cliente</th>
@@ -808,6 +1023,7 @@ switch ($_GET["op"]) {
 							<th class='bg-info' scope='col'>Auto</th>
 							<th class='bg-info' scope='col'>Saldo pendiente</th>
 							<th class='bg-info' scope='col'>Total</th>
+							<th class='bg-info' scope='col'>Remisión</th>
 							<th class='bg-info' scope='col'>Acciones</th>
 					</tr>
 				</tfoot>

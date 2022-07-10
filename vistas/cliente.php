@@ -15,7 +15,7 @@ if ($_SESSION['ventas']==1) {
       <div class="col-md-12">
         <div class="box">
             <div class="box-header with-border">
-              <center><h1 class="box-title">Clientes </h1></center>
+              <center><h4 class="box-title">Clientes </h4></center>
             <div class="box-tools pull-right">
         </div>
       </div>
@@ -184,7 +184,7 @@ if ($_SESSION['ventas']==1) {
 }
 require 'footer.php';
  ?>
- <script src="scripts/clientesP.js"></script>
+ <script src="scripts/clientesB1S.js"></script>
  <?php 
 }
 

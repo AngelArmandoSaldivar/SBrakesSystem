@@ -26,13 +26,16 @@ if(!isset($_SESSION["nombre"])) {
 			$rspta=$persona->insertar($idpersona,$tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$telefono_local,$email, $rfc, $credito, $_POST["placas"],$_POST["marca"],$_POST["modelo"],$_POST["ano"],$_POST["color"],$_POST["kms"]);			
 			echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
 		}
-		if (empty($idpersona) && empty($_POST["placas"])) {			
+		else if (empty($idpersona) && empty($_POST["placas"])) {			
 			$rspta=$persona->insertar($idpersona,$tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$telefono_local,$email, $rfc, $credito, "","","","","","");			
 			echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
 		}		
-		//PERSONA Y AUTO
-		else if(!empty($idpersona) && !empty($_POST["placas"])){			
+		else if(!empty($idpersona) && !empty($_POST["placas"])){	
 			$rspta = $persona->editar($idpersona,$tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$telefono_local,$email, $rfc, $credito, $_POST["placas"],$_POST["marca"],$_POST["modelo"],$_POST["ano"],$_POST["color"],$_POST["kms"]);
+			echo $rspta ? "Datos guardados correctamente" : "No se pudo actualizar los datos";
+		}
+		else if(!empty($idpersona) && empty($_POST["placas"])) {
+			$rspta = $persona->editar($idpersona,$tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$telefono_local,$email, $rfc, $credito, "","","","","","");
 			echo $rspta ? "Datos guardados correctamente" : "No se pudo actualizar los datos";
 		}
 		break;
@@ -99,6 +102,26 @@ if(!isset($_SESSION["nombre"])) {
 		break;
 
 		case 'listarp':
+			// $rspta=$persona->listarp();
+			// $data=Array();
+
+			// while ($reg=$rspta->fetch_object()) {
+			// 	$data[]=array(
+			// 	"0"=>'<button class="btn btn-warning btn-xs" onclick="mostrar('.$reg->idpersona.')"><i class="fa fa-pencil"></i></button>'.' '.'<button class="btn btn-danger btn-xs" onclick="eliminar('.$reg->idpersona.')"><i class="fa fa-trash"></i></button>',
+			// 	"1"=>$reg->nombre,
+			// 	"2"=>$reg->tipo_documento,
+			// 	"3"=>$reg->num_documento,
+			// 	"4"=>$reg->telefono,
+			// 	"5"=>$reg->email
+			// 	);
+			// }
+			// $results=array(
+			// 	"sEcho"=>1,//info para datatables
+			// 	"iTotalRecords"=>count($data),//enviamos el total de registros al datatable
+			// 	"iTotalDisplayRecords"=>count($data),//enviamos el total de registros a visualizar
+			// 	"aaData"=>$data); 
+			// echo json_encode($results);
+
 			$consulta="SELECT * FROM persona WHERE tipo_persona='Proveedor' LIMIT 40";
 			$termino= "";
 			if(isset($_POST['personas']))
@@ -137,9 +160,11 @@ if(!isset($_SESSION["nombre"])) {
 								<td>".$fila['telefono']."</td>
 								<td><p>".$fila['email']."</td>
 								<td><p>".$fila['direccion']."</td>
-								<td>									
-									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar proveedor' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idpersona"].")'><i class='fa fa-eye'></i></button>
-									<button title='Eliminar' data-toggle='popover' data-trigger='hover' data-content='Eliminar proveedor' data-placement='top' class='btn btn-danger btn-xs' onclick='eliminar(".$fila["idpersona"].")'><i class='fa fa-trash'></i></button>
+								<td>
+									<div class='emergente'>
+										<span data-tooltip='Mostrar proveedor'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idpersona"].")'><i class='fa fa-eye'></i></button></span>
+										<span data-tooltip='Eliminar proveedor'><button class='btn btn-danger btn-xs' onclick='eliminar(".$fila["idpersona"].")'><i class='fa fa-trash'></i></button></span>
+									</div>
 								</td>
 							</tr>
 							";					
@@ -199,9 +224,9 @@ if(!isset($_SESSION["nombre"])) {
 								<td>".$fila['telefono']."</td>
 								<td><p>".$fila['email']."</td>
 								<td>
-									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar cliente' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idpersona"].")'><i class='fa fa-eye'></i></button> 
-									<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar cliente' data-placement='top' class='btn btn-warning btn-xs' onclick='editar(".$fila["idpersona"].")'><i class='fa fa-pencil'></i></button>
-									<button title='Eliminar' data-toggle='popover' data-trigger='hover' data-content='Eliminar cliente' data-placement='top' class='btn btn-danger btn-xs' onclick='eliminar(".$fila["idpersona"].")')><i class='fa fa-close'></i></button>									
+									<button class='btn btn-success btn-xs' onclick='mostrar(".$fila["idpersona"].")'><i class='fa fa-eye'></i></button> 
+									<button class='btn btn-warning btn-xs' onclick='editar(".$fila["idpersona"].")'><i class='fa fa-pencil'></i></button>
+									<button class='btn btn-danger btn-xs' onclick='eliminar(".$fila["idpersona"].")')><i class='fa fa-close'></i></button>									
 								</td>
 							</tr>";
 				}

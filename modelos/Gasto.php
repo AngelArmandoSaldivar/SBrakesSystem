@@ -14,6 +14,11 @@ public function insertar($descripcion, $cantidad, $total_gasto, $metodo_pago, $i
 	return ejecutarConsulta($sql);
 }
 
+public function totalgastohoy(){
+	$sql="SELECT IFNULL(SUM(total_gasto * cantidad),0) as total_gasto FROM gastos WHERE DATE(fecha_hora)=curdate()";	
+	return ejecutarConsulta($sql);	
+}
+
 public function editar($idgasto,$descripcion, $cantidad, $total_gasto, $metodo_pago, $informacion_adicional, $fecha_hora){
 	$sql="UPDATE gastos SET descripcion='$descripcion', cantidad='$cantidad', total_gasto='$total_gasto', metodo_pago='$metodo_pago', informacion_adicional='$informacion_adicional', fecha_hora='$fecha_hora'
 	WHERE idgasto='$idgasto'";
@@ -36,7 +41,7 @@ public function mostrar($idgasto){
 
 //listar registros
 public function listar(){
-	$sql="SELECT * FROM gastos";
+	$sql="SELECT * FROM gastos ORDER BY idgasto DESC";
 	return ejecutarConsulta($sql);
 }
 

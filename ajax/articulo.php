@@ -36,7 +36,27 @@ if(!isset($_SESSION["nombre"])) {
 					$rspta=$articulo->editar($idarticulo,$codigo,$costo, $barcode, $credito_taller, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $mayoreo, $pasillo, $publico, $stock, $taller, $unidades);
 					echo $rspta ? " Articulo actualizado correctamente" : "No se pudo actualizar los datos";
 				}
-		break;	
+		break;
+		case 'copiarBusqueda':
+			$consulta = $articulo->filtroArticulosCopy("");
+			if(!empty($_POST['busquedaCopy'])) {
+				$termino=$conexion->real_escape_string($_POST['busquedaCopy']);
+				usleep(100000);
+				$consulta=$articulo->filtroArticulosCopy($termino);
+			}
+			$consultaBD=$consulta;
+			//2000000
+			$array = [];
+			if($consultaBD->num_rows>=1){
+				while($fila=$consultaBD->fetch_object()){
+					if($fila->stock >= 1) {
+						array_push($array, $fila);
+						//echo json_encode($fila);
+					}					
+				}
+				echo json_encode($array);
+			}
+			break;
 		case 'guardarSolicitud':
 			$idarticulo=$_GET['idarticulo'];
 			$marca=$_GET['marca'];
@@ -110,47 +130,74 @@ if(!isset($_SESSION["nombre"])) {
 			//2000000
 			if($consultaBD->num_rows>=1){
 				echo "
+				<button id='botonClave' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarClave()'><i class='fa fa-eye'></i> Mostrar Clave</button>
+				<button id='botonFmsi' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarFmsi()'><i class='fa fa-eye'></i> Mostrar Fmsi</button>
+				<button id='botonMarca' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarMarca()'><i class='fa fa-eye'></i> Mostrar Marca</button>
+				<button id='botonDescripcion' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarDescripcion()'><i class='fa fa-eye'></i> Mostrar Descripción</button>
+				<button id='botonStock' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarStock()'><i class='fa fa-eye'></i> Mostrar Stock</button>
+				<button id='botonMayoreo' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarMayoreo()'><i class='fa fa-eye'></i> Mostrar Mayoreo</button>
+				<button id='botonTaller' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarTaller()'><i class='fa fa-eye'></i> Mostrar Taller</button>
+				<button id='botonCredito' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarCredito()'><i class='fa fa-eye'></i> Mostrar Credito</button>
+				<button id='botonMostrador' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarPublico()'><i class='fa fa-eye'></i> Mostrar Publico</button>
+				<button id='botonCosto' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarCosto()'><i class='fa fa-eye'></i> Mostrar Costo</button>
 				<table class='responsive-table table table-hover table-bordered' style='border-radius: 15px;' id='tableArticulos'>
 					<thead class='table-light' style='font-size:12px'>
 						<tr background: linear-gradient(337deg, rgba(0, 1, 255, 0.682) 0%, rgba(255, 0, 0, 0.71) 50%, rgba(0, 246, 144, 0.737) 100%);>
-							<th class='bg-info w-50' scope='col'>Clave</th>
-							<th class='bg-info' scope='col'>FMSI</th>
-							<th class='bg-info' scope='col'>Marca</th>
-							<th class='bg-info' scope='col'>Descripción</th>
-							<th class='bg-info' scope='col'>Costo</th>
-							<th class='bg-info' scope='col'>Publico Mostrador</th>
-							<th class='bg-info' scope='col'>Taller</th>
-							<th class='bg-info' scope='col'>Crédito Taller</th>
-							<th class='bg-info' scope='col'>Mayoreo</th>
-							<th class='bg-info' scope='col'>Stock</th>
+							<th id='thClave' class='bg-info w-40' scope='col'>Clave
+							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarClave()'><i class='fa fa-eye-slash'></i></button>							
+							</th>
+							<th id='thFmsi' class='bg-info' scope='col'>FMSI
+							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarFmsi()'><i class='fa fa-eye-slash'></i></button></th>
+							<th id='thMarca' class='bg-info' scope='col'>Marca
+							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarMarca()'><i class='fa fa-eye-slash'></i></button></th>
+							<th id='thDescripcion' class='bg-info' scope='col'>Descripción
+							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarDescripcion()'><i class='fa fa-eye-slash'></i></button></th>
+							<th id='thStock' class='bg-info' scope='col'>Stock
+							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarStock()'><i class='fa fa-eye-slash'></i></button></th>
+							<th id='thMayoreo' class='bg-info' scope='col'>Mayoreo
+								<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarMayoreo()'><i class='fa fa-eye-slash'></i></button>
+								<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='copiarMayoreo()'><i class='fa fa-files-o'></i></button>
+							</th>
+							<th id='thTaller' class='bg-info' scope='col'>Taller
+							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarTaller()'><i class='fa fa-eye-slash'></i></button>
+							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='copiarTaller()'><i class='fa fa-files-o'></i></button></th>
+							<th id='thCredito' class='bg-info' scope='col'>Crédito Taller
+							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarCredito()'><i class='fa fa-eye-slash'></i></button>
+							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='copiarCredito()'><i class='fa fa-files-o'></i></button></th>
+							<th id='thPublico' class='bg-info' scope='col'>Publico Mostrador
+							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarPublico()'><i class='fa fa-eye-slash'></i></button>
+							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='copiarPublico()'><i class='fa fa-files-o'></i></button></th>
+							<th id='thCosto' class='bg-info' scope='col'>Costo
+							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarCosto()'><i class='fa fa-eye-slash'></i></button>
+							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='copiarCosto()'><i class='fa fa-files-o'></i></button></th>
 							<th class='bg-info' scope='col'>Acciones</th>
 						</tr>
 					</thead>
 				<tbody>";				
 				while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){
-					$costoMiles = number_format($fila['costo']);
-					$publicMiles = number_format($fila['publico']);
-					$tallerMiles = number_format($fila['taller']);
-					$creditoMiles = number_format($fila['credito_taller']);
-					$mayoreoMiles = number_format($fila['mayoreo']);
+					$costoMiles = number_format($fila['costo'], 2);
+					$publicMiles = number_format($fila['publico'], 2);
+					$tallerMiles = number_format($fila['taller'], 2);
+					$creditoMiles = number_format($fila['credito_taller'], 2);
+					$mayoreoMiles = number_format($fila['mayoreo'], 2);
 					$descrip = $fila['descripcion'];
 					$delit = substr($descrip, 0,18);
 					$delitCodigo = substr($fila['codigo'], 0, 50);
 					$delitFmsi = substr($fila['fmsi'], 0, 50);
 					$stock_mdx = '';					
 					if($fila["idsucursal"] == $idsucursal && $acceso === "admin") {
-						if($fila["stock"] >=1) {							
+						if($fila["stock"] >=1) {
 								echo "<tr style='color:blue; font-size:11px;'>
-								<td >".$fila['codigo']."</td>
+								<td style='width:20px'>".$fila['codigo']."</td>
 								<td style='width:10px;'>".$delitFmsi."</td>
 								<td style='width:10px;'>".$fila['marca']."</td>
 								<td>".$delit."...</td>
-								<td><p>$ ".$costoMiles."</p></td>
-								<td><p>$ ".$publicMiles."</p></td>
+								<td><p>".$fila['stock']."pz</td>								
+								<td id='thStock'><p>$ ".$mayoreoMiles."</p></td>
 								<td><p>$ ".$tallerMiles."</p></td>
 								<td><p>$ ".$creditoMiles."</p></td>
-								<td><p>$ ".$mayoreoMiles."</p></td>
-								<td><p>".$fila['stock']."pz</td>
+								<td><p>$ ".$publicMiles."</p></td>
+								<td><p>$ ".$costoMiles."</p></td>
 								<td>
 										<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
 										<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar articulo' data-placement='bottom' class='btn btn-warning btn-xs' onclick='editarArticulo(".$fila["idarticulo"].")'><i class='fa fa-pencil'></i></button>
@@ -164,16 +211,16 @@ if(!isset($_SESSION["nombre"])) {
 							";							
 						} else if($fila["stock"] <=0){							
 								echo "<tr style='color:red; font-size:11px;'>
-								<td>".$fila['codigo']."</td>
-								<td>".$fila['fmsi']."</td>
-								<td>".$fila['marca']."</td>
+								<td style='width:20px'>".$fila['codigo']."</td>
+								<td style='width:10px;'>".$delitFmsi."</td>
+								<td style='width:10px;'>".$fila['marca']."</td>
 								<td>".$delit."...</td>
-								<td><p>$ ".$costoMiles."</p></td>
-								<td><p>$ ".$publicMiles."</p></td>
+								<td id='thStock'><p>".$fila['stock']."pz</td>								
+								<td><p>$ ".$mayoreoMiles."</p></td>								
 								<td><p>$ ".$tallerMiles."</p></td>
 								<td><p>$ ".$creditoMiles."</p></td>
-								<td><p>$ ".$mayoreoMiles."</p></td>
-								<td><p>".$fila['stock']."pz</td>
+								<td><p>$ ".$publicMiles."</p></td>
+								<td><p>$ ".$costoMiles."</p></td>
 								<td>
 									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
 									<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar articulo' data-placement='bottom' class='btn btn-warning btn-xs' onclick='editarArticulo(".$fila["idarticulo"].")'><i class='fa fa-pencil'></i></button>
@@ -188,16 +235,16 @@ if(!isset($_SESSION["nombre"])) {
 					else if($fila["idsucursal"] == $idsucursal && $acceso != "admin"){
 						if($fila["stock"] >=1) {
 							echo "<tr style='color:blue; font-size:11px;'>
-								<td >".$fila['codigo']."</td>
-								<td>".$fila['fmsi']."</td>
-								<td>".$fila['marca']."</td>
+								<td style='width:20px'>".$fila['codigo']."</td>
+								<td style='width:10px;'>".$delitFmsi."</td>
+								<td style='width:10px;'>".$fila['marca']."</td>
 								<td>".$delit."...</td>
-								<td><p>$ ".$costoMiles."</p></td>
-								<td><p>$ ".$publicMiles."</p></td>
+								<td><p>".$fila['stock']."pz</td>								
+								<td><p>$ ".$mayoreoMiles."</p></td>								
 								<td><p>$ ".$tallerMiles."</p></td>
 								<td><p>$ ".$creditoMiles."</p></td>
-								<td><p>$ ".$mayoreoMiles."</p></td>
-								<td><p>".$fila['stock']."pz</td>
+								<td><p>$ ".$publicMiles."</p></td>
+								<td><p>$ ".$costoMiles."</p></td>
 								<td>
 									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
 									<a data-toggle='modal' href='#solicitarArticulo'>
@@ -207,16 +254,16 @@ if(!isset($_SESSION["nombre"])) {
 						} 						
 						else if($fila["stock"] <=0) {
 							echo "<tr style='color:red; font-size:11px;'>
-								<td>".$fila['codigo']."</td>
-								<td>".$fila['fmsi']."</td>
-								<td>".$fila['marca']."</td>
+								<td style='width:20px'>".$fila['codigo']."</td>
+								<td style='width:10px;'>".$delitFmsi."</td>
+								<td style='width:10px;'>".$fila['marca']."</td>
 								<td>".$delit."...</td>
-								<td><p>$ ".$costoMiles."</p></td>
-								<td><p>$ ".$publicMiles."</p></td>
+								<td><p>".$fila['stock']."pz</td>								
+								<td><p>$ ".$mayoreoMiles."</p></td>								
 								<td><p>$ ".$tallerMiles."</p></td>
 								<td><p>$ ".$creditoMiles."</p></td>
-								<td><p>$ ".$mayoreoMiles."</p></td>
-								<td><p>".$fila['stock']."pz</td>
+								<td><p>$ ".$publicMiles."</p></td>
+								<td><p>$ ".$costoMiles."</p></td>
 								<td>
 								<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
 								<a data-toggle='modal' href='#solicitarArticulo'>
@@ -227,21 +274,6 @@ if(!isset($_SESSION["nombre"])) {
 					}
 				}
 				echo "</tbody>
-				<tfoot style='font-size:12px'>
-					<tr>
-						<th class='bg-info' scope='col'>Clave</th>
-						<th class='bg-info' scope='col'>FMSI</th>
-						<th class='bg-info' scope='col'>Marca</th>
-						<th class='bg-info' scope='col'>Descripción</th>
-						<th class='bg-info' scope='col'>Costo</th>
-						<th class='bg-info' scope='col'>Publico Mostrador</th>
-						<th class='bg-info' scope='col'>Taller</th>
-						<th class='bg-info' scope='col'>Crédito Taller</th>
-						<th class='bg-info' scope='col'>Mayoreo</th>
-						<th class='bg-info' scope='col'>Stock</th>
-						<th class='bg-info' scope='col'>Acciones</th>
-					</tr>
-						</tfoot>
 				</table>				
 				";
 			}else{

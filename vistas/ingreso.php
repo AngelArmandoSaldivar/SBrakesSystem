@@ -18,8 +18,9 @@ if ($_SESSION['compras']==1) {
     <div class="row">
       <div class="col-md-12">
         <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
+
           <div class="box-header with-border">
-            <center><h1 class="box-title">Recepciones </h1></center>
+            <center><h4 class="box-title">Recepciones </h4></center>
             <div class="box-tools pull-right">
             </div>
             <div class="panel-body table-responsive" id="listadoregistros">
@@ -80,93 +81,100 @@ if ($_SESSION['compras']==1) {
             </div>
           </div>
 
-          <div class="panel-body" style="height: 400px;" id="formularioregistros">
-            <form action="" name="formulario" id="formulario" method="POST">
-              <div class="form-group col-lg-4 col-md-8 col-xs-12">
-                <label for="">Proveedor(*):</label>
-                <input class="form-control" type="hidden" name="idingreso" id="idingreso">
-                <select name="idproveedor" id="idproveedor" class="form-control selectpicker" data-live-search="true" required>        
-                </select>
-              </div>
-              <div class="form-group col-lg-4 col-md-4 col-xs-12" id="">
-                <label for="">Agregar proveedor</label><br>
-                <a data-toggle="modal" href="#agregarProveedor">
-                  <button id="btnAgregarProveedor" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Proveedor</button>
-                </a>
-              </div>
-              <div class="form-group col-lg-4 col-md-4 col-xs-12">
-                <label for="">Fecha(*): </label>
-                <input class="form-control" type="date" name="fecha_hora" id="fecha_hora" required>
-              </div>
-              <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                <label for="">Tipo Comprobante(*): </label>
-                <select name="tipo_comprobante" id="tipo_comprobante" class="form-control selectpicker" required>
-                  <option value="Factura">Factura</option>
-                </select>
-              </div>
-              <div class="form-group col-lg-2 col-md-2 col-xs-6">
-                <label for="">Serie: </label>
-                <input class="form-control" type="text" name="serie_comprobante" id="serie_comprobante" maxlength="7" placeholder="Serie" required>
-              </div>
-              <div class="form-group col-lg-2 col-md-2 col-xs-6">
-                <label for="">Impuesto: </label>
-                <input class="form-control" type="text" name="impuesto" id="impuesto">
-              </div>
-              <div class="form-group col-lg-3 col-md-3 col-sm-6 col-xs-12" id="btnAgregarArt">
-                <a data-toggle="modal" href="#myModal" >
-                  <button id="btnAgregarArt" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Articulos</button>
-                </a>
-              </div>
-              <div class="form-group col-lg-3 col-md-3 col-sm-6 col-xs-12" id="btnAgregarArticulosEdit">
-                <a data-toggle="modal" href="#myModalProductsEdit" >
-                  <button id="btnAgregarArticulosEdit" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Add Articulos</button>
-                </a>
-              </div>
-
-              <div class="form-group col-lg-12 col-md-6 col-xs-12">
-                  <center><h4 aling="center">Productos Recepción</h4></center>
+          <div class="box-header with-border" id="formularioregistros"> 
+            <div class="panel-body table-responsive">   
+              <form action="" name="formulario" id="formulario" method="POST">
+                <div class="form-group col-lg-12 col-md-6 col-xs-12">
+                  <center><h4 aling="center">Información del cliente</h4></center>
+                </div>
+                <div class="form-group col-lg-4 col-md-8 col-xs-12">
+                  <label for="">Proveedor(*):</label>
+                  <input class="form-control" type="hidden" name="idingreso" id="idingreso">
+                  <select name="idproveedor" id="idproveedor" class="form-control selectpicker" data-live-search="true" required>        
+                  </select>
+                </div>
+                <div class="form-group col-lg-4 col-md-4 col-xs-12" id="">
+                  <label for="">Agregar proveedor</label><br>
+                  <a data-toggle="modal" href="#agregarProveedor">
+                    <button id="btnAgregarProveedor" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Proveedor</button>
+                  </a>
+                </div>
+                <div class="form-group col-lg-4 col-md-4 col-xs-12">
+                  <label for="">Fecha(*): </label>
+                  <input class="form-control" type="date" name="fecha_hora" id="fecha_hora" required>
+                </div>
+                <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                  <label for="">Tipo Comprobante(*): </label>
+                  <select name="tipo_comprobante" id="tipo_comprobante" class="form-control selectpicker" required>
+                    <option value="Factura">Factura</option>
+                  </select>
+                </div>
+                <div class="form-group col-lg-2 col-md-2 col-xs-6">
+                  <label for="">Serie: </label>
+                  <input class="form-control" type="text" name="serie_comprobante" id="serie_comprobante" maxlength="7" placeholder="Serie" required>
+                </div>
+                <div class="form-group col-lg-2 col-md-2 col-xs-6">
+                  <label for="">Impuesto: </label>
+                  <input class="form-control" type="text" name="impuesto" id="impuesto">
+                </div>
+                <div class="form-group col-lg-3 col-md-3 col-sm-6 col-xs-12" id="btnAgregarArt">
+                  <a data-toggle="modal" href="#myModal" >
+                    <button id="btnAgregarArt" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Articulos</button>
+                  </a>
+                </div>
+                <div class="form-group col-lg-3 col-md-3 col-sm-6 col-xs-12" id="btnAgregarArticulosEdit">
+                  <a data-toggle="modal" href="#myModalProductsEdit" >
+                    <button id="btnAgregarArticulosEdit" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Add Articulos</button>
+                  </a>
                 </div>
 
-              <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                <table id="detalles" class="table table-striped table-bordered table-condensed table-hover">
-                  <thead style="background-color:#A9D0F5">
-                    <th>Opciones</th>
-                    <th>Código</th>
-                    <th>Clave</th>
-                    <th>Fmsi</th>
-                    <th>Descripción</th>
-                    <th>Cantidad</th>
-                    <th>Costo</th>
-                    <th>Descuento</th>
-                    <th>Subtotal</th>
-                    <th>Acciones</th>
-                  </thead>
-                  <tfoot style="background-color:#A9D0F5">
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th>TOTAL</th>
-                    <th><p id="total">$ 0.00</p><input type="hidden" name="total_compra" id="total_compra"></th>
-                    <th></th>
-                  </tfoot>
-                  <tbody>                
-                  </tbody>
-                </table>
-              </div>
 
-              <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i>  Guardar</button>
-                <button class="btn btn-info" onclick="salirForm()" type="button" id="btnRegresar"><i class="fa fa-arrow-circle-left"></i> Regresar</button>
-                <?php 
-                  require('loader.php');
-                ?>
-              </div>
-            </form>
+
+                <div class="form-group col-lg-12 col-md-6 col-xs-12">
+                    <center><h4 aling="center">Productos Recepción</h4></center>
+                  </div>
+
+                <div class="form-group col-lg-12 col-md-12 col-xs-12">
+                  <table id="detalles" class="table table-striped table-bordered table-condensed table-hover">
+                    <thead style="background-color:#A9D0F5">
+                      <th>Opciones</th>
+                      <th>Código</th>
+                      <th>Clave</th>
+                      <th>Fmsi</th>
+                      <th>Descripción</th>
+                      <th>Cantidad</th>
+                      <th>Costo</th>
+                      <th>Descuento</th>
+                      <th>Subtotal</th>
+                      <th>Acciones</th>
+                    </thead>
+                    <tfoot style="background-color:#A9D0F5">
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th>TOTAL</th>
+                      <th><p id="total">$ 0.00</p><input type="hidden" name="total_compra" id="total_compra"></th>
+                      <th></th>
+                    </tfoot>
+                    <tbody>                
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i>  Guardar</button>
+                  <button class="btn btn-info" onclick="salirForm()" type="button" id="btnRegresar"><i class="fa fa-arrow-circle-left"></i> Regresar</button>
+                  <?php 
+                    require('loader.php');
+                  ?>
+                </div>
+              </form>
           </div>
+          
         </div>
       </div>
     </div>  
@@ -179,11 +187,11 @@ if ($_SESSION['compras']==1) {
 
    <!--Modal registrar nuevo proveedor-->
   <div class="modal fade" id="agregarProveedor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width: 50% !important; box-shadow:5px 5px 5px 5px rgba(0, 0, 0, 0.2);">
+    <div class="modal-dialog modal-lg" style="width: 50% !important; box-shadow:5px 5px 5px 5px rgba(0, 0, 0, 0.2);">
       <div class="modal-content" style="border-radius: 20px;">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           <h4 class="modal-title">Agregar Proveedor</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>          
         </div>
         <div class="modal-body">
         <div class="modal-body">
@@ -229,11 +237,11 @@ if ($_SESSION['compras']==1) {
 
   <!--Modal agregar producto a la venta-->
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width: 95% !important;">
+    <div class="modal-dialog modal-lg" style="width: 100% !important;">
       <div class="modal-content" style="border-radius: 20px;">     
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           <h4 class="modal-title">Seleccione un Articulo</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>          
         </div>
         <div class="modal-body">
         <div class="modal-body">        

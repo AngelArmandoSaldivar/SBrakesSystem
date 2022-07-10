@@ -63,7 +63,7 @@ $phone = "Tel: (55) 52733450 / (55) 43834342";
 	<table border="0" align="center" width="250px">
 		<tr>
 			<td  align="left" style="font-size:12px;"><b>Folio: </b><?php echo $reg->idventa; ?></td>
-			<td align="right" style="font-size:12px;"><b>Fecha: </b><?php echo $reg->fecha; ?></td>
+			<td align="right" style="font-size:12px;"><b>Fecha: </b><?php echo $reg->fecha_entrada; ?></td>
 		</tr>
 	</table>
 	<br><br>

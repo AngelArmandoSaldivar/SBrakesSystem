@@ -13,8 +13,9 @@ public function __construct(){
 public function insertar($idpersona,$tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$telefono_local,$email, $rfc, $credito, $placas, $marca, $modelo, $ano, $color, $kms){	
 	$sw=true;
 	$num_elementos=0;
+	$idPersonaNew="";
 
-	if($nombre != "") {
+	if($nombre != "") {		
 		$sql="INSERT INTO persona (tipo_persona,nombre,tipo_precio,direccion,telefono,telefono_local,email, rfc, credito) VALUES ('$tipo_persona','$nombre','$tipo_precio','$direccion','$telefono','$telefono_local','$email', '$rfc', '$credito')";
 		$idPersonaNew=ejecutarConsulta_retornarID($sql);
 	}

@@ -15,78 +15,79 @@ if ($_SESSION['ventas']==1) {
 
  ?>         
 <div class="content-wrapper">
-      <!-- Main content -->
   <section class="content">
-        <!-- Default box -->
     <div class="row">
       <div class="col-md-12">
         <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
+        
           <div class="box-header with-border">    
-              <center><h1 class="box-title">Ventas </h1></center>
+              <center><h4 class="box-title">Ventas </h4></center>
               <div class="box-tools pull-right"></div>
-            <div class="panel-body table-responsive" id="listadoregistros">
-            
-            <section>
+              <div class="panel-body table-responsive" id="listadoregistros">       
+              
+              <section>
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                  <button title="Registrar" id="btnagregarservicio" data-toggle='popover' data-trigger='hover' data-content='Registrar nueva venta' data-placement='right' class='btn btn-success' onclick="crearVenta(true)"><i class="fa fa-plus-circle"></i> Agregar Nuevo</button>
+                </div>
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                  <button title="Exportar" id="" data-toggle='popover' data-trigger='hover' data-content='Exportar a excel' data-placement='right' class='btn btn-success' title="" onclick="exportarExcel()"><i class="fa fa-file-excel-o"></i> Exportar a Excel</button>
+                </div>
+                <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                  <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;"></center>
+                </div>
+              </section>
+
               <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                <button title="Registrar" id="btnagregarservicio" data-toggle='popover' data-trigger='hover' data-content='Registrar nueva venta' data-placement='right' class='btn btn-success' onclick="crearVenta(true)"><i class="fa fa-plus-circle"></i> Agregar Nuevo</button>
-              </div>
-              <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;"></center>
-              </div>
-            </section>
+                <div class="loaderSearch">
+                  <img src="../files/images/loader.gif" alt="" width="35px">
+                </div>
+              </div>            
 
-            <div class="form-group col-lg-4 col-md-6 col-xs-12">
-              <div class="loaderSearch">
-                <img src="../files/images/loader.gif" alt="" width="35px">
+              <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <label>Fecha Inicio</label>
+                <input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" value="">
               </div>
-            </div>            
 
-            <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <label>Fecha Inicio</label>
-              <input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" value="">
+            <div class="form-group col-lg-4 col-md-6 col-sm-6 col-xs-12">
+              <label>Fecha Fin</label>
+              <input type="date" class="form-control" name="fecha_fin" id="fecha_fin" value="">
             </div>
-
-          <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <label>Fecha Fin</label>
-            <input type="date" class="form-control" name="fecha_fin" id="fecha_fin" value="">
-          </div>
-
-          <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
-          <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
-          <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">
-            <select name="limite_registros" id="limite_registros" class="form-control selectpicker">
-              <option value="" disabled selected>Seleccionar limite</option>                  
-              <option value="5">50 / Registros</option>
-              <option value="10">100 / Registros</option>
-              <option value="20">200 / Registros</option>
-              <option value="50">500 / Registros</option>
-              <option value="100">1000 / Registros</option>
-            </select>
-          </div>   
-          <div id="global">
-            <div id="tablaResultados">
-              <section id="tabla_resultado"></section>
+            <div class="form-group col-lg-2 col-md-6 col-xs-12" style="text-align:left;">
+              <label>Limte de registros</label>
+              <select name="limite_registros" id="limite_registros" class="form-control selectpicker">
+                <option value="" disabled selected>Seleccionar limite</option>                  
+                <option value="50">50 / Registros</option>
+                <option value="100">100 / Registros</option>
+                <option value="200">200 / Registros</option>
+                <option value="500">500 / Registros</option>
+                <option value="1000">1000 / Registros</option>
+              </select>
+            </div>
+            <div id="global">
+              <div id="tablaResultados">
+                <section id="tabla_resultado"></section>
+              </div>
+            </div>
+            <div class="form-group col-lg-12 col-md-6 col-xs-12">
+              <nav aria-label="Page navigation example" style="text-align:right; margin-right:5px">
+                <ul class="pagination">
+                <input type="button" title="Anterior" data-toggle='popover' data-trigger='hover' data-content='Pagina anterior' data-placement='top' class='btn btn-primary me-md-2' value="Anterior" id="anterior" name="anterior" onclick="paginaAnterior();">
+                    <li class="page-item"><input title="Pagina" data-toggle='popover' data-trigger='hover' data-content='Pagina actual' data-placement='top' class='btn btn-primary me-md-2' type="submit" id="pagina" name="pagina" value="1" onclick="paginasClick(<?php echo $i;?>)"></li>
+                  <input type="submit" title="Siguiente" data-toggle='popover' data-trigger='hover' data-content='Pagina siguiente' data-placement='top' class='btn btn-primary me-md-2' value="Siguiente" id="siguiente" name="siguiente" onclick="paginaSiguiente()">                
+                </ul>
+              </nav>
             </div>
           </div>
-          <div class="form-group col-lg-12 col-md-6 col-xs-12">
-            <nav aria-label="Page navigation example" style="text-align:right; margin-right:5px">
-              <ul class="pagination">
-              <input type="button" title="Anterior" data-toggle='popover' data-trigger='hover' data-content='Pagina anterior' data-placement='top' class='btn btn-primary me-md-2' value="Anterior" id="anterior" name="anterior" onclick="paginaAnterior();">
-                  <li class="page-item"><input title="Pagina" data-toggle='popover' data-trigger='hover' data-content='Pagina actual' data-placement='top' class='btn btn-primary me-md-2' type="submit" id="pagina" name="pagina" value="1" onclick="paginasClick(<?php echo $i;?>)"></li>
-                <input type="submit" title="Siguiente" data-toggle='popover' data-trigger='hover' data-content='Pagina siguiente' data-placement='top' class='btn btn-primary me-md-2' value="Siguiente" id="siguiente" name="siguiente" onclick="paginaSiguiente()">                
-              </ul>
-            </nav>
-          </div>
-        </div>
 
-            <div class="panel-body" style="height: 400px;" id="formularioregistros">
+          <div class="box-header with-border" id="formularioregistros"> 
+            <div class="panel-body table-responsive">   
               <form action="" name="formulario" id="formulario" method="POST">
                 <div class="form-group col-lg-12 col-md-6 col-xs-12">
                   <center><h4 aling="center">Información del cliente</h4></center>
                 </div>
                 <div class="form-group col-lg-4 col-md-8 col-xs-12">
                   <label for="">Cliente(*):</label>
-                 <input class="form-control" type="hidden" name="idventa" id="idventa">                 
+                  <input class="form-control" type="hidden" name="idventa" id="idventa">                 
                   <select name="idcliente" id="idcliente" class="form-control selectpicker" data-live-search="true" required>                   
                     <option value="" disabled selected>Seleccionar cliente</option>
                   </select>
@@ -100,62 +101,52 @@ if ($_SESSION['ventas']==1) {
                       <button id="addCliente" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Cliente</button>
                     </a>
                 </div>
-
                 <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
                   <label for="">RFC: </label>
                   <input class="form-control" type="text" name="rfc" id="rfc">
                 </div>
-
                 <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
                   <label for="">Dirección: </label>
                   <input class="form-control" type="text" name="direccion" id="direccion">
                 </div>
-
                 <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
                   <label for="">Tipo de precio: </label>
                   <input class="form-control" type="text" name="tipoPrecio" id="tipoPrecio">
                 </div>
-
                 <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
                   <label for="">Email: </label>
                   <input class="form-control" type="text" name="email" id="email">
                 </div>
-
                 <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
                   <label for="">Número móvil: </label>
                   <input class="form-control" type="text" name="telefono" id="telefono">
                 </div>
-
                 <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
                   <label for="">Telefono Local: </label>
                   <input class="form-control" type="text" name="telefono_local" id="telefono_local">
                 </div>
-
                 <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
                   <label for="">Días Crédito: </label>
                   <input class="form-control" type="text" name="credito" id="credito">
                 </div>
-
                 <div class="form-group col-lg-12 col-md-6 col-xs-12">
                   <center><h4 aling="center">Detalles venta</h4></center>
                 </div>
-                <div class="form-group col-lg-3 col-md-4 col-xs-12">
-                  <label for="">Fecha(*): </label>
-                  <input class="form-control" type="date" name="fecha_hora" id="fecha_hora" required>
+                <div class="form-group col-lg-2 col-md-4 col-xs-12">
+                  <label for="">Entrada(*): </label>
+                  <input class="form-control" type="date" name="fecha_entrada" id="fecha_entrada" required>
                 </div>  
-
-                <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                <div class="form-group col-lg-2 col-md-4 col-xs-12">
+                  <label for="">Salida: </label>
+                  <input class="form-control" type="date" name="fecha_salida" id="fecha_salida">
+                </div>  
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
                   <label for="">Tipo Comprobante(*): </label>
                     <select name="tipo_comprobante" id="tipo_comprobante" class="form-control selectpicker" required>
                       <option value="Ticket">Ticket</option>
                     </select>
-                </div>             
-                <!-- <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
-                  <label for="">Impuesto: </label>
-                  <input class="form-control" type="text" name="impuesto" id="impuesto">
-                </div> -->
-
-                <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                </div>
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
                   <label for="">Tipo de precio </label>
                     <select name="tipo_precio" id="tipo_precio" class="form-control selectpicker">
                     <option value="" disabled selected>Tipo Precio</option>                    
@@ -165,13 +156,23 @@ if ($_SESSION['ventas']==1) {
                       <option value="mayoreo">Mayoreo</option>
                     </select>
                 </div>
-              
-                <input type="text" name="caja_valor" id="caja_valor" value="" style="border: none; color: transparent;"></input>
-
+                <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                  <label for="">Remisionar </label>
+                    <select name="remision" id="remision" class="form-control selectpicker">                    
+                      <option value="1">Remisionar</option>
+                      <option value="0">No remisionar</option>
+                    </select>
+                </div>
+                <!--<input type="text" name="caja_valor" id="caja_valor" value="" style="border: none; color: transparent;"></input>-->
                 <div id="detalle_cobro">
-                  <div class="form-group col-lg-3 col-md-4 col-xs-12" id="estatus">
+                  <div class="form-group col-lg-2 col-md-4 col-xs-12" id="estatus">
                     <label for="">Estatus(*): </label>
                     <input class="form-control" type="text" name="estado" id="estado">
+                  </div>
+                  <div class="form-group col-lg-2 col-md-4 col-xs-12" id="estatus"> 
+                    <a data-toggle="modal" href="#editarDetalleVenta">                   
+                      <button class="btn btn-primary" type="submit" id="" onclick="mostrarDetalleVentaEdit()">Editar</button>
+                    </a>                   
                   </div>
                 
                   <div class="form-group col-lg-12 col-md-6 col-xs-12">
@@ -200,7 +201,6 @@ if ($_SESSION['ventas']==1) {
                     </div>
                   </div>
                 </div>
-
                 <div class="form-group col-lg-6 col-md-3 col-sm-6 col-xs-12" id="btnAgregarArticulo">
                   <a data-toggle="modal" href="#myModal">
                     <button id="btnAgregarArticulo" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Articulos</button>
@@ -255,13 +255,12 @@ if ($_SESSION['ventas']==1) {
                 </div>
               </form>
             </div>
-          </div>
+          </div>          
+          
         </div>
       </div>
     </div>
-      <!-- /.box -->
   </section>
-    <!-- /.content -->
 </div>
 
 <?php 
@@ -270,11 +269,11 @@ if ($_SESSION['ventas']==1) {
 
   <!--Modal-->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog" style="width: 95% !important;">
+  <div class="modal-dialog modal-lg" style="width: 95% !important;">
     <div class="modal-content" style="border-radius: 20px;">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title">Seleccione un Articulo</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
       <div class="modal-body">
         <div class="panel-body table-responsive">
@@ -312,16 +311,16 @@ if ($_SESSION['ventas']==1) {
   <!-- fin Modal-->
 
   <!--Modal registrar nuevo cliente-->
-  <div class="modal fade" id="agregarCliente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width: 80% !important; box-shadow:5px 5px 5px 5px rgba(0, 0, 0, 0.2);">
+  <div class="modal fade" id="agregarCliente" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="width: 100% !important; box-shadow:5px 5px 5px 5px rgba(0, 0, 0, 0.2);">
       <div class="modal-content" style="border-radius: 20px;">
         <div class="modal-header">
-          <button name="addProduct" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Agregar Cliente</h4>
+          <h4 class="modal-title">Registrar Cliente</h4>
+          <button name="addProduct" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>          
         </div>
         <div class="modal-body">
           <div class="panel-body table-responsive">
-            <form action="" name="formularioCliente" id="formularioCliente" method="POST">
+            <form action="" name="formCliente" id="formCliente" method="POST">
               <div class="form-group col-lg-6 col-md-6 col-xs-12">
                 <label for="">Nombre</label>
                 <input class="form-control" type="hidden" name="idpersona" id="idpersona">
@@ -330,27 +329,31 @@ if ($_SESSION['ventas']==1) {
               </div>
               <div class="form-group col-lg-6 col-md-6 col-xs-12">
                 <label for="">Direccion</label>
-                <input class="form-control" type="text" name="direccion" id="direccion" maxlength="70" placeholder="Direccion">
+                <input class="form-control" type="text" name="direccionCliente" id="direccionCliente" maxlength="70" placeholder="Direccion">
               </div>
               <div class="form-group col-lg-6 col-md-6 col-xs-12">
                 <label for="">Telefono</label>
-                <input class="form-control" type="text" name="telefono" id="telefono" maxlength="20" placeholder="Número de Telefono">
+                <input class="form-control" type="text" name="telefonoCliente" id="telefonoCliente" maxlength="20" placeholder="Número de Telefono">
+              </div>
+              <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                <label for="">Telefono local</label>
+                <input class="form-control" type="text" name="telefono_localCliente" id="telefono_localCliente" maxlength="20" placeholder="Número de Telefono">
               </div>
               <div class="form-group col-lg-6 col-md-6 col-xs-12">
                 <label for="">Email</label>
-                <input class="form-control" type="email" name="email" id="email" maxlength="50" placeholder="Email">
+                <input class="form-control" type="email" name="emailCliente" id="emailCliente" maxlength="50" placeholder="Email">
               </div>
               <div class="form-group col-lg-4 col-md-6 col-xs-12">
                 <label for="">RFC</label>
-                <input class="form-control" type="text" name="rfc" id="rfc" placeholder="RFC">
+                <input class="form-control" type="text" name="rfcCliente" id="rfcCliente" placeholder="RFC">
               </div>
               <div class="form-group col-lg-4 col-md-6 col-xs-12">
                 <label for="">Días de crédito</label>
-                <input class="form-control" type="number" name="credito" id="credito" min="0" placeholder="Crédito">
+                <input class="form-control" type="number" name="creditoCliente" id="creditoCliente" min="0" placeholder="Crédito">
               </div>
               <div class="form-group col-lg-4 col-md-12 col-xs-12">
                 <label for="">Tipo de precio(*): </label>
-                <select name="tipo_precio" id="tipo_precio" class="form-control selectpicker" required>     
+                <select name="tipo_precioCliente" id="tipo_precioCliente" class="form-control selectpicker" required>     
                   <option value="publico">Publico</option>
                   <option value="taller">Taller</option>
                   <option value="credito_taller">Crédito Taller</option>
@@ -371,130 +374,9 @@ if ($_SESSION['ventas']==1) {
     </div>
   </div>
 
-  <div class="modal fade" id="agregarCliente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width: 80% !important; box-shadow:5px 5px 5px 5px rgba(0, 0, 0, 0.2);">
-      <div class="modal-content" style="border-radius: 20px;">
-        <div class="modal-header">
-          <button name="addProduct" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Registrar Producto</h4>
-        </div>
-        <div class="modal-body">
-          <div class="panel-body table-responsive">
-          <form action="" name="formularioProduct" id="formularioProduct" method="POST">
-            <!--CLAVE DEL PRODUCTO-->
-            <div class="form-group col-lg-4 col-md-6 col-xs-12">
-              <label for="">Clave(*):</label>
-              <input class="form-control" type="hidden" name="idarticulo" id="idarticulo">
-              <input class="form-control" type="text" name="codigo" id="codigo" maxlength="100" placeholder="Clave" required>
-            </div>
-
-            <!--CLAVE DEL PRODUCTO-->
-            <div class="form-group col-lg-4 col-md-6 col-xs-12">
-              <label for="">Fmsi(*):</label>
-              <input class="form-control" type="text" name="fmsi" id="fmsi" maxlength="100" placeholder="Fmsi">
-            </div>
-
-
-            <!--CATEGORIA DEL PRODUCTO-->
-            <div class="form-group col-lg-4 col-md-6 col-xs-12">
-              <label for="">Categoria(*):</label>
-              <select name="idcategoria" id="idcategoria" class="form-control selectpicker" data-Live-search="true" required>
-
-              <?php               
-                $sql="SELECT * FROM categoria";
-                $result = ejecutarConsulta($sql);
-                while($row = $result->fetch_assoc()) {
-                  echo "<option value='$row[idcategoria]'>$row[nombre]</option>";
-                }              
-              ?>
-              </select>
-            </div>
-
-            <!--MARCA DEL PRODUCTO-->
-            <div class="form-group col-lg-6 col-md-6 col-xs-12">
-              <label for="">Marca(*):</label>
-              <input class="form-control" type="text" name="marca" id="marca" maxlength="100" placeholder="Marca" required>
-            </div>
-
-            <!--PROVEEDOR DEL PRODUCTO-->
-            <div class="form-group col-lg-6 col-md-8 col-xs-12">
-              <label for="">Proveedor(*):</label>
-              <select name="idproveedor" id="idproveedor" class="form-control selectpicker" data-live-search="true" required>
-                <?php 
-                  $sql="SELECT * FROM persona WHERE tipo_persona='Proveedor'";
-                  $result = ejecutarConsulta($sql);
-
-                  while($row = $result->fetch_assoc()) {
-                    echo "<option value='$row[idpersona]'>$row[nombre]</option>";
-                  }
-              
-                ?>
-              </select>
-            </div>  
-
-            <div class="form-group col-lg-12 col-md-6 col-xs-12">
-              <label for="">Descripción(*):</label>
-              <input class="form-control" type="text" name="descripcion" id="descripcion" maxlength="500" placeholder="Unidades (JUEGO / SET / PIEZA)" required>
-            </div> 
-
-            <!--UNIDADES DEL PRODUCTO-->
-            <div class="form-group col-lg-4 col-md-6 col-xs-12">
-              <label for="">Unidades(*):</label>
-              <input class="form-control" type="text" name="unidades" id="unidades" maxlength="50" placeholder="Unidades (JUEGO / SET / PIEZA)" required>
-            </div>    
-
-            <!--STOCK DEL PRODUCTO-->
-            <div class="form-group col-lg-4 col-md-6 col-xs-12">
-              <label for="">Stock</label>
-              <input class="form-control" type="number" name="stock" id="stock"  required>
-            </div>    
-
-            <!--PASILLO DEL PRODUCTO-->
-            <div class="form-group col-lg-4 col-md-6 col-xs-12">
-              <label for="">Pasillo(*):</label>
-              <input class="form-control" type="text" name="pasillo" id="pasillo" maxlength="50" placeholder="Pasillo / Corredor" required>
-            </div>
-
-            <!--COSTOS DEL PRODUCTO-->
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-              <label for="">Costo</label>
-              <input class="form-control" type="number" name="costo" id="costo"  required placeholder="$">
-            </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-              <label for="">Precio Público</label>
-              <input class="form-control" type="number" name="publico" id="publico"  required placeholder="$">
-            </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">  
-              <label for="">Precio Taller</label>
-              <input class="form-control" type="number" name="taller" id="taller"  required placeholder="$">
-            </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-              <label for="">Precio Credito Taller</label>
-              <input class="form-control" type="number" name="credito_taller" id="credito_taller"  required placeholder="$">
-            </div>
-            <div class="form-group col-lg-2 col-md-6 col-xs-12">
-              <label for="">Mayoreo</label>
-              <input class="form-control" type="number" name="mayoreo" id="mayoreo"  required placeholder="$">
-            </div>
-            <div class="form-group col-lg-6 col-md-6 col-xs-12">
-              <label for="">Codigo barras:</label>
-              <input class="form-control" type="text" name="barcode" id="barcode" placeholder="Código del producto" >              
-            </div>            
-          </form>
-
-            <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-              <button class="btn btn-success" type="submit" name="btnGuardarProveedor" onclick="guardaryeditarProducto()">Guardar</button>
-              <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
+  <?php 
+    require('ediciones.php')
+  ?>
   
   <!-- fin Modal-->
 
@@ -505,7 +387,7 @@ if ($_SESSION['ventas']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/ventas.js"></script>
+ <script src="scripts/ventasB1.js"></script>
  <?php 
 }
 

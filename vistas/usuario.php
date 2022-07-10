@@ -15,7 +15,7 @@ if ($_SESSION['accesos']==1) {
           <div class="col-md-12">
             <div class="box">
               <div class="box-header with-border">
-                <h1 class="box-title">Usuarios </h1>
+                <h4 class="box-title">Usuarios </h4>
                   <div class="box-tools pull-right">    
                   </div>
               </div>

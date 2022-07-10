@@ -10,6 +10,8 @@ if (!isset($_SESSION['nombre'])) {
 require 'header.php';
 
 if ($_SESSION['almacen']==1) {
+    require_once "../modelos/Gasto.php";
+    $gasto = new Gasto();
 
  ?>
     <div class="content-wrapper">
@@ -21,7 +23,7 @@ if ($_SESSION['almacen']==1) {
                     <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
                         <center>
                             <div class="box-header with-border">
-                                <h1 class="box-title">Gastos
+                                <h4 class="box-title">Gastos</h4>
                             </div>
                         </center>
                         <div class="panel-body table-responsive" id="listadoregistros">
@@ -40,6 +42,13 @@ if ($_SESSION['almacen']==1) {
                                 <div id="tablaResultados">
                                 <section id="tabla_resultado"></section>
                                 </div>      
+                            </div>
+                            <div class="form-group col-lg-4 col-md-6 col-xs-12">                                
+                            </div> 
+                            <div class="form-group col-lg-4 col-md-6 col-xs-12">                                
+                            </div> 
+                            <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:right">
+                                <h5 id="total_gasto" name="total_gasto" width="400" height="300" value=""></h5>
                             </div>
                         </div>
                         <div class="panel-body" style="height: 400px;" id="formularioregistros">
@@ -95,7 +104,7 @@ if ($_SESSION['almacen']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/gasto.js"></script>
+ <script src="scripts/gastos.js"></script>
  <?php 
 }
 

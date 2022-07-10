@@ -38,9 +38,18 @@ switch ($_GET["op"]) {
 		$rspta=$gasto->mostrar($idgasto);
 		echo json_encode($rspta);
 		break;
+	case 'totalGasto':
+		/*$rspta=$gasto->totalgastohoy();
+		echo json_encode($rspta);*/
+
+		$rsptav = $gasto->totalgastohoy();
+		$regv=$rsptav->fetch_object();
+		$totalv=$regv->total_gasto;
+		echo $totalv;
+		break;
 
     case 'listar':
-		$consulta=" SELECT descripcion, cantidad, total_gasto, metodo_pago, informacion_adicional, estado, idgasto, DATE(fecha_hora) as fecha FROM gastos LIMIT 20";
+		$consulta=" SELECT descripcion, cantidad, total_gasto, metodo_pago, informacion_adicional, estado, idgasto, DATE(fecha_hora) as fecha FROM gastos ORDER BY idgasto DESC LIMIT 20";
 			$termino= "";
 			if(isset($_POST['gastos']))
 			{

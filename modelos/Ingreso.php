@@ -21,7 +21,7 @@ public function insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_compro
 	 	$sql_detalle="INSERT INTO detalle_ingreso (idingreso,idproveedor,idusuario,serie_comprobante,tipo_comprobante,idarticulo,clave,fmsi,descripcion,cantidad,precio_compra,tipoMov) VALUES('$idingresonew','$idproveedor','$idusuario','$serie_comprobante','$tipo_comprobante','$idarticulo[$num_elementos]','$clave[$num_elementos]','$fmsi[$num_elementos]','$descripcion[$num_elementos]','$cantidad[$num_elementos]','$precio_compra[$num_elementos]','RECEPCIÓN')";		
 	 	ejecutarConsulta($sql_detalle) or $sw=false;
 
-		$sql_kardex = "INSERT INTO kardex (fecha_hora, folio, clave, fmsi, idcliente_proveedor, cantidad, importe, tipoMov, estado, idventa, idarticulo, idsucursalArticulo, idsucursalVenta) VALUES ('$fecha_hora', '$serie_comprobante', '$clave[$num_elementos]', '$fmsi[$num_elementos]', '$idproveedor', '$cantidad[$num_elementos]', '$precio_compra[$num_elementos]', 'RECEPCION','ACTIVO', '$idingresonew', '$idarticulo[$num_elementos]', '$idsucursalArticulo[$num_elementos]', '$idsucursal')";
+		$sql_kardex = "INSERT INTO kardex (fecha_entrada, folio, clave, fmsi, idcliente_proveedor, cantidad, importe, tipoMov, estado, idventa, idarticulo, idsucursalArticulo, idsucursalVenta) VALUES ('$fecha_hora', '$serie_comprobante', '$clave[$num_elementos]', '$fmsi[$num_elementos]', '$idproveedor', '$cantidad[$num_elementos]', '$precio_compra[$num_elementos]', 'RECEPCION','ACTIVO', '$idingresonew', '$idarticulo[$num_elementos]', '$idsucursalArticulo[$num_elementos]', '$idsucursal')";
 		ejecutarConsulta($sql_kardex) or $sw=false;
 
 	 	$num_elementos=$num_elementos+1;

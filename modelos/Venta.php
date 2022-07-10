@@ -10,19 +10,56 @@ public function __construct(){
 }
 
 //metodo insertar registro
-public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$total_venta,$idarticulo,$clave,$fmsi,$marca,$descripcion,$cantidad,$precio_venta,$descuento,$idsucursal, $idsucursalproducto){
-	$sql="INSERT INTO venta (idcliente,idusuario,tipo_comprobante,fecha_hora,impuesto,total_venta,pagado,estado,idsucursal,status) VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_hora','$impuesto','$total_venta','0', 'PENDIENTE', '$idsucursal', 'PENDIENTE')";
-	 $idventanew=ejecutarConsulta_retornarID($sql);
-	 $num_elementos=0;
-	 $sw=true;
-	 while ($num_elementos < count($idarticulo)) {
-	 	$sql_detalle="INSERT INTO detalle_venta (idventa,idarticulo,clave,fmsi,marca, descripcion,tipoMov,cantidad,precio_venta,descuento) VALUES('$idventanew','$idarticulo[$num_elementos]', '$clave[$num_elementos]','$fmsi[$num_elementos]','$marca[$num_elementos]','$descripcion[$num_elementos]','VENTA','$cantidad[$num_elementos]','$precio_venta[$num_elementos]','$descuento[$num_elementos]')";
-	 	ejecutarConsulta($sql_detalle) or $sw=false;
-		$sql_kardex = "INSERT INTO kardex (fecha_hora, folio, clave, fmsi, idcliente_proveedor, cantidad, importe, tipoMov, estado, idventa, idarticulo, idsucursalArticulo, idsucursalVenta) VALUES ('$fecha_hora', $idventanew,'$clave[$num_elementos]', '$fmsi[$num_elementos]', '$idcliente', '$cantidad[$num_elementos]', '$precio_venta[$num_elementos]', 'VENTA', 'ACTIVO', '$idventanew', '$idarticulo[$num_elementos]', '$idsucursalproducto[$num_elementos]', '$idsucursal')";
+public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_entrada,$fecha_salida,$impuesto,$total_venta,$remision,$idarticulo,$clave,$fmsi,$marca,$descripcion,$cantidad,$precio_venta,$descuento,$idsucursal, $idsucursalproducto){
+
+	$sql="INSERT INTO venta (idcliente,idusuario,tipo_comprobante,fecha_entrada,fecha_salida,impuesto,total_venta,is_remision,pagado,estado,idsucursal,status) VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_entrada','$fecha_salida','$impuesto','$total_venta','$remision', '0', 'PENDIENTE', '$idsucursal', 'PENDIENTE')";		
+	$idventanew=ejecutarConsulta_retornarID($sql);
+	$num_elementos=0;
+	$sw=true;
+
+	if($remision == 1 && $fecha_salida != '') {
+		
+		$sql_remision = "INSERT INTO remision (idventa_servicio) VALUES ('$idventanew')";
+		ejecutarConsulta($sql_remision);
+		
+	}
+
+	while ($num_elementos < count($idarticulo)) {
+		$sql_detalle="INSERT INTO detalle_venta (idventa,idarticulo,clave,fmsi,marca, descripcion,tipoMov,cantidad,precio_venta,descuento) VALUES('$idventanew','$idarticulo[$num_elementos]', '$clave[$num_elementos]','$fmsi[$num_elementos]','$marca[$num_elementos]','$descripcion[$num_elementos]','VENTA','$cantidad[$num_elementos]','$precio_venta[$num_elementos]','$descuento[$num_elementos]')";
+		ejecutarConsulta($sql_detalle) or $sw=false;
+		$sql_kardex = "INSERT INTO kardex (fecha_entrada, folio, clave, fmsi, idcliente_proveedor, cantidad, importe, tipoMov, estado, idventa, idarticulo, idsucursalArticulo, idsucursalVenta) VALUES ('$fecha_entrada', $idventanew,'$clave[$num_elementos]', '$fmsi[$num_elementos]', '$idcliente', '$cantidad[$num_elementos]', '$precio_venta[$num_elementos]', 'VENTA', 'ACTIVO', '$idventanew', '$idarticulo[$num_elementos]', '$idsucursalproducto[$num_elementos]', '$idsucursal')";
 		ejecutarConsulta($sql_kardex) or $sw=false;
-	 	$num_elementos=$num_elementos+1;
-	 }	 
-	 return $sw;
+		$num_elementos=$num_elementos+1;
+	}	 
+	return $sw;
+
+}
+
+public function guardarGarantia($idventa, $idarticulo, $descripcion, $cantidad, $idsucursal, $fecha_hora, $precioGarantia) {
+	$sql = "INSERT INTO garantias (idservicio, idarticulo, idsucursal, descripcion, cantidad, tipo_mov, fecha_hora, precio_garantia)
+						VALUES ('$idventa', '$idarticulo', '$idsucursal', '$descripcion', '$cantidad', 'VENTA', '$fecha_hora', '$precioGarantia')";
+	ejecutarConsulta($sql);
+	usleep(80000);
+	$sw = true;
+	$sqlupdate = "UPDATE detalle_venta SET descripcion='$descripcion'
+			WHERE idarticulo='$idarticulo' AND idventa='$idventa'";
+			ejecutarConsulta($sqlupdate);
+	usleep(80000);
+	return $sw;
+}
+
+public function guardarPedido($clave, $marca, $cantidad, $fecha, $estadoPedido, $notas, $fecha_registro, $idsucursalProducto, $idsucursal) {
+	$sql = "INSERT INTO pedidos (clave, marca, cantidad, idsucursalProducto, idsucursal, fecha_pedido, fecha_registro, estadoPedido, notas, status) VALUES 
+								('$clave', '$marca', '$cantidad', '$idsucursalProducto', '$idsucursal', '$fecha', '$fecha_registro', '$estadoPedido', '$notas', '1')";
+	usleep(140000);
+	return ejecutarConsulta($sql);
+}
+
+public function editarDetalleVenta($idventa, $idcliente, $fecha_entrada, $fecha_salida, $is_rem, $remision) {	
+	$sql = "UPDATE venta SET idcliente='$idcliente', fecha_entrada='$fecha_entrada', fecha_salida='$fecha_salida', 
+				is_remision='$is_rem', remision='$remision' WHERE idventa='$idventa'";
+	usleep(200000);
+	return ejecutarConsulta($sql);
 }
 
 public function eliminarCobro($idcobro, $importe, $idventa) {
@@ -41,6 +78,7 @@ public function guardarCobro($metodoPago, $banco, $importeCobro, $referenciaCobr
 
 	$sql_cobro = "INSERT INTO formas_pago (forma_pago, banco, importe, referencia, idventa, fecha_hora, idsucursal, idcliente) VALUES ('$metodoPago', '$banco', '$importeCobro', '$referenciaCobro', '$idventa', '$fechaCobro', '$idsucursal', '$idcliente')";
 	ejecutarConsulta($sql_cobro);
+	usleep(200000);
 	return $sw;
 }
 
@@ -155,7 +193,7 @@ public function mostrarPagoEdit($idpago) {
 
 //implementar un metodopara mostrar los datos de unregistro a modificar
 public function mostrar($idventa){
-	$sql="SELECT v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente, p.rfc, p.direccion, p.email, p.telefono, p.telefono_local, p.tipo_precio, p.credito, u.idusuario,u.nombre as usuario,v.tipo_comprobante,v.total_venta,v.impuesto,v.estado, v.pagado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE v.idventa='$idventa'";
+	$sql="SELECT v.is_remision,DATE(v.fecha_salida) as fecha_salida,v.remision,v.idventa,DATE(v.fecha_entrada) as fecha_entrada,v.idcliente,p.nombre as cliente, p.rfc, p.direccion, p.email, p.telefono, p.telefono_local, p.tipo_precio, p.credito, u.idusuario,u.nombre as usuario,v.tipo_comprobante,v.total_venta,v.impuesto,v.estado, v.pagado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE v.idventa='$idventa'";
 	usleep(80000);
 	return ejecutarConsultaSimpleFila($sql);
 }
@@ -174,6 +212,26 @@ public function editarPago($idpago, $metodoPago, $banco, $importeCobro, $referen
 	
 	usleep(80000);
 	return $sw;
+}
+
+public function editarRemision($idventa, $remision) {
+	$sql = "UPDATE venta SET remision='$remision', is_remision='1' WHERE idventa='$idventa'";
+	return ejecutarConsulta($sql);
+}
+
+public function editarFechaSalida($idventa, $fecha_salida) {
+	$sql = "UPDATE venta SET fecha_salida='$fecha_salida' WHERE idventa='$idventa'";
+	return ejecutarConsulta($sql);
+}
+
+public function actualizarStatusRem($idventa, $remision) {
+	$sql = "UPDATE venta SET is_remision='$remision', remision='$remision' WHERE idventa='$idventa'";
+	return ejecutarConsulta($sql);
+}
+
+public function editarGuardarDetalleVenta($idventa, $cliente, $entrada) {		
+	$sql = "UPDATE venta SET idcliente='$cliente', fecha_entrada='$entrada' WHERE idventa='$idventa'";
+	return ejecutarConsulta($sql);
 }
 
 public function editar($idventa,$idarticulo,$clave,$fmsi,$marca,$descripcion,$cantidad,$precio_venta,$descuento){
@@ -218,7 +276,7 @@ public function listar(){
 }
 
 public function ventacabecera($idventa){
-	$sql= "SELECT v.idventa, v.idcliente, p.nombre AS cliente, p.direccion, p.email, p.telefono, v.idusuario, u.nombre AS usuario, v.tipo_comprobante, DATE(v.fecha_hora) AS fecha, v.impuesto, v.total_venta FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE v.idventa='$idventa'";
+	$sql= "SELECT v.idventa, v.idcliente, p.nombre AS cliente, p.direccion, p.email, p.telefono, v.idusuario, u.nombre AS usuario, v.tipo_comprobante, DATE(v.fecha_entrada) AS fecha_entrada, v.impuesto, v.total_venta FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE v.idventa='$idventa'";
 	return ejecutarConsulta($sql);
 }
 
@@ -231,6 +289,12 @@ public function ultimaVenta() {
 	$sql = "SELECT * FROM venta ORDER BY idventa DESC limit 1";
 	return ejecutarConsulta($sql);
 }
+
+public function maxRemision() {
+	$sql = "SELECT MAX(remision) as maxRemision from venta";
+	return ejecutarConsulta($sql);
+}
+
 public function ultimoCliente($nombre) {
 	$sql = "SELECT * FROM persona WHERE tipo_persona='Cliente' AND nombre = '$nombre' ORDER BY idpersona DESC limit 1";
 	return ejecutarConsulta($sql);
@@ -243,30 +307,65 @@ public function totalVentas() {
 
 public function filtroPaginado($limit, $limit2, $busqueda, $fecha_inicio, $fecha_fin) {
 
-	$sql = "SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario ORDER BY v.idventa DESC LIMIT $limit OFFSET $limit2";	
+	$sql = "SELECT DATE(v.fecha_salida) as fecha_salida,v.is_remision, v.remision, v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_entrada) as fecha_entrada,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario ORDER BY v.idventa DESC LIMIT $limit OFFSET $limit2";	
 
 	if($busqueda != "" && $fecha_inicio == "" && $fecha_fin == "") {
-		$sql = "SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE tipo_comprobante LIKE '%$busqueda%' OR v.idventa LIKE '%$busqueda%' OR p.nombre LIKE '%$busqueda%' OR u.nombre LIKE '%$busqueda%' ORDER BY v.idventa DESC LIMIT $limit OFFSET $limit2";
+		$sql = "SELECT DATE(v.fecha_salida) as fecha_salida,v.is_remision,v.remision, v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_entrada) as fecha_entrada,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario  WHERE tipo_comprobante LIKE '%$busqueda%' OR v.idventa LIKE '%$busqueda%' OR p.nombre LIKE '%$busqueda%' OR u.nombre LIKE '%$busqueda%' OR v.remision LIKE '%$busqueda%' ORDER BY v.idventa DESC LIMIT $limit OFFSET $limit2";
 	}
 	if($busqueda != "" && $fecha_inicio != "" && $fecha_fin == "") {
-		$sql = "SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE DATE(v.fecha_hora) >= '$fecha_inicio' AND tipo_comprobante LIKE '%$busqueda%' OR v.idventa LIKE '%$busqueda%' OR p.nombre LIKE '%$busqueda%' OR u.nombre LIKE '%$busqueda%' ORDER BY v.idventa DESC LIMIT $limit OFFSET $limit2";
+		$sql = "SELECT DATE(v.fecha_salida) as fecha_salida,v.is_remision,v.remision, v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_entrada) as fecha_entrada,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario  WHERE DATE(v.fecha_entrada) >= '$fecha_inicio' AND tipo_comprobante LIKE '%$busqueda%' OR v.idventa LIKE '%$busqueda%' OR p.nombre LIKE '%$busqueda%' OR u.nombre LIKE '%$busqueda%' OR v.remision LIKE '%$busqueda%' ORDER BY v.idventa DESC LIMIT $limit OFFSET $limit2";
 	}
 	if($busqueda == "" && $fecha_inicio != "" && $fecha_fin == "") {		
-		$sql = "SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE DATE(v.fecha_hora) >= '$fecha_inicio' ORDER BY v.idventa DESC LIMIT $limit OFFSET $limit2";
+		$sql = "SELECT DATE(v.fecha_salida) as fecha_salida,v.is_remision,v.remision, v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_entrada) as fecha_entrada,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario  WHERE DATE(v.fecha_entrada) >= '$fecha_inicio' ORDER BY v.idventa DESC LIMIT $limit OFFSET $limit2";
 	}
 	if($busqueda == "" && $fecha_inicio == "" && $fecha_fin != "") {				
-		$sql = "SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE DATE(v.fecha_hora) <= '$fecha_fin' ORDER BY v.idventa DESC LIMIT $limit OFFSET $limit2";		
+		$sql = "SELECT DATE(v.fecha_salida) as fecha_salida,v.is_remision,v.remision, v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_entrada) as fecha_entrada,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario  WHERE DATE(v.fecha_entrada) <= '$fecha_fin' ORDER BY v.idventa DESC LIMIT $limit OFFSET $limit2";		
 	}
 	if($busqueda != "" && $fecha_inicio == "" && $fecha_fin != "") {					
-		$sql = "SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE DATE(v.fecha_hora) <= '$fecha_fin' AND tipo_comprobante LIKE '%$busqueda%' OR v.idventa LIKE '%$busqueda%' OR p.nombre LIKE '%$busqueda%' OR u.nombre LIKE '%$busqueda%' ORDER BY v.idventa DESC LIMIT $limit OFFSET $limit2";
+		$sql = "SELECT DATE(v.fecha_salida) as fecha_salida,v.is_remision,v.remision, v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_entrada) as fecha_entrada,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE DATE(v.fecha_entrada) <= '$fecha_fin' AND tipo_comprobante LIKE '%$busqueda%' OR v.idventa LIKE '%$busqueda%' OR p.nombre LIKE '%$busqueda%' OR u.nombre LIKE '%$busqueda%' OR v.remision LIKE '%$busqueda%' ORDER BY v.idventa DESC LIMIT $limit OFFSET $limit2";
 	}
 	if($busqueda == "" && $fecha_inicio != "" && $fecha_fin != "") {		
-		$sql = "SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE DATE(v.fecha_hora) >= '$fecha_inicio' AND DATE(v.fecha_hora) <= '$fecha_fin' ORDER BY v.idventa DESC LIMIT $limit OFFSET $limit2";		
+		$sql = "SELECT DATE(v.fecha_salida) as fecha_salida,v.is_remision,v.remision, v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_entrada) as fecha_entrada,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario  
+		WHERE DATE(v.fecha_entrada) >= '$fecha_inicio' AND DATE(v.fecha_entrada) <= '$fecha_fin' ORDER BY v.idventa DESC LIMIT $limit OFFSET $limit2";		
 	}
 	if($busqueda != "" && $fecha_inicio != "" && $fecha_fin != "") {
-		$sql = "SELECT v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE DATE(v.fecha_hora) >= '$fecha_inicio' AND DATE(v.fecha_hora) <= '$fecha_fin' AND tipo_comprobante LIKE '%$busqueda%' OR v.idventa LIKE '%$busqueda%' OR p.nombre LIKE '%$busqueda%' OR u.nombre LIKE '%$busqueda%' ORDER BY v.idventa DESC LIMIT $limit OFFSET $limit2";
+		$sql = "SELECT DATE(v.fecha_salida) as fecha_salida,v.is_remision,v.remision, v.pagado,v.status,v.idsucursal,v.idventa,DATE(v.fecha_entrada) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_venta,v.impuesto,v.estado FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario  
+		WHERE DATE(v.fecha_entrada) >= '$fecha_inicio' 
+		AND DATE(v.fecha_entrada) <= '$fecha_fin' AND tipo_comprobante LIKE '%$busqueda%' OR v.idventa LIKE '%$busqueda%' OR p.nombre LIKE '%$busqueda%' OR u.nombre LIKE '%$busqueda%' OR v.remision LIKE '%$busqueda%' ORDER BY v.idventa DESC LIMIT $limit OFFSET $limit2";
 	}
 	usleep(80000);
+	return ejecutarConsulta($sql);
+}
+
+public function listarProductosAlmacenFiltros($producto, $idalmacen) {
+	$idsucursal = intval($idalmacen);	
+
+	if($producto != '' && $idalmacen == '') {		
+		$sql = "SELECT a.codigo, a.fmsi, a.barcode, a.descripcion, a.marca, a.stock, a.costo, a.publico, a.taller, a.credito_taller, a.mayoreo, a.idarticulo,a.idsucursal, s.nombre FROM articulo AS a INNER JOIN sucursal s ON a.idsucursal=s.idsucursal
+			WHERE
+			codigo LIKE '%".$producto."%' OR
+			fmsi LIKE '%".$producto."%' OR
+			barcode LIKE '%".$producto."%' OR
+			descripcion LIKE '%".$producto."%' OR
+			marca LIKE '%".$producto."%'
+			AND stock > 0 ORDER BY stock DESC LIMIT 100";
+		return ejecutarConsulta($sql);
+	}
+	if($producto != '' && $idalmacen != '') {				
+		$sql = "SELECT a.codigo, a.fmsi, a.barcode, a.descripcion, a.marca, a.stock, a.costo, a.publico, a.taller, a.credito_taller, a.mayoreo, a.idarticulo,a.idsucursal, s.nombre FROM articulo AS a INNER JOIN sucursal s ON a.idsucursal=s.idsucursal 
+				WHERE a.idsucursal = '$idsucursal' AND 
+				a.fmsi LIKE '%".$producto."%' OR
+				a.codigo LIKE '%".$producto."%'
+				";
+		return ejecutarConsulta($sql);
+	}
+}
+
+public function reporteVentas($fecha_inicio, $fecha_fin) {
+	$sql = "SELECT v.remision, v.idventa, v.total_venta, DATE(v.fecha_entrada) AS fecha_entrada, DATE(v.fecha_salida) AS fecha_salida, p.nombre FROM venta v 
+			INNER JOIN persona p ON v.idcliente = p.idpersona 			
+			WHERE DATE(fecha_entrada) >= '$fecha_inicio' 
+			AND DATE(fecha_entrada) <= '$fecha_fin' ORDER BY v.idventa DESC";
 	return ejecutarConsulta($sql);
 }
 

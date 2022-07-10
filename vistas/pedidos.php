@@ -21,7 +21,7 @@ if ($_SESSION['almacen']==1) {
         <div class="col-md-12">
       <div class="box">
 <div class="box-header with-border">
-  <h1 class="box-title">Pedidos <a class="btn btn-success" href="pedidos.php"><i class="fa fa-refresh"></i> Recargar Pagina</a></h1>
+  <h4 class="box-title">Pedidos <a class="btn btn-success" href="pedidos.php"><i class="fa fa-refresh"></i> Recargar Pagina</a></h4>
   <div class="box-tools pull-right">
     
   </div>            

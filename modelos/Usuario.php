@@ -80,7 +80,7 @@ public function listarmarcados($idusuario){
 //funcion que verifica el acceso al sistema
 
 public function verificar($login,$clave){
-	$sql="SELECT idusuario,nombre,telefono,email,cargo, acceso, idsucursal, login FROM usuario WHERE login='$login' AND clave='$clave' AND condicion='1'";
+	$sql="SELECT s.lat,s.lng, u.idusuario,u.nombre,u.telefono,u.email,u.cargo, u.acceso, u.idsucursal, u.login FROM usuario u INNER JOIN sucursal s ON u.idsucursal = s.idsucursal WHERE u.login='$login' AND u.clave='$clave' AND u.condicion='1'";
 	 return ejecutarConsulta($sql);
 }
 }

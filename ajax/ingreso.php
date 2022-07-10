@@ -92,7 +92,7 @@ switch ($_GET["op"]) {
 		<th>Fmsi</th>
 		<th>Descripción</th>
 		<th>Cantidad</th>
-        <th>Precio Compra</th>
+        <th>Costo</th>
 		<th>Descuento</th>
         <th>Subtotal</th>
 		<th>Acciones</th>
@@ -405,7 +405,7 @@ switch ($_GET["op"]) {
 								<td>".$fila['estado']."</td>
 								<td><p>".$fila['proveedor']."</td>
 								<td><p>".$fila['usuario']."</td>
-								<td><p>$ ".$fila["total_compra"]."</td>
+								<td><p>$ ".number_format($fila["total_compra"],2)."</td>
 								<td>
 									<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar recepcion' data-placement='top' class='btn btn-warning btn-xs' onclick='editar(".$fila["idingreso"].")'><i class='fa fa-pencil'></i></button>
 									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar recepcion' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idingreso"].")'><i class='fa fa-eye'></i></button>
@@ -430,7 +430,7 @@ switch ($_GET["op"]) {
 								<td>".$fila['estado']."</td>
 								<td><p>".$fila['proveedor']."</td>
 								<td><p>".$fila['usuario']."</td>
-								<td><p>$ ".$fila["total_compra"]."</td>
+								<td><p>$ ".number_format($fila["total_compra"],2)."</td>
 								<td>
 									<div class='emergente'>										
 										<span data-tooltip='Mostrar recepción'><button class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idingreso"].")'><i class='fa fa-eye'></i></button></span>
