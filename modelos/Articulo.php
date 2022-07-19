@@ -8,8 +8,8 @@ class Articulo{
 
 	}
 	//metodo insertar registro
-	public function insertar($codigo, $costo, $barcode, $credito_taller, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $mayoreo, $pasillo, $publico, $stock, $taller, $unidades, $idsucursal){		
-		$sql="INSERT INTO articulo (codigo, costo, barcode, credito_taller, descripcion, fmsi, idcategoria, idproveedor, marca, mayoreo, pasillo, publico, stock, taller, unidades, estado, idsucursal) VALUES ('$codigo', '$costo', '$barcode', '$credito_taller', '$descripcion', '$fmsi', '$idcategoria', '$idproveedor', '$marca', '$mayoreo', '$pasillo', '$publico', '$stock', '$taller', '$unidades', '1', '$idsucursal')";
+	public function insertar($codigo, $costo, $barcode, $credito_taller, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $mayoreo, $pasillo, $publico, $stock, $taller, $unidades, $idsucursal, $imagen){		
+		$sql="INSERT INTO articulo (codigo, costo, barcode, credito_taller, descripcion, fmsi, idcategoria, idproveedor, marca, mayoreo, pasillo, publico, stock, taller, unidades, estado, idsucursal, imagen) VALUES ('$codigo', '$costo', '$barcode', '$credito_taller', '$descripcion', '$fmsi', '$idcategoria', '$idproveedor', '$marca', '$mayoreo', '$pasillo', '$publico', '$stock', '$taller', '$unidades', '1', '$idsucursal', '$imagen')";
 		usleep(140000);
 		return ejecutarConsulta($sql);
 	}
@@ -21,8 +21,8 @@ class Articulo{
 		return ejecutarConsulta($sql);
 	}
 		
-	public function editar($idarticulo,$codigo,$costo, $barcode, $credito_taller,$descripcion,$fmsi,$idcategoria, $idproveedor, $marca,$mayoreo,$pasillo,$publico,$stock,$taller,$unidades){
-		$sql="UPDATE articulo SET codigo='$codigo', costo='$costo', barcode='$barcode', credito_taller='$credito_taller', descripcion='$descripcion', fmsi='$fmsi', idcategoria='$idcategoria', idproveedor='$idproveedor', marca='$marca', mayoreo='$mayoreo', pasillo='$pasillo', publico='$publico', stock='$stock', taller='$taller', unidades='$unidades'
+	public function editar($idarticulo,$codigo,$costo, $barcode, $credito_taller,$descripcion,$fmsi,$idcategoria, $idproveedor, $marca,$mayoreo,$pasillo,$publico,$stock,$taller,$unidades, $imagen){
+		$sql="UPDATE articulo SET codigo='$codigo', costo='$costo', barcode='$barcode', credito_taller='$credito_taller', descripcion='$descripcion', fmsi='$fmsi', idcategoria='$idcategoria', idproveedor='$idproveedor', marca='$marca', mayoreo='$mayoreo', pasillo='$pasillo', publico='$publico', stock='$stock', taller='$taller', unidades='$unidades', imagen='$imagen'
 		WHERE idarticulo='$idarticulo'";
 		usleep(140000);
 		return ejecutarConsulta($sql);
@@ -45,7 +45,7 @@ class Articulo{
 		return ejecutarConsultaSimpleFila($sql);
 	}
 
-	//listar registros 
+	//listar registros
 	public function listar(){
 		$sql="SELECT * FROM articulo WHERE estado='1' ORDER BY stock DESC LIMIT 100";
 		return ejecutarConsulta($sql);
@@ -82,7 +82,7 @@ class Articulo{
 		a.fmsi LIKE '%$busqueda%' OR
 		a.marca LIKE '%$busqueda%' OR
 		a.descripcion LIKE '%$busqueda%'
-		ORDER BY a.stock DESC LIMIT $limit OFFSET $limit2";
+		ORDER BY a.stock > 0 DESC, a.marca ASC LIMIT $limit OFFSET $limit2";
 		//usleep(90000);
 		return ejecutarConsulta($sql);
 	}

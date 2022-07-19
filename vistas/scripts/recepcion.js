@@ -1,5 +1,5 @@
 var tabla;
-
+var pesosMexicanos = Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'});
 //funcion que se ejecuta al inicio
 function init(){
    mostrarform(false);
@@ -1124,7 +1124,7 @@ function modificarSubtotales(){
 		var inpS=sub[i];
 
 		inpS.value=inpC.value*inpP.value;
-		document.getElementsByName("subtotal")[i].innerHTML=inpS.value;
+		document.getElementsByName("subtotal")[i].innerHTML=pesosMexicanos.format(inpS.value);
 	}
 
 	calcularTotales();
@@ -1138,8 +1138,8 @@ function calcularTotales(){
 	for (var i = 0; i < sub.length; i++) {
 		total += document.getElementsByName("subtotal")[i].value;
 	}
-	$("#total").html("$" + total);
-	$("#total_compra").val(total);
+	$("#total").html(pesosMexicanos.format(total));
+	$("#total_compra").val(pesosMexicanos.format(total));
 	evaluar();	
 }
 

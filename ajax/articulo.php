@@ -28,14 +28,23 @@ if(!isset($_SESSION["nombre"])) {
 
 	switch ($_GET["op"]) {
 		case 'guardaryeditar':
-				if (empty($idarticulo)) {
-					$rspta=$articulo->insertar($codigo,$costo, $barcode, $credito_taller, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $mayoreo, $pasillo, $publico, $stock, $taller, $unidades, $idsucursal);			
-					echo $rspta;
-					echo $rspta ? "Articulo registrado correctamente" : "No se registro correctamente";
-				}else{
-					$rspta=$articulo->editar($idarticulo,$codigo,$costo, $barcode, $credito_taller, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $mayoreo, $pasillo, $publico, $stock, $taller, $unidades);
-					echo $rspta ? " Articulo actualizado correctamente" : "No se pudo actualizar los datos";
+			if (!file_exists($_FILES['imagen']['tmp_name'])|| !is_uploaded_file($_FILES['imagen']['tmp_name'])) {
+				$imagen=$_POST["imagenactual"];
+			}else{
+				$ext=explode(".", $_FILES["imagen"]["name"]);
+				if ($_FILES['imagen']['type']=="image/jpg" || $_FILES['imagen']['type']=="image/jpeg" || $_FILES['imagen']['type']=="image/png") {
+					$imagen=round(microtime(true)).'.'. end($ext);
+					move_uploaded_file($_FILES["imagen"]["tmp_name"], "../files/articulos/".$imagen);
 				}
+			}
+			if (empty($idarticulo)) {
+				$rspta=$articulo->insertar($codigo,$costo, $barcode, $credito_taller, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $mayoreo, $pasillo, $publico, $stock, $taller, $unidades, $idsucursal, $imagen);			
+				echo $rspta;
+				echo $rspta ? "Articulo registrado correctamente" : "No se registro correctamente";
+			}else{
+				$rspta=$articulo->editar($idarticulo,$codigo,$costo, $barcode, $credito_taller, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $mayoreo, $pasillo, $publico, $stock, $taller, $unidades, $imagen);
+				echo $rspta ? " Articulo actualizado correctamente" : "No se pudo actualizar los datos";
+			}
 		break;
 		case 'copiarBusqueda':
 			$consulta = $articulo->filtroArticulosCopy("");
@@ -290,6 +299,7 @@ if(!isset($_SESSION["nombre"])) {
 				while ($reg=$rspta->fetch_object()) {
 					echo '<option value=' . $reg->idcategoria.'>'.$reg->nombre.'</option>';
 				}
+				
 				break;
 
 			case 'selectProveedor':

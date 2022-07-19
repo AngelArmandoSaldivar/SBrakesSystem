@@ -12,7 +12,16 @@ public function __construct(){
 //metodo insertar registro
 public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_entrada,$fecha_salida,$impuesto,$total_venta,$remision,$idarticulo,$clave,$fmsi,$marca,$descripcion,$cantidad,$precio_venta,$descuento,$idsucursal, $idsucursalproducto){
 
-	$sql="INSERT INTO venta (idcliente,idusuario,tipo_comprobante,fecha_entrada,fecha_salida,impuesto,total_venta,is_remision,pagado,estado,idsucursal,status) VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_entrada','$fecha_salida','$impuesto','$total_venta','$remision', '0', 'PENDIENTE', '$idsucursal', 'PENDIENTE')";		
+	$total_venta = substr($total_venta, 1);
+	$caracter = ",";
+	$posicion = strpos($total_venta, $caracter);
+
+	$extraer1 = $posicion > 0 ? substr($total_venta, 0, $posicion) : $total_venta;
+	$extraer2 = $posicion > 0 ? substr($total_venta, $posicion + 1, 50) : "";
+	$nuevo_total = $extraer2 != "" ? intval($extraer1.$extraer2) : $total_venta;
+
+	$sql="INSERT INTO venta (idcliente,idusuario,tipo_comprobante,fecha_entrada,fecha_salida,impuesto,total_venta,is_remision,pagado,estado,idsucursal,status) 
+					VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_entrada','$fecha_salida','$impuesto','$nuevo_total','$remision', '0', 'PENDIENTE', '$idsucursal', 'PENDIENTE')";		
 	$idventanew=ejecutarConsulta_retornarID($sql);
 	$num_elementos=0;
 	$sw=true;
@@ -20,8 +29,7 @@ public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_entrada,
 	if($remision == 1 && $fecha_salida != '') {
 		
 		$sql_remision = "INSERT INTO remision (idventa_servicio) VALUES ('$idventanew')";
-		ejecutarConsulta($sql_remision);
-		
+		ejecutarConsulta($sql_remision);	
 	}
 
 	while ($num_elementos < count($idarticulo)) {
@@ -30,7 +38,7 @@ public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_entrada,
 		$sql_kardex = "INSERT INTO kardex (fecha_entrada, folio, clave, fmsi, idcliente_proveedor, cantidad, importe, tipoMov, estado, idventa, idarticulo, idsucursalArticulo, idsucursalVenta) VALUES ('$fecha_entrada', $idventanew,'$clave[$num_elementos]', '$fmsi[$num_elementos]', '$idcliente', '$cantidad[$num_elementos]', '$precio_venta[$num_elementos]', 'VENTA', 'ACTIVO', '$idventanew', '$idarticulo[$num_elementos]', '$idsucursalproducto[$num_elementos]', '$idsucursal')";
 		ejecutarConsulta($sql_kardex) or $sw=false;
 		$num_elementos=$num_elementos+1;
-	}	 
+	}
 	return $sw;
 
 }

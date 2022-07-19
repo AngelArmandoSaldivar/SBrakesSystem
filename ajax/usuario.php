@@ -3,6 +3,7 @@ session_start();
 require_once "../modelos/Usuario.php";
 
 $usuario=new Usuario();
+$idusuarioSession = $_SESSION['idusuario'];
 
 $idusuario=isset($_POST["idusuario"])? limpiarCadena($_POST["idusuario"]):"";
 $nombre=isset($_POST["nombre"])? limpiarCadena($_POST["nombre"]):"";
@@ -23,11 +24,11 @@ switch ($_GET["op"]) {
 
 	//Hash SHA256 para la contraseña
 	$clavehash=hash("SHA256", $clave);
-	if (empty($idusuario)) {
-		$rspta=$usuario->insertar($nombre,$direccion,$telefono,$email,$cargo,$acceso,$login,$clavehash,$_POST['permiso'], $idsucursal);
+	if (empty($idusuario)) {		
+		$rspta=$usuario->insertar($nombre,$direccion,$telefono,$email,$cargo,$acceso,$login,$clavehash,$_POST['permiso'], $_POST['sucursal']);
 		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar todos los datos del usuario";
 	}else{		
-		$rspta=$usuario->editar($idusuario,$nombre,$direccion,$telefono,$email,$cargo,$acceso,$login,$clavehash,$_POST['permiso'], $idsucursal);
+		$rspta=$usuario->editar($idusuario,$nombre,$direccion,$telefono,$email,$cargo,$acceso,$login,$clavehash,$_POST['permiso'], $_POST['sucursal']);
 		echo "Sucursal: '$idsucursal'";	
 	}
 	break;	
@@ -138,7 +139,7 @@ switch ($_GET["op"]) {
 	$marcados=$usuario->listarmarcados($id);
 	$valores=array();
 
-//almacenar permisos asigandos
+	//almacenar permisos asigandos
 	while ($per=$marcados->fetch_object()) {
 		array_push($valores, $per->idpermiso);
 	}
@@ -148,6 +149,36 @@ switch ($_GET["op"]) {
 		echo '<li><input type="checkbox" '.$sw.' name="permiso[]" value="'.$reg->idpermiso.'">'.$reg->nombre.'</li>';
 	}
 	break;
+
+	case 'listarSucursales': 
+		$id=$_GET['id'];
+		$listarMarcados = $usuario->sucursales($id);
+		$valores=array();
+		$allSucursales = $usuario->todasSucursales();
+		while($reg = $listarMarcados->fetch_object()) {			
+			array_push($valores, $reg->idsucursal);
+		}
+		while($res = $allSucursales->fetch_object()) {
+			$sw = in_array($res->idsucursal, $valores)?'checked':'';
+			echo '<li><input type="checkbox" '.$sw.' name="sucursal[]" value="'.$res->idsucursal.'">'.$res->nombre.'</li>';
+		}
+
+		break;
+
+	case 'sucursales': 
+		$rspta = $usuario->todasSucursales();
+		$valores=array();
+		while ($reg=$rspta->fetch_object()) {
+			$sw=in_array($reg->idsucursal,$valores)?'checked':'';
+			echo '<li><input type="checkbox" '.$sw.' name="sucursal[]" value="'.$reg->idsucursal.'">'.$reg->nombre.'</li>';
+		}
+		break;
+
+	case 'ingresarSucursal':
+		$idsucursal=$_POST['idsucursal'];
+		$_SESSION['idsucursal']=$idsucursal;
+		echo "Ingresaste correctamente";
+		break;
 
 	case 'verificar':		
 	//validar si el usuario tiene acceso al sistema
@@ -165,7 +196,6 @@ switch ($_GET["op"]) {
 		$_SESSION['idusuario']=$fetch->idusuario;
 		$_SESSION['nombre']=$fetch->nombre;
 		$_SESSION['login']=$fetch->login;
-		$_SESSION['idsucursal']=$fetch->idsucursal;
 		$_SESSION['acceso']=$fetch->acceso;		 
 
 		//obtenemos los permisos

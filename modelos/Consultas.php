@@ -15,13 +15,13 @@ public function comprasfecha($fecha_inicio,$fecha_fin){
 	return ejecutarConsulta($sql);
 }
 
-
 public function ventasfechacliente($fecha_inicio,$fecha_fin){
 	$sql="SELECT DATE(v.fecha_entrada) as fecha, u.nombre as usuario, p.nombre as cliente, v.tipo_comprobante, forma_pago,forma_pago2, forma_pago3,v.total_venta, v.impuesto, v.estado,v.pagado, v.idventa, v.fecha_entrada FROM venta v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario INNER JOIN formas_pago fp ON fp.idventa=v.idventa WHERE DATE(v.fecha_entrada)>='$fecha_inicio' AND DATE(v.fecha_entrada)<='$fecha_fin'";
 	return ejecutarConsulta($sql);	
 }
 public function kardex($fecha_inicio,$fecha_fin){
-	$sql="SELECT DATE(v.fecha_entrada) as fecha, p.nombre, v.idcliente_proveedor, s.nombre AS articuloSucursal, sc.nombre AS sucursalVenta, folio, clave, fmsi, cantidad, importe, estado, tipoMov, idsucursalArticulo FROM kardex v INNER JOIN persona p ON v.idcliente_proveedor=p.idpersona INNER JOIN sucursal s ON idsucursalArticulo = s.idsucursal INNER JOIN sucursal sc ON idsucursalVenta = sc.idsucursal WHERE DATE(v.fecha_entrada)>='$fecha_inicio' AND DATE(v.fecha_entrada)<='$fecha_fin'";
+	//$sql="SELECT DATE(v.fecha_entrada) as fecha, p.nombre, v.idcliente_proveedor, s.nombre AS articuloSucursal, sc.nombre AS sucursalVenta, folio, clave, fmsi, cantidad, importe, estado, tipoMov, idsucursalArticulo FROM kardex v INNER JOIN persona p ON v.idcliente_proveedor=p.idpersona INNER JOIN sucursal s ON idsucursalArticulo = s.idsucursal INNER JOIN sucursal sc ON idsucursalVenta = sc.idsucursal WHERE DATE(v.fecha_entrada)>='$fecha_inicio' AND DATE(v.fecha_entrada)<='$fecha_fin' ORDER BY clave, idkardex DESC";
+	$sql="SELECT DATE(v.fecha_entrada) as fecha, p.nombre, v.idcliente_proveedor, s.nombre AS articuloSucursal, sc.nombre AS sucursalVenta, folio, clave, fmsi, cantidad, importe, estado, tipoMov, idsucursalArticulo FROM kardex v INNER JOIN persona p ON v.idcliente_proveedor=p.idpersona INNER JOIN sucursal s ON idsucursalArticulo = s.idsucursal INNER JOIN sucursal sc ON idsucursalVenta = sc.idsucursal ORDER BY clave, idkardex DESC";
 	return ejecutarConsulta($sql);
 }
 

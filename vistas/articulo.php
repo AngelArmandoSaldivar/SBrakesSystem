@@ -159,7 +159,13 @@ if ($_SESSION['almacen']==1) {
                 <label for="">Mayoreo</label>
                 <input class="form-control" type="number" name="mayoreo" id="mayoreo"  required placeholder="$">
               </div>    
-              <div class="form-group col-lg-4 col-md-6 col-xs-12 text-center">
+              <div class="form-group col-lg-12 col-md-6 col-xs-12 text-center">
+                <label for="">Imagen:</label>
+                <input class="form-control" type="file" name="imagen" id="imagen" style="cursor:pointer">
+                <input type="hidden" name="imagenactual" id="imagenactual">
+                <img src="" alt="" width="600px" height="320" id="imagenmuestra" class="img-thumbnail">
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-xs-12 text-center">                
               </div>
               <div class="form-group col-lg-4 col-md-6 col-xs-12 text-center">
                 <label for="">Código de barras:</label>
@@ -198,7 +204,7 @@ require 'footer.php'
  ?>
  <script src="../public/js/JsBarcode.all.min.js"></script>
  <script src="../public/js/jquery.PrintArea.js"></script>
- <script src="scripts/articulos.js"></script>
+ <script src="scripts/articulosB1.js"></script>
  <?php 
 }
 

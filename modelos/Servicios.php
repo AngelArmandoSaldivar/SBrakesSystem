@@ -11,8 +11,15 @@ public function __construct(){
 
 //metodo insertar registro
 public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_entrada,$fecha_salida,$remision,$impuesto,$total_servicio,$marca, $modelo, $ano, $color, $kms,$placas,$idarticulo,$clave,$marcaArticulo,$fmsi,$descripcion,$cantidad,$precio_servicio,$descuento, $idsucursal, $idsucursalproducto){
+	$total_servicio = substr($total_servicio, 1);
+	$caracter = ",";
+	$posicion = strpos($total_servicio, $caracter);
+
+	$extraer1 = $posicion > 0 ? substr($total_servicio, 0, $posicion) : $total_servicio;
+	$extraer2 = $posicion > 0 ? substr($total_servicio, $posicion + 1, 50) : "";
+	$nuevo_total = $extraer2 != "" ? intval($extraer1.$extraer2) : $total_servicio;
 	$sql="INSERT INTO servicio (idcliente,idusuario,tipo_comprobante,fecha_entrada,fecha_salida, is_remision, impuesto,total_servicio,pagado,marca, modelo, ano, color, kms, placas, estado,idsucursal,status) 
-						VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_entrada','$fecha_salida','$remision', '$impuesto','$total_servicio','0','$marca', '$modelo', '$ano', '$color', '$kms','$placas', 'PENDIENTE', '$idsucursal', 'PENDIENTE')";	
+						VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_entrada','$fecha_salida','$remision', '$impuesto','$nuevo_total','0','$marca', '$modelo', '$ano', '$color', '$kms','$placas', 'PENDIENTE', '$idsucursal', 'PENDIENTE')";	
 	 $idservicionew=ejecutarConsulta_retornarID($sql);
 	 $num_elementos=0;
 	 $sw=true;

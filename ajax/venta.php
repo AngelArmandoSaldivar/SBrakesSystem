@@ -2,14 +2,16 @@
 require_once "../modelos/Venta.php";
 require_once "../modelos/Persona.php";
 require_once "../modelos/Articulo.php";
+require_once "../modelos/Cotizacion.php";
 if (strlen(session_id())<1)
 	session_start();
 	$idsucursal = $_SESSION['idsucursal'];
 	$acceso = $_SESSION['acceso'];
 
 $venta = new Venta();
-$persona=new Persona();
-$articulo=new Articulo();
+$persona = new Persona();
+$articulo = new Articulo();
+$cotizacion = new Cotizacion();
 
 $tipo_persona=isset($_POST["tipo_persona"])? limpiarCadena($_POST["tipo_persona"]):"";
 $nombre=isset($_POST["nombre"])? limpiarCadena($_POST["nombre"]):"";
@@ -57,6 +59,22 @@ switch ($_GET["op"]) {
 		$rspta=$venta->insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_entrada,$fecha_salida,$impuesto,$total_venta,$remision,$_POST["idarticulo"],$_POST["clave"],$_POST["fmsi"],$_POST["marca"],$_POST["descripcion"],$_POST["cantidad"],$_POST["precio_venta"],$_POST["descuento"], $idsucursal, $_POST["idsucursalArticulo"]); 		
 		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";		
 	}
+	break;
+
+	case 'buscarCotizacion':
+		$busquedaCotizacion=$_GET['busquedaCotizacion'];
+		$rspta=$cotizacion->mostrarCotizacion($busquedaCotizacion);
+		echo json_encode($rspta);
+	break;
+
+	case 'detallesCotizacion':
+		$idcotizacion=$_GET['idcotizacion'];
+		$array = [];
+		$rspta=$cotizacion->listarDetalle($idcotizacion);
+		while ($reg=$rspta->fetch_object()) {
+			array_push($array, $reg);
+		}
+		echo json_encode($array);
 	break;
 
 	case 'guardarGarantia':
@@ -184,8 +202,15 @@ switch ($_GET["op"]) {
 		$idventa=$_GET['idventa'];
 		$precioViejo=$_GET['precioViejo'];
 		$stockViejo=$_GET['stockViejo'];
-		$rspta=$venta->editarGuardarProductoVenta($descripcion, $cantidad, $precio, $idarticulo, $idventa, $precioViejo, $stockViejo);
+		$cantidadNueva = $_GET['stockViejo'];
+
+		$precioNuevo = $_GET['precioNuevo'];
+		$descripcionNuevo = $_GET['descripcionNuevo'];
+		$cantidadNueva = $_GET['cantidadNueva'];
+
+		$rspta=$venta->editarGuardarProductoVenta($descripcionNuevo, $cantidadNueva, $precioNuevo, $idarticulo, $idventa, $precioViejo, $stockViejo);
 		echo $rspta ? "Producto actualizado correctamente": "No se pudo actualizar el producto";
+
 		break;
 
 	case 'guardarProductoVenta':
@@ -464,7 +489,7 @@ switch ($_GET["op"]) {
 		 <th></th>
 		 <th></th>		 
          <th>TOTAL</th>
-         <th><p id="total">$ '.$total.'</p><input type="hidden" name="total_venta" id="total_venta"></th>
+         <th><p id="total">$ '.number_format($total, 2).'</p><input type="hidden" name="total_venta" id="total_venta"></th>
 		 <th></th>
        </tfoot>';
 
@@ -1026,20 +1051,41 @@ switch ($_GET["op"]) {
 					$consultaBD=$conexion->query($consulta);
 					if($consultaBD->num_rows>=1){
 						echo "						
-						<table class='responsive-table table table-hover table-bordered' style='font-size:12px' id='tableArticulos'>
+						<button id='botonClave' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarClave()'><i class='fa fa-eye'></i> Mostrar Clave</button>
+						<button id='botonFmsi' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarFmsi()'><i class='fa fa-eye'></i> Mostrar Fmsi</button>
+						<button id='botonMarca' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarMarca()'><i class='fa fa-eye'></i> Mostrar Marca</button>
+						<button id='botonDescripcion' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarDescripcion()'><i class='fa fa-eye'></i> Mostrar Descripción</button>
+						<button id='botonStock' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarStock()'><i class='fa fa-eye'></i> Mostrar Stock</button>
+						<button id='botonMayoreo' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarMayoreo()'><i class='fa fa-eye'></i> Mostrar Mayoreo</button>
+						<button id='botonTaller' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarTaller()'><i class='fa fa-eye'></i> Mostrar Taller</button>
+						<button id='botonCredito' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarCredito()'><i class='fa fa-eye'></i> Mostrar Credito</button>
+						<button id='botonMostrador' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarPublico()'><i class='fa fa-eye'></i> Mostrar Publico</button>
+						<button id='botonCosto' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarCosto()'><i class='fa fa-eye'></i> Mostrar Costo</button>
+						<table class='responsive-table table table-hover table-bordered' style='font-size:11px' id='tableArticulos'>
 							<thead class='table-light'>
 								<tr>
-									<th class='bg-info' scope='col'>Clave</th>
-									<th class='bg-info' scope='col'>FMSI</th>
-									<th class='bg-info' scope='col'>Marca</th>
-									<th class='bg-info' scope='col'>Descripción</th>
-									<th class='bg-info' scope='col'>Costo</th>
-									<th class='bg-info' scope='col'>Publico Mostrador</th>
-									<th class='bg-info' scope='col'>Taller</th>
-									<th class='bg-info' scope='col'>Crédito Taller</th>
-									<th class='bg-info' scope='col'>Mayoreo</th>
-									<th class='bg-info' scope='col'>Stock</th>									
-									<th class='bg-info' scope='col'>Acciones</th>
+								<th id='thClave' class='bg-info w-40' scope='col' style='width: 100px;'>Clave
+								<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarClave()'><i class='fa fa-eye-slash'></i></button>							
+								</th>
+								<th id='thFmsi' class='bg-info' scope='col' style='width:80px;'>FMSI
+								<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarFmsi()'><i class='fa fa-eye-slash'></i></button></th>
+								<th id='thMarca' class='bg-info' scope='col'>Marca
+								<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarMarca()'><i class='fa fa-eye-slash'></i></button></th>
+								<th id='thDescripcion' class='bg-info' scope='col' style='width:200px;'>Descripción
+								<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarDescripcion()'><i class='fa fa-eye-slash'></i></button></th>
+								<th id='thStock' class='bg-info' scope='col'>Stock
+								<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarStock()'><i class='fa fa-eye-slash'></i></button></th>
+								<th id='thMayoreo' class='bg-info' scope='col'>Mayoreo
+									<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarMayoreo()'><i class='fa fa-eye-slash'></i></button></th>
+								<th id='thTaller' class='bg-info' scope='col'>Taller
+								<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarTaller()'><i class='fa fa-eye-slash'></i></button></th>
+								<th id='thCredito' class='bg-info' scope='col'>Crédito Taller
+								<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarCredito()'><i class='fa fa-eye-slash'></i></button></th>
+								<th id='thPublico' class='bg-info' scope='col'>Publico Mostrador
+								<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarPublico()'><i class='fa fa-eye-slash'></i></button></th>
+								<th id='thCosto' class='bg-info' scope='col'>Costo
+								<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarCosto()'><i class='fa fa-eye-slash'></i></button></th>
+									<th class='bg-info' scope='col' style='width: 10px;'>Acciones</th>
 								</tr>
 							</thead>
 						<tbody>";
@@ -1054,8 +1100,7 @@ switch ($_GET["op"]) {
 							$selectTypes ="";
 				
 							if(isset($_POST["types"])) {
-								$tipo_precio = $_POST["types"];
-							
+								$tipo_precio = $_POST["types"];							
 
 								if($fila["idsucursal"] == $idsucursal) {
 									if($fila["stock"] >=1 && $tipo_precio != null) {
@@ -1063,13 +1108,13 @@ switch ($_GET["op"]) {
 											<td>".$fila['codigo']."</td>
 											<td>".$fila['fmsi']."</td>
 											<td>".$fila['marca']."</td>
-											<td>".$delit."...</td>
-											<td><p>$ ".$costoMiles."</p></td>
-											<td><p>$ ".$publicMiles."</p></td>
-											<td><p>$ ".$tallerMiles."</p></td>
-											<td><p>$ ".$creditoMiles."</p></td>
+											<td>".$delit."...</td>											
+											<td><p>".$fila["stock"]." pz</p></td>
 											<td><p>$ ".$mayoreoMiles."</p></td>
-											<td><p>".$fila["stock"]." pz</p></td>										
+											<td><p>$ ".$tallerMiles."</p></td>
+											<td><p>$ ".$creditoMiles."</p></td>											
+											<td><p>$ ".$publicMiles."</p></td>
+											<td><p>$ ".$costoMiles."</p></td>
 											<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["marca"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
 										</tr>";
 									} else if($fila["stock"] >=1 && $tipo_precio == null){
@@ -1103,22 +1148,7 @@ switch ($_GET["op"]) {
 								}
 							}
 						}
-						echo "</tbody>
-						<tfoot>
-							<tr>								
-								<th class='bg-info' scope='col'>Clave</th>
-								<th class='bg-info' scope='col'>FMSI</th>
-								<th class='bg-info' scope='col'>Marca</th>
-								<th class='bg-info' scope='col'>Descripción</th>
-								<th class='bg-info' scope='col'>Costo</th>
-								<th class='bg-info' scope='col'>Publico Mostrador</th>
-								<th class='bg-info' scope='col'>Taller</th>
-								<th class='bg-info' scope='col'>Crédito Taller</th>
-								<th class='bg-info' scope='col'>Mayoreo</th>
-								<th class='bg-info' scope='col'>Stock</th>									
-								<th class='bg-info' scope='col'>Acciones</th>
-							</tr>
-						</tfoot>
+						echo "</tbody>						
 						</table>";
 					}else{
 						echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";						

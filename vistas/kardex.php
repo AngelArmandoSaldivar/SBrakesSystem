@@ -85,7 +85,7 @@ if ($_SESSION['kardex']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/kardex.js"></script>
+ <script src="scripts/kardexs.js"></script>
  <?php 
 }
 

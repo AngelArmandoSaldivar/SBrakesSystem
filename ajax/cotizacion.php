@@ -1,24 +1,20 @@
 <?php 
-require_once "../modelos/Servicios.php";
-require_once "../modelos/Persona.php";
 require_once "../modelos/Cotizacion.php";
+require_once "../modelos/Persona.php";
 if (strlen(session_id())<1)
 	session_start();
 	//SESIONES
 	$idsucursal = $_SESSION['idsucursal'];
 	$acceso = $_SESSION['acceso'];
 
-$servicio = new Servicios();
-$persona=new Persona();
 $cotizacion = new Cotizacion();
-
+$persona=new Persona();
 $idservicio=isset($_POST["idservicio"])? limpiarCadena($_POST["idservicio"]):"";
 $idauto=isset($_POST["idauto"])? limpiarCadena($_POST["idauto"]):"";
 $idcliente=isset($_POST["idcliente"])? limpiarCadena($_POST["idcliente"]):"";
 $idusuario=$_SESSION["idusuario"];
 $tipo_comprobante=isset($_POST["tipo_comprobante"])? limpiarCadena($_POST["tipo_comprobante"]):"";
-$fecha_entrada=isset($_POST["fecha_entrada"])? limpiarCadena($_POST["fecha_entrada"]):"";
-$fecha_salida=isset($_POST["fecha_salida"])? limpiarCadena($_POST["fecha_salida"]):"";
+$fecha_hora=isset($_POST["fecha_hora"])? limpiarCadena($_POST["fecha_hora"]):"";
 $remision=isset($_POST["remision"])? limpiarCadena($_POST["remision"]):"";
 $impuesto=isset($_POST["impuesto"])? limpiarCadena($_POST["impuesto"]):"";
 $forma=isset($_POST["forma"])? limpiarCadena($_POST["forma"]):"";
@@ -33,7 +29,7 @@ $importe3=isset($_POST["importe3"])? limpiarCadena($_POST["importe3"]):"";
 $ref=isset($_POST["ref"])? limpiarCadena($_POST["ref"]):"";
 $ref2=isset($_POST["ref2"])? limpiarCadena($_POST["ref2"]):"";
 $ref3=isset($_POST["ref3"])? limpiarCadena($_POST["ref3"]):"";
-$total_servicio=isset($_POST["total_servicio"])? limpiarCadena($_POST["total_servicio"]):"";
+$total_cotizacion=isset($_POST["total_cotizacion"])? limpiarCadena($_POST["total_cotizacion"]):"";
 $marca=isset($_POST["marcaAuto"])? limpiarCadena($_POST["marcaAuto"]):"";
 $modelo=isset($_POST["modelo"])? limpiarCadena($_POST["modelo"]):"";
 $ano=isset($_POST["ano"])? limpiarCadena($_POST["ano"]):"";
@@ -44,25 +40,9 @@ $placas=isset($_POST["placas"])? limpiarCadena($_POST["placas"]):"";
 switch ($_GET["op"]) {
 	case 'guardaryeditar':
 	if (empty($idservicio)) {
-		$rspta=$servicio->insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_entrada,$fecha_salida, $remision, $impuesto,$total_servicio,$marca, $modelo, $ano, $color, $kms, $placas, $_POST["idarticulo"],$_POST["clave"],$_POST["marca"], $_POST["fmsi"],$_POST["descripcion"],$_POST["cantidad"],$_POST["precio_servicio"],$_POST["descuento"], $idsucursal, $_POST["idsucursalArticulo"]);		
+		$rspta=$cotizacion->insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora, $impuesto,$total_cotizacion,$marca, $modelo, $ano, $color, $kms, $placas, $_POST["idarticulo"],$_POST["clave"],$_POST["marca"], $_POST["fmsi"],$_POST["descripcion"],$_POST["cantidad"],$_POST["precio_cotizacion"],$_POST["descuento"], $idsucursal, $_POST["idsucursalArticulo"]);		
 		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
 	}
-	break;
-	
-	case 'buscarCotizacion':
-		$busquedaCotizacion=$_GET['busquedaCotizacion'];
-		$rspta=$cotizacion->mostrarCotizacion($busquedaCotizacion);
-		echo json_encode($rspta);
-	break;
-
-	case 'detallesCotizacion':
-		$idcotizacion=$_GET['idcotizacion'];
-		$array = [];
-		$rspta=$cotizacion->listarDetalle($idcotizacion);
-		while ($reg=$rspta->fetch_object()) {
-			array_push($array, $reg);
-		}
-		echo json_encode($array);
 	break;
 
 	case 'guardarGarantia':
@@ -72,13 +52,13 @@ switch ($_GET["op"]) {
 		$cantidad=$_GET['cantidad'];
 		$fecha_hora=$_GET['fecha_hora'];
 		$precioGarantia=$_GET['precioGarantia'];
-		$rspta=$servicio->guardarGarantia($idservicio, $idarticulo, $descripcion, $cantidad, $idsucursal, $fecha_hora, $precioGarantia);
+		$rspta=$cotizacion->guardarGarantia($idservicio, $idarticulo, $descripcion, $cantidad, $idsucursal, $fecha_hora, $precioGarantia);
 		echo $rspta ? "Se guardo correctamente la garantia" : "No se pudo guardar la garantia";
 		break;
 
 	case 'listarDetalleGarantias':
 		$id=$_GET['id'];
-		$rspta=$servicio->listarDetalle($id);
+		$rspta=$cotizacion->listarDetalle($id);
 		$total=0;
 		echo ' <thead style="background-color:#A9D0F5; font-size: 12px;">		
 		<th>Clave</th>
@@ -145,26 +125,26 @@ switch ($_GET["op"]) {
 		$fecha_salida=$_GET['fecha_salida'];
 		$fecha_entrada=$_GET['fecha_entrada'];
 		$idcliente=$_GET['idcliente'];
-		$rspta = $servicio->editarDetalleServicio($idservicio, $idcliente, $fecha_entrada, $fecha_salida, $is_rem, $remision);
+		$rspta = $cotizacion->editarDetalleServicio($idservicio, $idcliente, $fecha_entrada, $fecha_salida, $is_rem, $remision);
 		echo $rspta ? "Se guardo correctamente el detalle": "No se pudo guardar el detalle";		
 		break;
 
 	case 'editarFechaSalida':
 		$idservicio=$_GET["idservicio"];
 		$fechaSalida=$_GET["fechaSalida"];
-		$rspta=$servicio->editarFechaSalida($idservicio, $fechaSalida);
+		$rspta=$cotizacion->editarFechaSalida($idservicio, $fechaSalida);
 		echo $rspta ? "Remision actualizada" : "No se pudo actualizar la remisión";
 		break;
 
 	case 'editarRemision':
 		$idservicio=$_GET["idservicio"];
 		$remision=$_GET["remision"];
-		$rspta=$servicio->editarRemision($idservicio, $remision);
+		$rspta=$cotizacion->editarRemision($idservicio, $remision);
 		echo $rspta ? "Remision actualizada" : "No se pudo actualizar la remisión";
 		break;
 
 	case 'maxRemision' :
-		$rspta=$servicio->maxRemision();
+		$rspta=$cotizacion->maxRemision();
 		while ($reg=$rspta->fetch_object()) {
 			echo $reg->maxRemision;
 		}
@@ -179,11 +159,11 @@ switch ($_GET["op"]) {
 		$color=$_GET['color'];
 		$kms=$_GET['kms'];
 
-		$rspta=$servicio->guardarAuto($idcliente, $placas, $marca, $modelo, $ano, $color, $kms);
+		$rspta=$cotizacion->guardarAuto($idcliente, $placas, $marca, $modelo, $ano, $color, $kms);
 		echo $rspta ? "Se guardo correctamente el auto": "No se pudo guardar";
 		break;
 	case 'ultimoAuto' :
-		$rspta=$servicio->ultimoAuto();		
+		$rspta=$cotizacion->ultimoAuto();		
 		while ($reg=$rspta->fetch_object()) {
 			echo json_encode($reg->idauto);
 		}
@@ -197,7 +177,7 @@ switch ($_GET["op"]) {
 		$banco=$_GET['banco'];		
 		$referenciaCobro=$_GET['referenciaCobro'];
 		$fechaCobro=$_GET['fechaCobro'];
-		$rspta=$servicio->guardarCobro($metodoPago, $banco, $importeCobro, $referenciaCobro, $idservicio, $fechaCobro, $idsucursal, $idcliente);
+		$rspta=$cotizacion->guardarCobro($metodoPago, $banco, $importeCobro, $referenciaCobro, $idservicio, $fechaCobro, $idsucursal, $idcliente);
 		echo $rspta ? "Se guardo correctamente el pago": "No se pudo guardar";
 		break;
 	case 'editarCobro':
@@ -208,18 +188,18 @@ switch ($_GET["op"]) {
 		$banco=$_GET['banco'];	
 		$importeviejo = $_GET["importeviejo"];	
 		$referenciaCobro=$_GET['referenciaCobro'];		
-		$rspta=$servicio->editarPago($idpago, $metodoPago, $banco, $importeCobro, $referenciaCobro, $importeviejo, $idservicio);
+		$rspta=$cotizacion->editarPago($idpago, $metodoPago, $banco, $importeCobro, $referenciaCobro, $importeviejo, $idservicio);
 		echo $rspta ? "Pago actualizado correctamente": "No se pudo actualizar";
 		break;
 	case 'eliminarCobro' :
 		$idcobro=$_GET["idcobro"];
 		$importe=$_GET['importe'];
 		$idservicio=$_GET['idservicio'];
-		$rspta=$servicio->eliminarCobro($idcobro, $importe, $idservicio);
+		$rspta=$cotizacion->eliminarCobro($idcobro, $importe, $idservicio);
 		break;
 	case 'mostrarPagoEdit':
 		$idpago = $_GET["idpago"];
-		$rspta=$servicio->mostrarPagoEdit($idpago);
+		$rspta=$cotizacion->mostrarPagoEdit($idpago);
 		echo json_encode($rspta);
 	break;
 
@@ -227,7 +207,7 @@ switch ($_GET["op"]) {
 		//recibimos el idventa
 		$id=$_GET['id'];
 		$totalCobro = 0;
-		$rspta=$servicio->listarDetallesCobro($id);
+		$rspta=$cotizacion->listarDetallesCobro($id);
 		$total=0;
 		echo ' <thead style="background-color:#A9D0F5; font-size: 12px;">
 				<th>Opciones</th>
@@ -264,7 +244,7 @@ switch ($_GET["op"]) {
 			//recibimos el idventa
 			$id=$_GET['id'];
 			$totalCobro = 0;
-			$rspta=$servicio->listarDetallesCobro($id);
+			$rspta=$cotizacion->listarDetallesCobro($id);
 			$total=0;
 			echo ' <thead style="background-color:#A9D0F5; font-size: 12px;">
 					<th>Opciones</th>
@@ -306,14 +286,14 @@ switch ($_GET["op"]) {
 		$descripcionProducto = $_GET["descripcion"];
 		$cantidadProducto = $_GET["cantidad"];
 		$precioProducto = $_GET["precio"];
-		$rspta=$servicio->editarGuardarProductoServicio($descripcionProducto, $cantidadProducto, $precioProducto, $idarticulo, $idservicio, $precioViejo, $stockViejo);
+		$rspta=$cotizacion->editarGuardarProductoServicio($descripcionProducto, $cantidadProducto, $precioProducto, $idarticulo, $idservicio, $precioViejo, $stockViejo);
 		echo $rspta ? "Producto actualizado correctamente": "No se pudo actualizar el producto";
 		break;
 	case 'actualizarKilometraje' :
 			$idcliente=$_GET['idcliente'];
 			$idauto=$_GET['idauto'];
 			$kmAuto=$_GET['kmAuto'];
-			$rspta=$servicio->actualizarKilometraje($idcliente, $idauto, $kmAuto);
+			$rspta=$cotizacion->actualizarKilometraje($idcliente, $idauto, $kmAuto);
 			echo $rspta ? "Kilometraje actualizado correctamente": "No se pudo actualizar el kilometraje";
 		break;
 
@@ -329,7 +309,7 @@ switch ($_GET["op"]) {
 		$fecha=$_GET['dateTime'];
 		$idcliente=$_GET['idcliente'];
 		$idarticuloSucursal=$_GET['idarticuloSucursal'];
-		$rspta=$servicio->addProductoServicio($idarticulo,$articulo,$fmsi,$marca,$descripcion,$publico,$stock,$idServicio, $fecha, $idcliente, $idarticuloSucursal, $idsucursal);
+		$rspta=$cotizacion->addProductoServicio($idarticulo,$articulo,$fmsi,$marca,$descripcion,$publico,$stock,$idServicio, $fecha, $idcliente, $idarticuloSucursal, $idsucursal);
 		echo $rspta ? "Producto agregado correctamente": "No se pudo agregar el producto";
 		break;
 	case 'eliminarProductoServicio':
@@ -338,41 +318,41 @@ switch ($_GET["op"]) {
 		$stock = $conexion->real_escape_string($_POST['stock']);
 		$precio_servicio = $conexion->real_escape_string($_POST['precio_servicio']);
 		
-		$rspta=$servicio->eliminarProductoServicio($idServicioProducto, $idProductoServicio, $stock, $precio_servicio);		
+		$rspta=$cotizacion->eliminarProductoServicio($idServicioProducto, $idProductoServicio, $stock, $precio_servicio);		
 		break;
 	case 'mostrarProductoServicio':
 		$idarticulo=$_GET['idarticulo'];
 		$idServicio=$_GET['idServicio'];
-		$rspta=$servicio->mostrarProductoEdit($idarticulo, $idServicio);
+		$rspta=$cotizacion->mostrarProductoEdit($idarticulo, $idServicio);
 		echo json_encode($rspta);
 		break;
 
 	case 'ultimoServicio' :
-	$rspta=$servicio->ultimoServicio();		
+	$rspta=$cotizacion->ultimoServicio();		
 	while ($reg=$rspta->fetch_object()) {
 		echo json_encode($reg);
 	}
 	break;
 
 	case 'anular':
-		$rspta=$servicio->anular($idservicio);
+		$rspta=$cotizacion->anular($idservicio);
 		echo $rspta ? "Servicio anulado correctamente" : "No se pudo anular el servicio";
 		break;
 	
 	case 'mostrar':
-		$rspta=$servicio->mostrar($idservicio);
+		$rspta=$cotizacion->mostrar($idservicio);
 		echo json_encode($rspta);
 	break;
 
 	case 'mostrarInfoAuto':
-		$rspta=$servicio->mostrarInfoAuto($idauto);
+		$rspta=$cotizacion->mostrarInfoAuto($idauto);
 		echo json_encode($rspta);
 	break;
 
 	case 'mostrarDetalleServicio' :
 		$id=$_GET['id'];
 
-		$rspta=$servicio->listarDetalle($id);
+		$rspta=$cotizacion->listarDetalle($id);
 		$total=0;
 		echo ' <thead style="background-color:#A9D0F5; font-size: 12px;">
         <th>Opciones</th>		
@@ -394,7 +374,7 @@ switch ($_GET["op"]) {
 			<td>'.$reg->marca.'</td>
 			<td>'.$reg->descripcion.'</td>
 			<td>'.$reg->cantidad.'</td>
-			<td>$'.number_format($reg->precio_servicio, 2).'</td>
+			<td>$'.number_format($reg->precio_cotizacion, 2).'</td>
 			<td>'.$reg->descuento.'</td>
 			<td>$'.number_format($reg->subtotal, 2).'</td>
 			<td>				
@@ -406,7 +386,7 @@ switch ($_GET["op"]) {
 			</td>
 			</tr>'
 			;
-			number_format($total=$total+($reg->precio_servicio*$reg->cantidad-$reg->descuento), 2);			
+			number_format($total=$total+($reg->precio_cotizacion*$reg->cantidad-$reg->descuento), 2);			
 		}		
 		echo '<tfoot style="background-color:#A9D0F5; font-size: 12px;">         
          <th></th>
@@ -426,7 +406,7 @@ switch ($_GET["op"]) {
 		//recibimos el idservicio
 		$id=$_GET['id'];
 
-		$rspta=$servicio->listarDetalle($id);
+		$rspta=$cotizacion->listarDetalle($id);
 		$total=0;
 		echo ' <thead style="background-color:#A9D0F5; font-size: 12px;">
 		<th>Opciones</th>		
@@ -448,11 +428,11 @@ switch ($_GET["op"]) {
 			<td>'.$reg->marca.'</td>			
 			<td>'.$reg->descripcion.'</td>
 			<td>'.$reg->cantidad.'</td>
-			<td>$'.number_format($reg->precio_servicio, 2).'</td>
+			<td>$'.number_format($reg->precio_cotizacion, 2).'</td>
 			<td>'.$reg->descuento.'</td>
 			<td>$'.number_format($reg->subtotal, 2).'</td>
 			<td></td>';
-			$total=$total+($reg->precio_servicio*$reg->cantidad-$reg->descuento);
+			$total=$total+($reg->precio_cotizacion*$reg->cantidad-$reg->descuento);
 		}
 		echo '<tfoot style="background-color:#A9D0F5; font-size: 12px;">		
 		<th></th>
@@ -472,7 +452,7 @@ switch ($_GET["op"]) {
 			//recibimos el idservicio
 			$id=$_GET['id'];
 	
-			$rspta=$servicio->listarDetalleTodo($id);
+			$rspta=$cotizacion->listarDetalleTodo($id);
 			$total=0;
 			echo ' <thead style="background-color:#A9D0F5; font-size: 12px;">
 			<th>Opciones</th>			
@@ -516,19 +496,19 @@ switch ($_GET["op"]) {
 
     case 'listar':
 	
-		$consulta = $servicio->filtroPaginado(50, 0, "", "", "");
+		$consulta = $cotizacion->filtroPaginado(50, 0, "", "", "");
 		$termino= "";
 		
 		if(!empty($_POST['servicios']) && empty($_POST['total_registros']) && empty($_POST['inicio_registros']) && empty($_POST["fecha_inicio"]) && empty($_POST["fecha_fin"])){
 			echo "Llegaste 1";
 			$termino=$conexion->real_escape_string($_POST['servicios']);
 			echo $termino;
-			$consulta=$servicio->filtroPaginado(50,0, $termino, "", "");
+			$consulta=$cotizacion->filtroPaginado(50,0, $termino, "", "");
 		}
 		else if(empty($_POST['servicios']) && !empty($_POST['total_registros']) && empty($_POST["fecha_inicio"]) && empty($_POST['inicio_registros']) && empty($_POST["fecha_fin"])) {
 			echo "solo limites";
 			$limites=$conexion->real_escape_string($_POST['total_registros']);				
-			$consulta=$servicio->filtroPaginado($limites,0, "", "", "");
+			$consulta=$cotizacion->filtroPaginado($limites,0, "", "", "");
 		}
 		else if(!empty($_POST['servicios']) && !empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"]) && empty($_POST['inicio_registros']) && empty($_POST["fecha_fin"])){				
 			echo "Filtro busqueda, limites y fecha inicio";
@@ -536,7 +516,7 @@ switch ($_GET["op"]) {
 			$limites=$conexion->real_escape_string($_POST['total_registros']);				
 			$fecha_inicio = $conexion->real_escape_string($_POST['fecha_inicio']);
 			
-			$consulta=$servicio->filtroPaginado($limites,0, $termino, $fecha_inicio, "");
+			$consulta=$cotizacion->filtroPaginado($limites,0, $termino, $fecha_inicio, "");
 		}
 		else if(!empty($_POST['busqueda']) && !empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"]) && !empty($_POST['inicio_registros']) && empty($_POST["fecha_fin"])){				
 			echo "Filtro busqueda, limites, fecha inicio e inicio registros";
@@ -545,7 +525,7 @@ switch ($_GET["op"]) {
 			$fecha_inicio = $conexion->real_escape_string($_POST['fecha_inicio']);
 			$inicio_registros = $conexion->real_escape_string($_POST['inicio_registros']);
 			
-			$consulta=$servicio->filtroPaginado($limites,$inicio_registros, $termino, $fecha_inicio, "");
+			$consulta=$cotizacion->filtroPaginado($limites,$inicio_registros, $termino, $fecha_inicio, "");
 		}
 		else if(empty($_POST['servicios']) && !empty($_POST['total_registros']) && empty($_POST["inicio_registros"]) && !empty($_POST["fecha_inicio"]) && empty($_POST["fecha_fin"])){				
 			echo "Filtro solo limites y fecha inicio";				
@@ -553,13 +533,13 @@ switch ($_GET["op"]) {
 			echo $limites;				
 			$fecha_inicio = $conexion->real_escape_string($_POST['fecha_inicio']);
 			
-			$consulta=$servicio->filtroPaginado($limites,0, "", $fecha_inicio, "");
+			$consulta=$cotizacion->filtroPaginado($limites,0, "", $fecha_inicio, "");
 		}
 		else if(!empty($_POST['servicios']) && !empty($_POST['total_registros']) && empty($_POST["fecha_inicio"])){
 			echo "Llegaste 2";
 			$termino=$conexion->real_escape_string($_POST['servicios']);
 			$limites=$conexion->real_escape_string($_POST['total_registros']);
-			$consulta=$servicio->filtroPaginado($limites,0, $termino, "", "");
+			$consulta=$cotizacion->filtroPaginado($limites,0, $termino, "", "");
 		}
 		else if(!empty($_POST['busqueda']) && empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"]) && empty($_POST['inicio_registros']) && empty($_POST["fecha_fin"])) {					
 			echo "Llegaste 3";
@@ -567,21 +547,21 @@ switch ($_GET["op"]) {
 			$busqueda=$conexion->real_escape_string($_POST['busqueda']);				
 			$fecha_inicio=$conexion->real_escape_string($_POST['fecha_inicio']);
 			
-			$consulta=$servicio->filtroPaginado(5,0, $busqueda, $fecha_inicio, "");
+			$consulta=$cotizacion->filtroPaginado(5,0, $busqueda, $fecha_inicio, "");
 
 		}
 		else if(!empty($_POST["fecha_inicio"]) && empty($_POST['busqueda']) && empty($_POST['total_registros']) && empty($_POST['inicio_registros']) && empty($_POST["fecha_fin"])) {
 			echo "Solo fecha";
 
 			$fecha_inicio=$conexion->real_escape_string($_POST['fecha_inicio']);														
-			$consulta=$servicio->filtroPaginado(5,0, "", $fecha_inicio, "");
+			$consulta=$cotizacion->filtroPaginado(5,0, "", $fecha_inicio, "");
 
 		}
 		else if(empty($_POST["fecha_inicio"]) && empty($_POST['busqueda']) && !empty($_POST['inicio_registros']) && empty($_POST['total_registros']) && empty($_POST["fecha_fin"])) {
 			echo "Solo paginado > 2";
 			$inicio_registros=$conexion->real_escape_string($_POST['inicio_registros']);				
 
-			$consulta=$servicio->filtroPaginado(5,$inicio_registros, "", "", "");
+			$consulta=$cotizacion->filtroPaginado(5,$inicio_registros, "", "", "");
 
 		}
 		else if(empty($_POST["fecha_inicio"]) && !empty($_POST['busqueda']) && !empty($_POST['inicio_registros']) && empty($_POST['total_registros']) && empty($_POST["fecha_fin"])) {
@@ -589,7 +569,7 @@ switch ($_GET["op"]) {
 			$inicio_registros=$conexion->real_escape_string($_POST['inicio_registros']);				
 			$busqueda=$conexion->real_escape_string($_POST['busqueda']);
 
-			$consulta=$servicio->filtroPaginado(5,$inicio_registros, $busqueda, "", "");
+			$consulta=$cotizacion->filtroPaginado(5,$inicio_registros, $busqueda, "", "");
 
 		}
 		else if(empty($_POST["fecha_inicio"]) && !empty($_POST['busqueda']) && !empty($_POST['total_registros']) && !empty($_POST['inicio_registros']) && empty($_POST["fecha_fin"])) {
@@ -598,7 +578,7 @@ switch ($_GET["op"]) {
 			$limites=$conexion->real_escape_string($_POST['total_registros']);
 			$busqueda=$conexion->real_escape_string($_POST['busqueda']);
 
-			$consulta=$servicio->filtroPaginado($limites,$inicio_registros, $busqueda, "", "");
+			$consulta=$cotizacion->filtroPaginado($limites,$inicio_registros, $busqueda, "", "");
 
 		}
 		else if(!empty($_POST['busqueda']) && empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"]) && !empty($_POST['inicio_registros']) && empty($_POST["fecha_fin"])) {
@@ -607,7 +587,7 @@ switch ($_GET["op"]) {
 			$busqueda=$conexion->real_escape_string($_POST['busqueda']);
 			$fecha_inicio=$conexion->real_escape_string($_POST['fecha_inicio']);
 
-			$consulta=$servicio->filtroPaginado(5,$inicio_registros, $busqueda, $fecha_inicio, "");
+			$consulta=$cotizacion->filtroPaginado(5,$inicio_registros, $busqueda, $fecha_inicio, "");
 
 		}
 		else if(empty($_POST['busqueda']) && empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"]) && !empty($_POST['inicio_registros']) && empty($_POST["fecha_fin"])) {
@@ -615,7 +595,7 @@ switch ($_GET["op"]) {
 			$inicio_registros=$conexion->real_escape_string($_POST['inicio_registros']);								
 			$fecha_inicio=$conexion->real_escape_string($_POST['fecha_inicio']);
 
-			$consulta=$servicio->filtroPaginado(5,$inicio_registros, "", $fecha_inicio, "");
+			$consulta=$cotizacion->filtroPaginado(5,$inicio_registros, "", $fecha_inicio, "");
 
 		}
 		else if(empty($_POST['busqueda']) && empty($_POST["fecha_inicio"]) && !empty($_POST['inicio_registros']) && !empty($_POST['total_registros']) && empty($_POST["fecha_fin"])) {
@@ -623,7 +603,7 @@ switch ($_GET["op"]) {
 			$inicio_registros=$conexion->real_escape_string($_POST['inicio_registros']);								
 			$total_registros=$conexion->real_escape_string($_POST['total_registros']);
 
-			$consulta=$servicio->filtroPaginado($total_registros,$inicio_registros, "", "", "");
+			$consulta=$cotizacion->filtroPaginado($total_registros,$inicio_registros, "", "", "");
 
 		}
 		else if(empty($_POST['busqueda']) && empty($_POST["fecha_inicio"]) && !empty($_POST['inicio_registros']) && !empty($_POST['total_registros']) && empty($_POST["fecha_fin"])) {
@@ -631,7 +611,7 @@ switch ($_GET["op"]) {
 			$inicio_registros=$conexion->real_escape_string($_POST['inicio_registros']);								
 			$total_registros=$conexion->real_escape_string($_POST['total_registros']);
 
-			$consulta=$servicio->filtroPaginado($total_registros,$inicio_registros, "", "", "");
+			$consulta=$cotizacion->filtroPaginado($total_registros,$inicio_registros, "", "", "");
 
 		}
 		else if(empty($_POST['busqueda']) && !empty($_POST["fecha_inicio"]) && !empty($_POST['inicio_registros']) && !empty($_POST['total_registros']) && empty($_POST["fecha_fin"])) {
@@ -640,7 +620,7 @@ switch ($_GET["op"]) {
 			$total_registros=$conexion->real_escape_string($_POST['total_registros']);
 			$fecha_inicio=$conexion->real_escape_string($_POST['fecha_inicio']);
 
-			$consulta=$servicio->filtroPaginado($total_registros,$inicio_registros, "", $fecha_inicio, "");
+			$consulta=$cotizacion->filtroPaginado($total_registros,$inicio_registros, "", $fecha_inicio, "");
 
 		}
 
@@ -650,14 +630,14 @@ switch ($_GET["op"]) {
 		else if(empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && empty($_POST['inicio_registros']) && empty($_POST['total_registros']) && empty($_POST["fecha_inicio"])) {
 			echo "Solo fecha final";
 			$fecha_fin=$conexion->real_escape_string($_POST['fecha_fin']);				
-			$consulta=$servicio->filtroPaginado(5,0, "", "", $fecha_fin);
+			$consulta=$cotizacion->filtroPaginado(5,0, "", "", $fecha_fin);
 		}
 		//Fecha fin y busqueda , pagina 1
 		else if(!empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && empty($_POST['inicio_registros']) && empty($_POST['total_registros']) && empty($_POST["fecha_inicio"])) {
 			echo "Fecha fin y busqueda";
 			$fecha_fin=$conexion->real_escape_string($_POST['fecha_fin']);
 			$busqueda=$conexion->real_escape_string($_POST['busqueda']);
-			$consulta=$servicio->filtroPaginado(50,0, $busqueda, "", $fecha_fin);
+			$consulta=$cotizacion->filtroPaginado(50,0, $busqueda, "", $fecha_fin);
 		}
 		//Fecha fin, busqueda, limites, pagina 1
 		else if(!empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && empty($_POST['inicio_registros']) && !empty($_POST['total_registros']) && empty($_POST["fecha_inicio"])) {
@@ -665,21 +645,21 @@ switch ($_GET["op"]) {
 			$fecha_fin=$conexion->real_escape_string($_POST['fecha_fin']);
 			$busqueda=$conexion->real_escape_string($_POST['busqueda']);
 			$total_registros=$conexion->real_escape_string($_POST['total_registros']);
-			$consulta=$servicio->filtroPaginado($total_registros,0, $busqueda, "", $fecha_fin);
+			$consulta=$cotizacion->filtroPaginado($total_registros,0, $busqueda, "", $fecha_fin);
 		}
 		//Fecha fin, limites, pagina 1
 		else if(empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && empty($_POST['inicio_registros']) && !empty($_POST['total_registros']) && empty($_POST["fecha_inicio"])) {
 			echo "Fecha fin, limites";
 			$fecha_fin=$conexion->real_escape_string($_POST['fecha_fin']);				
 			$total_registros=$conexion->real_escape_string($_POST['total_registros']);
-			$consulta=$servicio->filtroPaginado($total_registros,0, "", "", $fecha_fin);
+			$consulta=$cotizacion->filtroPaginado($total_registros,0, "", "", $fecha_fin);
 		}
 		//Solo fecha inicio, fecha fin
 		else if(empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && empty($_POST['inicio_registros']) && empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"])) {
 			echo "Solo fecha inicio y fecha fin";
 			$fecha_fin=$conexion->real_escape_string($_POST['fecha_fin']);
 			$fecha_inicio=$conexion->real_escape_string($_POST['fecha_inicio']);				
-			$consulta=$servicio->filtroPaginado(5,0, "", $fecha_inicio, $fecha_fin);
+			$consulta=$cotizacion->filtroPaginado(5,0, "", $fecha_inicio, $fecha_fin);
 		}
 		//Solo fecha inicio, fecha fin, busquedas
 		else if(!empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && empty($_POST['inicio_registros']) && empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"])) {
@@ -688,7 +668,7 @@ switch ($_GET["op"]) {
 			$fecha_inicio=$conexion->real_escape_string($_POST['fecha_inicio']);
 			$busqueda=$conexion->real_escape_string($_POST['busqueda']);
 			echo "BUSQUEDA: ". $busqueda;
-			$consulta=$servicio->filtroPaginado(5,0, $busqueda, $fecha_inicio, $fecha_fin);
+			$consulta=$cotizacion->filtroPaginado(5,0, $busqueda, $fecha_inicio, $fecha_fin);
 		}
 		//Solo fecha inicio, fecha fin, busquedas, limites
 		else if(!empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && empty($_POST['inicio_registros']) && !empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"])) {
@@ -697,7 +677,7 @@ switch ($_GET["op"]) {
 			$fecha_inicio=$conexion->real_escape_string($_POST['fecha_inicio']);
 			$busqueda=$conexion->real_escape_string($_POST['busqueda']);
 			$total_registros=$conexion->real_escape_string($_POST['total_registros']);
-			$consulta=$servicio->filtroPaginado($total_registros,0, $busqueda, $fecha_inicio, $fecha_fin);
+			$consulta=$cotizacion->filtroPaginado($total_registros,0, $busqueda, $fecha_inicio, $fecha_fin);
 		}
 		//Solo fecha inicio, fecha fin, limites
 		else if(empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && empty($_POST['inicio_registros']) && !empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"])) {
@@ -705,14 +685,14 @@ switch ($_GET["op"]) {
 			$fecha_fin=$conexion->real_escape_string($_POST['fecha_fin']);
 			$fecha_inicio=$conexion->real_escape_string($_POST['fecha_inicio']);				
 			$total_registros=$conexion->real_escape_string($_POST['total_registros']);
-			$consulta=$servicio->filtroPaginado($total_registros,0, "", $fecha_inicio, $fecha_fin);
+			$consulta=$cotizacion->filtroPaginado($total_registros,0, "", $fecha_inicio, $fecha_fin);
 		}
 		//Solo fecha fin, pagina
 		else if(empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && !empty($_POST['inicio_registros']) && empty($_POST['total_registros']) && empty($_POST["fecha_inicio"])) {
 			echo "Solo fecha fin y pagina > 1";
 			$fecha_fin=$conexion->real_escape_string($_POST['fecha_fin']);
 			$inicio_registros=$conexion->real_escape_string($_POST['inicio_registros']);
-			$consulta=$servicio->filtroPaginado(5,$inicio_registros, "", "", $fecha_fin);
+			$consulta=$cotizacion->filtroPaginado(5,$inicio_registros, "", "", $fecha_fin);
 		}
 		//Solo fecha inicio, pagina, limites
 		else if(empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && !empty($_POST['inicio_registros']) && !empty($_POST['total_registros']) && empty($_POST["fecha_inicio"])) {
@@ -720,7 +700,7 @@ switch ($_GET["op"]) {
 			$fecha_fin=$conexion->real_escape_string($_POST['fecha_fin']);
 			$inicio_registros=$conexion->real_escape_string($_POST['inicio_registros']);
 			$total_registros=$conexion->real_escape_string($_POST['total_registros']);
-			$consulta=$servicio->filtroPaginado($total_registros,$inicio_registros, "", "", $fecha_fin);
+			$consulta=$cotizacion->filtroPaginado($total_registros,$inicio_registros, "", "", $fecha_fin);
 		}
 		//Solo fecha inicio, fecha fin, pagina, limites
 		else if(empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && !empty($_POST['inicio_registros']) && !empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"])) {
@@ -729,7 +709,7 @@ switch ($_GET["op"]) {
 			$fecha_inicio=$conexion->real_escape_string($_POST['fecha_inicio']);
 			$inicio_registros=$conexion->real_escape_string($_POST['inicio_registros']);
 			$total_registros=$conexion->real_escape_string($_POST['total_registros']);
-			$consulta=$servicio->filtroPaginado($total_registros,$inicio_registros, "", $fecha_inicio, $fecha_fin);
+			$consulta=$cotizacion->filtroPaginado($total_registros,$inicio_registros, "", $fecha_inicio, $fecha_fin);
 		}
 		//Solo fecha inicio, fecha fin, pagina, limites, busqueda
 		else if(!empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && !empty($_POST['inicio_registros']) && !empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"])) {
@@ -739,7 +719,7 @@ switch ($_GET["op"]) {
 			$inicio_registros=$conexion->real_escape_string($_POST['inicio_registros']);
 			$total_registros=$conexion->real_escape_string($_POST['total_registros']);
 			$busqueda=$conexion->real_escape_string($_POST['busqueda']);
-			$consulta=$servicio->filtroPaginado($total_registros,$inicio_registros, $busqueda, $fecha_inicio, $fecha_fin);
+			$consulta=$cotizacion->filtroPaginado($total_registros,$inicio_registros, $busqueda, $fecha_inicio, $fecha_fin);
 		}
 		//Solo fecha fin, pagina, limites, busqueda
 		else if(!empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && !empty($_POST['inicio_registros']) && !empty($_POST['total_registros']) && empty($_POST["fecha_inicio"])) {
@@ -748,7 +728,7 @@ switch ($_GET["op"]) {
 			$inicio_registros=$conexion->real_escape_string($_POST['inicio_registros']);
 			$total_registros=$conexion->real_escape_string($_POST['total_registros']);
 			$busqueda=$conexion->real_escape_string($_POST['busqueda']);
-			$consulta=$servicio->filtroPaginado($total_registros,$inicio_registros, $busqueda, "", $fecha_fin);
+			$consulta=$cotizacion->filtroPaginado($total_registros,$inicio_registros, $busqueda, "", $fecha_fin);
 		}
 		//Solo fecha fin, fecha inicio, busqueda, pagina
 		else if(!empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && !empty($_POST['inicio_registros']) && empty($_POST['total_registros']) && !empty($_POST["fecha_inicio"])) {
@@ -757,7 +737,7 @@ switch ($_GET["op"]) {
 			$fecha_inicio=$conexion->real_escape_string($_POST['fecha_inicio']);
 			$inicio_registros=$conexion->real_escape_string($_POST['inicio_registros']);				
 			$busqueda=$conexion->real_escape_string($_POST['busqueda']);
-			$consulta=$servicio->filtroPaginado(5,$inicio_registros, $busqueda, $fecha_inicio, $fecha_fin);
+			$consulta=$cotizacion->filtroPaginado(5,$inicio_registros, $busqueda, $fecha_inicio, $fecha_fin);
 		}
 		
 			$consultaBD=$consulta;
@@ -766,30 +746,26 @@ switch ($_GET["op"]) {
 				<table class='responsive-table table table-hover table-bordered' style='font-size:12px' id='tableArticulos'>
 					<thead class='table-light'>
 						<tr>
-							<th class='bg-info' scope='col'>Folio</th>
-							<th class='bg-info' scope='col'>Entrada</th>
-							<th class='bg-info' scope='col'>Salida</th>
+							<th class='bg-info' scope='col'>Folio</th>							
+							<th class='bg-info' scope='col'>Fecha</th>
 							<th class='bg-info' scope='col'>Estatus</th>
 							<th class='bg-info' scope='col'>Cliente</th>
 							<th class='bg-info' scope='col'>Vendedor</th>							
-							<th class='bg-info' scope='col'>Auto</th>
-							<th class='bg-info' scope='col'>Saldo pendiente</th>
-							<th class='bg-info' scope='col'>Total</th>
-							<th class='bg-info' scope='col'>Remisión</th>
+							<th class='bg-info' scope='col'>Auto</th>							
+							<th class='bg-info' scope='col'>Total</th>							
 							<th class='bg-info' scope='col'>Acciones</th>
 						</tr>
 					</thead>
-				<tbody>";				
+				<tbody>";
 				while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){
-					if($fila["idsucursal"] == $idsucursal && $acceso ==="admin") {	
-						if($fila["status"] != 'ANULADO') {
+					if($fila["idsucursal"] == $idsucursal && $acceso ==="admin") {							
 							if ($fila["tipo_comprobante"]=='Ticket') {
 								$url='../reportes/exTicket.php?id=';
 							}else{
 								$url='../reportes/exFacturaServicio.php?id=';
 							}
-							$miles = number_format($fila['total_servicio'], 2);							
-							$servicios_pagina = 3;
+							$miles = number_format($fila['total_cotizacion'], 2);
+							$cotizacions_pagina = 3;
 							$paginas = 13;
 							$totalServicio = 0;
 							$importeTotal = 0;
@@ -799,124 +775,35 @@ switch ($_GET["op"]) {
 							$botones = "";
 							$remision = "";
 							$fechaSalida = "";
-
-
-							if($fila["is_remision"] == 0 && $fila["remision"] == 0 && $fila["fecha_salida"] != '') {
-									
 								$color = "black";
-								$estadoVenta = "PENDIENTE";
+								$estadoVenta = "EMITIDO";
 								$remision = "";
-								$fechaSalida = $fila["fecha_salida"];
-								$botones = "
-								<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar servicio' data-placement='top' class='btn btn-warning btn-xs' onclick='editar(".$fila["idservicio"].")'><i class='fa fa-pencil'></i></button>
-								<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
-								<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
-								<a data-toggle='modal' href='#remOrSalida'>
-									<button title='Remisionar o dar salida' data-toggle='popover' data-trigger='hover' data-content='Remisionar o dar salida' data-placement='top' class='btn btn-default btn-xs' onclick='remisionarOrSalida(".$fila["idservicio"].")'><i class='fa fa-tag'></i></button>
-								</a>
-								<a data-toggle='modal' href='#garantias'>
-									<button title='Garantias' data-toggle='popover' data-trigger='hover' data-content='Enviar articulo(s) a garantias' data-placement='top' class='btn btn-default btn-xs' onclick='mostrarArticulosGarantias(".$fila["idservicio"].")'><i class='fa fa-reply'></i></button>
-								</a>";
-							} else if($fila["is_remision"] == 0 && $fila["fecha_salida"] == '') {
-								
-								$color = "blue";
-								$estadoVenta = "PENDIENTE";
-								$fechaSalida = "";
-								$botones = "<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar servicio' data-placement='top' class='btn btn-warning btn-xs' onclick='editar(".$fila["idservicio"].")'><i class='fa fa-pencil'></i></button>
-								<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
-								<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
-								<a data-toggle='modal' href='#remOrSalida'>
-									<button title='Remisionar o dar salida' data-toggle='popover' data-trigger='hover' data-content='Remisionar o dar salida' data-placement='top' class='btn btn-default btn-xs' onclick='remisionarOrSalida(".$fila["idservicio"].")'><i class='fa fa-tag'></i></button>
-								</a>
-								<a data-toggle='modal' href='#garantias'>
-									<button title='Garantias' data-toggle='popover' data-trigger='hover' data-content='Enviar articulo(s) a garantias' data-placement='top' class='btn btn-default btn-xs' onclick='mostrarArticulosGarantias(".$fila["idservicio"].")'><i class='fa fa-reply'></i></button>
-								</a>
-								";
-
-
-							} else if(intval($fila["pagado"]) == $fila["total_servicio"] && $fila["is_remision"] == 1 && $fila["fecha_salida"] != '') {
-								$color = "black";
-								$estadoVenta = "PAGADO";
-								$fechaSalida = $fila["fecha_salida"];
-								$botones = "<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar servicio' data-placement='top' class='btn btn-warning btn-xs' onclick='editar(".$fila["idservicio"].")'><i class='fa fa-pencil'></i></button>
-								<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
-								<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
-								<a target='_blank' href='".$url.$fila["idservicio"]."'> <button title='Imprimir' data-toggle='popover' data-trigger='hover' data-content='Imprimir factura' data-placement='top' class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a>
-								<a data-toggle='modal' href='#garantias'>
-									<button title='Garantias' data-toggle='popover' data-trigger='hover' data-content='Enviar articulo(s) a garantias' data-placement='top' class='btn btn-default btn-xs' onclick='mostrarArticulosGarantias(".$fila["idservicio"].")'><i class='fa fa-reply'></i></button>
-								</a>";
-								$remision = "R-".$fila["remision"];
-							} else if(intval($fila["pagado"]) < $fila["total_servicio"] && $fila["is_remision"] == 1 && $fila["fecha_salida"] != '' && $fila["remision"] > 0 ) {
-								$color = "red";
-								$fechaSalida = $fila["fecha_salida"];
-								$botones = "<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar servicio' data-placement='top' class='btn btn-warning btn-xs' onclick='editar(".$fila["idservicio"].")'><i class='fa fa-pencil'></i></button>
-								<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
-								<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
-								<button title='Cobrar' data-toggle='popover' data-trigger='hover' data-content='Cobrar servicio' data-placement='top' class='btn btn-default btn-xs' onclick='cobrarServicio(".$fila["idservicio"].")'><i class='fa fa-credit-card'></i></button>
-								<a target='_blank' href='".$url.$fila["idservicio"]."'><button title='Imprimir' data-toggle='popover' data-trigger='hover' data-content='Imprimir factura' data-placement='top' class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a>
-								<a data-toggle='modal' href='#garantias'>
-									<button title='Garantias' data-toggle='popover' data-trigger='hover' data-content='Enviar articulo(s) a garantias' data-placement='top' class='btn btn-default btn-xs' onclick='mostrarArticulosGarantias(".$fila["idservicio"].")'><i class='fa fa-reply'></i></button>
-								</a>";
-								$estadoVenta = "PENDIENTE";
-								$remision = "R-".$fila["remision"];
-							} else if(intval($fila["pagado"]) < $fila["total_servicio"] && $fila["is_remision"] == 1 && $fila["fecha_salida"] != '' && $fila["remision"] == 0 ) {
-								$color = "red";
-								$fechaSalida = $fila["fecha_salida"];
-								$botones = "<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar servicio' data-placement='top' class='btn btn-warning btn-xs' onclick='editar(".$fila["idservicio"].")'><i class='fa fa-pencil'></i></button>
-								<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
-								<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
-								<a data-toggle='modal' href='#garantias'>
-									<button title='Garantias' data-toggle='popover' data-trigger='hover' data-content='Enviar articulo(s) a garantias' data-placement='top' class='btn btn-default btn-xs' onclick='mostrarArticulosGarantias(".$fila["idservicio"].")'><i class='fa fa-reply'></i></button>
-								</a>";
-								$estadoVenta = "PENDIENTE";
-								$remision = "";
-							} 
+								$fechaSalida = $fila["fecha_hora"];
+								$botones = "								
+								<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idcotizacion"].")'><i class='fa fa-eye'></i></button>
+								";							
 
 							echo "
 							<tr style='color:".$color."'>
-								<td>".$fila['idservicio']."</td>
-								<td>".$fila['fecha_entrada']."</td>
-								<td>".$fechaSalida."</td>
+								<td>".$fila['idcotizacion']."</td>
+								<td>".$fila['fecha_hora']."</td>								
 								<td>".$estadoVenta."</td>
 								<td><p>".$fila['cliente']."</td>
 								<td><p>".$fila['usuario']."</td>								
-								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
-								<td style='width:12px'><p>$ ".number_format($totalServicio=$fila["total_servicio"] - $fila["pagado"], 2)."</td>
-								<td><p>$ ".$miles."</td>
-								<td><p> ".$remision."</td>
+								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>								
+								<td><p>$ ".$miles."</td>								
 								<td>.$botones.</td>
 							</tr>
-							";		
-						} else {
-							$miles = number_format($fila['total_servicio'], 2);														
-							$totalServicio = 0;							
-							echo "<tr style='color:black'>
-								<td>".$fila['idservicio']."</td>
-								<td>".$fila['fecha_entrada']."</td>
-								<td>".""."</td>
-								<td>".$fila["status"]."</td>
-								<td><p>".$fila['cliente']."</td>
-								<td><p>".$fila['usuario']."</td>								
-								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
-								<td><p>$ ".number_format($totalServicio=$fila["total_servicio"] - $fila["pagado"])."</td>
-								<td><p>$ ".$miles."</td>
-								<td><p> ".""."</td>
-								<td>
-									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrarAnulado(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
-								</td>
-								</tr>
-								";
-						}					
+							";												
 							
-					} else if($fila["idsucursal"] == $idsucursal && $acceso != "admin"){
-						if($fila["status"] != 'ANULADO') {
+					} else if($fila["idsucursal"] == $idsucursal && $acceso != "admin"){						
 							if ($fila["tipo_comprobante"]=='Ticket') {
 								$url='../reportes/exTicket.php?id=';
 							}else{
 								$url='../reportes/exFacturaServicio.php?id=';
 							}
 							$miles = number_format($fila['total_servicio'], 2);							
-							$servicios_pagina = 3;
+							$cotizacions_pagina = 3;
 							$paginas = 13;
 							$totalServicio = 0;
 							$importeTotal = 0;
@@ -926,124 +813,41 @@ switch ($_GET["op"]) {
 							$botones = "";
 							$remision = "";
 							$fechaSalida = "";
-
-							if($fila["is_remision"] == 0 && $fila["remision"] == 0 && $fila["fecha_salida"] != '') {
-									
 								$color = "black";
-								$estadoVenta = "PENDIENTE";
+								$estadoVenta = "EMITIDO";
 								$remision = "";
-								$fechaSalida = $fila["fecha_salida"];
-								$botones = "
-								<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
-								<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
-								<a data-toggle='modal' href='#remOrSalida'>
-									<button title='Remisionar o dar salida' data-toggle='popover' data-trigger='hover' data-content='Remisionar o dar salida' data-placement='top' class='btn btn-default btn-xs' onclick='remisionarOrSalida(".$fila["idservicio"].")'><i class='fa fa-tag'></i></button>
-								</a>
-								<a data-toggle='modal' href='#garantias'>
-									<button title='Garantias' data-toggle='popover' data-trigger='hover' data-content='Enviar articulo(s) a garantias' data-placement='top' class='btn btn-default btn-xs' onclick='mostrarArticulosGarantias(".$fila["idservicio"].")'><i class='fa fa-reply'></i></button>
-								</a>";
-							} else if($fila["is_remision"] == 0 && $fila["fecha_salida"] == '') {
-								
-								$color = "blue";
-								$estadoVenta = "PENDIENTE";
-								$fechaSalida = "";
-								$botones = "<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
-								<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
-								<a data-toggle='modal' href='#remOrSalida'>
-									<button title='Remisionar o dar salida' data-toggle='popover' data-trigger='hover' data-content='Remisionar o dar salida' data-placement='top' class='btn btn-default btn-xs' onclick='remisionarOrSalida(".$fila["idservicio"].")'><i class='fa fa-tag'></i></button>
-								</a>
-								<a data-toggle='modal' href='#garantias'>
-									<button title='Garantias' data-toggle='popover' data-trigger='hover' data-content='Enviar articulo(s) a garantias' data-placement='top' class='btn btn-default btn-xs' onclick='mostrarArticulosGarantias(".$fila["idservicio"].")'><i class='fa fa-reply'></i></button>
-								</a>";
-
-
-							} else if(intval($fila["pagado"]) == $fila["total_servicio"] && $fila["is_remision"] == 1 && $fila["fecha_salida"] != '') {
-								$color = "black";
-								$estadoVenta = "PAGADO";
-								$fechaSalida = $fila["fecha_salida"];
-								$botones = "<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
-								<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
-								<a target='_blank' href='".$url.$fila["idservicio"]."'> <button title='Imprimir' data-toggle='popover' data-trigger='hover' data-content='Imprimir factura' data-placement='top' class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a>
-								<a data-toggle='modal' href='#garantias'>
-									<button title='Garantias' data-toggle='popover' data-trigger='hover' data-content='Enviar articulo(s) a garantias' data-placement='top' class='btn btn-default btn-xs' onclick='mostrarArticulosGarantias(".$fila["idservicio"].")'><i class='fa fa-reply'></i></button>
-								</a>";
-								$remision = "R-".$fila["remision"];
-							} else if(intval($fila["pagado"]) < $fila["total_servicio"] && $fila["is_remision"] == 1 && $fila["fecha_salida"] != '' && $fila["remision"] > 0 ) {
-								$color = "red";
-								$fechaSalida = $fila["fecha_salida"];
-								$botones = "<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
-								<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
-								<button title='Cobrar' data-toggle='popover' data-trigger='hover' data-content='Cobrar servicio' data-placement='top' class='btn btn-default btn-xs' onclick='cobrarServicio(".$fila["idservicio"].")'><i class='fa fa-credit-card'></i></button>
-								<a target='_blank' href='".$url.$fila["idservicio"]."'><button title='Imprimir' data-toggle='popover' data-trigger='hover' data-content='Imprimir factura' data-placement='top' class='btn btn-info btn-xs'><i class='fa fa-print'></i></button></a>
-								<a data-toggle='modal' href='#garantias'>
-									<button title='Garantias' data-toggle='popover' data-trigger='hover' data-content='Enviar articulo(s) a garantias' data-placement='top' class='btn btn-default btn-xs' onclick='mostrarArticulosGarantias(".$fila["idservicio"].")'><i class='fa fa-reply'></i></button>
-								</a>";
-								$estadoVenta = "PENDIENTE";
-								$remision = "R-".$fila["remision"];
-							} else if(intval($fila["pagado"]) < $fila["total_servicio"] && $fila["is_remision"] == 1 && $fila["fecha_salida"] != '' && $fila["remision"] == 0 ) {
-								$color = "red";
-								$fechaSalida = $fila["fecha_salida"];
-								$botones = "<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
-								<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
-								<a data-toggle='modal' href='#garantias'>
-									<button title='Garantias' data-toggle='popover' data-trigger='hover' data-content='Enviar articulo(s) a garantias' data-placement='top' class='btn btn-default btn-xs' onclick='mostrarArticulosGarantias(".$fila["idservicio"].")'><i class='fa fa-reply'></i></button>
-								</a>";
-								$estadoVenta = "PENDIENTE";
-								$remision = "";
-							} 
+								$fechaSalida = $fila["fecha_hora"];
+								$botones = "								
+								<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idcotizacion"].")'><i class='fa fa-eye'></i></button>
+								";							
 
 							echo "
 							<tr style='color:".$color."'>
-								<td>".$fila['idservicio']."</td>
-								<td>".$fila['fecha_entrada']."</td>
-								<td>".$fechaSalida."</td>
+								<td>".$fila['idcotizacion']."</td>
+								<td>".$fila['fecha_hora']."</td>								
 								<td>".$estadoVenta."</td>
 								<td><p>".$fila['cliente']."</td>
 								<td><p>".$fila['usuario']."</td>								
-								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
-								<td style='width:12px'><p>$ ".number_format($totalServicio=$fila["total_servicio"] - $fila["pagado"], 2)."</td>
-								<td><p>$ ".$miles."</td>
-								<td><p> ".$remision."</td>
+								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>								
+								<td><p>$ ".$miles."</td>								
 								<td>.$botones.</td>
 							</tr>
 							";
-
-						} else {
-							$miles = number_format($fila['total_servicio'], 2);														
-							$totalServicio = 0;							
-							echo "<tr style='color:black'>								
-								<td>".$fila['fecha_entrada']."</td>
-								<td>".$fechaSalida."</td>
-								<td>".$fila["status"]."</td>
-								<td><p>".$fila['cliente']."</td>
-								<td><p>".$fila['usuario']."</td>								
-								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
-								<td><p>$ ".number_format($totalServicio=$fila["total_servicio"] - $fila["pagado"])."</td>
-								<td><p>$ ".$miles."</td>
-								<td>
-									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrarAnulado(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
-								</td>
-								</tr>
-								";
-						}
 					}
 						
 				}
 				echo "</tbody>
 				<tfoot>
-					<tr>
-							<th class='bg-info' scope='col'>Folio</th>
-							<th class='bg-info' scope='col'>Entrada</th>
-							<th class='bg-info' scope='col'>Salida</th>
-							<th class='bg-info' scope='col'>Estatus</th>
-							<th class='bg-info' scope='col'>Cliente</th>
-							<th class='bg-info' scope='col'>Vendedor</th>							
-							<th class='bg-info' scope='col'>Auto</th>
-							<th class='bg-info' scope='col'>Saldo pendiente</th>
-							<th class='bg-info' scope='col'>Total</th>
-							<th class='bg-info' scope='col'>Remisión</th>
-							<th class='bg-info' scope='col'>Acciones</th>
-					</tr>
+                <tr>
+                    <th class='bg-info' scope='col'>Folio</th>							
+                    <th class='bg-info' scope='col'>Fecha</th>
+                    <th class='bg-info' scope='col'>Estatus</th>
+                    <th class='bg-info' scope='col'>Cliente</th>
+                    <th class='bg-info' scope='col'>Vendedor</th>							
+                    <th class='bg-info' scope='col'>Auto</th>							
+                    <th class='bg-info' scope='col'>Total</th>							
+                    <th class='bg-info' scope='col'>Acciones</th>
+                </tr>
 				</tfoot>
 				</table>";
 			}else{
@@ -1212,11 +1016,11 @@ switch ($_GET["op"]) {
 						fmsi LIKE '%".$termino."%' OR
 						barcode LIKE '%".$termino."%' OR
 						descripcion LIKE '%".$termino."%' OR
-						marca LIKE '%".$termino."%' ORDER BY stock DESC LIMIT 100";
+						marca LIKE '%".$termino."%' ORDER BY stock > 0 DESC, marca ASC LIMIT 100";
 					}
 					$consultaBD=$conexion->query($consulta);
 					if($consultaBD->num_rows>=1){
-						echo "						
+						echo "
 						<button id='botonClave' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarClave()'><i class='fa fa-eye'></i> Mostrar Clave</button>
 						<button id='botonFmsi' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarFmsi()'><i class='fa fa-eye'></i> Mostrar Fmsi</button>
 						<button id='botonMarca' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarMarca()'><i class='fa fa-eye'></i> Mostrar Marca</button>
@@ -1271,16 +1075,17 @@ switch ($_GET["op"]) {
 									if($fila["stock"] >=1 && $tipo_precio != null) {
 										echo "<tr style='color:blue;'>
 											<td>".$fila['codigo']."</td>
-											<td>".$fila['fmsi']."</td>
+											<td style='width:15px;'>".$fila['fmsi']."</td>
 											<td>".$fila['marca']."</td>
 											<td>".$delit."...</td>
-											<td><p>".$fila["stock"]." pz</p></td>
+											<td><p>".$fila["stock"]." pz</p></td>											
 											<td><p>$ ".$mayoreoMiles."</p></td>
 											<td><p>$ ".$tallerMiles."</p></td>
 											<td><p>$ ".$creditoMiles."</p></td>
 											<td><p>$ ".$publicMiles."</p></td>
-											<td><p>$ ".$costoMiles."</p></td>
-											<td><button style='width: 40px' class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\" )'><span class='fa fa-plus'></span></button></td>
+											<td><p>$ ".$costoMiles."</p></td>																				
+											
+											<td><button style='width: 40px;' type='button' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\", \"".$fila["costo"]."\", \"".$fila["publico"]."\", \"".$fila["taller"]."\", \"".$fila["credito_taller"]."\", \"".$fila["mayoreo"]."\" )'><i class='fa fa-plus'></i></button></a></td>
 										</tr>";
 									} else if($fila["stock"] >=1 && $tipo_precio == null){
 										$precio = "publico";
@@ -1295,7 +1100,7 @@ switch ($_GET["op"]) {
 											<td><p>$ ".$creditoMiles."</p></td>
 											<td><p>$ ".$mayoreoMiles."</p></td>
 											<td><p>".$fila["stock"]." pz</p></td>										
-											<td><button style='width: 40px' class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$precio]."\" , \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
+											<td><button style='width: 40px' class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\", \"".$fila["costo"]."\", \"".$fila["publico"]."\", \"".$fila["taller"]."\", \"".$fila["credito_taller"]."\", \"".$fila["mayoreo"]."\" )'><span class='fa fa-plus'></span></button></td>
 										</tr>";
 									} else if($fila["stock"] < 1){
 										echo "<tr style='color:red;'>
@@ -1313,7 +1118,7 @@ switch ($_GET["op"]) {
 								}
 							}
 						}
-						echo "</tbody>						
+						echo "</tbody>
 						</table>";
 					}else{
 						echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";						
@@ -1384,7 +1189,7 @@ switch ($_GET["op"]) {
 												<td><p>$ ".$creditoMiles."</p></td>
 												<td><p>$ ".$mayoreoMiles."</p></td>
 												<td><p>".$fila["stock"]." pz</p></td>										
-												<td><button style='width: 40px: height:12px' class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\" , \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
+												<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\" , \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
 											</tr>";
 										} else if($fila["stock"] >=1 && $tipo_precio == null){
 											$precio = "publico";
@@ -1400,7 +1205,7 @@ switch ($_GET["op"]) {
 												<td><p>$ ".$creditoMiles."</p></td>
 												<td><p>$ ".$mayoreoMiles."</p></td>
 												<td><p>".$fila["stock"]." pz</p></td>										
-												<td><button style='width: 40px: height:12px' class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
+												<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
 											</tr>";
 										}
 									}

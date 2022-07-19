@@ -9,7 +9,8 @@ $("#frmAcceso").on('submit', function(e)
         {"logina":logina, "clavea":clavea},
         function(data)
         {
-            data=JSON.parse(data);           
+            data=JSON.parse(data);
+            console.log("DATA: ", data);
             if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function(pos) {    
                 //Si es aceptada guardamos lo latitud y longitud
                 var lat = pos.coords.latitude;
@@ -17,13 +18,13 @@ $("#frmAcceso").on('submit', function(e)
 
                 if(data.acceso != "admin") {
                     if(data.lat == lat && data.lng == lon) {
-                        $(location).attr("href","escritorio.php");
+                        $(location).attr("href","sucursales.php?idusuario="+data.idusuario);
                     } else {
                         alert("NO TE ENCUENTRAS EN LA UBICACIÓN CORRECTA, POR FAVOR TRASLADATE A LA UBICACIÓN CORRECTA DE TU SUCURSAL ASIGNADA.");
                         $(location).attr("href","login.html");
                     }
                 } else {
-                    $(location).attr("href","escritorio.php");
+                    $(location).attr("href","sucursales.php?idusuario="+data.idusuario);
                 }
             
             }, function(error) {                           
@@ -31,3 +32,17 @@ $("#frmAcceso").on('submit', function(e)
             });;
         });
 })
+
+function sucursalSeleccionada(idsucursal) {
+    $.post("../ajax/usuario.php?op=ingresarSucursal",
+        {"idsucursal":idsucursal},
+        function(data)
+        {
+            console.log(data);
+            window.open(
+                `escritorio.php`,
+                "_self"
+            );	
+
+        })
+}

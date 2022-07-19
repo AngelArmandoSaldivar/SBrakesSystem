@@ -20,7 +20,6 @@ var  fecha_inicio = $("#fecha_inicio").val();
 		buttons: [
                   'copyHtml5',
                   'excelHtml5',
-                  'csvHtml5',
                   'pdf'
 		],
 		"ajax":

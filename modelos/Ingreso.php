@@ -10,7 +10,9 @@ public function __construct(){
 }
 
 //metodo insertar registro
-public function insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_comprobante,$fecha_hora,$impuesto,$total_compra,$idarticulo,$clave,$fmsi,$descripcion,$cantidad,$precio_compra, $idsucursal, $idsucursalArticulo){
+public function insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_comprobante,$fecha_hora,$impuesto,$total_compra,$idarticulo,$clave,$fmsi,$descripcion,$cantidad,$precio_compra, $idsucursal, $idsucursalArticulo){	
+	$total_compra = substr($total_compra, 1);
+
 	$sql="INSERT INTO ingreso (idproveedor,idusuario,tipo_comprobante,serie_comprobante,fecha_hora,impuesto,total_compra,tipoMov,estado, idsucursal) VALUES ('$idproveedor','$idusuario','$tipo_comprobante','$serie_comprobante','$fecha_hora','$impuesto','$total_compra','RECEPCIÓN','NORMAL', '$idsucursal')";
 	//return ejecutarConsulta($sql);
 	 $idingresonew=ejecutarConsulta_retornarID($sql);

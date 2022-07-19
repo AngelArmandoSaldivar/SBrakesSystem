@@ -9,7 +9,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>BrakeOneSystem</title>
-  <link rel="icon" href="../files/images/MainLogo.png" height="10" width="50">  
+  <link rel="shortcut icon" href="../files/images/favicon.ico"> 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">  
   <link rel="stylesheet" href="plugins/fontawesome-free/css/alls.min.css">  
   <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbar.min.css">  
@@ -198,7 +198,22 @@
               </a>
             </li>';
             }
-          ?>                  
+          ?>  
+          
+          <?php 
+            if ($_SESSION['escritorio']==1) {
+              echo '<li class="nav-item">
+              <a href="cotizaciones.php" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>             
+                <p>
+                  Cotizaciones
+                  <span class="right badge badge-danger">0</span>
+                </p>
+              </a>
+            </li>';
+            }
+          ?> 
+          
           <?php 
             if ($_SESSION['almacen']==1) {
               echo ' <li class="nav-item">
@@ -372,7 +387,7 @@
                     <p>Sucursales</p>
                   </a>
                 </li>
-              </ul>             
+              </ul>
             </li>';
             }
           ?>
@@ -384,4 +399,3 @@
   </aside>
   
 </div>
-

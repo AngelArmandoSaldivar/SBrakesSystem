@@ -15,6 +15,10 @@ $.post("../ajax/usuario.php?op=permisos&id=", function(r){
 	$("#permisos").html(r);
 });
 
+$.post("../ajax/usuario.php?op=sucursales&id=", function(r){
+	$("#sucursales").html(r);
+});
+
 //cargamos los items al select sucursal
 $.post("../ajax/usuario.php?op=selectSucursal", function(r){
 	$("#idsucursal").html(r);
@@ -111,9 +115,9 @@ function guardaryeditar(e){
 			swal({
 				position: 'top-end',
 				type: 'success',
-				title: 'Se guardo correctamente el usuario',
-				showConfirmButton: false,
-				timer: 1500
+				title: datos,
+				showConfirmButton: true,
+				//timer: 1500
 			  });     		
      		mostrarform(false); 
 			obtener_registros();
@@ -144,9 +148,13 @@ function mostrar(idusuario){
             $("#imagenactual").val(data.imagen);
             $("#idusuario").val(data.idusuario);
 		});
-	$.post("../ajax/usuario.php?op=permisos&id="+idusuario, function(r){
-	$("#permisos").html(r);
-});
+		$.post("../ajax/usuario.php?op=permisos&id="+idusuario, function(r){
+			$("#permisos").html(r);
+		});
+		$.post("../ajax/usuario.php?op=listarSucursales&id="+idusuario, function(r){
+			console.log("SUCURSALES: ", r);
+			$("#sucursales").html(r);
+		});
 }
 
 

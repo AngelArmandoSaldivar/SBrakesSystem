@@ -74,15 +74,17 @@ if ($_SESSION['accesos']==1) {
                   <div class="form-group col-lg-6 col-md-6 col-xs-12">
                     <label for="">Clave(*):</label>
                     <input class="form-control" type="text" name="clave" id="clave" maxlength="64" placeholder="Clave">
+                  </div>                
+
+                  <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                    <label>Sucursales</label>
+                    <ul id="sucursales" style="">
+                    </ul>
                   </div>
-                  <div class="form-group col-lg-6 col-md-8 col-xs-12">
-                    <label for="">Sucursal(*):</label>
-                    <select name="idsucursal" id="idsucursal" class="form-control selectpicker" data-live-search="true" required>
-                    </select>
-                  </div>
+
                   <div class="form-group col-lg-6 col-md-6 col-xs-12">
                     <label>Permisos</label>
-                    <ul id="permisos" style="list-style: none;">                      
+                    <ul id="permisos" style="">                      
                     </ul>
                   </div>
                       
@@ -107,7 +109,7 @@ if ($_SESSION['accesos']==1) {
 }
 require 'footer.php';
  ?>
- <script src="scripts/usuario.js"></script>
+ <script src="scripts/usuarios.js"></script>
  <?php 
 }
 

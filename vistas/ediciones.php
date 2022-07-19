@@ -41,8 +41,8 @@
   <div class="modal-dialog modal-lg" style="width: 100% !important;">
     <div class="modal-content" style="border-radius: 20px;">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title">Editar producto</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>        
       </div>
       <!--<div class="modal-body">-->
       <form action="" name="" id="" method="POST">
@@ -61,7 +61,7 @@
             </div>
             <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
               <label for="">Precio Venta </label>
-              <input class="form-control" type="number" name="precio" id="precio">
+              <input class="form-control" type="number" name="precioVentaEdit" id="precioVentaEdit">
             </div>
         </div>
       </form>
@@ -78,16 +78,16 @@
 </div>
 
 <div class="modal fade" id="editProductServicio" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" style="width: 100% !important;">
+  <div class="modal-dialog modal-lg" style="width: 60% !important;">
     <div class="modal-content" style="border-radius: 20px;">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
-          <h4 class="modal-title">Editar producto</h4>
-        </div>
+            <h4 class="modal-title">Editar producto</h4>z
+          </div>
         <div class="form-group col-lg-6 col-md-2 col-xs-6" id="divImpuesto">
           <input class="form-control" type="text" id="claveProduct" name="claveProduct" style="border:none; background-color:transparent; color:black"></input>
         </div>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>        
       </div>
       <!--<div class="modal-body">-->
       <form action="" name="formularioProductoServicio" id="formularioProductoServicio" method="POST">

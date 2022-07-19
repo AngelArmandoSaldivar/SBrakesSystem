@@ -8,7 +8,7 @@ function init(){
 	})
 
    //cargamos los items al select categoria
-   $.post("../ajax/articulo.php?op=selectCategoria", function(r){	
+   $.post("../ajax/articulo.php?op=selectCategoria", function(r){
    	$("#idcategoria").html(r);
    	$("#idcategoria").selectpicker('refresh');
    });
@@ -24,6 +24,7 @@ function init(){
 	if(cachaPaginaNumber <= 1) {
 		$("#anterior").hide();
 	}
+	$("#imagenmuestra").hide();
 }
 
 function ocultarStock() {	
@@ -227,150 +228,199 @@ function mostrarClave() {
 	}, 400);
 }
 
-function copiarCosto() {	
+function copiarCosto() {
 	let busqueda = document.getElementById("busqueda").value;
-	$.ajax({
-		url : '../ajax/articulo.php?op=copiarBusqueda',
-		type : 'POST',
-		dataType : 'html',
-		data : { busquedaCopy: busqueda},
-	})
-	.done(function(resultado){
+	if(busqueda == "") {
 		swal({
 			position: 'top-end',
-			icon: 'success',
-			title: 'Texto copiado!',
+			icon: 'danger',
+			title: 'Buscador vacio!',
 			showConfirmButton: false,
 			timer: 900
 		})
-		resultado = JSON.parse(resultado)
-		document.getElementById("comment").value += "*Clave*" + " ---- " + "*Marca*" + " ---- " + "*Costo*" + "\n\n";
-		resultado.forEach(element => {
-			console.log("ELEMENT: ", element);
-			document.getElementById("comment").value += element.codigo + " --> " + element.marca + " --> " +"$" + (Math.ceil(element.costo / 5) * 5) + "\n";
-			$("#comment").select();
-			document.execCommand('copy');
-		});
-		$("#comment").val('');
+	} else {	
+		$.ajax({
+			url : '../ajax/articulo.php?op=copiarBusqueda',
+			type : 'POST',
+			dataType : 'html',
+			data : { busquedaCopy: busqueda},
+		})
+		.done(function(resultado){
+			swal({
+				position: 'top-end',
+				icon: 'success',
+				title: 'Texto copiado!',
+				showConfirmButton: false,
+				timer: 900
+			})
+			resultado = JSON.parse(resultado)
+			document.getElementById("comment").value += "*Clave*" + " ---- " + "*Marca*" + " ---- " + "*Costo*" + "\n\n";
+			resultado.forEach(element => {
+				console.log("ELEMENT: ", element);
+				document.getElementById("comment").value += element.codigo + " --> " + element.marca + " --> " +"$" + (Math.ceil(element.costo / 5) * 5) + "\n";
+				$("#comment").select();
+				document.execCommand('copy');
+			});
+			$("#comment").val('');
 
-	})
+		})
+	}
 	
 }
-function copiarPublico() {	
+function copiarPublico() {
 	let busqueda = document.getElementById("busqueda").value;
-	$.ajax({
-		url : '../ajax/articulo.php?op=copiarBusqueda',
-		type : 'POST',
-		dataType : 'html',
-		data : { busquedaCopy: busqueda},
-	})
-	.done(function(resultado){
+	if(busqueda == "") {
 		swal({
 			position: 'top-end',
-			icon: 'success',
-			title: 'Texto copiado!',
+			icon: 'danger',
+			title: 'Buscador vacio!',
 			showConfirmButton: false,
 			timer: 900
 		})
-		resultado = JSON.parse(resultado)
+	} else {		
+		$.ajax({
+			url : '../ajax/articulo.php?op=copiarBusqueda',
+			type : 'POST',
+			dataType : 'html',
+			data : { busquedaCopy: busqueda},
+		})
+		.done(function(resultado){
+			swal({
+				position: 'top-end',
+				icon: 'success',
+				title: 'Texto copiado!',
+				showConfirmButton: false,
+				timer: 900
+			})
+			resultado = JSON.parse(resultado)
 
-		resultado.forEach(element => {
-			console.log("ELEMENT: ", element);
-			document.getElementById("comment").value += element.marca + " " + "$" + (Math.ceil(element.publico / 5) * 5) + "\n";
-			$("#comment").select();
-			document.execCommand('copy');
-		});
-		$("#comment").val('');
+			resultado.forEach(element => {
+				console.log("ELEMENT: ", element);
+				document.getElementById("comment").value += element.marca + " " + "$" + (Math.ceil(element.publico / 5) * 5) + "\n";
+				$("#comment").select();
+				document.execCommand('copy');
+			});
+			$("#comment").val('');
 
-	})
+		})
+	}
 	
 }
 function copiarTaller() {	
 	let busqueda = document.getElementById("busqueda").value;
-	$.ajax({
-		url : '../ajax/articulo.php?op=copiarBusqueda',
-		type : 'POST',
-		dataType : 'html',
-		data : { busquedaCopy: busqueda},
-	})
-	.done(function(resultado){
+	if(busqueda == "") {
 		swal({
 			position: 'top-end',
-			icon: 'success',
-			title: 'Texto copiado!',
+			icon: 'danger',
+			title: 'Buscador vacio!',
 			showConfirmButton: false,
 			timer: 900
 		})
-		resultado = JSON.parse(resultado)
+	} else {	
+		$.ajax({
+			url : '../ajax/articulo.php?op=copiarBusqueda',
+			type : 'POST',
+			dataType : 'html',
+			data : { busquedaCopy: busqueda},
+		})
+		.done(function(resultado){
+			swal({
+				position: 'top-end',
+				icon: 'success',
+				title: 'Texto copiado!',
+				showConfirmButton: false,
+				timer: 900
+			})
+			resultado = JSON.parse(resultado)
 
-		resultado.forEach(element => {
-			console.log("ELEMENT: ", element);
-			document.getElementById("comment").value += element.marca + " " + "$" + (Math.ceil(element.taller / 5) * 5) + "\n";
-			$("#comment").select();
-			document.execCommand('copy');
-		});
-		$("#comment").val('');
+			resultado.forEach(element => {
+				console.log("ELEMENT: ", element);
+				document.getElementById("comment").value += element.marca + " " + "$" + (Math.ceil(element.taller / 5) * 5) + "\n";
+				$("#comment").select();
+				document.execCommand('copy');
+			});
+			$("#comment").val('');
 
-	})
+		})
+	}
 	
 }
 function copiarCredito() {	
 	let busqueda = document.getElementById("busqueda").value;
-	$.ajax({
-		url : '../ajax/articulo.php?op=copiarBusqueda',
-		type : 'POST',
-		dataType : 'html',
-		data : { busquedaCopy: busqueda},
-	})
-	.done(function(resultado){
+	if(busqueda == "") {
 		swal({
 			position: 'top-end',
-			icon: 'success',
-			title: 'Texto copiado!',
+			icon: 'danger',
+			title: 'Buscador vacio!',
 			showConfirmButton: false,
 			timer: 900
 		})
-		resultado = JSON.parse(resultado)
+	} else {	
+		$.ajax({
+			url : '../ajax/articulo.php?op=copiarBusqueda',
+			type : 'POST',
+			dataType : 'html',
+			data : { busquedaCopy: busqueda},
+		})
+		.done(function(resultado){
+			swal({
+				position: 'top-end',
+				icon: 'success',
+				title: 'Texto copiado!',
+				showConfirmButton: false,
+				timer: 900
+			})
+			resultado = JSON.parse(resultado)
 
-		resultado.forEach(element => {
-			console.log("ELEMENT: ", element);
-			document.getElementById("comment").value += element.marca + " " + "$" + (Math.ceil(element.credito_taller / 5) * 5) + "\n";
-			$("#comment").select();
-			document.execCommand('copy');
-		});
-		$("#comment").val('');
+			resultado.forEach(element => {
+				console.log("ELEMENT: ", element);
+				document.getElementById("comment").value += element.marca + " " + "$" + (Math.ceil(element.credito_taller / 5) * 5) + "\n";
+				$("#comment").select();
+				document.execCommand('copy');
+			});
+			$("#comment").val('');
 
-	})
+		})
+	}
 	
 }
 function copiarMayoreo() {	
 	let busqueda = document.getElementById("busqueda").value;
-	$.ajax({
-		url : '../ajax/articulo.php?op=copiarBusqueda',
-		type : 'POST',
-		dataType : 'html',
-		data : { busquedaCopy: busqueda},
-	})
-	.done(function(resultado){
+	if(busqueda == "") {
 		swal({
 			position: 'top-end',
-			icon: 'success',
-			title: 'Texto copiado!',
+			icon: 'danger',
+			title: 'Buscador vacio!',
 			showConfirmButton: false,
 			timer: 900
 		})
-		resultado = JSON.parse(resultado)
+	} else {	
+		$.ajax({
+			url : '../ajax/articulo.php?op=copiarBusqueda',
+			type : 'POST',
+			dataType : 'html',
+			data : { busquedaCopy: busqueda},
+		})
+		.done(function(resultado){
+			swal({
+				position: 'top-end',
+				icon: 'success',
+				title: 'Texto copiado!',
+				showConfirmButton: false,
+				timer: 900
+			})
+			resultado = JSON.parse(resultado)
 
-		resultado.forEach(element => {
-			console.log("ELEMENT: ", element);
-			document.getElementById("comment").value += element.marca + " " + "$" + (Math.ceil(element.mayoreo / 5) * 5) + "\n";
-			$("#comment").select();
-			document.execCommand('copy');
-		});
-		$("#comment").val('');
+			resultado.forEach(element => {
+				console.log("ELEMENT: ", element);
+				document.getElementById("comment").value += element.marca + " " + "$" + (Math.ceil(element.mayoreo / 5) * 5) + "\n";
+				$("#comment").select();
+				document.execCommand('copy');
+			});
+			$("#comment").val('');
 
-	})
-	
+		})
+	}
 }
 /*========================================================================================== */
 /*===============================FILTROS==================================================== */
@@ -769,6 +819,8 @@ function limpiar(){
 	$("#unidades").val("");
 	$("#barcode").val("");
 	$("#print").hide();	
+	$("#imagenmuestra").attr("src","");
+	$("#imagenactual").val("");
 }
 
 //funcion mostrar formulario
@@ -946,6 +998,9 @@ function mostrar(idarticulo){
 			$("#barcode").val(data.barcode).prop("disabled", true);
 			$("#idarticulo").val(data.idarticulo).prop("disabled", true);
 			$("#btnGuardar").hide();
+			$("#imagenmuestra").show();
+			$("#imagenmuestra").attr("src","../files/articulos/"+data.imagen);
+			$("#imagenactual").val(data.imagen);
 		});
 		limpiar();
 }
@@ -978,6 +1033,9 @@ function editarArticulo(idarticulo){
 			$("#barcode").val(data.barcode);
 			$("#idarticulo").val(data.idarticulo);
 			$("#btnGuardar").show();
+			$("#imagenmuestra").show();
+			$("#imagenmuestra").attr("src","../files/articulos/"+data.imagen);
+			$("#imagenactual").val(data.imagen);
 		});
 		limpiar();
 }

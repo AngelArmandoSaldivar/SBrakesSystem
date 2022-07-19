@@ -20,12 +20,12 @@ if ($_SESSION['servicios']==1) {
       <div class="col-md-12">
         <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
           <div class="box-header with-border">
-            <center><h4 class="box-title">Servicios </h4></center>
+            <center><h4 class="box-title">Cotizaciones </h4></center>
             <div class="box-tools pull-right"></div>          
             <div class="panel-body table-responsive" id="listadoregistros">
               <section>
                 <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                  <button title="Registrar"  id="btnagregarservicio" title='Editar' data-toggle='popover' data-trigger='hover' data-content='Registrar nuevo servicio' data-placement='right' class='btn btn-success' onclick="crearServicio()"><i class="fa fa-plus-circle"></i> Agregar Nuevo</button>
+                  <button title="Registrar"  id="btnagregarservicio" title='Editar' data-toggle='popover' data-trigger='hover' data-content='Registrar nuevo servicio' data-placement='right' class='btn btn-success' onclick="crearCotizacion()"><i class="fa fa-plus-circle"></i> Agregar Nuevo</button>
                 </div>
                 <div class="form-group col-lg-4 col-md-6 col-xs-12">
                   <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;"></center>
@@ -73,275 +73,195 @@ if ($_SESSION['servicios']==1) {
           <div class="box-header with-border" id="formularioregistros">
             <div class="panel-body table-responsive">   
               <form action="" name="formulario" id="formulario" method="POST">
-
-                <div class="list-group-item col-lg-12" id="infoCliente">
-                  <div class="form-group col-lg-12 col-md-6 col-xs-12">
-                    <center><h4 aling="center">Información del cliente</h4></center>
-                  </div>
-                  <div class="form-group col-lg-2 col-md-8 col-xs-12">
-                    <label for="">Cliente(*):</label>
-                    <input class="form-control" type="hidden" name="idservicio" id="idservicio">
-                    <select name="idcliente" id="idcliente" class="form-control selectpicker" data-live-search="true" required>                  
-                    </select>
-                  </div>
-                  <div class="form-group col-lg-2 col-md-8 col-xs-12" id="divFolioCotizacion">
-                    <label for="">Folio Cotización:</label>
-                      <input type="number" class="form-control form-control-lg" name="busquedaCotizacion" id="busquedaCotizacion" placeholder="Buscar...">
-                  </div>
-                  <div class="form-group col-lg-2 col-md-8 col-xs-12" id="divBuscadorCotizacion">
-                    <label for=""></label>
-                    <div class="input-group">
-                      <button type="button" id="btnBuscadorCotizacion" class="btn btn-primary mb-2" onclick="buscarCotizacion()"><i class="fa fa-search"></i> Buscar</button>
-                    </div>
-                  </div>
-                  <div class="loader form-group col-lg-1 col-md-8 col-xs-12" style="margin-top: 15px;">
-                      <img src="../files/images/loader.gif" alt="" width="50px;">
-                  </div>
-                  <div class="form-group col-lg-2 col-md-4 col-xs-12" id="addCliente">
-                    <label for="">Agregar Cliente</label><br>
-                      <a data-toggle="modal" href="#agregarCliente">
-                        <button id="btnAgregarClient" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Cliente</button>
-                      </a>
-                  </div>
-
-                  <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
-                    <label for="">RFC: </label>
-                    <input class="form-control" type="text" name="rfc" id="rfc">
-                  </div>
-
-                  <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
-                    <label for="">Dirección: </label>
-                    <input class="form-control" type="text" name="direccion" id="direccion">
-                  </div>
-
-                  <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
-                    <label for="">Tipo de precio: </label>
-                    <input class="form-control" type="text" name="tipoPrecio" id="tipoPrecio">
-                  </div>
-
-                  <div class="form-group col-lg-3 col-md-2 col-xs-6" id="divImpuesto">
-                    <label for="">Email: </label>
-                    <input class="form-control" type="text" name="email" id="email">
-                  </div>
-
-                  <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
-                    <label for="">Número móvil: </label>
-                    <input class="form-control" type="text" name="telefono" id="telefono">
-                  </div>
-
-                  <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
-                    <label for="">Días Crédito: </label>
-                    <input class="form-control" type="text" name="credito" id="credito">
-                  </div>
-
-                  <div class="form-group col-lg-2 col-md-4 col-xs-12" id="historialServicios">
-                    <label for="">Historial servicios</label><br>                  
-                        <button id="btnHistorialServicios" type="button" class="btn btn-primary" onclick="historialServicios()"><span class="fa fa-file-text"></span> Historial</button>                  
-                  </div>
+                <div class="form-group col-lg-12 col-md-6 col-xs-12">
+                  <center><h4 aling="center">Información del cliente</h4></center>
                 </div>
+                <div class="form-group col-lg-4 col-md-8 col-xs-12">
+                <label for="">Cliente(*):</label>
+                <input class="form-control" type="hidden" name="idservicio" id="idservicio">
+                <select name="idcliente" id="idcliente" class="form-control selectpicker" data-live-search="true" required>                  
+                </select>
+              </div>
+              <div class="loader form-group col-lg-1 col-md-8 col-xs-12" style="margin-top: 15px;">
+                  <img src="../files/images/loader.gif" alt="" width="50px;">
+              </div>
+              <div class="form-group col-lg-2 col-md-4 col-xs-12" id="addCliente">
+                <label for="">Agregar Cliente</label><br>
+                  <a data-toggle="modal" href="#agregarCliente">
+                    <button id="btnAgregarClient" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Cliente</button>
+                  </a>
+              </div>
 
-                <input type="hidden" id="idclient" name="idclient" value="" style="border:none; color:white;">  
-                <div class="col-lg-12" id="detalleServicioDivider"><hr class="mt-5 mb-3"  style="width:80%"/></div>
+              <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
+                <label for="">RFC: </label>
+                <input class="form-control" type="text" name="rfc" id="rfc">
+              </div>
 
-                <div class="list-group-item col-lg-12" id="detalleServicio">
-                  <div class="form-group col-lg-12 col-md-6 col-xs-12">
-                    <center><h4 aling="center">Detalles servicio</h4></center>
-                  </div>
-                  <div class="form-group col-lg-2 col-md-4 col-xs-12">
-                    <label for="">Entrada(*): </label>
-                    <input class="form-control" type="date" name="fecha_entrada" id="fecha_entrada" required>
-                  </div>  
+              <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
+                <label for="">Dirección: </label>
+                <input class="form-control" type="text" name="direccion" id="direccion">
+              </div>
 
-                  <div class="form-group col-lg-2 col-md-4 col-xs-12">
-                    <label for="">Salida(*): </label>
-                    <input class="form-control" type="date" name="fecha_salida" id="fecha_salida">
-                  </div>  
+              <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
+                <label for="">Tipo de precio: </label>
+                <input class="form-control" type="text" name="tipoPrecio" id="tipoPrecio">
+              </div>
 
-                  <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label for="">Tipo Comprobante(*): </label>
-                      <select name="tipo_comprobante" id="tipo_comprobante" class="form-control selectpicker" required>                    
-                        <option value="Factura">Factura</option>
-                      </select>
-                  </div>
-                  <div class="form-group col-lg-1 col-md-2 col-xs-6">
-                    <label for="">Impuesto: </label>
-                    <input class="form-control" type="text" name="impuesto" id="impuesto">
-                  </div>
+              <div class="form-group col-lg-3 col-md-2 col-xs-6" id="divImpuesto">
+                <label for="">Email: </label>
+                <input class="form-control" type="text" name="email" id="email">
+              </div>
 
-                  <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label for="">Tipo de precio </label>
-                      <select name="tipo_precio" id="tipo_precio" class="form-control selectpicker">
-                      <option value="" disabled selected>Tipo Precio</option>
-                        <option value="publico">Publico / Mostrador</option>
-                        <option value="taller">Taller</option>
-                        <option value="credito_taller">Credito Taller</option>
-                        <option value="mayoreo">Mayoreo</option>
-                      </select>
-                  </div> 
-                  <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label for="">Remisionar </label>
-                      <select name="remision" id="remision" class="form-control selectpicker">                    
-                        <option value="1">Remisionar</option>
-                        <option value="0">No remisionar</option>
-                      </select>
-                  </div> 
-                  <div class="form-group col-lg-1 col-md-4 col-xs-12" id="editarDetalleServicio"> 
-                    <label for="">Editar</label><br>
-                    <a data-toggle="modal" href="#editarDetalleVenta">                   
-                      <button class="btn btn-primary" type="submit" id="btnEditarInformacionCliente" onclick="mostrarDetalleServicioEdit()">Editar</button>
-                    </a>
-                  </div>           
-                </div>     
+              <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
+                <label for="">Número móvil: </label>
+                <input class="form-control" type="text" name="telefono" id="telefono">
+              </div>
 
-                <div class="col-lg-12" id="detalleAutoDivider"><hr class="mt-5 mb-3"  style="width:80%"/></div>
+              <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
+                <label for="">Días Crédito: </label>
+                <input class="form-control" type="text" name="credito" id="credito">
+              </div>
 
-                <div class="list-group-item col-lg-12" id="detalleAuto">
-                  <div class="form-group col-lg-12 col-md-6 col-xs-12">
-                        <center><h4 aling="center">Información de auto</h4></center>
-                  </div>
+              <input type="hidden" id="idclient" name="idclient" value="" style="border:none; color:white;">
 
-                  <div class="form-group col-lg-4 col-md-2 col-xs-6" id="detalleAutomovil">
-                    <label for="">Automovil: </label>
-                    <select name="idauto" id="idauto" class="form-control selectpicker" data-live-search="true">
-                      <option value="" disabled selected>Seleccionar auto</option>
-                    </select>
-                  </div>
+              <div class="form-group col-lg-12 col-md-6 col-xs-12">
+                <center><h4 aling="center">Detalles cotización</h4></center>
+              </div>
+              <div class="form-group col-lg-2 col-md-4 col-xs-12">
+                <label for="">Fecha(*): </label>
+                <input class="form-control" type="date" name="fecha_hora" id="fecha_hora" required>
+              </div>
+              <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                <label for="">Tipo Comprobante(*): </label>
+                  <select name="tipo_comprobante" id="tipo_comprobante" class="form-control selectpicker" required>                    
+                    <option value="Factura">Factura</option>
+                  </select>
+              </div>
+              <div class="form-group col-lg-2 col-md-2 col-xs-6">
+                <label for="">Impuesto: </label>
+                <input class="form-control" type="text" name="impuesto" id="impuesto">
+              </div>
 
-                  <div class="form-group col-lg-8 col-md-2 col-xs-6" id="divBotonAgregarAuto">
-                    <label for="">Agregar auto</label><br>
-                    <a data-toggle="modal" href="#addAuto">
-                      <button id="btnAgregarAuto" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Auto</button>
-                    </a>
-                  </div>
-
-                  <div class="loaderInfoAuto form-group col-lg-1 col-md-8 col-xs-12" style="margin-top: 15px;">
-                      <img src="../files/images/loader.gif" alt="" width="50px;">
-                  </div>
-
-                  <div class="form-group col-lg-2 col-md-2 col-xs-6">
-                    <label for="">Placas: </label>
-                    <input class="form-control" type="text" name="placas" id="placas" placeholder="Placas">
-                  </div>
-                  <div class="form-group col-lg-2 col-md-2 col-xs-6">
-                    <label for="">Marca: </label>
-                    <input class="form-control" type="text" name="marcaAuto" id="marcaAuto" placeholder="Marca">
-                  </div>
-                  <div class="form-group col-lg-2 col-md-2 col-xs-6">
-                    <label for="">Modelo: </label>
-                    <input class="form-control" type="text" name="modelo" id="modelo"  placeholder="Modelo">
-                  </div>
-                  <div class="form-group col-lg-2 col-md-2 col-xs-6">
-                    <label for="">Año: </label>
-                    <input class="form-control" type="number" name="ano" id="ano" min="1000"  placeholder="yyyy">
-                  </div>
-                  <div class="form-group col-lg-2 col-md-2 col-xs-6">
-                    <label for="">Color: </label>
-                    <input class="form-control" type="text" name="color" id="color"  placeholder="Color">
-                  </div>
-                  <div class="form-group col-lg-2 col-md-2 col-xs-6">
-                    <label for="">Kms: </label>
-                    <input class="form-control" type="number" name="kms" id="kms" min="1"  placeholder="Kms">
-                  </div>
+              <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                <label for="">Tipo de precio </label>
+                  <select name="tipo_precio" id="tipo_precio" class="form-control selectpicker">
+                  <option value="" disabled selected>Tipo Precio</option>
+                    <option value="publico">Publico / Mostrador</option>
+                    <option value="taller">Taller</option>
+                    <option value="credito_taller">Credito Taller</option>
+                    <option value="mayoreo">Mayoreo</option>
+                  </select>
+              </div>
+                
+                <div class="form-group col-lg-2 col-md-4 col-xs-12" id="estatus"> 
+                  <a data-toggle="modal" href="#editarDetalleVenta">                   
+                    <button class="btn btn-primary" type="submit" id="" onclick="mostrarDetalleServicioEdit()">Editar</button>
+                  </a>
                 </div>
-                <div class="col-lg-12"><hr class="mt-5 mb-3"  style="width:80%"/></div>
+              
+              <div class="form-group col-lg-12 col-md-6 col-xs-12">
+                    <center><h4 aling="center">Información de auto</h4></center>
+              </div>
 
-                <div id="detalle_cobro" class="col-lg-12">
-                  <div class="list-group-item col-lg-12" id="infoCliente">
-                    <div class="form-group col-lg-4 col-md-4 col-xs-12" id="estatus">
-                      <label for="">Estatus(*): </label>
-                      <input class="form-control" type="hidden" name="estado" id="estado">
-                    </div>
-                  
-                    <div class="form-group col-lg-12 col-md-6 col-xs-12">
-                      <center><h4 aling="center">Detalle cobro</h4></center>
-                    </div>              
-                    <div class="form-group col-lg-12 col-md-4 col-xs-12">
-                      <a data-toggle="modal" href="#modalAddCobro">
-                        <button class="btn btn-primary" type="submit" id="btnAddPago" onclick="infoPago()"> + </i>  Añadir método de pago</button>
-                      </a>
-                    </div>
-                    <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                      <div class="panel-body table-responsive">
-                        <table id="detallesPagos" class="table table-striped table-bordered table-condensed table-hover">
-                          <thead style="background-color:#A9D0F5; font-size: 12px;">
-                            <th>Opciones</th>
-                            <th>ID PAGO</th>
-                            <th>Importe</th>
-                            <th>Método pago</th>
-                            <th>Banco</th>
-                            <th>Referencia</th>                        
-                            <th>Acciones</th>
-                          </thead>                      
-                          <tbody>                
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>    
+              <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
+                <label for="">Automovil: </label>
+                <select name="idauto" id="idauto" class="form-control selectpicker" data-live-search="true">
+                  <option value="" disabled selected>Seleccionar auto</option>
+                </select>
+              </div>
+
+              <div class="form-group col-lg-8 col-md-2 col-xs-6" id="divImpuesto">
+                <label for="">Agregar auto</label><br>
+                <a data-toggle="modal" href="#addAuto">
+                  <button id="btnAgregarAuto" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Auto</button>
+                </a>
+              </div>
+
+              <div class="loaderInfoAuto form-group col-lg-1 col-md-8 col-xs-12" style="margin-top: 15px;">
+                  <img src="../files/images/loader.gif" alt="" width="50px;">
+              </div>
+
+              <div class="form-group col-lg-2 col-md-2 col-xs-6">
+                <label for="">Placas: </label>
+                <input class="form-control" type="text" name="placas" id="placas" placeholder="Placas">
+              </div>
+              <div class="form-group col-lg-2 col-md-2 col-xs-6">
+                <label for="">Marca: </label>
+                <input class="form-control" type="text" name="marcaAuto" id="marcaAuto" placeholder="Marca">
+              </div>
+              <div class="form-group col-lg-2 col-md-2 col-xs-6">
+                <label for="">Modelo: </label>
+                <input class="form-control" type="text" name="modelo" id="modelo"  placeholder="Modelo">
+              </div>
+              <div class="form-group col-lg-2 col-md-2 col-xs-6">
+                <label for="">Año: </label>
+                <input class="form-control" type="number" name="ano" id="ano" min="1000"  placeholder="yyyy">
+              </div>
+              <div class="form-group col-lg-2 col-md-2 col-xs-6">
+                <label for="">Color: </label>
+                <input class="form-control" type="text" name="color" id="color"  placeholder="Color">
+              </div>
+              <div class="form-group col-lg-2 col-md-2 col-xs-6">
+                <label for="">Kms: </label>
+                <input class="form-control" type="number" name="kms" id="kms" min="1"  placeholder="Kms">
+              </div>
+
+              <div class="form-group col-lg-6 col-md-3 col-sm-6 col-xs-12">
+                <a data-toggle="modal" href="#myModal" id="btnAddArt">
+                  <button id="btnAgregarArt" name="btnAgregarArt" type="button" class="btn btn-primary" required><span class="fa fa-plus"></span>Agregar Articulos</button>
+                </a>
+              </div>
+
+              <div class="form-group col-lg-8 col-md-3 col-sm-6 col-xs-12" id="btnAgregarArticulosEdit">
+                <a data-toggle="modal" href="#myModalProductsEdit">
+                  <button id="btnAgregarArticulosEdit" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Articulos</button>
+                </a>
+              </div>
+
+              <div class="form-group col-lg-12 col-md-12 col-xs-12">    
+              <div class="form-group col-lg-12 col-md-6 col-xs-12">
+                    <center><h4 aling="center">Productos servicio</h4></center>
+                  </div>
+                <div class="panel-body table-responsive">
+                <table id="detalles" class="table table-striped table-bordered table-condensed table-hover">
+                  <thead style="background-color:#A9D0F5; font-size: 12px;">
+                    <th>Opciones</th>                    
+                    <th>Clave</th>
+                    <th>Fmsi</th>
+                    <th>Marca</th>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
+                    <th>Precio Venta</th>
+                    <th>Descuento</th>
+                    <th>Subtotal</th>
+                    <th>Acciones</th>
+                  </thead>
+                  <tfoot style="background-color:#A9D0F5">                    
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>TOTAL</th>
+                    <th><h5 id="total">$ 0.00</h5><input type="hidden" name="total_cotizacion" id="total_cotizacion"></th>
+                    <th></th>
+                  </tfoot>
+                  <tbody>                
+                  </tbody>
+                </table>
+                
                 </div>
-                <div class="col-lg-12"><hr class="mt-5 mb-3"  style="width:80%"/></div>
-
-                <div class="list-group-item col-lg-12" id="infoCliente">
-                  <div class="form-group col-lg-6 col-md-3 col-sm-6 col-xs-12">
-                    <a data-toggle="modal" href="#myModal" id="btnAddArt">
-                      <button id="btnAgregarArt" name="btnAgregarArt" type="button" class="btn btn-primary" required><span class="fa fa-plus"></span>Agregar Articulos</button>
-                    </a>
-                  </div>
-
-                  <div class="form-group col-lg-8 col-md-3 col-sm-6 col-xs-12" id="btnAgregarArticulosEdit">
-                    <a data-toggle="modal" href="#myModalProductsEdit">
-                      <button id="btnAgregarArticulosEdit" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Articulos</button>
-                    </a>
-                  </div>
-
-                  <div class="form-group col-lg-12 col-md-12 col-xs-12">
-                    <div class="form-group col-lg-12 col-md-6 col-xs-12">
-                      <center><h4 aling="center">Productos servicio</h4></center>
-                    </div>
-                    <div class="panel-body table-responsive">
-                      <table id="detalles" class="table table-striped table-bordered table-condensed table-hover">
-                        <thead style="background-color:#A9D0F5; font-size: 12px;">
-                          <th>Opciones</th>                    
-                          <th>Clave</th>
-                          <th>Fmsi</th>
-                          <th>Marca</th>
-                          <th>Descripción</th>
-                          <th>Cantidad</th>
-                          <th>Precio Venta</th>
-                          <th>Descuento</th>
-                          <th>Subtotal</th>
-                          <th>Acciones</th>
-                        </thead>
-                        <tfoot style="background-color:#A9D0F5">                    
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                          <th></th>
-                          <th>TOTAL</th>
-                          <th><h5 id="total">$ 0.00</h5><input type="hidden" name="total_servicio" id="total_servicio"></th>
-                          <th></th>
-                        </tfoot>
-                        <tbody>                
-                        </tbody>
-                      </table>                    
-                  </div>
-                </div>
-              <form>
-            </div>   
-            <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            </div>       
-            <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-              <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i>  Guardar</button>
-              <!--<button class="btn btn-danger" onclick="cancelarform()" type="button" id="btnCancelar"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>-->
-              <button class="btn btn-info" onclick="salirForm()" type="button" id="btnRegresar"><i class="fa fa-arrow-circle-left"></i> Regresar</button>
-              <?php 
-                require('loader.php');
-              ?>
-            </div>                         
-          </div>
+              </div>
+              <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i>  Guardar</button>
+                <!--<button class="btn btn-danger" onclick="cancelarform()" type="button" id="btnCancelar"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>-->
+                <button class="btn btn-info" onclick="salirForm()" type="button" id="btnRegresar"><i class="fa fa-arrow-circle-left"></i> Regresar</button>
+                <?php 
+                  require('loader.php');
+                ?>
+          </div>                         
         </div>
       </div>
     </div>
@@ -419,7 +339,7 @@ if ($_SESSION['servicios']==1) {
               </div>
               <div class="form-group col-lg-6 col-md-6 col-xs-12">
                 <label for="">Telefono</label>
-                <input class="form-control" type="text" name="telefonoCliente" id="telefonoCliente" maxlength="20" placeholder="Número de Telefono">
+                <input class="form-control" type="text" name="telefonoCliente" id="telefonoCliente" maxlength="20" placeholder="Número de Telefono" required>
               </div>
               <div class="form-group col-lg-6 col-md-6 col-xs-12">
                 <label for="">Telefono local</label>
@@ -653,7 +573,7 @@ if ($_SESSION['servicios']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/serviciosB1.js"></script>
+ <script src="scripts/cotizaciones.js"></script>
  <?php 
 }
 
