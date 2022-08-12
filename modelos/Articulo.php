@@ -9,7 +9,7 @@ class Articulo{
 	}
 	//metodo insertar registro
 	public function insertar($codigo, $costo, $barcode, $credito_taller, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $mayoreo, $pasillo, $publico, $stock, $taller, $unidades, $idsucursal, $imagen){		
-		$sql="INSERT INTO articulo (codigo, costo, barcode, credito_taller, descripcion, fmsi, idcategoria, idproveedor, marca, mayoreo, pasillo, publico, stock, taller, unidades, estado, idsucursal, imagen) VALUES ('$codigo', '$costo', '$barcode', '$credito_taller', '$descripcion', '$fmsi', '$idcategoria', '$idproveedor', '$marca', '$mayoreo', '$pasillo', '$publico', '$stock', '$taller', '$unidades', '1', '$idsucursal', '$imagen')";
+		$sql="INSERT INTO articulo (codigo, costo, barcode, credito_taller, descripcion, fmsi, idcategoria, categoria, idproveedor, marca, mayoreo, pasillo, publico, stock, taller, unidades, estado, idsucursal, imagen) VALUES ('$codigo', '$costo', '$barcode', '$credito_taller', '$descripcion', '$fmsi', 21, '$idcategoria', '$idproveedor', '$marca', '$mayoreo', '$pasillo', '$publico', '$stock', '$taller', '$unidades', '1', '$idsucursal', '$imagen')";
 		usleep(140000);
 		return ejecutarConsulta($sql);
 	}
@@ -75,7 +75,7 @@ class Articulo{
 
 	public function articulosPagination($limit, $limit2, $busqueda) {
 		$sql = "SELECT c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
-		a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor,
+		a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
 		a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock
 		FROM articulo a INNER JOIN categoria c ON a.idcategoria=c.idcategoria
 		WHERE a.codigo LIKE '%$busqueda%' OR
@@ -104,6 +104,49 @@ class Articulo{
 	public function listarArticulos() {
 		$sql = "SELECT * FROM articulo";
 		return ejecutarConsulta($sql);
+	}
+
+	public function actualizarPrecios($clave) {				
+		$sw = true;
+		/*while ($index < count($clave)) {
+			echo $clave[$index];
+			ejecutarConsulta($sql) or $sw=false;
+			$index=$index+1;
+		}*/
+		foreach ($clave as $key => $value) {			
+			$sql = "UPDATE articulo 
+					SET costo='$value[costo]', publico='$value[publico]', taller='$value[taller]', credito_taller='$value[credito]', mayoreo='$value[mayoreo]'
+					WHERE codigo='$value[clave]'";
+			ejecutarConsulta($sql) or $sw=false;
+		}
+		return $sw;
+	}
+
+	public function registrarProductos($object, $fecha_ingreso, $idsucursal) {
+		$sw = true;
+		foreach ($object as $key => $value) {
+			$sql = "INSERT INTO articulo
+							(categoria, idcategoria, codigo, descripcion, fmsi, marca, publico, taller, credito_taller,mayoreo, costo, idproveedor, pasillo, unidades, fecha_ingreso, idsucursal)
+							VALUES('$value[categoria]', 21,  '$value[clave]', '$value[descripcion]', '$value[fmsi]', 
+							'$value[marca]','$value[publico]', '$value[taller]', '$value[credito]', '$value[mayoreo]', 
+							'$value[costo]', '$value[idproveedor]', '$value[pasillo]', '$value[unidad]', 
+							'$fecha_ingreso', '$idsucursal')";
+			ejecutarConsulta($sql) or $sw=false;
+			/*$categoria = $value["categoria"];
+			$clave = $value["clave"];
+			$descripcion = $value["descripcion"];
+			$fmsi = $value["fmsi"];
+			$marca = $value["marca"];
+			$publico = $value["publico"];
+			$taller = $value["taller"];
+			$credito = $value["credito"];
+			$idproveedor = $value["idproveedor"];
+			/*$sql = "INSERT INTO articulo
+							(categoria, idcategoria, codigo, idproveedor, idsucursal)
+							VALUES('$categoria', 21, '$clave', '$idproveedor',$idsucursal)";
+			ejecutarConsulta($sql) or $sw=false;*/
+		}
+		return $sw;
 	}
 
 }

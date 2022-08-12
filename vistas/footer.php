@@ -19,6 +19,8 @@
 <script src="../public/plugins/sweetalert2/sweetalert2.all.js"></script>
 <script src="plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.1/howler.min.js"></script>
+<script src="../public/PapaParse/papaparse.min.js"></script>
+<script src="scripts/footer.js"></script>
 
 <!-- SCRIPT MATERIAL UI -->
 <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>

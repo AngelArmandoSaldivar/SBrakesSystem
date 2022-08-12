@@ -72,13 +72,13 @@ if ($_SESSION['accesos']==1) {
     </div>
 
     <div id="map" style="height: 400px; width:100%; "></div>
-    <script>
+    <!--<script>
         function initMap() {
             var coordenadas = {lat: 19.4040032, lng: -98.9880654};
             var mapa = new google.maps.Map(document.getElementById("map"), {zoom:15, center: coordenadas});
             var marker = new google.maps.Marker({position: coordenadas, map:mapa});
         }
-    </script>
+    </script>-->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC36bGPspEJEk79AVJmUNWXcjMB7AlYtdg&callback=initMap" async defer></script>
     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12"><br>
       <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i>  Guardar</button>

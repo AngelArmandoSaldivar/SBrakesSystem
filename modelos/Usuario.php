@@ -103,6 +103,11 @@ public function verificar($login,$clave){
 	return ejecutarConsulta($sql);
 }
 
+public function mostrarUsuario($idusuario) {
+	$sql = "SELECT s.lat,s.lng, u.idusuario,u.nombre,u.telefono,u.email,u.cargo, u.acceso, u.idsucursal, u.login FROM usuario u INNER JOIN sucursal s ON u.idsucursal = s.idsucursal WHERE u.idusuario='$idusuario'";
+	return ejecutarConsultaSimpleFila($sql);
+}
+
 public function sucursales($idusuario) {
 	$sql = "SELECT s.nombre, s.idsucursal FROM sucursales_usuario su INNER JOIN usuario u ON su.idusuario=u.idusuario INNER JOIN sucursal s ON s.idsucursal = su.idsucursal WHERE su.idusuario='$idusuario'";
 	return ejecutarConsulta($sql);

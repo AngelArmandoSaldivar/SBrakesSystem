@@ -17,12 +17,21 @@ $("#frmAcceso").on('submit', function(e)
                 var lon = pos.coords.longitude;
 
                 if(data.acceso != "admin") {
-                    if(data.lat == lat && data.lng == lon) {
+                    console.log("LONGITUD: ", lon + -1);
+                    console.log("LONGITUD: ", typeof(data.lng));
+                    let latidud = parseFloat(data.lng);
+                    console.log(typeof(latidud));
+                    console.log("SUMA: ", latidud + -1);
+                    if(data.lat < lat + 1 && latidud > lon + -1) {
                         $(location).attr("href","sucursales.php?idusuario="+data.idusuario);
-                    } else {
+                    }
+                    else {
                         alert("NO TE ENCUENTRAS EN LA UBICACIÓN CORRECTA, POR FAVOR TRASLADATE A LA UBICACIÓN CORRECTA DE TU SUCURSAL ASIGNADA.");
                         $(location).attr("href","login.html");
                     }
+                    /*if(data.lat < lat + 1 && data.lng < lon + 1) {                                               
+                    } else {                        
+                    }*/
                 } else {
                     $(location).attr("href","sucursales.php?idusuario="+data.idusuario);
                 }

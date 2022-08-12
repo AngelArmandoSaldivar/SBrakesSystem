@@ -312,10 +312,12 @@ public function editarDetalleServicio($idservicio, $idcliente, $fecha_entrada, $
 }
 
 public function reporteServicios($fecha_inicio, $fecha_fin) {
-	$sql = "SELECT v.remision, v.idservicio, v.total_servicio, v.modelo, v.marca, v.placas, DATE(v.fecha_entrada) AS fecha_entrada, DATE(v.fecha_salida) AS fecha_salida, p.nombre FROM servicio v 
+	$sql = "SELECT v.status, v.idsucursal, v.remision, v.idservicio, v.total_servicio, v.modelo, v.marca, v.placas, DATE(v.fecha_entrada) AS fecha_entrada, DATE(v.fecha_salida) AS fecha_salida, p.nombre 
+			FROM servicio v 
 			INNER JOIN persona p ON v.idcliente = p.idpersona 						
 			WHERE DATE(fecha_entrada) >= '$fecha_inicio' 
-			AND DATE(fecha_entrada) <= '$fecha_fin' ORDER BY v.idservicio DESC";
+			AND DATE(fecha_entrada) <= '$fecha_fin'
+			AND v.status != 'ANULADO' ORDER BY v.idservicio DESC";
 	return ejecutarConsulta($sql);
 }
 

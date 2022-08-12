@@ -33,6 +33,12 @@ switch ($_GET["op"]) {
 	}
 	break;	
 
+	case 'cambiarsucursal':
+		unset($_SESSION['idsucursal']);
+		header("Location: ../vistas/sucursales.php?idusuario=".$idusuarioSession);
+		die();
+		break;
+
 	case 'desactivar':
 	$rspta=$usuario->desactivar($idusuario);
 	echo $rspta ? "Datos desactivados correctamente" : "No se pudo desactivar los datos";
@@ -47,6 +53,11 @@ switch ($_GET["op"]) {
 	$rspta=$usuario->mostrar($idusuario);	
 	echo json_encode($rspta);
 	break;
+
+	case 'mostrarUsuario':
+		$rspta=$usuario->mostrarUsuario($idusuarioSession);
+		echo json_encode($rspta);
+		break;
 
 	case 'listar':	
 			$consulta="SELECT nombre, direccion, email, telefono, login, acceso, condicion, idusuario FROM usuario LIMIT 40";

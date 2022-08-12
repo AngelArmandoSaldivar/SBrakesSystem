@@ -400,10 +400,8 @@ function onBlurText() {
 		if(filterItems(busqueda).length > 0) {
 			console.log("Si existe en la bd");
 		} else {
-
 			$("#agregarCliente").modal('show');
 			$("#nombre").val(busqueda);
-			
 		}
 	})
 }
@@ -626,6 +624,17 @@ function(){
 function registrosFechaInicio(fechas) {
 	let busqueda = $("#busqueda").val();
 	obtener_registros(busqueda);
+}
+
+$("#fecha_salida").change(fechaSalida);
+function fechaSalida() {
+	setTimeout(() => {
+		window.scroll({
+			top: 450,
+			left: 0,
+			behavior: 'smooth'
+		});
+	}, 1200);
 }
 
 $("#fecha_inicio").change(fechaInicio);
@@ -1175,27 +1184,34 @@ function cerrarSucursalesEdit() {
 function mostrarInfoClient(idcliente) {	
 	$('.loader').show();
 	$.post("../ajax/venta.php?op=mostrarInfoClient",{idcliente : idcliente},
-		function(data,status)
-		{
-			$('.loader').hide();
-			data=JSON.parse(data);
-			$("#idcliente").val(idcliente).prop("disabled", false);
-			$("#idcliente").selectpicker('refresh');
-			$("#rfc").val(data.rfc).prop("disabled", true);
-			$("#direccion").val(data.direccion).prop("disabled", true);			
-			$("#email").val(data.email).prop("disabled", true);
-			$("#telefono").val(data.telefono).prop("disabled", true);
-			$("#credito").val(data.credito).prop("disabled", true);
-			if(data.tipo_precio == "publico") {
-				$("#tipoPrecio").val("Publico / Mostrador").prop("disabled", true);
-			} else if(data.tipo_precio == "taller") {
-				$("#tipoPrecio").val("Taller").prop("disabled", true);
-			} else if(data.tipo_precio == "credito_taller") {
-				$("#tipoPrecio").val("Credito Taller").prop("disabled", true);
-			} else if(data.tipo_precio == "mayoreo") {
-				$("#tipoPrecio").val("Mayoreo").prop("disabled", true);
-			}
-		});
+	function(data,status)
+	{
+		$('.loader').hide();
+		data=JSON.parse(data);
+		$("#idcliente").val(idcliente).prop("disabled", false);
+		$("#idcliente").selectpicker('refresh');
+		$("#rfc").val(data.rfc).prop("disabled", true);
+		$("#direccion").val(data.direccion).prop("disabled", true);			
+		$("#email").val(data.email).prop("disabled", true);
+		$("#telefono").val(data.telefono).prop("disabled", true);
+		$("#credito").val(data.credito).prop("disabled", true);
+		if(data.tipo_precio == "publico") {
+			$("#tipoPrecio").val("Publico / Mostrador").prop("disabled", true);
+		} else if(data.tipo_precio == "taller") {
+			$("#tipoPrecio").val("Taller").prop("disabled", true);
+		} else if(data.tipo_precio == "credito_taller") {
+			$("#tipoPrecio").val("Credito Taller").prop("disabled", true);
+		} else if(data.tipo_precio == "mayoreo") {
+			$("#tipoPrecio").val("Mayoreo").prop("disabled", true);
+		}
+	});
+	setTimeout(() => {
+		window.scroll({
+			top: 250,
+			left: 0,
+			behavior: 'smooth'
+		});		
+	}, 1500);
 }
 
 //cargamos los items al select cliente
@@ -1221,7 +1237,7 @@ function selectCliente (){
 				$('#idauto').selectpicker('refresh');
 			});				
 			$("#idauto").change(modIdAuto);
-			function modIdAuto() {	
+			function modIdAuto() {
 				$('.loaderInfoAuto').show();			
 				var idauto = $("#idauto option:selected").val();
 				$.post("../ajax/servicio.php?op=mostrarInfoAuto",{idauto : idauto},
@@ -1234,7 +1250,14 @@ function selectCliente (){
 						$("#ano").val(data.ano).prop("disabled", false);
 						$("#color").val(data.color).prop("disabled", false);
 						$("#kms").val(data.kms).prop("disabled", false);
-				});	
+				});
+				setTimeout(() => {
+					window.scroll({
+						top: 700,
+						left: 0,
+						behavior: 'smooth'
+					});
+				}, 1200);
 			}
 
 	}	
@@ -2237,9 +2260,9 @@ function agregarDetalle(idarticulo,articulo,fmsi, descripcion,marca,publico, sto
 		'<td><input type="hidden" name="fmsi[]" id="fmsi[]" value="'+fmsi+'">'+fmsi+'</td>'+
 		'<td><input type="hidden" name="marca[]" id="marca[]" value="'+marca+'">'+marca+'</td>'+
 		'<td><textarea class="form-control" id="descripcion[]" name="descripcion[]" rows="2" style="width: 280px;" value="'+descripcion+'">'+descripcion+'</textarea></td>'+
-        '<td><input style="width: 55px;" type="number" name="cantidad[]" id="cantidad[]" value="'+cantidad+'" max="'+stock+'" min="1"></td>'+
-        '<td><input style="width: 70px;" type="number" name="precio_servicio[]" id="precio_servicio[]" value="'+publico+'"></td>'+
-        '<td><input style="width: 70px;" type="number" name="descuento[]" value="'+descuento+'"></td>'+
+        '<td><input class="form-control" style="width: 55px;" type="number" name="cantidad[]" id="cantidad[]" value="'+cantidad+'" max="'+stock+'" min="1"></td>'+
+        '<td><input class="form-control" style="width: 70px;" type="number" name="precio_servicio[]" id="precio_servicio[]" value="'+publico+'"></td>'+
+        '<td><input class="form-control" style="width: 70px;" type="number" name="descuento[]" value="'+descuento+'"></td>'+
         '<td><span id="subtotal'+cont+'" name="subtotal">'+pesosMexicanos.format(publico*cantidad)+'</span></td>'+
         '<td><button type="button" title="Actualizar" onclick="modificarSubtotales()" style="width: 40px;" class="btn btn-info btn-xs"><i class="fa fa-refresh"></i></button></td>'+
 		'</tr>';

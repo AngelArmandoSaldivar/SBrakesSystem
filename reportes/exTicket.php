@@ -33,9 +33,12 @@ $reg=$rspta->fetch_object();
 $calle = "SARATOGA 313-C";
 $colonia = "COL. PORTALES NORTE";
 $direccion = "ALCALDIA BENITO JUAREZ";
-$cp = "CDMX C.P. 03303";
-$phone1 = "Tel: (55) 7653-6116 / (55) 68402850";
-$phone = "Tel: (55) 52733450 / (55) 43834342";
+$ciudad = "CDMX";
+$cp = "C.P. 03303";
+$phone1 = "(55) 7653-6116";
+$phone2 = "(55) 68402850";
+$phone3 = "(55) 52733450";
+$phone4 = "(55) 43834342";
 	 ?>
 <div class="zona_impresion">
 	<!--codigo imprimir-->
@@ -48,9 +51,9 @@ $phone = "Tel: (55) 52733450 / (55) 43834342";
 				<?php echo $calle; ?><br>
 				<?php echo $colonia; ?><br>
 				<?php echo $direccion; ?><br>
-				<?php echo $cp; ?><br>
-				<?php echo $phone1; ?><br>
-				<?php echo $phone; ?><br>
+				<?php echo $ciudad." ". $cp; ?><br>
+				<?php echo "Tel: ".$phone1." / ". $phone2; ?><br>
+				<?php echo "Tel: ".$phone3." / ".$phone4; ?><br>
 			</td>
 		</tr>
 		<tr>

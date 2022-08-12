@@ -2,7 +2,7 @@
 ob_start();
 if (strlen(session_id())<1) 
   session_start();
-
+  $idsucursal = $_SESSION['idsucursal'];
 if (!isset($_SESSION['nombre'])) {
   echo "debe ingresar al sistema correctamente para visualizar el reporte";
 }else{
@@ -76,11 +76,11 @@ $header = array('Folio', 'Entrada', 'Salida', 'Cliente', 'Estatus', 'Vehiculo', 
 $pdf->ImprovedTable($header);
 
 while ($reg=$rspta->fetch_object()) {	
-
+  if($reg->idsucursal == $idsucursal) {
     $remision = $reg->remision == 0 ? "" : "R-".$reg->remision;
     $data = array($reg->idservicio, $reg->fecha_entrada, $reg->fecha_salida, substr($reg->nombre, 0, 22), "EMITIDO", $reg->marca. " ". $reg->modelo, $reg->placas, "$".number_format($reg->total_servicio, 2), "$".number_format($reg->total_servicio, 2), $remision);
     $pdf->ImprovedTable2($data);
-
+  }    
 }
 
 require_once "Letras.php";
@@ -96,7 +96,9 @@ $rspta=$servicio->ReporteServicios($_GET["fecha_inicio"], $_GET["fecha_final"]);
 $total_servicios = 0.0;
 $totalArray = array();
 while ($reg=$rspta->fetch_object()) {	
-  array_push($totalArray, $reg->total_servicio);
+  if($reg->idsucursal == $idsucursal) {
+    array_push($totalArray, $reg->total_servicio);
+  }
 }
 
 

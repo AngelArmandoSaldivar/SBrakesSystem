@@ -801,60 +801,57 @@
   </div>
 </div>
 
-
-<div class="modal fade" id="filtroFechaReportes" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" style="width: 50% !important; box-shadow:5px 5px 5px 5px rgba(0, 0, 0, 0.2);">
+<div class="modal fade" id="cambiarPreciosProductos" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" style="width: 100% !important; box-shadow:5px 5px 5px 5px rgba(0, 0, 0, 0.2);">
     <div class="modal-content" style="border-radius: 20px;">
       <div class="modal-header">
-        <h4 class="modal-title">Generar reporte </h4>
-        <button name="addProduct" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>       
-      </div>    
-      <form action="" name="formularioProductoServicio" id="formularioProductoServicio" method="POST">
-        <div class="panel-body table-responsive">
-        <div class="form-group col-lg-6 col-md-6 col-xs-12">
-            <label>Fecha Inicio</label>
-            <input type="date" class="form-control" name="fecha_inicio_reporte" id="fecha_inicio_reporte" value="" required>
-          </div>
-          <div class="form-group col-lg-6 col-md-6 col-xs-12">
-            <label>Fecha Fin</label>
-            <input type="date" class="form-control" name="fecha_fin_reporte" id="fecha_fin_reporte" value="" required>
-          </div>       
-        </div>
-      </form>
-        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <button class="btn btn-success" type="submit" name="btnGuardarProductoServicio" onclick="generarReporte()"><li class=" fa fa-file-pdf-o"> Gererar reporte</li></button>
-          <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
-        </div>
-      <!--</div>-->
-      <div class="modal-footer">
-        <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
+        <h4 class="modal-title">Cambiar precios productos.</h4>
+        <button name="addProduct" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
-    </div>
-  </div>
-</div>
+      <form action="" name="formEditArticulos" id="formEditArticulos" method="POST">
+        <div class="panel-body table-responsive">
+          <div class="form-group col-lg-12 col-md-6 col-xs-12">
+            <label for="formFileSm" class="form-label">Seleccionar archivo .csv</label>
+            <input type="file" id="files" class="form-control" accept=".csv" required />
+          </div>
+          <div class="form-group col-lg-6 col-md-6 col-xs-12" id="containerFile">
+            <div class="form-group">
+              <button type="submit" id="submit-file" class="btn btn-primary">Cargar archivo</button>
+            </div>
+          </div>
+          <div class="form-group col-lg-6 col-md-6 col-xs-12" id="containerUpdatesFiles">
+            <button class="btn btn-success" type="button" id="updatePrices" onclick="actualizarPrecios()"><li class=" fa fa-file-pdf-o"> Actualizar precios</li></button>
+          </div>          
+          <div class="form-group col-lg-6 col-md-6 col-xs-12" id="containerProveedor">
+          <label for="">Proveedor(*):</label>
+            <select name="idproveedorProducto" id="idproveedorProducto" class="form-control selectpicker" data-live-search="true" required>
+              <?php 
+                $sql="SELECT * FROM persona WHERE tipo_persona='Proveedor'";
+                $result = ejecutarConsulta($sql);
 
-<div class="modal fade" id="filtroServiciosFechaReportes" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" style="width: 50% !important; box-shadow:5px 5px 5px 5px rgba(0, 0, 0, 0.2);">
-    <div class="modal-content" style="border-radius: 20px;">
-      <div class="modal-header">
-        <h4 class="modal-title">Generar reporte </h4>
-        <button name="addProduct" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>       
-      </div>
-      <form action="" name="formularioProductoServicio" id="formularioProductoServicio" method="POST">
-        <div class="panel-body table-responsive">
-        <div class="form-group col-lg-6 col-md-6 col-xs-12">
-            <label>Fecha Inicio</label>
-            <input type="date" class="form-control" name="fecha_inicio_reporte_servicio" id="fecha_inicio_reporte_servicio" value="" required>
+                while($row = $result->fetch_assoc()) {
+                  echo "<option value='$row[idpersona]'>$row[nombre]</option>";
+                }
+            
+              ?>
+            </select>
+          </div>          
+          <div class="form-group col-lg-6 col-md-6 col-xs-12" id="containerRegisterProducts">
+            <div id="msgProducts"></div>
+            <button type="submit" id="registerProduct" class="btn btn-primary">Registrar productos</button>
           </div>
-          <div class="form-group col-lg-6 col-md-6 col-xs-12">
-            <label>Fecha Fin</label>
-            <input type="date" class="form-control" name="fecha_fin_reporte_servicio" id="fecha_fin_reporte_servicio" value="" required>
+          <div class="form-group col-lg-12 col-md-6 col-xs-12">
+            <div id="loaderUpdate">
+            </div>                                      
+          </div>          
+          <div class="form-group col-lg-12 col-md-6 col-xs-12">
+            <div class="row" id="parsed_csv_list">
+            </div>
           </div>
-        </div>
+        </div>        
       </form>
-        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <button class="btn btn-success" type="submit" name="btnGuardarProductoServicio" onclick="generarReporteServicio()"><li class=" fa fa-file-pdf-o"> Gererar reporte</li></button>
-          <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
+        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">                    
+          <button class="btn btn-danger" type="button" id="btnGuardar"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
         </div>
       <!--</div>-->
       <div class="modal-footer">

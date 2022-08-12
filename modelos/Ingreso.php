@@ -12,8 +12,15 @@ public function __construct(){
 //metodo insertar registro
 public function insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_comprobante,$fecha_hora,$impuesto,$total_compra,$idarticulo,$clave,$fmsi,$descripcion,$cantidad,$precio_compra, $idsucursal, $idsucursalArticulo){	
 	$total_compra = substr($total_compra, 1);
+	$caracter = ",";
+	$posicion = strpos($total_compra, $caracter);
 
-	$sql="INSERT INTO ingreso (idproveedor,idusuario,tipo_comprobante,serie_comprobante,fecha_hora,impuesto,total_compra,tipoMov,estado, idsucursal) VALUES ('$idproveedor','$idusuario','$tipo_comprobante','$serie_comprobante','$fecha_hora','$impuesto','$total_compra','RECEPCIÓN','NORMAL', '$idsucursal')";
+	$extraer1 = $posicion > 0 ? substr($total_compra, 0, $posicion) : $total_compra;
+	$extraer2 = $posicion > 0 ? substr($total_compra, $posicion + 1, 50) : "";
+	$nuevo_total = $extraer2 != "" ? intval($extraer1.$extraer2) : $total_compra;
+
+
+	$sql="INSERT INTO ingreso (idproveedor,idusuario,tipo_comprobante,serie_comprobante,fecha_hora,impuesto,total_compra,tipoMov,estado, idsucursal) VALUES ('$idproveedor','$idusuario','$tipo_comprobante','$serie_comprobante','$fecha_hora','$impuesto','$nuevo_total','RECEPCIÓN','NORMAL', '$idsucursal')";
 	//return ejecutarConsulta($sql);
 	 $idingresonew=ejecutarConsulta_retornarID($sql);
 	 $num_elementos=0;

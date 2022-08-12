@@ -46,6 +46,17 @@ if(!isset($_SESSION["nombre"])) {
 				echo $rspta ? " Articulo actualizado correctamente" : "No se pudo actualizar los datos";
 			}
 		break;
+		case 'actualizarPrecios':
+			$array = $_POST["arrayJson"];			
+			$rspta = $articulo->actualizarPrecios($array);
+			echo $rspta ? "Precios actualizados correctamente" : "Error!";
+			break;
+		case 'registrarProductos':
+			$array = $_POST["arrayJsonProductos"];
+			$fecha_ingreso = $_POST["fecha_ingreso"];
+			$rspta = $articulo->registrarProductos($array, $fecha_ingreso, $idsucursal);
+			echo $rspta ? "Productos registrados correctamente" : "Error!";
+			break;
 		case 'copiarBusqueda':
 			$consulta = $articulo->filtroArticulosCopy("");
 			if(!empty($_POST['busquedaCopy'])) {
@@ -99,6 +110,10 @@ if(!isset($_SESSION["nombre"])) {
 			}
 			//$arrayData = implode(',', $array);
 			echo json_encode($array);
+			break;
+
+		case 'allArticles':
+			
 			break;
 
 		case 'listar':							
@@ -195,7 +210,7 @@ if(!isset($_SESSION["nombre"])) {
 					$delitFmsi = substr($fila['fmsi'], 0, 50);
 					$stock_mdx = '';					
 					if($fila["idsucursal"] == $idsucursal && $acceso === "admin") {
-						if($fila["stock"] >=1) {
+						if($fila["stock"] >= $fila["stock_ideal"]) {
 								echo "<tr style='color:blue; font-size:11px;'>
 								<td style='width:20px'>".$fila['codigo']."</td>
 								<td style='width:10px;'>".$delitFmsi."</td>
@@ -218,7 +233,7 @@ if(!isset($_SESSION["nombre"])) {
 								</td>
 							</tr>
 							";							
-						} else if($fila["stock"] <=0){							
+						} else if($fila["stock"] < $fila["stock_ideal"]){							
 								echo "<tr style='color:red; font-size:11px;'>
 								<td style='width:20px'>".$fila['codigo']."</td>
 								<td style='width:10px;'>".$delitFmsi."</td>
@@ -242,7 +257,7 @@ if(!isset($_SESSION["nombre"])) {
 						}
 					}
 					else if($fila["idsucursal"] == $idsucursal && $acceso != "admin"){
-						if($fila["stock"] >=1) {
+						if($fila["stock"] >= $fila["stock_ideal"]) {
 							echo "<tr style='color:blue; font-size:11px;'>
 								<td style='width:20px'>".$fila['codigo']."</td>
 								<td style='width:10px;'>".$delitFmsi."</td>
@@ -261,7 +276,7 @@ if(!isset($_SESSION["nombre"])) {
 									</a>
 							</tr>";
 						} 						
-						else if($fila["stock"] <=0) {
+						else if($fila["stock"] < $fila["stock_ideal"]) {
 							echo "<tr style='color:red; font-size:11px;'>
 								<td style='width:20px'>".$fila['codigo']."</td>
 								<td style='width:10px;'>".$delitFmsi."</td>
@@ -297,7 +312,7 @@ if(!isset($_SESSION["nombre"])) {
 				$rspta=$categoria->select();
 
 				while ($reg=$rspta->fetch_object()) {
-					echo '<option value=' . $reg->idcategoria.'>'.$reg->nombre.'</option>';
+					echo '<option value=' . $reg->nombre.'>'.$reg->nombre.'</option>';
 				}
 				
 				break;

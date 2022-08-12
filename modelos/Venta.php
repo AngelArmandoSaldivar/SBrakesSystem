@@ -370,10 +370,12 @@ public function listarProductosAlmacenFiltros($producto, $idalmacen) {
 }
 
 public function reporteVentas($fecha_inicio, $fecha_fin) {
-	$sql = "SELECT v.remision, v.idventa, v.total_venta, DATE(v.fecha_entrada) AS fecha_entrada, DATE(v.fecha_salida) AS fecha_salida, p.nombre FROM venta v 
+	$sql = "SELECT v.estado, v.idsucursal, v.remision, v.idventa, v.total_venta, DATE(v.fecha_entrada) AS fecha_entrada, DATE(v.fecha_salida) AS fecha_salida, p.nombre 
+			FROM venta v 
 			INNER JOIN persona p ON v.idcliente = p.idpersona 			
 			WHERE DATE(fecha_entrada) >= '$fecha_inicio' 
-			AND DATE(fecha_entrada) <= '$fecha_fin' ORDER BY v.idventa DESC";
+			AND DATE(fecha_entrada) <= '$fecha_fin' 
+			AND estado != 'ANULADO' ORDER BY v.idventa DESC";
 	return ejecutarConsulta($sql);
 }
 

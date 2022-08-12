@@ -70,60 +70,74 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="escritorio.php" class="nav-link">Inicio</a>
+      <?php 
+        if ($_SESSION['escritorio']==1) {
+          echo '<a href="escritorio.php" class="nav-link">Escritorio</a>
+          ';
+        }
+      ?>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="articulo.php" class="nav-link">Articulos</a>
+      <?php 
+        if ($_SESSION['almacen']==1) {
+          echo '<a href="articulo.php" class="nav-link">Articulos</a>';
+        }
+      ?>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="ingreso.php" class="nav-link">Compras</a>
+      <?php 
+        if ($_SESSION['compras']==1) { 
+          echo '<a href="ingreso.php" class="nav-link">Compras</a>';
+        }
+      ?>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="venta.php" class="nav-link">Ventas</a>
+      <?php 
+        if ($_SESSION['ventas']==1) {
+          echo '<a href="venta.php" class="nav-link">Ventas</a>';
+        }
+      ?>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="servicio.php" class="nav-link">Servicios</a>
+      <?php 
+        if ($_SESSION['servicios']==1) {
+          echo '<a href="servicio.php" class="nav-link">Servicios</a>';
+        }
+      ?>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="cliente.php" class="nav-link">Clientes</a>
+      <?php 
+        if ($_SESSION['servicios']==1) {
+          echo '<a href="cliente.php" class="nav-link">Clientes</a>';
+        }
+      ?>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="usuario.php" class="nav-link">Usuarios</a>
+      <?php 
+        if ($_SESSION['accesos']==1) {
+          echo '<a href="usuario.php" class="nav-link">Usuarios</a>';
+        }
+      ?>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="sucursal.php" class="nav-link">Sucursales</a>
+      <?php 
+        if ($_SESSION['sucursal']==1) {
+          echo '<a href="sucursal.php" class="nav-link">Sucursales</a>';
+        }
+      ?>
       </li>
       <li class="nav-item dropdown">
-            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Reportes</a>
-            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">              
-              <li><a data-toggle='modal' href='#filtroFechaReportes' class="dropdown-item">Ventas </a></li>                            
-              <li class="dropdown-divider"></li>
-              <li><a data-toggle='modal' href='#filtroServiciosFechaReportes' class="dropdown-item">Servicios</a></li>
-                          
-              <!--<li class="dropdown-submenu dropdown-hover">
-                <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Hover for action</a>
-                <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
-                  <li>
-                    <a tabindex="-1" href="#" class="dropdown-item">level 2</a>
-                  </li>                  
-                  <li class="dropdown-submenu">
-                    <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">level 2</a>
-                    <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
-                      <li><a href="#" class="dropdown-item">3rd level</a></li>
-                      <li><a href="#" class="dropdown-item">3rd level</a></li>
-                    </ul>
-                  </li>
-                  <li><a href="#" class="dropdown-item">level 2</a></li>
-                  <li><a href="#" class="dropdown-item">level 2</a></li>
-                </ul>
-              </li>-->          
-            </ul>
-          </li>
-    </ul>
+        <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Reportes</a>
+        <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">              
+            <li><a data-toggle='modal' href='#filtroFechaReportes' class="dropdown-item">Ventas </a></li>                            
+            <li class="dropdown-divider"></li>
+            <li><a data-toggle='modal' href='#filtroServiciosFechaReportes' class="dropdown-item">Servicios</a></li>                                             
+          </ul>
+        </li>
+      </ul>
 
     <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
-     
+    <ul class="navbar-nav ml-auto">     
       <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
           <i class="fas fa-expand-arrows-alt"></i>
@@ -133,9 +147,13 @@
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="fas fa-th-large"></i>          
         </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+        <div class="dropdown-menu dropdown-menu-sm w-150 dropdown-menu-right">
           <span class="dropdown-item dropdown-header"><h5>Usuario: <?php echo $_SESSION['nombre']; ?></h5></span>
           <div class="dropdown-divider"></div>
+          <a href="../ajax/usuario.php?op=cambiarsucursal" class="dropdown-item">
+            <i class="fas fa-envelope mr-2"></i>Cambiar de sucursal
+            <span class="float-right text-muted text-sm">Cambiar sucursal</span>
+          </a>
           <a href="../ajax/usuario.php?op=salir" class="dropdown-item">
             <i class="fas fa-envelope mr-2"></i>Cerrar Sesión
             <span class="float-right text-muted text-sm">Cerrar sesión</span>
@@ -145,7 +163,7 @@
             <i class="fas fa-users mr-2"></i> Perfil
             <span class="float-right text-muted text-sm">Ver perfil</span>
           </a>
-          <div class="dropdown-divider"></div>          
+          <div class="dropdown-divider"></div>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item dropdown-footer">-----------------</a>
         </div>
@@ -397,5 +415,67 @@
     </div>
     <!-- /.sidebar -->
   </aside>
+
+  <div class="modal fade" id="filtroFechaReportes" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" style="width: 50% !important; box-shadow:5px 5px 5px 5px rgba(0, 0, 0, 0.2);">
+    <div class="modal-content" style="border-radius: 20px;">
+      <div class="modal-header">
+        <h4 class="modal-title">Generar reporte </h4>
+        <button name="addProduct" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>       
+      </div>    
+      <form action="" name="formularioProductoServicio" id="formularioProductoServicio" method="POST">
+        <div class="panel-body table-responsive">
+        <div class="form-group col-lg-6 col-md-6 col-xs-12">
+            <label>Fecha Inicio</label>
+            <input type="date" class="form-control" name="fecha_inicio_reporte" id="fecha_inicio_reporte" value="" required>
+          </div>
+          <div class="form-group col-lg-6 col-md-6 col-xs-12">
+            <label>Fecha Fin</label>
+            <input type="date" class="form-control" name="fecha_fin_reporte" id="fecha_fin_reporte" value="" required>
+          </div>       
+        </div>
+      </form>
+        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <button class="btn btn-success" type="submit" name="btnGuardarProductoServicio" onclick="generarReporte()"><li class=" fa fa-file-pdf-o"> Gererar reporte</li></button>
+          <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
+        </div>
+      <!--</div>-->
+      <div class="modal-footer">
+        <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="filtroServiciosFechaReportes" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" style="width: 50% !important; box-shadow:5px 5px 5px 5px rgba(0, 0, 0, 0.2);">
+    <div class="modal-content" style="border-radius: 20px;">
+      <div class="modal-header">
+        <h4 class="modal-title">Generar reporte </h4>
+        <button name="addProduct" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>       
+      </div>
+      <form action="" name="formularioProductoServicio" id="formularioProductoServicio" method="POST">
+        <div class="panel-body table-responsive">
+        <div class="form-group col-lg-6 col-md-6 col-xs-12">
+            <label>Fecha Inicio</label>
+            <input type="date" class="form-control" name="fecha_inicio_reporte_servicio" id="fecha_inicio_reporte_servicio" value="" required>
+          </div>
+          <div class="form-group col-lg-6 col-md-6 col-xs-12">
+            <label>Fecha Fin</label>
+            <input type="date" class="form-control" name="fecha_fin_reporte_servicio" id="fecha_fin_reporte_servicio" value="" required>
+          </div>
+        </div>
+      </form>
+        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <button class="btn btn-success" type="submit" name="btnGuardarProductoServicio" onclick="generarReporteServicio()"><li class=" fa fa-file-pdf-o"> Gererar reporte</li></button>
+          <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
+        </div>
+      <!--</div>-->
+      <div class="modal-footer">
+        <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
   
 </div>

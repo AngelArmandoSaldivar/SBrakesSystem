@@ -18,7 +18,7 @@ if ($_SESSION['almacen']==1) {
         <div class="col-md-12">
           <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
           <center>
-            <div class="box-header with-border">              
+            <div class="box-header with-border">
                 <h4 class="box-title">Articulos </h4>
             </div>
           </center>                    
@@ -44,13 +44,16 @@ if ($_SESSION['almacen']==1) {
             <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
             <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
             <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">              
-            </div> 
-            
+            </div>             
             <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">
               <button title="Exportar" id="btnagregarservicio" data-toggle='popover' data-trigger='hover' data-content='Exportar articulos a Excel' data-placement='right' class='btn btn-success' title="Agregar nuevo articulo" onclick="exportarExcel()"><i class="fa fa-file-excel-o"></i> Exportar a Excel</button>
             </div>
+            
             <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">
-            </div> 
+            <a data-toggle="modal" href="#cambiarPreciosProductos">
+              <button title="Cambiar precios" id="btnCanbiarPrecios" data-toggle='popover' data-trigger='hover' data-content='Cambiar precios productos' data-placement='right' class='btn btn-primary' title="Cambiar precios"><i class="fa fa-usd"></i> Cambiar precios</button>
+            </a>
+            </div>
             <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">
               <select name="limite_registros" id="limite_registros" class="form-control selectpicker">
                 <option value="" disabled selected>Seleccionar limite</option>
@@ -158,7 +161,10 @@ if ($_SESSION['almacen']==1) {
               <div class="form-group col-lg-2 col-md-6 col-xs-12">
                 <label for="">Mayoreo</label>
                 <input class="form-control" type="number" name="mayoreo" id="mayoreo"  required placeholder="$">
-              </div>    
+              </div>
+              <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                
+              </div> 
               <div class="form-group col-lg-12 col-md-6 col-xs-12 text-center">
                 <label for="">Imagen:</label>
                 <input class="form-control" type="file" name="imagen" id="imagen" style="cursor:pointer">
@@ -178,10 +184,9 @@ if ($_SESSION['almacen']==1) {
                 </div>
               </div>
               <div class="form-group col-lg-4 col-md-6 col-xs-12 text-center">
-              </div>    
+              </div>
               <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i>  Guardar</button>
-
                 <button class="btn btn-danger" onclick="cancelarform()" type="button"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
               </div>
             </form>
@@ -204,7 +209,7 @@ require 'footer.php'
  ?>
  <script src="../public/js/JsBarcode.all.min.js"></script>
  <script src="../public/js/jquery.PrintArea.js"></script>
- <script src="scripts/articulosB1.js"></script>
+ <script src="scripts/articuloB1.js"></script>
  <?php 
 }
 

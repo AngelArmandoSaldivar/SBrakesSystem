@@ -310,16 +310,6 @@ function detalleCotizacion(idcotizacion, idsucursal) {
 	})
 }
 
-function generarReporte() {
-	let fecha_inicio = document.getElementById("fecha_inicio_reporte").value;
-	let fecha_final = document.getElementById("fecha_fin_reporte").value;
-
-	window.open(
-		`../reportes/exReporteVentas.php?fecha_inicio=${fecha_inicio}&fecha_final=${fecha_final}`,
-		'_blank'
-	);
-}
-
 function mostrarArticulosGarantias(idservicio) {
 	$.post("../ajax/venta.php?op=listarDetalleGarantias&id="+idservicio,function(r){
 		$('.loader').show();
@@ -1025,6 +1015,7 @@ function obtener_registros(ventas){
 }
 
 $(document).on('keyup', '#busqueda', function(){
+
 	var valorBusqueda=$(this).val();
 	if (valorBusqueda!="")
 	{
@@ -1074,6 +1065,24 @@ function mostrarInfoClient(idcliente) {
 				$("#tipoPrecio").val("Mayoreo").prop("disabled", true);
 			}
 		});
+		setTimeout(() => {
+			window.scroll({
+				top: 250,
+				left: 0,
+				behavior: 'smooth'
+			});
+		}, 1200);
+}
+
+$("#fecha_salida").change(fechaSalida);
+function fechaSalida() {
+	setTimeout(() => {
+		window.scroll({
+			top: 450,
+			left: 0,
+			behavior: 'smooth'
+		});
+	}, 1200);
 }
 
 function selectCliente() {

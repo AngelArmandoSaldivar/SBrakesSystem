@@ -411,7 +411,7 @@ if ($_SESSION['ventas']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/ventasB1.js"></script>
+ <script src="scripts/venta.js"></script>
  <?php 
 }
 

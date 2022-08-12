@@ -45,8 +45,23 @@ public function comprasultimos_10dias(){
 	return ejecutarConsulta($sql);
 }
 
+public function ventas_mensuales(){
+	$sql="SELECT DATE_FORMAT(fecha_entrada,'%M') AS fecha, SUM(total_venta) AS total FROM venta GROUP BY MONTH(fecha_entrada) ORDER BY fecha_entrada DESC LIMIT 0,1;";
+	return ejecutarConsulta($sql);
+}
+
 public function ventasultimos_12meses(){
-	$sql=" SELECT DATE_FORMAT(fecha_entrada,'%M') AS fecha, SUM(total_venta) AS total FROM venta GROUP BY MONTH(fecha_entrada) ORDER BY fecha_entrada DESC LIMIT 0,12";
+	$sql="SELECT idsucursal, DATE_FORMAT(fecha_entrada,'%M') AS fecha, SUM(total_venta) AS total FROM venta GROUP BY MONTH(fecha_entrada) ORDER BY fecha_entrada DESC LIMIT 0,12";
+	return ejecutarConsulta($sql);
+}
+
+public function serviciossultimos_12meses(){
+	$sql="SELECT idsucursal, DATE_FORMAT(fecha_entrada,'%M') AS fecha, SUM(total_servicio) AS total FROM servicio GROUP BY MONTH(fecha_entrada) ORDER BY fecha_entrada DESC LIMIT 0,12";
+	return ejecutarConsulta($sql);
+}
+
+public function ingresosultimos_12meses(){
+	$sql="SELECT idsucursal, DATE_FORMAT(fecha_hora,'%M') AS fecha, SUM(total_compra) AS total FROM ingreso GROUP BY MONTH(fecha_hora) ORDER BY fecha_hora DESC LIMIT 0,12";
 	return ejecutarConsulta($sql);
 }
 

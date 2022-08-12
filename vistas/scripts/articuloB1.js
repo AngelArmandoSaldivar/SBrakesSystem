@@ -7,6 +7,10 @@ function init(){
 		guardaryeditar(e);
 	})
 
+	$("#formEditArticulos").on("submit",function(e){
+		actualizarPrecios(e);
+	});
+
    //cargamos los items al select categoria
    $.post("../ajax/articulo.php?op=selectCategoria", function(r){
    	$("#idcategoria").html(r);
@@ -25,9 +29,285 @@ function init(){
 		$("#anterior").hide();
 	}
 	$("#imagenmuestra").hide();
+	$("#registerProduct").hide();
+	$("#containerProveedor").hide();
+	$("#containerMarca").hide();
+	$("#containerCategoria").hide();
 }
 
-function ocultarStock() {	
+$('#submit-file').on("click",function(e){
+	e.preventDefault();
+	$('#files').parse({
+		config: {
+			delimiter: "auto",
+			complete: displayHTMLTable,
+		},
+		before: function(file, inputElem)
+		{
+			//console.log("Parsing file...", file);
+		},
+		error: function(err, file)
+		{
+			//console.log("ERROR:", err, file);
+		},
+		complete: function()
+		{
+			//console.log("Done with all files");
+		}
+	});
+});
+
+function displayHTMLTable(results) {
+    let data = results.data;
+	var table = "<table class='responsive-table table table-hover table-bordered' style='border-radius: 15px;' id='tableArticulosRegister'>";
+	table += "<thead class='table-light' style='font-size:12px'>";
+	table += "<tr>";
+	table += "<th class='bg-info' scope='col' width:50px; style='width:80px;'>Clave</th>";
+	table += "<th id='' class='bg-info' scope='col' style='width:80px;'>Fmsi</th>";
+	table += "<th id='' class='bg-info' scope='col' style='width:80px;'>Producto</th>";
+	table += "<th id='' class='bg-info' scope='col' style='width:80px;'>Unidad</th>";
+	table += "<th id='' class='bg-info' scope='col' style='width:80px;'>Marca</th>";
+	table += "<th id='' class='bg-info' scope='col' style='width:80px;'>Proveedor</th>";
+	table += "<th id='' class='bg-info' scope='col' style='width:80px;'>Stock</th>";
+	table += "<th id='' class='bg-info' scope='col' style='width:80px;'>Pasillo</th>";
+	table += "<th id='' class='bg-info' scope='col' style='width:80px;'>Descripción</th>";
+	table += "<th id='' class='bg-info' scope='col'>Costo</th>";
+	table += "<th id='' class='bg-info' scope='col'>Publico</th>";
+	table += "<th id='' class='bg-info' scope='col'>Taller</th>";
+	table += "<th id='' class='bg-info' scope='col'>Credito Taller</th>";
+	table += "<th id='' class='bg-info' scope='col'>Mayoreo</th>";
+	table += "</tr>";
+	table += "</thead>";
+	table += "<tbody>";	
+    for (i = 0; i < data.length; i++) {		
+		for (let index = 0; index < data[i].length; index++) {
+			let extraccion = data[i][0].split(";");
+				table += "<tr style='font-size:11px; width:15px;' class='filas' name='fila"+[i]+"' id='fila"+[i]+"'>";
+				table += "<td id='claveArt[]' name='claveArt[]' value='"+extraccion[0]+"'>"; table += extraccion[0]; table += "</td>";
+				table += "<td id='fmsiArt[]' name='fmsiArt[]' value='"+extraccion[1]+"'>"; table += extraccion[1]; table += "</td>";
+				table += "<td id='productoArt[]' name='productoArt[]' value='"+extraccion[2]+"'>"; table += extraccion[2]; table += "</td>"; 
+				table += "<td id='unidadArt[]' name='unidadArt[]' value='"+extraccion[3]+"'>"; table += extraccion[3]; table += "</td>";
+				table += "<td id='marcaArt[]' name='marcaArt[]' value='"+extraccion[4]+"'>"; table += extraccion[4]; table += "</td>";
+				table += "<td id='provArt[]' name='provArt[]' value='"+extraccion[5]+"'>"; table += extraccion[5]; table += "</td>";
+				table += "<td id='stockArt[]' name='stockArt[]' value='"+extraccion[6]+"'>"; table += extraccion[6]; table += "</td>";
+				table += "<td id='pasilloArt[]' name='pasilloArt[]' value='"+extraccion[7]+"'>"; table += extraccion[7]; table += "</td>";
+				table += "<td id='descripcionArt[]' name='descripcionArt[]' value='"+extraccion[8]+"'>"; table += extraccion[8]; table += "</td>";				
+				table += "<td id='costoArt[]' name='costoArt[]' value='"+extraccion[9]+"'>"; table += extraccion[9]; table += "</td>";
+				table += "<td id='publicoArt[]' name='publicoArt[]' value='"+extraccion[10]+"'>"; table += extraccion[10]; table += "</td>";
+				table += "<td id='tallerArt[]' name='tallerArt[]' value='"+extraccion[11]+"'>"; table += extraccion[11]; table += "</td>";
+				table += "<td id='creditoArt[]' name='creditoArt[]' value='"+extraccion[12]+"'>"; table += extraccion[12]; table += "</td>";
+				table += "<td id='mayoreoArt[]' name='mayoreoArt[]' value='"+extraccion[13]+"'>"; table += extraccion[13]; table += "</td>";
+				table += "</tr>";
+		}		
+    }	
+	table += "</tbody>";
+    table += "</table>";
+    $("#parsed_csv_list").html(table);
+}
+
+function actualizarPrecios() {	
+	let claves = document.getElementsByName("claveArt[]");
+	let costos = document.getElementsByName("costoArt[]");
+	let publicos = document.getElementsByName("publicoArt[]");
+	let talleres = document.getElementsByName("tallerArt[]");
+	let creditos = document.getElementsByName("creditoArt[]");
+	let mayoreos = document.getElementsByName("mayoreoArt[]");
+	let array = [];
+	let arrayCosto = [];
+	let arrayPublico = [];
+	let arrayTaller = [];
+	let arrayCredito = [];
+	let arrayMayoreo = [];
+	let productosArray = [];
+	let productsNotFound = [];
+	let jsonArray = [];
+	let art = {};
+
+	for (let index = 0; index < claves.length; index++) {
+		array.push(claves[index].innerHTML);
+		arrayCosto.push(costos[index].innerHTML);
+		arrayPublico.push(publicos[index].innerHTML);
+		arrayTaller.push(talleres[index].innerHTML);
+		arrayCredito.push(creditos[index].innerHTML);
+		arrayMayoreo.push(mayoreos[index].innerHTML);
+	}
+	for (let index = 0; index < array.length; index++) {		
+		art.clave = array[index]
+		art.costo = arrayCosto[index]
+		art.publico = arrayPublico[index]
+		art.taller = arrayTaller[index]
+		art.credito = arrayCredito[index]
+		art.mayoreo = arrayMayoreo[index]
+		art.fila = index;		
+		jsonArray.push({...art})		
+	}
+	$.ajax({
+		url : '../ajax/articulo.php?op=listarArticulos',
+		type : 'POST',
+		dataType : 'html',
+		data: {},
+		contentType: false,
+		processData: false,
+		success: function(resultado){
+			resultado = JSON.parse(resultado)
+			jsonArray.forEach(element => {				
+				let found = resultado.find(res => res == element.clave)			
+				if(found != undefined) {
+					if(found != '') {
+						productosArray.push(element.fila);
+					}
+				} else {					
+					if(element != '') {						
+						productsNotFound.push(element.fila);
+					}
+				}
+			});
+		},		
+		complete: function() {
+			$.ajax({
+				url : '../ajax/articulo.php?op=actualizarPrecios&jsonArray='+JSON.stringify(jsonArray),
+				type : 'POST',
+				data: {"arrayJson": jsonArray},
+				beforeSend: () => {
+					swal({
+						title: 'Actualizando!',
+						html: 'Actualizando precios <b></b> de productos.',
+						timer: 2500,
+						timerProgressBar: true,
+						showConfirmButton: false,
+						imageUrl: '../files/images/loader.gif',
+					})
+				},
+				error: () => {
+					swal({
+						title: 'Error!',
+						html: 'Ha surgido un error',
+						timer: 1000,					
+						showConfirmButton: false,
+						type: 'warning',					
+					})
+				},
+				success: (res) => {
+					swal({
+						position: 'top-end',
+						type: 'success',
+						title: res,
+						showConfirmButton: false,
+						timer: 1500
+					});
+					for (let index = 0; index < productosArray.length; index++) {
+						$("#fila"+productosArray[index]).remove();						
+					}
+					$("#msgProducts").html("<h4>"+productsNotFound.length+" Productos no encontrados</h4>");
+					$("#containerFile").hide();
+					$("#containerUpdatesFiles").hide();
+					$("#registerProduct").show();
+					$("#containerProveedor").show();
+				}
+			})
+		},
+		dataType: 'html'
+	});	
+}
+
+$('#registerProduct').on("click",function(e){
+	e.preventDefault();
+	let claves = document.getElementsByName("claveArt[]");
+	let categorias = document.getElementsByName("productoArt[]");
+	let unidades = document.getElementsByName("unidadArt[]");
+	let marcas = document.getElementsByName("marcaArt[]");
+	let pasillos = document.getElementsByName("pasilloArt[]");
+	let descripciones = document.getElementsByName("descripcionArt[]");
+	let fmsis = document.getElementsByName("fmsiArt[]");
+	let proveedor = $("#idproveedorProducto").val();
+	let costos = document.getElementsByName("costoArt[]");
+	let publicos = document.getElementsByName("publicoArt[]");
+	let talleres = document.getElementsByName("tallerArt[]");
+	let creditos = document.getElementsByName("creditoArt[]");
+	let mayoreos = document.getElementsByName("mayoreoArt[]");	
+	let array = [],  arrayMarca = [], arrayPasillo = [], arrayDescripcion = [], arrayFmsi = [], arrayCosto = []; arrayPublico = [],
+	arrayTaller = [], arrayCredito = [], arrayMayoreo = [], arrayCategoria = [], arrayUnidad = [], jsonArray = [], art = {};
+
+
+	for (let index = 0; index < claves.length; index++) {
+		array.push(claves[index].innerHTML);
+		arrayCosto.push(costos[index].innerHTML);
+		arrayPublico.push(publicos[index].innerHTML);
+		arrayTaller.push(talleres[index].innerHTML);
+		arrayCredito.push(creditos[index].innerHTML);
+		arrayMayoreo.push(mayoreos[index].innerHTML);
+		arrayMarca.push(marcas[index].innerHTML);
+		arrayPasillo.push(pasillos[index].innerHTML);
+		arrayDescripcion.push(descripciones[index].innerHTML);
+		arrayFmsi.push(fmsis[index].innerHTML);
+		arrayCategoria.push(categorias[index].innerHTML);
+		arrayUnidad.push(unidades[index].innerHTML);
+	}
+	for (let index = 0; index < array.length; index++) {
+		art.clave = array[index];
+		art.costo = arrayCosto[index];
+		art.publico = arrayPublico[index];
+		art.taller = arrayTaller[index];
+		art.credito = arrayCredito[index];
+		art.mayoreo = arrayMayoreo[index];
+		art.marca = arrayMarca[index];
+		art.pasillo = arrayPasillo[index];
+		art.descripcion = arrayDescripcion[index];
+		art.fmsi = arrayFmsi[index];
+		art.categoria = arrayCategoria[index];
+		art.unidad = arrayUnidad[index];
+		art.idproveedor = proveedor;
+		if(art.clave != '') {
+			jsonArray.push({...art});
+		}		
+	}
+
+	var now = new Date();
+	var day =("0"+now.getDate()).slice(-2);
+	var month=("0"+(now.getMonth()+1)).slice(-2);
+	var today=now.getFullYear()+"-"+(month)+"-"+(day);
+	
+	$.ajax({
+		url : '../ajax/articulo.php?op=registrarProductos',
+		type : 'POST',
+		data: {"arrayJsonProductos": jsonArray, "fecha_ingreso": today},
+		beforeSend: () => {
+			swal({
+				title: 'Registro de productos!',
+				html: 'Registrando productos <b></b>.',				
+				showConfirmButton: true,
+				imageUrl: '../files/images/loader.gif',
+			})
+		},
+		error: () => {
+			swal({
+				title: 'Error!',
+				html: 'Ha surgido un error',
+				timer: 1000,					
+				showConfirmButton: false,
+				type: 'warning',
+			})
+		},
+		success: (res) => {
+			swal({
+				title: "Felicidades!",
+				text: res,
+				type: 'warning',
+				showConfirmButton: true,
+			})
+			$("#containerFile").show();
+			$("#containerUpdatesFiles").show();
+			$("#registerProduct").hide();
+			$("#msgProducts").hide();
+			$("#containerProveedor").hide();
+			$("#containerRegisterProducts").hide();
+			$("#tableArticulosRegister").remove();
+		}
+	})
+
+});
+
+function ocultarStock() {
 	$('.loaderSearch').show();
 	setTimeout(() => {
 		$('.loaderSearch').hide();
@@ -976,9 +1256,10 @@ function mostrar(idarticulo){
 		function(data,status)
 		{
 			data=JSON.parse(data);
-			mostrarform(true);	
+			console.log(data);
+			mostrarform(true);
 			$('.loader').hide();		
-			$("#idcategoria").val(data.idcategoria).prop("disabled", true);
+			$("#idcategoria").val(data.categoria).prop("disabled", true);
 			$("#idcategoria").selectpicker('refresh');
 			$("#idproveedor").val(data.idproveedor).prop("disabled", true);
 			$("#idproveedor").selectpicker('refresh');
