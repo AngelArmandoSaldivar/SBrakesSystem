@@ -37,28 +37,28 @@ if ($_SESSION['accesos']==1) {
               </div> 
               <div class="panel-body" id="formularioregistros">
                 <form action="" name="formulario" id="formulario" method="POST">
-                  <div class="form-group col-lg-6 col-md-12 col-xs-12">
+                  <div class="form-group col-lg-4 col-md-12 col-xs-12">
                     <label for="">Nombre(*):</label>
                     <input class="form-control" type="hidden" name="idusuario" id="idusuario">
                     <input class="form-control" type="text" name="nombre" id="nombre" maxlength="100" placeholder="Nombre" required>
                   </div>                 
-                  <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                  <div class="form-group col-lg-4 col-md-6 col-xs-12">
                     <label for="">Direccion</label>
                     <input class="form-control" type="text" name="direccion" id="direccion"  maxlength="70">
                   </div>
-                  <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                  <div class="form-group col-lg-4 col-md-6 col-xs-12">
                     <label for="">Telefono</label>
                     <input class="form-control" type="text" name="telefono" id="telefono" maxlength="20" placeholder="Número de telefono">
                   </div>
-                  <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                  <div class="form-group col-lg-4 col-md-6 col-xs-12">
                     <label for="">Email: </label>
                     <input class="form-control" type="email" name="email" id="email" maxlength="70" placeholder="email">
                   </div>
-                  <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                  <div class="form-group col-lg-4 col-md-6 col-xs-12">
                     <label for="">Cargo</label>
                     <input class="form-control" type="text" name="cargo" id="cargo" maxlength="20" placeholder="Cargo">
                   </div>
-                  <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                  <div class="form-group col-lg-4 col-md-6 col-xs-12">
                     <label for="">Nivel de usuario</label>
                     <select name="idNivelUsuario" id="idNivelUsuario" class="form-control selectpicker">
                       <option value="" disabled selected>Nivel de usuario</option>
@@ -73,8 +73,8 @@ if ($_SESSION['accesos']==1) {
                   </div>
                   <div class="form-group col-lg-6 col-md-6 col-xs-12">
                     <label for="">Clave(*):</label>
-                    <input class="form-control" type="text" name="clave" id="clave" maxlength="64" placeholder="Clave">
-                  </div>                
+                    <input class="form-control" type="password" name="clave" id="clave" maxlength="64" placeholder="Clave">
+                  </div>      
 
                   <div class="form-group col-lg-6 col-md-6 col-xs-12">
                     <label>Sucursales</label>
@@ -87,7 +87,13 @@ if ($_SESSION['accesos']==1) {
                     <ul id="permisos" style="">                      
                     </ul>
                   </div>
-                      
+                  
+                  <div class="form-group col-lg-12 col-md-6 col-xs-12 text-center">
+                    <label for="">Foto de perfil:</label>
+                    <input class="form-control" type="file" name="foto" id="foto" style="cursor:pointer">
+                    <input type="hidden" name="fotoactual" id="fotoactual">
+                    <img src="" alt="" width="450px" height="350" id="fotomuestra" class="img-thumbnail">
+                  </div>                                        
                   <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i>  Guardar</button>
                     <button class="btn btn-danger" onclick="cancelarform()" type="button"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
@@ -109,7 +115,7 @@ if ($_SESSION['accesos']==1) {
 }
 require 'footer.php';
  ?>
- <script src="scripts/usuarios.js"></script>
+ <script src="scripts/usuario.js"></script>
  <?php 
 }
 

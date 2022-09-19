@@ -165,7 +165,7 @@ function actualizarPrecios() {
 		},		
 		complete: function() {
 			$.ajax({
-				url : '../ajax/articulo.php?op=actualizarPrecios&jsonArray='+JSON.stringify(jsonArray),
+				url : '../ajax/articulo.php?op=actualizarPrecios',
 				type : 'POST',
 				data: {"arrayJson": jsonArray},
 				beforeSend: () => {

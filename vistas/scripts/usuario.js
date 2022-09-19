@@ -47,6 +47,10 @@ function limpiar(){
 	$("#idusuario").val("");
 	$("#idsucursal").val("");
 	$("#idNivelUsuario").val("");
+	$("#fotomuestra").attr("src","");
+	$("#fotoactual").val("");
+	$(".sucursales").prop("checked", false);
+	$(".permisos").prop("checked", false);
 }
 
 //funcion mostrar formulario
@@ -132,6 +136,8 @@ function mostrar(idusuario){
 		{							
 			data=JSON.parse(data);
 			mostrarform(true);
+			console.log(data);
+			var fotoPerfil = data.foto_perfil != '' ? data.foto_perfil : "default.jpg";
 			$("#nombre").val(data.nombre);
 			$("#idsucursal").val(data.idsucursal);
 			$("#idsucursal").selectpicker('refresh');
@@ -143,16 +149,15 @@ function mostrar(idusuario){
             $("#cargo").val(data.cargo);
             $("#login").val(data.login);
             $("#clave").val(data.clave);
-            $("#imagenmuestra").show();
-            $("#imagenmuestra").attr("src","../files/usuarios/"+data.imagen);
-            $("#imagenactual").val(data.imagen);
+            $("#fotomuestra").show();
+            $("#fotomuestra").attr("src","../files/usuarios/"+fotoPerfil);
+            $("#fotoactual").val("src","../files/usuarios/default.jpg");
             $("#idusuario").val(data.idusuario);
 		});
 		$.post("../ajax/usuario.php?op=permisos&id="+idusuario, function(r){
 			$("#permisos").html(r);
 		});
-		$.post("../ajax/usuario.php?op=listarSucursales&id="+idusuario, function(r){
-			console.log("SUCURSALES: ", r);
+		$.post("../ajax/usuario.php?op=listarSucursales&id="+idusuario, function(r){			
 			$("#sucursales").html(r);
 		});
 }

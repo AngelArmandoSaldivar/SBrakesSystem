@@ -10,10 +10,10 @@ public function __construct(){
 }
 
 //metodo insertar regiustro
-public function insertar($nombre,$direccion,$telefono,$email,$cargo,$acceso,$login,$clave,$permisos, $sucursales){
+public function insertar($nombre,$direccion,$telefono,$email,$cargo,$acceso,$login,$clave,$permisos, $sucursales, $foto){
 	//echo "Nombre: ".$nombre."<br>","Dirección: ". $direccion."<br>","Telefono: ".$telefono."<br>","Email: ".$email."<br>","Cargo: ".$cargo."<br>","Acceso: ".$acceso."<br>","Login: ".$login."<br>","Clave: ".$clave;
-	$sql="INSERT INTO usuario (nombre,direccion,telefono,email,cargo,acceso,login,clave,imagen, idsucursal) 
-						VALUES ('$nombre','$direccion','$telefono','$email','$cargo','$acceso','$login','$clave','1', '3')";
+	$sql="INSERT INTO usuario (nombre,direccion,telefono,email,cargo,acceso,login,clave,imagen, idsucursal, foto_perfil) 
+						VALUES ('$nombre','$direccion','$telefono','$email','$cargo','$acceso','$login','$clave','1', '3', '$foto')";
 	//return ejecutarConsulta($sql);
 	 $idusuarionew=ejecutarConsulta_retornarID($sql);
 	 $num_elementos=0;
@@ -37,8 +37,8 @@ public function insertar($nombre,$direccion,$telefono,$email,$cargo,$acceso,$log
 	 return $sw;
 }
 
-public function editar($idusuario,$nombre,$direccion,$telefono,$email,$cargo,$acceso,$login,$clave,$permisos, $sucursales){	
-	$sql="UPDATE usuario SET nombre='$nombre',direccion='$direccion',telefono='$telefono',email='$email',cargo='$cargo',acceso='$acceso',login='$login',clave='$clave', idsucursal='3'
+public function editar($idusuario,$nombre,$direccion,$telefono,$email,$cargo,$acceso,$login,$clave,$permisos, $sucursales, $foto){	
+	$sql="UPDATE usuario SET nombre='$nombre',direccion='$direccion',telefono='$telefono',email='$email',cargo='$cargo',acceso='$acceso',login='$login',clave='$clave', idsucursal='3', foto_perfil='$foto'
 	WHERE idusuario='$idusuario'";
 	 ejecutarConsulta($sql);
 

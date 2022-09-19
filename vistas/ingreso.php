@@ -417,7 +417,7 @@ if ($_SESSION['compras']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/recepcion.js"></script>
+ <script src="scripts/recepciones.js"></script>
  <?php 
 }
 

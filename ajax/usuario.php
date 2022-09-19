@@ -17,19 +17,29 @@ $login=isset($_POST["login"])? limpiarCadena($_POST["login"]):"";
 $clave=isset($_POST["clave"])? limpiarCadena($_POST["clave"]):"";
 $imagen=isset($_POST["imagen"])? limpiarCadena($_POST["imagen"]):"";
 $idsucursal=isset($_POST["idsucursal"])? limpiarCadena($_POST["idsucursal"]):"";
+$foto=isset($_POST["foto"])? limpiarCadena($_POST["foto"]):"";
 
 
 switch ($_GET["op"]) {
 	case 'guardaryeditar':	
 
 	//Hash SHA256 para la contraseña
+	if (!file_exists($_FILES['foto']['tmp_name'])|| !is_uploaded_file($_FILES['foto']['tmp_name'])) {
+		$foto=$_POST["fotoactual"];
+	}else{
+		$ext=explode(".", $_FILES["foto"]["name"]);	
+		if ($_FILES['foto']['type']=="image/jpg" || $_FILES['foto']['type']=="image/jpeg" || $_FILES['foto']['type']=="image/png") {			
+			$foto=round(microtime(true)).'.'. end($ext);
+			move_uploaded_file($_FILES["foto"]["tmp_name"], "../files/usuarios/".$foto);
+		}
+	}
 	$clavehash=hash("SHA256", $clave);
-	if (empty($idusuario)) {		
-		$rspta=$usuario->insertar($nombre,$direccion,$telefono,$email,$cargo,$acceso,$login,$clavehash,$_POST['permiso'], $_POST['sucursal']);
+	if (empty($idusuario)) {
+		$rspta=$usuario->insertar($nombre,$direccion,$telefono,$email,$cargo,$acceso,$login,$clavehash,$_POST['permiso'], $_POST['sucursal'], $foto);
 		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar todos los datos del usuario";
-	}else{		
-		$rspta=$usuario->editar($idusuario,$nombre,$direccion,$telefono,$email,$cargo,$acceso,$login,$clavehash,$_POST['permiso'], $_POST['sucursal']);
-		echo "Sucursal: '$idsucursal'";	
+	}else{
+		$rspta=$usuario->editar($idusuario,$nombre,$direccion,$telefono,$email,$cargo,$acceso,$login,$clavehash,$_POST['permiso'], $_POST['sucursal'], $foto);
+		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar todos los datos del usuario";
 	}
 	break;	
 
@@ -157,7 +167,7 @@ switch ($_GET["op"]) {
 			//mostramos la lista de permisos
 	while ($reg=$rspta->fetch_object()) {
 		$sw=in_array($reg->idpermiso,$valores)?'checked':'';
-		echo '<li><input type="checkbox" '.$sw.' name="permiso[]" value="'.$reg->idpermiso.'">'.$reg->nombre.'</li>';
+		echo '<li><input class="permisos" type="checkbox" '.$sw.' name="permiso[]" value="'.$reg->idpermiso.'">'.$reg->nombre.'</li>';
 	}
 	break;
 
@@ -171,7 +181,7 @@ switch ($_GET["op"]) {
 		}
 		while($res = $allSucursales->fetch_object()) {
 			$sw = in_array($res->idsucursal, $valores)?'checked':'';
-			echo '<li><input type="checkbox" '.$sw.' name="sucursal[]" value="'.$res->idsucursal.'">'.$res->nombre.'</li>';
+			echo '<li><input class="sucursales" type="checkbox" '.$sw.' name="sucursal[]" value="'.$res->idsucursal.'">'.$res->nombre.'</li>';
 		}
 
 		break;
@@ -231,6 +241,7 @@ switch ($_GET["op"]) {
 		in_array(7, $valores)?$_SESSION['consultav']=1:$_SESSION['consultav']=0;
 		in_array(7, $valores)?$_SESSION['sucursal']=1:$_SESSION['sucursal']=0;
 		in_array(8, $valores)?$_SESSION['kardex']=1:$_SESSION['kardex']=0;
+		in_array(9, $valores)?$_SESSION['caja']=1:$_SESSION['caja']=0;
 
 	}
 	echo json_encode($fetch);

@@ -137,8 +137,8 @@ if ($_SESSION['escritorio']==1) {
   </div>
 </div> -->
 
-<div class="col-lg-3 col-xs-6 shadow p-3 mb-5 bg-body rounded">
-  <div class="small-box bg-red">    
+<div class="col-lg-3">
+  <div class="small-box" style="background-color:#66BB6A; color:white;">
     <div class="inner">
     
       <h3>$<?php echo number_format($totalc); ?></h3>
@@ -159,9 +159,9 @@ if ($_SESSION['escritorio']==1) {
   </div>
 </div>
 
-<div class="col-lg-3 col-xs-6 shadow p-3 mb-5 bg-body rounded">
+<div class="col-lg-3">
 
-  <div class="small-box bg-aqua">
+  <div class="small-box" style="background-color:#26A69A; color:white;">
     
     <div class="inner">
       
@@ -187,9 +187,34 @@ if ($_SESSION['escritorio']==1) {
 
 </div>
 
+<div class="col-lg-3">
+  <div class="small-box" style="background-color:#EF5350; color:white;">    
+    <div class="inner">
+    
+      <h3>$<?php echo number_format($totalServicios); ?></h3>
 
-<div class="col-lg-3 col-xs-6 shadow p-3 mb-5 bg-body rounded">
-  <div class="small-box bg-red">    
+      <p>Servicios</p>
+    
+    </div>
+    
+    <div class="icon">
+      
+      <i class="fa fa-car"></i>
+    
+    </div>
+    
+    <a href="servicio.php" class="small-box-footer">
+      
+      Más info <i class="fa fa-arrow-circle-right"></i>
+    
+    </a>
+
+  </div>
+
+</div>
+
+<div class="col-lg-3">
+  <div class="small-box" style="background-color:#F06292; color:white;">    
     <div class="inner">
     
       <h3><?php echo number_format($totalProductos); ?></h3>
@@ -214,24 +239,23 @@ if ($_SESSION['escritorio']==1) {
 
 </div>
 
-
-<div class="col-lg-3 col-xs-6 shadow p-3 mb-5 bg-body rounded">
-  <div class="small-box bg-blue">    
+<div class="col-lg-3">
+  <div class="small-box" style="background-color:#FFA726; color:white;">    
     <div class="inner">
     
-      <h3>$<?php echo number_format($totalServicios); ?></h3>
+      <h3><?php echo number_format(0); ?></h3>
 
-      <p>Servicios</p>
+      <p>Cotizaciones</p>
     
     </div>
     
     <div class="icon">
       
-      <i class="fa fa-car"></i>
+      <i class="fa fa-product-hunt"></i>
     
     </div>
     
-    <a href="servicio.php" class="small-box-footer">
+    <a href="articulo.php" class="small-box-footer">
       
       Más info <i class="fa fa-arrow-circle-right"></i>
     
@@ -240,6 +264,84 @@ if ($_SESSION['escritorio']==1) {
   </div>
 
 </div>
+
+<div class="col-lg-3">
+  <div class="small-box" style="background-color:#4DD0E1; color:white;">    
+    <div class="inner">
+    
+      <h3><?php echo number_format(0); ?></h3>
+
+      <p>Categorias</p>
+    
+    </div>
+    
+    <div class="icon">
+      
+      <i class="fa fa-product-hunt"></i>
+    
+    </div>
+    
+    <a href="articulo.php" class="small-box-footer">
+      
+      Más info <i class="fa fa-arrow-circle-right"></i>
+    
+    </a>
+
+  </div>
+
+</div>
+
+<div class="col-lg-3">
+  <div class="small-box" style="background-color:#AB47BC; color:white;">    
+    <div class="inner">
+    
+      <h3><?php echo number_format(0); ?></h3>
+
+      <p>Pedidos</p>
+    
+    </div>
+    
+    <div class="icon">
+      
+      <i class="fa fa-product-hunt"></i>
+    
+    </div>
+    
+    <a href="articulo.php" class="small-box-footer">
+      
+      Más info <i class="fa fa-arrow-circle-right"></i>
+    
+    </a>
+
+  </div>
+
+</div>
+<div class="col-lg-3">
+  <div class="small-box" style="background-color:#78909C; color:white;">    
+    <div class="inner">
+    
+      <h3><?php echo number_format(0); ?></h3>
+
+      <p>Gastos</p>
+    
+    </div>
+    
+    <div class="icon">
+      
+      <i class="fa fa-product-hunt"></i>
+    
+    </div>
+    
+    <a href="articulo.php" class="small-box-footer">
+      
+      Más info <i class="fa fa-arrow-circle-right"></i>
+    
+    </a>
+
+  </div>
+
+</div>
+
 
 <div class="col-lg-12 col-xs-6 shadow p-3 mb-5 bg-body rounded">
   <div class="card">

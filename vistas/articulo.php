@@ -33,28 +33,27 @@ if ($_SESSION['almacen']==1) {
                     <input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;">
                   </center>
                 </div>
-            </section>  
-
+            </section>
             <div class="form-group col-lg-4 col-md-6 col-xs-12">
               <div class="loaderSearch">
                 <img src="../files/images/loader.gif" alt="" width="35px">
               </div>
             </div>
 
-            <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
+            <div class="form-group col-lg-4 col-sm-12 col-xs-12" style="text-align:left;"></div>
             <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
             <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">              
             </div>             
-            <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">
+            <div class="form-group col-lg-4 col-sm-4" style="text-align:left;">
               <button title="Exportar" id="btnagregarservicio" data-toggle='popover' data-trigger='hover' data-content='Exportar articulos a Excel' data-placement='right' class='btn btn-success' title="Agregar nuevo articulo" onclick="exportarExcel()"><i class="fa fa-file-excel-o"></i> Exportar a Excel</button>
             </div>
             
-            <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">
+            <div class="form-group col-lg-4 col-sm-4" style="text-align:left;">
             <a data-toggle="modal" href="#cambiarPreciosProductos">
               <button title="Cambiar precios" id="btnCanbiarPrecios" data-toggle='popover' data-trigger='hover' data-content='Cambiar precios productos' data-placement='right' class='btn btn-primary' title="Cambiar precios"><i class="fa fa-usd"></i> Cambiar precios</button>
             </a>
             </div>
-            <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">
+            <div class="form-group col-lg-4 col-sm-4" style="text-align:left;">
               <select name="limite_registros" id="limite_registros" class="form-control selectpicker">
                 <option value="" disabled selected>Seleccionar limite</option>
                 <option value="51">50 / Registros</option>
@@ -209,7 +208,7 @@ require 'footer.php'
  ?>
  <script src="../public/js/JsBarcode.all.min.js"></script>
  <script src="../public/js/jquery.PrintArea.js"></script>
- <script src="scripts/articuloB1.js"></script>
+ <script src="scripts/articulo.js"></script>
  <?php 
 }
 

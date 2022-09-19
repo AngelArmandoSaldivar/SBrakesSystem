@@ -28,7 +28,8 @@ if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function(pos
             }
         })
 
-}, function(error) {                           
+}, function(error) {      
+    console.log("LLegaste");                     
     alert("DEBE ACTIVAR LA UBICACIÓN PARA ACCEDER.");
     window.open(
         `../ajax/usuario.php?op=salir`,

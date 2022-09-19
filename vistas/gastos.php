@@ -104,7 +104,7 @@ if ($_SESSION['almacen']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/gastos.js"></script>
+ <script src="scripts/gasto.js"></script>
  <?php 
 }
 

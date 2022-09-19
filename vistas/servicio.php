@@ -653,7 +653,7 @@ if ($_SESSION['servicios']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/servicios.js"></script>
+ <script src="scripts/servicio.js"></script>
  <?php 
 }
 

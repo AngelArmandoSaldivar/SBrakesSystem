@@ -9,8 +9,7 @@ $("#frmAcceso").on('submit', function(e)
         {"logina":logina, "clavea":clavea},
         function(data)
         {
-            data=JSON.parse(data);
-            console.log("DATA: ", data);
+            data=JSON.parse(data);            
             if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function(pos) {    
                 //Si es aceptada guardamos lo latitud y longitud
                 var lat = pos.coords.latitude;
@@ -38,20 +37,21 @@ $("#frmAcceso").on('submit', function(e)
             
             }, function(error) {                           
                 alert("DEBE ACTIVAR LA UBICACIÓN PARA ACCEDER.");
-            });;
+            });
         });
-})
+        
+    })
 
 function sucursalSeleccionada(idsucursal) {
     $.post("../ajax/usuario.php?op=ingresarSucursal",
-        {"idsucursal":idsucursal},
-        function(data)
-        {
-            console.log(data);
-            window.open(
-                `escritorio.php`,
-                "_self"
-            );	
+    {"idsucursal":idsucursal},
+    function(data)
+    {
+        console.log(data);
+        window.open(
+            `escritorio.php`,
+            "_self"
+        );	
 
-        })
+    })        
 }

@@ -793,7 +793,6 @@
           <button class="btn btn-success" type="submit" name="btnGuardarProductoServicio" onclick="editarGuardarProductoGarantia()">Guardar</button>
           <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
         </div>
-      <!--</div>-->
       <div class="modal-footer">
         <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
       </div>
@@ -861,3 +860,314 @@
   </div>
 </div>
 
+<div class="modal fade" id="" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" style="width: 50% !important;">
+    <div class="modal-content" style="border-radius: 20px;">
+    <div class="alert alert-info alert-styled-left text-blue-800 content-group">
+        <span class="text-semibold">Estimado usuario</span>
+        Los campos remarcados con <span class="text-danger"> * </span> son necesarios.
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <input type="hidden" id="txtProceso" name="txtProceso" class="form-control" value="">
+    </div>
+
+    <div class="form-group">
+      <div class="row">
+        <div class="col-sm-12">
+          <label>Monto <span class="text-danger">*</span></label>
+          <div class="input-group bootstrap-touchspin"><span class="input-group-btn"><button class="btn btn-default bootstrap-touchspin-down" type="button">-</button></span><span class="input-group-addon bootstrap-touchspin-prefix">$</span><input type="text" id="txtCantidad" name="txtCantidad" placeholder="EJ. 35.00" class="touchspin-prefix form-control" value="0" style="text-transform: uppercase; display: block;" onkeyup="javascript:this.value=this.value.toUpperCase();" aria-required="true"><span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span><span class="input-group-btn"><button class="btn btn-default bootstrap-touchspin-up" type="button">+</button></span></div>
+        <label id="txtCantidad-error" class="validation-error-label validation-valid-label" for="txtCantidad">Correcto.</label></div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="modal-traspasos" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" style="width: 50% !important;">
+    <div class="modal-content" style="border-radius: 20px;">
+      <div class="modal-header">
+        <h4 class="modal-title">Realizar traspaso a caja 2</h4>
+        <button name="addProduct" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>       
+      </div>      
+      <form action="" name="formularioProductoServicio" id="formularioProductoServicio" method="POST">
+        <div class="panel-body table-responsive">
+            <div class="form-group col-lg-12 col-md-2 col-xs-6" id="divImpuesto">             
+              <div class="alert alert-info alert-styled-left text-blue-800 content-group">
+                  <label>Saldo final caja chica <span class="">: $</span></label>
+                  <input type="text" id="saldoCajaChica" disabled style="border:none;">
+                  <button type="button" class="close" data-dismiss="alert">×</button>
+                  <input type="hidden" id="txtProceso" name="txtProceso" class="form-control" value="">
+              </div>
+            </div>
+            <div class="form-group col-lg-6 col-md-2 col-xs-6" id="divImpuesto">              
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label>Monto <span class="text-danger">*</span></label>
+                    <div class="input-group bootstrap-touchspin"><span class="input-group-btn"><button class="btn btn-default bootstrap-touchspin-down" type="button">-</button></span><span class="input-group-addon bootstrap-touchspin-prefix">$</span><input type="text" id="txtMonto" name="txtMonto" placeholder="EJ. 1500" class="touchspin-prefix form-control" value="0" style="text-transform: uppercase; display: block;" onkeyup="javascript:this.value=this.value.toUpperCase();" aria-required="true"><span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span><span class="input-group-btn"><button class="btn btn-default bootstrap-touchspin-up" type="button">+</button></span></div>
+                    <label id="txtCantidad-error" class="validation-error-label validation-valid-label" for="txtCantidad">Correcto.</label></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-lg-6 col-md-2 col-xs-6" id="divImpuesto">              
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label>Fecha <span class="text-danger"></span></label>
+                      <input class="form-control" type="date" name="fecha_salida_traspaso" id="fecha_salida_traspaso">                    
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-lg-12 col-md-2 col-xs-6" id="divImpuesto">              
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label>Detalle <span class="text-danger"></span></label>
+                    <textarea class="form-control" id="detalle_traspaso" name="detalle_traspaso" rows="5" style="width: 100%;"></textarea>
+                    </div>
+                </div>
+              </div>
+            </div>
+            
+        </div>
+      </form>          
+      <div class="modal-footer">        
+      <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
+        <button class="btn btn-success" type="submit" name="btnGuardarTraspaso" id="btnGuardarTraspaso"><i class="fa fa-save"></i> Guardar</button>        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-abrir-caja" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" style="width: 50% !important;">
+    <div class="modal-content" style="border-radius: 20px;">
+      <div class="modal-header">
+        <h4 class="modal-title">Abrir caja </h4>
+        <button name="addProduct" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>       
+      </div>
+      <form action="" name="formularioProductoServicio" id="formularioProductoServicio" method="POST">
+        <div class="panel-body table-responsive">
+            <div class="form-group col-lg-12 col-md-2 col-xs-6" id="divImpuesto">             
+              <div class="alert alert-info alert-styled-left text-blue-800 content-group">
+                  <span class="text-semibold">Estimado usuario</span>
+                  Los campos remarcados con <span class="text-danger"> * </span> son necesarios.
+                  <button type="button" class="close" data-dismiss="alert">×</button>
+                  <input type="hidden" id="txtProceso" name="txtProceso" class="form-control" value="">
+              </div>
+            </div>
+            <div class="form-group col-lg-6 col-md-2 col-xs-6" id="divImpuesto">              
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label>Monto inicial<span class="text-danger">*</span></label>
+                    <div class="input-group bootstrap-touchspin"><span class="input-group-btn">
+                      <button class="btn btn-default bootstrap-touchspin-down" type="button">-</button>
+                      </span><span class="input-group-addon bootstrap-touchspin-prefix">$</span>
+                      <input type="text" id="txtMontoInicial" name="txtMontoInicial" placeholder="EJ. 1500" class="touchspin-prefix form-control" value="0" style="text-transform: uppercase; display: block;" onkeyup="javascript:this.value=this.value.toUpperCase();" aria-required="true">
+                      <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span><span class="input-group-btn"><button class="btn btn-default bootstrap-touchspin-up" type="button">+</button></span></div>
+                    <label id="txtCantidad-error" class="validation-error-label validation-valid-label" for="txtCantidad">Correcto.</label></div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-lg-6 col-md-2 col-xs-6" id="divImpuesto">              
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label>Fecha <span class="text-danger"></span></label>
+                      <input class="form-control" type="date" name="fecha_apertura_caja" id="fecha_apertura_caja">
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-lg-12 col-md-2 col-xs-6" id="divImpuesto">              
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label>Detalle <span class="text-danger"></span></label>
+                    <textarea class="form-control" id="detalle_apertura_caja" name="detalle_apertura_caja" rows="5" style="width: 100%;"></textarea>
+                    </div>
+                </div>
+              </div>
+            </div>
+            
+        </div>
+      </form>          
+      <div class="modal-footer">        
+      <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
+        <button class="btn btn-success" type="submit" name="btnAperturaCaja" id="btnAperturaCaja"><i class="fa fa-save"></i> Guardar</button>        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-gasto" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" style="width: 50% !important;">
+    <div class="modal-content" style="border-radius: 20px;">
+      <div class="modal-header">
+        <h4 class="modal-title">Crear nuevo gasto </h4>
+        <button name="addProduct" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>       
+      </div>
+      <form action="" name="formularioProductoServicio" id="formularioProductoServicio" method="POST">
+        <div class="panel-body table-responsive">
+            <div class="form-group col-lg-12 col-md-2 col-xs-6" id="divImpuesto">             
+              <div class="alert alert-info alert-styled-left text-blue-800 content-group">
+                  <span class="text-semibold">Estimado usuario</span>
+                  Los campos remarcados con <span class="text-danger"> * </span> son necesarios.
+                  <button type="button" class="close" data-dismiss="alert">×</button>
+                  <input type="hidden" id="txtProceso" name="txtProceso" class="form-control" value="">
+              </div>
+            </div>
+            <div class="form-group col-lg-12 col-md-2 col-xs-6" id="divImpuesto">              
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label>Descripción<span class="text-danger">*</span></label>
+                    <div class="input-group bootstrap-touchspin"><span class="input-group-btn">                     
+                      <textarea class="form-control" id="txtdescripcionGasto" name="txtdescripcionGasto" rows="3"></textarea>                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-lg-6 col-md-2 col-xs-6" id="divImpuesto">              
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label>Cantidad<span class="text-danger">*</span></label>
+                    <div class="input-group bootstrap-touchspin"><span class="input-group-btn">
+                      <button class="btn btn-default bootstrap-touchspin-down" type="button">-</button>  
+                      </span><span class="input-group-addon bootstrap-touchspin-prefix"></span>                    
+                      <input type="text" id="txtCantidadGasto" name="txtCantidadGasto" placeholder="EJ. 1500" class="touchspin-prefix form-control" value="0" style="text-transform: uppercase; display: block;" onkeyup="javascript:this.value=this.value.toUpperCase();" aria-required="true">
+                      <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span><span class="input-group-btn"><button class="btn btn-default bootstrap-touchspin-up" type="button">+</button></span></div>
+                    <label id="" class="validation-error-label validation-valid-label" for="">Correcto.</label></div>
+                  </div>
+              </div>
+            </div>
+
+            <div class="form-group col-lg-6 col-md-2 col-xs-6" id="divImpuesto">              
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label>Monto <span class="text-danger">*</span></label>
+                    <div class="input-group bootstrap-touchspin"><span class="input-group-btn">
+                      <button class="btn btn-default bootstrap-touchspin-down" type="button">-</button>
+                      </span><span class="input-group-addon bootstrap-touchspin-prefix">$</span>
+                      <input type="text" id="txtMontoGasto" name="txtMontoGasto" placeholder="EJ. 1500" class="touchspin-prefix form-control" value="0" style="text-transform: uppercase; display: block;" onkeyup="javascript:this.value=this.value.toUpperCase();" aria-required="true">
+                      <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span><span class="input-group-btn"><button class="btn btn-default bootstrap-touchspin-up" type="button">+</button></span></div>
+                    <label id="" class="validation-error-label validation-valid-label" for="">Correcto.</label></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-lg-6 col-md-2 col-xs-6" id="divImpuesto">              
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label>Método de pago<span class="text-danger">*</span></label>
+                    <div class="input-group bootstrap-touchspin"><span class="input-group-btn">                      
+                      <select name="metodoPagoGasto" id="metodoPagoGasto" class="form-control selectpicker" required>
+                        <option value="" selected disabled hidden>Forma de pago</option>
+                        <option value="Cheque">CHEQUE</option>
+                        <option value="Tarjeta">TARJETA</option>
+                        <option value="Efectivo">EFECTIVO</option>
+                        <option value="Deposito">DEPÓSITO</option>
+                        <option value="Tarjeta">TARJETA</option>
+                        <option value="Transferencia">TRASFERENCIA</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-lg-6 col-md-2 col-xs-6" id="divImpuesto">              
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label>Fecha<span class="text-danger">*</span></label>
+                    <div class="input-group bootstrap-touchspin"><span class="input-group-btn">                      
+                      <input class="form-control" type="date" name="fecha_gasto" id="fecha_gasto">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+                                    
+            <div class="form-group col-lg-12 col-md-2 col-xs-6" id="divImpuesto">              
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label>Información adicional <span class="text-danger"></span></label>
+                    <textarea class="form-control" id="informacionAdicionalGasto" name="informacionAdicionalGasto" rows="5" style="width: 100%;"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        </div>
+      </form>          
+      <div class="modal-footer">        
+      <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
+        <button class="btn btn-success" type="submit" name="btnGuardarGasto" id="btnGuardarGasto"><i class="fa fa-save"></i> Guardar</button>        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-cerrar-caja" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" style="width: 50% !important;">
+    <div class="modal-content" style="border-radius: 20px;">
+      <div class="modal-header">
+      <div class="col-md-12" id="inicio_caja">          
+        <div class="table-responsive">
+          <h4 class="text-left"><i class="fa fa-lock" aria-hidden="true"></i> Cerrar caja</h4>
+        </div>
+      </div>
+        <button name="addProduct" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>       
+      </div>
+      <form action="" name="formularioProductoServicio" id="formularioProductoServicio" method="POST">
+        <div class="panel-body table-responsive">
+            <div class="form-group col-lg-12 col-md-2 col-xs-6" id="divImpuesto">             
+              <div class="alert alert-info alert-styled-left text-blue-800 content-group">
+                  <span class="text-semibold">Estimado usuario</span>
+                  Los campos remarcados con <span class="text-danger"> * </span> son necesarios.
+                  <button type="button" class="close" data-dismiss="alert">×</button>
+                  <input type="hidden" id="txtProceso" name="txtProceso" class="form-control" value="">
+              </div>
+            </div>
+            <div class="form-group col-lg-6 col-md-2 col-xs-6" id="divImpuesto">              
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label>Monto final<span class="text-danger">*</span></label>
+                    <div class="input-group bootstrap-touchspin"><span class="input-group-btn"><button class="btn btn-default bootstrap-touchspin-down" type="button">-</button></span><span class="input-group-addon bootstrap-touchspin-prefix">$</span><input type="text" id="monto-final" name="monto-final" placeholder="EJ. 1500" class="touchspin-prefix form-control" value="0" style="text-transform: uppercase; display: block;" onkeyup="javascript:this.value=this.value.toUpperCase();" aria-required="true"><span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span><span class="input-group-btn"><button class="btn btn-default bootstrap-touchspin-up" type="button">+</button></span></div>
+                    <label id="txtCantidad-error" class="validation-error-label validation-valid-label" for="txtCantidad">Correcto.</label></div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-lg-6 col-md-2 col-xs-6" id="divImpuesto">              
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label>Fecha <span class="text-danger"></span></label>
+                      <input class="form-control" type="date" name="fecha_cierre_caja" id="fecha_cierre_caja">
+                    </div>
+                </div>
+              </div>
+            </div>
+            
+        </div>
+      </form>          
+      <div class="modal-footer">        
+      <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
+        <button class="btn btn-success" type="submit" name="btnCierreCaja" id="btnCierreCaja"><i class="fa fa-save"></i> Cerrar Caja</button>        
+      </div>
+    </div>
+  </div>
+</div>

@@ -9,7 +9,7 @@ if (!isset($_SESSION['nombre'])) {
 
 require 'header.php';
 
-if ($_SESSION['servicios']==1) {
+if ($_SESSION['almacen']==1) {
 
  ?>
 <div class="content-wrapper">

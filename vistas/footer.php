@@ -20,6 +20,8 @@
 <script src="plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.1/howler.min.js"></script>
 <script src="../public/PapaParse/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9/sha256.js"></script>
 <script src="scripts/footer.js"></script>
 
 <!-- SCRIPT MATERIAL UI -->

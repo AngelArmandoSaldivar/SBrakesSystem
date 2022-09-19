@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
   <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">  
   <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+  <script src="https://kit.fontawesome.com/9a94a93f86.js" crossorigin="anonymous"></script>
   <style>
     .loader {
       display: none;
@@ -51,6 +52,10 @@
       cursor: pointer;
       margin-left: 5px;
       margin-top: 2px
+    }
+    body {
+      font-family: "Roboto", Helvetica Neue, Helvetica, Arial, sans-serif;
+      
     }
   </style>
 </head> 
@@ -170,10 +175,7 @@
       </li>
     </ul>
   </nav>
-  <!-- /.navbar -->
-
-  <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4" style="height: 1000px;">
+  <aside class="main-sidebar sidebar-dark-primary elevation-4" style="height: 700px;">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
       <img src="../files/images/BrakeOneBrembo.png" alt="B1S" class="" style="opacity: .8" height="20" width="100">
@@ -222,12 +224,34 @@
             if ($_SESSION['escritorio']==1) {
               echo '<li class="nav-item">
               <a href="cotizaciones.php" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>             
+                <i class="nav-icon fas fa-mobile"></i>             
                 <p>
                   Cotizaciones
                   <span class="right badge badge-danger">0</span>
                 </p>
               </a>
+            </li>';
+            }
+          ?> 
+
+          <?php 
+            if ($_SESSION['caja']==1) {
+              echo ' <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="fa fa-dropbox"></i>
+                <p>
+                  Caja
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="caja.php" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Caja</p>
+                  </a>
+                </li>                
+              </ul>
             </li>';
             }
           ?> 

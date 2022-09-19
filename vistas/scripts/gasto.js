@@ -1,5 +1,8 @@
 var tabla;
-
+var now = new Date();
+var day =("0"+now.getDate()).slice(-2);
+var month=("0"+(now.getMonth()+1)).slice(-2);
+const TODAY = now.getFullYear()+"-"+(month)+"-"+(day);
 //funcion que se ejecuta al inicio
 function init(){	
    mostrarform(false);   
@@ -18,6 +21,45 @@ function init(){
 	var today=now.getFullYear()+"-"+(month)+"-"+(day);
 
 	$("#fecha_hora").val(today);
+	evaluarCaja();
+}
+
+function evaluarCaja() {
+	$.ajax({
+        url : '../ajax/caja.php?op=mostrarCaja',
+        type : 'POST',
+        data: {"fecha_actual" : TODAY},
+        error: () => {
+            swal({
+                title: 'Error!',
+                html: 'Ha surgido un error',
+                timer: 1000,					
+                showConfirmButton: false,
+                type: 'warning',					
+            })
+        },
+        success: (data) => {
+            data=JSON.parse(data); 
+			            
+            if(data.estado == "CERRADO") {			
+				swal({
+					title: 'Ups!',
+					text: "La caja aun no ha sido abierta.",
+					imageUrl: '../files/images/unlock.gif',
+					imageWidth: 300,
+					imageHeight: 150,
+					showConfirmButton: true,
+					imageAlt: 'Custom image',
+				});
+				setTimeout(() => {
+					window.open(
+						`caja.php`,
+						"_self"
+					);
+				}, 1500);	
+			}		
+        }
+    })
 }
 
 function totalGastos() {

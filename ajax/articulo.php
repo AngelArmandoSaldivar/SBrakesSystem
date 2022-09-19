@@ -38,8 +38,7 @@ if(!isset($_SESSION["nombre"])) {
 				}
 			}
 			if (empty($idarticulo)) {
-				$rspta=$articulo->insertar($codigo,$costo, $barcode, $credito_taller, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $mayoreo, $pasillo, $publico, $stock, $taller, $unidades, $idsucursal, $imagen);			
-				echo $rspta;
+				$rspta=$articulo->insertar($codigo,$costo, $barcode, $credito_taller, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $mayoreo, $pasillo, $publico, $stock, $taller, $unidades, $idsucursal, $imagen);
 				echo $rspta ? "Articulo registrado correctamente" : "No se registro correctamente";
 			}else{
 				$rspta=$articulo->editar($idarticulo,$codigo,$costo, $barcode, $credito_taller, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $mayoreo, $pasillo, $publico, $stock, $taller, $unidades, $imagen);
@@ -47,7 +46,7 @@ if(!isset($_SESSION["nombre"])) {
 			}
 		break;
 		case 'actualizarPrecios':
-			$array = $_POST["arrayJson"];			
+			$array = $_POST["arrayJson"];
 			$rspta = $articulo->actualizarPrecios($array);
 			echo $rspta ? "Precios actualizados correctamente" : "Error!";
 			break;
@@ -164,9 +163,9 @@ if(!isset($_SESSION["nombre"])) {
 				<button id='botonCredito' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarCredito()'><i class='fa fa-eye'></i> Mostrar Credito</button>
 				<button id='botonMostrador' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarPublico()'><i class='fa fa-eye'></i> Mostrar Publico</button>
 				<button id='botonCosto' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarCosto()'><i class='fa fa-eye'></i> Mostrar Costo</button>
-				<table class='responsive-table table table-hover table-bordered' style='border-radius: 15px;' id='tableArticulos'>
-					<thead class='table-light' style='font-size:12px'>
-						<tr background: linear-gradient(337deg, rgba(0, 1, 255, 0.682) 0%, rgba(255, 0, 0, 0.71) 50%, rgba(0, 246, 144, 0.737) 100%);>
+				<table class='table table-xxs table-hover' id='tableArticulos'>
+					<thead class='table-light'>
+						<tr>
 							<th id='thClave' class='bg-info w-40' scope='col'>Clave
 							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarClave()'><i class='fa fa-eye-slash'></i></button>							
 							</th>
@@ -179,21 +178,16 @@ if(!isset($_SESSION["nombre"])) {
 							<th id='thStock' class='bg-info' scope='col'>Stock
 							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarStock()'><i class='fa fa-eye-slash'></i></button></th>
 							<th id='thMayoreo' class='bg-info' scope='col'>Mayoreo
-								<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarMayoreo()'><i class='fa fa-eye-slash'></i></button>
-								<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='copiarMayoreo()'><i class='fa fa-files-o'></i></button>
+								<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarMayoreo()'><i class='fa fa-eye-slash'></i></button>								
 							</th>
 							<th id='thTaller' class='bg-info' scope='col'>Taller
-							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarTaller()'><i class='fa fa-eye-slash'></i></button>
-							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='copiarTaller()'><i class='fa fa-files-o'></i></button></th>
+							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarTaller()'><i class='fa fa-eye-slash'></i></button>							
 							<th id='thCredito' class='bg-info' scope='col'>Crédito Taller
-							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarCredito()'><i class='fa fa-eye-slash'></i></button>
-							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='copiarCredito()'><i class='fa fa-files-o'></i></button></th>
+							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarCredito()'><i class='fa fa-eye-slash'></i></button>							
 							<th id='thPublico' class='bg-info' scope='col'>Publico Mostrador
-							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarPublico()'><i class='fa fa-eye-slash'></i></button>
-							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='copiarPublico()'><i class='fa fa-files-o'></i></button></th>
+							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarPublico()'><i class='fa fa-eye-slash'></i></button>							
 							<th id='thCosto' class='bg-info' scope='col'>Costo
-							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarCosto()'><i class='fa fa-eye-slash'></i></button>
-							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='copiarCosto()'><i class='fa fa-files-o'></i></button></th>
+							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarCosto()'><i class='fa fa-eye-slash'></i></button>							
 							<th class='bg-info' scope='col'>Acciones</th>
 						</tr>
 					</thead>
@@ -205,7 +199,7 @@ if(!isset($_SESSION["nombre"])) {
 					$creditoMiles = number_format($fila['credito_taller'], 2);
 					$mayoreoMiles = number_format($fila['mayoreo'], 2);
 					$descrip = $fila['descripcion'];
-					$delit = substr($descrip, 0,18);
+					$delit = substr($descrip, 0,12);
 					$delitCodigo = substr($fila['codigo'], 0, 50);
 					$delitFmsi = substr($fila['fmsi'], 0, 50);
 					$stock_mdx = '';					
@@ -223,16 +217,16 @@ if(!isset($_SESSION["nombre"])) {
 								<td><p>$ ".$publicMiles."</p></td>
 								<td><p>$ ".$costoMiles."</p></td>
 								<td>
-										<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
-										<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar articulo' data-placement='bottom' class='btn btn-warning btn-xs' onclick='editarArticulo(".$fila["idarticulo"].")'><i class='fa fa-pencil'></i></button>
-										<button title='Eliminar' data-toggle='popover' data-trigger='hover' data-content='Eliminar articulo' data-placement='top' class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idarticulo"].")')><i class='fa fa-close'></i></button>
-										<a data-toggle='modal' href='#solicitarArticulo'>
-											<button title='Solicitar' data-toggle='popover' data-trigger='hover' data-content='Solicitar articulo' data-placement='bottom' class='btn btn-info btn-xs' onclick='mostrarArticuloSolicitud(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button>
-										</a>										
-										<!--<span data-tooltip='Activar articulo'><button class='btn btn-primary btn-xs' onclick='activar(".$fila["idarticulo"].")'><i class='fa fa-check'></i></button></span>-->									
+									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
+									<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar articulo' data-placement='bottom' class='btn btn-warning btn-xs' onclick='editarArticulo(".$fila["idarticulo"].")'><i class='fa fa-pencil'></i></button>
+									<button title='Eliminar' data-toggle='popover' data-trigger='hover' data-content='Eliminar articulo' data-placement='top' class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idarticulo"].")')><i class='fa fa-close'></i></button>
+									<a data-toggle='modal' href='#solicitarArticulo'>
+										<button title='Solicitar' data-toggle='popover' data-trigger='hover' data-content='Solicitar articulo' data-placement='bottom' class='btn btn-info btn-xs' onclick='mostrarArticuloSolicitud(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button>
+									</a>										
+									<!--<span data-tooltip='Activar articulo'><button class='btn btn-primary btn-xs' onclick='activar(".$fila["idarticulo"].")'><i class='fa fa-check'></i></button></span>-->									
 								</td>
 							</tr>
-							";							
+							";
 						} else if($fila["stock"] < $fila["stock_ideal"]){							
 								echo "<tr style='color:red; font-size:11px;'>
 								<td style='width:20px'>".$fila['codigo']."</td>

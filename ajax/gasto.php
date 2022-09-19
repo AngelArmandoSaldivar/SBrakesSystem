@@ -16,8 +16,7 @@ $informacionAdicional=isset($_POST["informacionAdicional"])? limpiarCadena($_POS
 switch ($_GET["op"]) {
 	case 'guardaryeditar':
 	if (empty($idgasto)) {
-		$rspta=$gasto->insertar($descripcion, $cantidad, $total_gasto, $metodoPago, $informacionAdicional, $idsucursal, $fecha_hora);        
-		echo "ID GASTO: ".$idgasto;
+		$rspta=$gasto->insertar($descripcion, $cantidad, $total_gasto, $metodoPago, $informacionAdicional, $idsucursal, $fecha_hora);
 		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
 	} else {
         $rspta=$gasto->editar($idgasto, $descripcion, $cantidad, $total_gasto, $metodoPago, $informacionAdicional, $fecha_hora);
@@ -49,16 +48,17 @@ switch ($_GET["op"]) {
 		break;
 
     case 'listar':
-		$consulta=" SELECT descripcion, cantidad, total_gasto, metodo_pago, informacion_adicional, estado, idgasto, DATE(fecha_hora) as fecha FROM gastos ORDER BY idgasto DESC LIMIT 20";
+			$consulta=" SELECT idsucursal, descripcion, cantidad, total_gasto, metodo_pago, informacion_adicional, estado, idgasto, DATE(fecha_hora) as fecha FROM gastos WHERE idsucursal='$idsucursal' ORDER BY idgasto DESC LIMIT 20";
 			$termino= "";
 			if(isset($_POST['gastos']))
 			{
 				$termino=$conexion->real_escape_string($_POST['gastos']);
-				$consulta="SELECT descripcion, cantidad, total_gasto, metodo_pago, informacion_adicional, estado, idgasto, DATE(fecha_hora) as fecha FROM gastos WHERE
+				$consulta="SELECT idsucursal, descripcion, cantidad, total_gasto, metodo_pago, informacion_adicional, estado, idgasto, DATE(fecha_hora) as fecha FROM gastos 
+				WHERE idsucursal='$idsucursal' AND
 				descripcion LIKE '%".$termino."%' LIMIT 20";
 			}
 			$consultaBD=$conexion->query($consulta);
-			if($consultaBD->num_rows>=1){			
+			if($consultaBD->num_rows>=1){
 				echo "				
 				<table class='responsive-table table table-hover table-bordered' style='font-size:12px'>
 					<thead class='table-light'>
