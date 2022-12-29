@@ -15,10 +15,178 @@ if(!isset($_SESSION["nombre"])) {
             $rspta = $caja->mostrar($idsucursal, $fecha);
             echo json_encode($rspta);
             break;
+
+        case 'ultimoRegistro':
+            $rspta = $caja->ultimoRegistroCaja($idsucursal);
+            echo json_encode($rspta);
+            break;
+
+        case 'mostrarServicioMontoPagado':
+            $IDSERVICIO = $_POST["idservicio"];                        
+            $rspta = $caja->pagosViejos($idsucursal, $IDSERVICIO);
+            echo json_encode($rspta);
+            break;
+        case 'listarFoliosValidar':
+            require_once "../modelos/Servicios.php";
+            $servicios = new Servicios();            
+            $rspta = $servicios->mostrar($_POST["servicioid"]);
+            //echo '<option value="" disabled selected>Seleccionar folio</option>';
+            /*while ($reg = $rspta->fetch_object()) {                
+                if($reg->remision != "" && $reg->idsucursal == $idsucursal && $reg->pagado < $reg->total_servicio) {
+                    echo '<option value='.$reg->idservicio.'>'."R-".$reg->remision.'</option>';
+                }
+            }*/
+
+            echo json_encode($rspta);
+
+            break;
+
+        case 'saldoMesPasado':
+            $rspta = $caja->saldoMesPasado($idsucursal);            
+            echo json_encode($rspta);            
+            break; 
+        case 'listarFolios':
+            require_once "../modelos/Servicios.php";
+            $servicio = new Servicios();
+            $rspta = $servicio->listar($idsucursal);
+            echo '<option value="" disabled selected>Seleccionar folio</option>';
+            while ($reg = $rspta->fetch_object()) {                
+                if($reg->remision != "" && $reg->idsucursal == $idsucursal && $reg->pagado < $reg->total_servicio) {
+                    echo '<option value='.$reg->idservicio.'>'."R-".$reg->remision.'</option>';
+                }
+            }
+            break;
+        case 'guardarConciliacion':
+            $rspta = $caja->guardarConcicilacion($_POST["fecha"], $_POST["cargo"], $_POST["abono"], $_POST["tipoMov"], $_POST["idCliente"], $_POST["descripicion"], $_POST["observaciones"], $_POST["idservicio"], $idsucursal);
+            echo $rspta ? "Conciliacion guardada correctamente" : "La conciliacion no se pudo guardar correctamente";
+            break;
+        case 'listarClientes':
+            require_once "../modelos/Persona.php";
+			$persona = new Persona();
+            $rspta = $persona->listarc();
+            echo '<option value="" disabled selected>Seleccionar cliente</option>';
+			while ($reg = $rspta->fetch_object()) {
+				echo '<option value='.$reg->idpersona.'>'.$reg->nombre.'</option>';
+			}
+            break; 
+        case 'editarConciliacion':
+            $IDPAGO = $_POST["id_pago"];
+            $FECHA = $_POST["fecha"];
+            $TIPO_MOVIMIENTO = $_POST["tipo_movimiento"];
+            $CARGO = $_POST["cargo"];
+            $ABONO = $_POST["abono"];
+            $COLOR_CARGO = $_POST["colorCargo"];
+            $COLOR_IMPORTE = $_POST["colorImporte"];
+            $OBSERVACIONES = $_POST["observaciones"];
+            $IDSERVICIO = $_POST["idservicio"];
+            $IDSERVICIOSUNICOS = $_POST["idServiciosUnicos"];
+            $MONTOVIEJO = $_POST["montoViejo"];
+            $rspta = $caja->editarConciliacion($IDPAGO, $FECHA, $TIPO_MOVIMIENTO, $CARGO, $ABONO, $COLOR_CARGO, $COLOR_IMPORTE, $OBSERVACIONES, $MONTOVIEJO, $IDSERVICIO, $IDSERVICIOSUNICOS);
+            echo $rspta ? "Conciliaciones actualizadas correctamente" : "Error al actualizar conciliaciones";
+            break;
+        case 'conciliacionSaldos':
+            $rspta = $caja->saldoFila($idsucursal);
+            $array = [];
+            while ($reg=$rspta->fetch_object()) {
+                array_push($array, $reg);
+            }
+            echo json_encode($array);
+            break;
+        case 'conciliacion':
+            $rspta = $caja->mostrarConciliacion($idsucursal, "");
+            if(!empty($_POST['busqueda'])) {
+				$termino=$conexion->real_escape_string($_POST['busqueda']);
+				usleep(100000);
+				$rspta=$caja->mostrarConciliacion($idsucursal, $termino);
+			} 
+            $contador = 0;
+            $consultaBD=$rspta;
+            if($consultaBD->num_rows>=1){
+            echo '            
+            <table class="table table-xxs" style="font-size:12px" id="tableConciliacion">
+                <tbody>
+                    <thead class="table-light">
+                        <tr>
+                            <th id="thConc">Fecha</th>
+                            <th id="thConc">Tipo de mov</th>
+                            <th id="thConc">Descripcion</th>
+                            <th id="thConc">Cargo</th>  
+                            <th id="thConc">Abono</th>
+                            <th id="thConc">Saldo</th>
+                            <th id="thConc">Cuenta No.</th>
+                            <th id="thConc">Observaciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>';
+            $total = 0.0;                    
+            while ($fila=$rspta->fetch_array(MYSQLI_ASSOC)) {
+                echo '
+                    <tr>
+                        <td>
+                            <input type="hidden" id="idservicio[]" name="idservicio[]" value='.$fila["idservicio"].'></input>
+                            <input type="hidden" id="idpago[]" name="idpago[]" value="'.$fila["idpago"].'">
+                            </input><input class="touchspin-prefix form-control" name="fecha_conciliacion[]" id="fecha_conciliacion[]" type="date" value='.$fila["fecha"].'></input>
+                        </td>
+                        <td>
+                            <select class="touchspin-prefix form-control" name="forma_pago_conciliacion[]" id="forma_pago_conciliacion[]" required>
+                                <option value='.$fila["forma_pago"].' selected disabled hidden>'.$fila["forma_pago"].'</option>                                    
+                                <option value="Tarjeta">TARJETA</option>
+                                <option value="Deposito">DEPÓSITO</option>
+                                <option value="Transferencia">TRASFERENCIA</option>
+                            </select>
+                        </td>
+                        <td style="width:10%">'.$fila["nombre"] . " <b>REM." . $fila["remision"]. "</b>".'</td>
+                        <td>
+                            <div class="form-group">                            
+                                <div class="col-sm-12">                                
+                                    <div class="input-group bootstrap-touchspin">
+                                    <span class="input-group-btn">                                
+                                    </span><span class="input-group-addon bootstrap-touchspin-prefix">$</span>                                
+                                    <input class="touchspin-prefix form-control" name="cargo_conciliacion[]" id="cargo_conciliacion[]" type="number" value='.$fila["cargo"].'></input>
+                                    <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>                                
+                                    <span class="input-group-btn"><input type="color" class="btn btn-default bootstrap-touchspin-up" name="colorCargo[]" id="colorCargo[]" value='.$fila["color_cargo"].' title="Seleccionar color" style="cursor:pointer;"></span></div>                                
+                                </div>                               
+                            </div>    
+                        </td>                       
+                        <td>
+                            <div class="form-group">                            
+                                <div class="col-sm-12">                                
+                                    <div class="input-group bootstrap-touchspin"><span class="input-group-btn">                                
+                                    </span><span class="input-group-addon bootstrap-touchspin-prefix">$</span>                                                                    
+                                    <input class="touchspin-prefix form-control" name="importe_conciliarion[]" id="importe_conciliarion[]" type="number" value='.$fila["importe"].'></input>
+                                    <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>                                
+                                    <span class="input-group-btn"><input type="color" class="btn btn-default bootstrap-touchspin-up" name="colorImporte[]" id="colorImporte[]" value='.$fila["color_importe"].' title="Seleccionar color" style="cursor:pointer;"></span></div>                                
+                                </div>                               
+                            </div>                                                         
+                        </td>
+                        <td id='.'saldo'.$contador.'>$</td>
+                        <td></td>
+                        <td><input class="touchspin-prefix form-control" name="observaciones_conciliacion[]" id="observaciones_conciliacion[]" type="text" value='.$fila["observaciones"].'></input></td>
+                    </tr>
+                ';
+                $contador ++;
+            }
+            echo '<tbody>
+                    <tr>
+                        <th>Fecha</th>                                                        
+                        <th>Tipo de mov</th>                                                        
+                        <th>Descripcion</th>
+                        <th>Cargo</th>
+                        <th>Abono</th>
+                        <th>Saldo</th>
+                        <th>Cuenta No.</th>
+                        <th>Observaciones</th>                     
+                    </tr>                     
+                    </tbody>
+                </table>
+                </div>';
+
+            }            
+            break;
         
         case 'cierreCaja':
             $fechaCierre = $_POST["fecha_cierre"];
-            $montoFinal = $_POST["montoFinal"];
+            $montoFinal = $_POST["montoFinal"];             
             $rspta = $caja->montoFinal($fechaCierre, $montoFinal, $idsucursal);
             echo $rspta ? "Cierre de caja con exito" : "No se pudo cerrar caja";
             break;
@@ -55,7 +223,12 @@ if(!isset($_SESSION["nombre"])) {
             echo $rspta ? "Caja abierta correctamente" : "No se pudo abrir la caja";
             break;
 
-        case 'montoInicial':                
+        case 'montoInicialHoy':
+            $rspta = $caja->montoInicialHoy($_POST["fecha"], $idsucursal);
+            echo json_encode($rspta);
+            break;
+
+        case 'montoInicial':
             $rspta = $caja->montoInicial($idsucursal);               
             echo json_encode($rspta);
             break;
@@ -374,7 +547,7 @@ if(!isset($_SESSION["nombre"])) {
                     break;
 
         case 'registroTraspaso':
-            $monto = $_POST["montoTraspaso"];    
+            $monto = $_POST["montoTraspaso"];
             $fecha = $_POST["fechaTraspaso"];
             $rspta = $caja->registroTraspaso($monto, $idsucursal, $fecha);
             echo $rspta ? "Traspaso realizado correctamente" : "No se pudo realizar el traspaso";

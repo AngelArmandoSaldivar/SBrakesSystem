@@ -9,7 +9,7 @@ if (!isset($_SESSION['nombre'])) {
 require 'header.php';
 if ($_SESSION['accesos']==1) {
  ?>
-    <div class="content-wrapper">    
+    <div class="content-wrapper" id="contenedor-principal">    
       <section class="content">      
         <div class="row">
           <div class="col-md-12">
@@ -58,64 +58,65 @@ if ($_SESSION['accesos']==1) {
                     <label for="">Cargo</label>
                     <input class="form-control" type="text" name="cargo" id="cargo" maxlength="20" placeholder="Cargo">
                   </div>
-                  <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                  <div class="form-group col-lg-2 col-md-6 col-xs-12">
                     <label for="">Nivel de usuario</label>
                     <select name="idNivelUsuario" id="idNivelUsuario" class="form-control selectpicker">
                       <option value="" disabled selected>Nivel de usuario</option>
                       <option value="admin">Administrador</option>
-                      <option value="mostrador">Mostrador</option>
                       <option value="manager">Manager</option>
+                      <option value="mostrador">Mostrador</option>
+                      <option value="bodega">Bodega</option>
                     </select>
                   </div>
-                  <div class="form-group col-lg-6 col-md-6 col-xs-12">
+
+                  <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                    <label for="">Sucursal(*):</label>
+                    <select name="idsucursal" id="idsucursal" class="form-control selectpicker" data-live-search="true" required></select>
+                  </div>
+                  <br>
+
+                  <div class="form-group col-lg-4 col-md-6 col-xs-12">
                     <label for="">Login(*):</label>
                     <input class="form-control" type="text" name="login" id="login" maxlength="20" placeholder="nombre de usuario" required>
                   </div>
-                  <div class="form-group col-lg-6 col-md-6 col-xs-12">
+
+                  <div class="form-group col-lg-4 col-md-6 col-xs-12">
                     <label for="">Clave(*):</label>
                     <input class="form-control" type="password" name="clave" id="clave" maxlength="64" placeholder="Clave">
-                  </div>      
-
-                  <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                    <label>Sucursales</label>
-                    <ul id="sucursales" style="">
-                    </ul>
                   </div>
 
-                  <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                    <label>Permisos</label>
-                    <ul id="permisos" style="">                      
-                    </ul>
-                  </div>
-                  
-                  <div class="form-group col-lg-12 col-md-6 col-xs-12 text-center">
+                  <div class="form-group col-lg-4 col-md-6 col-xs-12 text-center">
                     <label for="">Foto de perfil:</label>
                     <input class="form-control" type="file" name="foto" id="foto" style="cursor:pointer">
-                    <input type="hidden" name="fotoactual" id="fotoactual">
+                    <input type="hidden" name="fotoactual" id="fotoactual">                    
+                  </div>       
+                  <div class="form-group col-lg-4 col-md-6 col-xs-12 text-center">
+                  </div>
+                  <div class="form-group col-lg-4 col-md-6 col-xs-12 text-center">
                     <img src="" alt="" width="450px" height="350" id="fotomuestra" class="img-thumbnail">
-                  </div>                                        
+                  </div>                  
+
                   <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i>  Guardar</button>
                     <button class="btn btn-danger" onclick="cancelarform()" type="button"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
                   </div>
                 </form>
               </div>
-<!--fin centro-->
-      </div>
-      </div>
-      </div>
-      <!-- /.box -->
-
-    </section>
-    <!-- /.content -->
-  </div>
+            </div>
+          </div>
+        </div>      
+      </section>    
+    </div>
+  <?php 
+  require('ediciones.php')
+?>
 <?php 
 }else{
  require 'noacceso.php'; 
 }
 require 'footer.php';
  ?>
- <script src="scripts/usuario.js"></script>
+ <script src="scripts/usuarios.js"></script>
  <?php 
 }
 

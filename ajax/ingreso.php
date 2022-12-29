@@ -108,7 +108,7 @@ switch ($_GET["op"]) {
 			<td>$'.number_format($reg->precio_compra, 2).'</td>
 			<td>'."0".'</td>
 			<td>$'.number_format($reg->subtotal, 2).'</td>
-			<td><a data-toggle="modal" title="Editar" href="#editProductRecepcion"><button style="width: 40px;" type="button" class="btn btn-warning btn-xs" onclick="editarProductoRecepcion('.$reg->idarticulo.')"><i class="fa fa-pencil"></i></button></a></td></tr>'
+			<td><a data-toggle="modal" title="Editar" href="#editProductRecepcion"><button style="width: 40px;" type="button" class="btn btn-warning btn-xs" onclick="editarProductoRecepcion('.$reg->idarticulo.', '.$reg->idingreso.')"><i class="fa fa-pencil"></i></button></a></td></tr>'
 			;
 			number_format($total=$total+($reg->precio_compra*$reg->cantidad), 2);
 		}

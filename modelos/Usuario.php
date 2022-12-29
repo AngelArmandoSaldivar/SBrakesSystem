@@ -10,65 +10,23 @@ public function __construct(){
 }
 
 //metodo insertar regiustro
-public function insertar($nombre,$direccion,$telefono,$email,$cargo,$acceso,$login,$clave,$permisos, $sucursales, $foto){
-	//echo "Nombre: ".$nombre."<br>","Dirección: ". $direccion."<br>","Telefono: ".$telefono."<br>","Email: ".$email."<br>","Cargo: ".$cargo."<br>","Acceso: ".$acceso."<br>","Login: ".$login."<br>","Clave: ".$clave;
+public function insertar($nombre,$direccion,$telefono,$email,$cargo,$acceso,$login,$clave,$idsucursal, $foto){	
+	$sw=true;
 	$sql="INSERT INTO usuario (nombre,direccion,telefono,email,cargo,acceso,login,clave,imagen, idsucursal, foto_perfil) 
-						VALUES ('$nombre','$direccion','$telefono','$email','$cargo','$acceso','$login','$clave','1', '3', '$foto')";
-	//return ejecutarConsulta($sql);
-	 $idusuarionew=ejecutarConsulta_retornarID($sql);
-	 $num_elementos=0;
-	 $sw=true;
-
-	 while ($num_elementos < count($permisos)) {		
-	 	$sql_detalle="INSERT INTO usuario_permiso (idusuario,idpermiso) VALUES('$idusuarionew','$permisos[$num_elementos]')";
-
-	 	ejecutarConsulta($sql_detalle) or $sw=false;
-
-	 	$num_elementos=$num_elementos+1;
-	 }
-	 $index=0;
-	 while ($index < count($sucursales)) {		
-		$sql_sucursales="INSERT INTO sucursales_usuario (idusuario,idsucursal) VALUES('$idusuarionew','$sucursales[$index]')";
-
-		ejecutarConsulta($sql_sucursales) or $sw=false;
-
-		$index=$index+1;
-	}
-	 return $sw;
+						VALUES ('$nombre','$direccion','$telefono','$email','$cargo','$acceso','$login','$clave','1', '$idsucursal', '$foto')";	
+	$idusuarionew=ejecutarConsulta_retornarID($sql);
+	$sql_sucursales = "INSERT INTO sucursales_usuario (idusuario, idsucursal)
+					VALUES ('$idusuarionew', '$idsucursal')";
+	ejecutarConsulta($sql_sucursales);	
+	return $sw;
 }
 
-public function editar($idusuario,$nombre,$direccion,$telefono,$email,$cargo,$acceso,$login,$clave,$permisos, $sucursales, $foto){	
-	$sql="UPDATE usuario SET nombre='$nombre',direccion='$direccion',telefono='$telefono',email='$email',cargo='$cargo',acceso='$acceso',login='$login',clave='$clave', idsucursal='3', foto_perfil='$foto'
+public function editar($idusuario,$nombre,$direccion,$telefono,$email,$cargo,$acceso,$login,$clave,$idsucursal, $foto){	
+	$sql="UPDATE usuario SET nombre='$nombre',direccion='$direccion',telefono='$telefono',email='$email',cargo='$cargo',acceso='$acceso',login='$login',clave='$clave', idsucursal='$idsucursal', foto_perfil='$foto'
 	WHERE idusuario='$idusuario'";
-	 ejecutarConsulta($sql);
-
-	 //eliminar permisos asignados
-	 $sqldel="DELETE FROM usuario_permiso WHERE idusuario='$idusuario'";
-	 ejecutarConsulta($sqldel);
-
-	 $sqldelsucursales="DELETE FROM sucursales_usuario WHERE idusuario='$idusuario'";
-	 ejecutarConsulta($sqldelsucursales);
-
-	 $num_elementos=0;
-	 $sw=true;
-	 while ($num_elementos < count($permisos)) {
-	 	$sql_detalle="INSERT INTO usuario_permiso (idusuario,idpermiso) VALUES('$idusuario','$permisos[$num_elementos]')";
-
-	 	ejecutarConsulta($sql_detalle) or $sw=false;
-
-	 	$num_elementos=$num_elementos+1;
-	 }
-	 
-	 $index = 0;
-	 while ($index < count($sucursales)) {
-		$sql_detalle="INSERT INTO sucursales_usuario (idusuario,idsucursal) VALUES('$idusuario','$sucursales[$index]')";
-
-		ejecutarConsulta($sql_detalle) or $sw=false;
-
-		$index=$index+1;
-	 }
-
-	 return $sw;
+	ejecutarConsulta($sql);	
+	$sw = true; 
+	return $sw;
 }
 public function desactivar($idusuario){
 	$sql="UPDATE usuario SET condicion='0' WHERE idusuario='$idusuario'";
@@ -92,8 +50,8 @@ public function listar(){
 }
 
 //metodo para listar permmisos marcados de un usuario especifico
-public function listarmarcados($idusuario){
-	$sql="SELECT * FROM usuario_permiso WHERE idusuario='$idusuario'";
+public function listarmarcados($nivUsuario){
+	$sql="SELECT * FROM permiso_usuario WHERE nivel_usuario='$nivUsuario'";
 	return ejecutarConsulta($sql);
 }
 //funcion que verifica el acceso al sistema

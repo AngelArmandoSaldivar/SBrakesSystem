@@ -1,9 +1,13 @@
 <?php 
 session_start();
 require_once "../modelos/Usuario.php";
+require_once "../modelos/Sucursal.php";
 
 $usuario=new Usuario();
-$idusuarioSession = $_SESSION['idusuario'];
+$sucursal=new Sucursal();
+
+//$idusuarioSession = !$_SESSION['idusuario'] ? null : $_SESSION['idusuario'];
+$idusuarioSession = isset($_SESSION['idusuario']) == null ? null : $_SESSION['idusuario'];
 
 $idusuario=isset($_POST["idusuario"])? limpiarCadena($_POST["idusuario"]):"";
 $nombre=isset($_POST["nombre"])? limpiarCadena($_POST["nombre"]):"";
@@ -35,13 +39,53 @@ switch ($_GET["op"]) {
 	}
 	$clavehash=hash("SHA256", $clave);
 	if (empty($idusuario)) {
-		$rspta=$usuario->insertar($nombre,$direccion,$telefono,$email,$cargo,$acceso,$login,$clavehash,$_POST['permiso'], $_POST['sucursal'], $foto);
+		$rspta=$usuario->insertar($nombre,$direccion,$telefono,$email,$cargo,$acceso,$login,$clavehash,$idsucursal, $foto);
 		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar todos los datos del usuario";
 	}else{
-		$rspta=$usuario->editar($idusuario,$nombre,$direccion,$telefono,$email,$cargo,$acceso,$login,$clavehash,$_POST['permiso'], $_POST['sucursal'], $foto);
+		$rspta=$usuario->editar($idusuario,$nombre,$direccion,$telefono,$email,$cargo,$acceso,$login,$clavehash,$idsucursal, $foto);
 		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar todos los datos del usuario";
 	}
 	break;	
+
+	case 'listarSucursales':		
+
+		$rspta=$sucursal->listar();		
+
+		require_once "../modelos/Permiso.php";
+		$permiso=new Permiso();
+		$rsptaper=$permiso->listar();
+		//obtener permisos asigandos		
+		
+		//almacenar permisos asigandos
+		/*while ($per=$marcados->fetch_object()) {
+			array_push($valores, $per->idpermiso);
+		}
+				//mostramos la lista de permisos
+		while ($reg=$rspta->fetch_object()) {
+			$sw=in_array($reg->idpermiso,$valores)?'checked':'';
+			echo '<li><input class="permisos" type="checkbox" '.$sw.' name="permiso[]" value="'.$reg->idpermiso.'">'.$reg->nombre.'</li>';
+		}*/
+
+		echo ' 
+		<div class="loader">
+			<img src="../files/images/loader.gif" alt="">
+		</div>
+		<thead style="background-color:#A9D0F5">
+			<th>Sucursal</th>
+			<th>Permisos</th>			
+		</thead>';
+		$registrosPermisos = "";
+		while ($res=$rsptaper->fetch_object()) {	
+			$registrosPermisos = '<ul><li><input class="permisos" type="checkbox" name="permiso[]" value="'.$res->idpermiso.'">'.$res->nombre.'</li></ul>';
+			echo $registrosPermisos;
+			while ($reg=$rspta->fetch_object()) {											
+				//echo json_encode($reg->nombre);	
+				echo '<tr class="filas">				
+				<td>'.$reg->nombre.'</td>
+				<td><ul><li><input class="permisos" type="checkbox" name="permiso[]" value="'.$res->idpermiso.'">'.$res->nombre.'</li></ul></td>';			
+			}
+		}				
+	break;
 
 	case 'cambiarsucursal':
 		unset($_SESSION['idsucursal']);
@@ -198,6 +242,31 @@ switch ($_GET["op"]) {
 	case 'ingresarSucursal':
 		$idsucursal=$_POST['idsucursal'];
 		$_SESSION['idsucursal']=$idsucursal;
+
+		//obtenemos los permisos
+		$marcados=$usuario->listarmarcados($_SESSION['acceso']);
+
+		//declaramos el array para almacenar todos los permisos
+		$valores=array();
+
+		//almacenamos los permisos marcados en al array
+		while ($per = $marcados->fetch_object()) {
+			array_push($valores, $per->permiso);
+		}
+
+		//determinamos lo accesos al usuario
+		in_array(1, $valores)?$_SESSION['escritorio']=1:$_SESSION['escritorio']=0;
+		in_array(2, $valores)?$_SESSION['almacen']=1:$_SESSION['almacen']=0;
+		in_array(3, $valores)?$_SESSION['compras']=1:$_SESSION['compras']=0;
+		in_array(4, $valores)?$_SESSION['ventas']=1:$_SESSION['ventas']=0;		
+		in_array(5, $valores)?$_SESSION['accesos']=1:$_SESSION['accesos']=0;
+		in_array(6, $valores)?$_SESSION['consultac']=1:$_SESSION['consultac']=0;
+		in_array(7, $valores)?$_SESSION['consultav']=1:$_SESSION['consultav']=0;
+		in_array(8, $valores)?$_SESSION['kardex']=1:$_SESSION['kardex']=0;
+		in_array(9, $valores)?$_SESSION['caja']=1:$_SESSION['caja']=0;
+		in_array(10, $valores)?$_SESSION['servicios']=1:$_SESSION['servicios']=0;
+		in_array(11, $valores)?$_SESSION['cotizaciones']=1:$_SESSION['cotizaciones']=0;
+		in_array(12, $valores)?$_SESSION['sucursal']=1:$_SESSION['sucursal']=0;
 		echo "Ingresaste correctamente";
 		break;
 
@@ -209,7 +278,7 @@ switch ($_GET["op"]) {
 	//Hash SHA256 en la contraseña
 	$clavehash=hash("SHA256", $clavea);
 	
-	$rspta=$usuario->verificar($logina, $clavehash);	
+	$rspta=$usuario->verificar($logina, $clavehash);
 
 	$fetch=$rspta->fetch_object();
 	if (isset($fetch)) {
@@ -217,32 +286,7 @@ switch ($_GET["op"]) {
 		$_SESSION['idusuario']=$fetch->idusuario;
 		$_SESSION['nombre']=$fetch->nombre;
 		$_SESSION['login']=$fetch->login;
-		$_SESSION['acceso']=$fetch->acceso;		 
-
-		//obtenemos los permisos
-		$marcados=$usuario->listarmarcados($fetch->idusuario);
-
-		//declaramos el array para almacenar todos los permisos
-		$valores=array();
-
-		//almacenamos los permisos marcados en al array
-		while ($per = $marcados->fetch_object()) {
-			array_push($valores, $per->idpermiso);
-		}
-
-		//determinamos lo accesos al usuario
-		in_array(1, $valores)?$_SESSION['escritorio']=1:$_SESSION['escritorio']=0;
-		in_array(2, $valores)?$_SESSION['almacen']=1:$_SESSION['almacen']=0;		
-		in_array(3, $valores)?$_SESSION['compras']=1:$_SESSION['compras']=0;
-		in_array(4, $valores)?$_SESSION['ventas']=1:$_SESSION['ventas']=0;
-		in_array(4, $valores)?$_SESSION['servicios']=1:$_SESSION['servicios']=0;
-		in_array(5, $valores)?$_SESSION['accesos']=1:$_SESSION['accesos']=0;
-		in_array(6, $valores)?$_SESSION['consultac']=1:$_SESSION['consultac']=0;
-		in_array(7, $valores)?$_SESSION['consultav']=1:$_SESSION['consultav']=0;
-		in_array(7, $valores)?$_SESSION['sucursal']=1:$_SESSION['sucursal']=0;
-		in_array(8, $valores)?$_SESSION['kardex']=1:$_SESSION['kardex']=0;
-		in_array(9, $valores)?$_SESSION['caja']=1:$_SESSION['caja']=0;
-
+		$_SESSION['acceso']=$fetch->acceso;		
 	}
 	echo json_encode($fetch);
 	break;

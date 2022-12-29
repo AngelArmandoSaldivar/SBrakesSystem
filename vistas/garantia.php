@@ -12,7 +12,7 @@ require 'header.php';
 if ($_SESSION['compras']==1) {
 
  ?>
-<div class="content-wrapper">    
+<div class="content-wrapper" id="contenedor-principal">    
   <section class="content">        
     <div class="row">
       <div class="col-md-12">

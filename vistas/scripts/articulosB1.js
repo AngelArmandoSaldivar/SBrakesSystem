@@ -12,7 +12,7 @@ function init(){
 	});
 
    //cargamos los items al select categoria
-   $.post("../ajax/articulo.php?op=selectCategoria", function(r){
+   $.post("../ajax/articulo.php?op=selectCategoria", function(r){		
    	$("#idcategoria").html(r);
    	$("#idcategoria").selectpicker('refresh');
    });
@@ -59,6 +59,7 @@ $('#submit-file').on("click",function(e){
 
 function displayHTMLTable(results) {
     let data = results.data;
+	console.log("DATA: ", data);
 	var table = "<table class='responsive-table table table-hover table-bordered' style='border-radius: 15px;' id='tableArticulosRegister'>";
 	table += "<thead class='table-light' style='font-size:12px'>";
 	table += "<tr>";
@@ -131,7 +132,7 @@ function actualizarPrecios() {
 		arrayCredito.push(creditos[index].innerHTML);
 		arrayMayoreo.push(mayoreos[index].innerHTML);
 	}
-	for (let index = 0; index < array.length; index++) {		
+	for (let index = 0; index < array.length; index++) {
 		art.clave = array[index]
 		art.costo = arrayCosto[index]
 		art.publico = arrayPublico[index]
@@ -156,7 +157,7 @@ function actualizarPrecios() {
 					if(found != '') {
 						productosArray.push(element.fila);
 					}
-				} else {					
+				} else {
 					if(element != '') {						
 						productsNotFound.push(element.fila);
 					}
@@ -196,7 +197,7 @@ function actualizarPrecios() {
 						timer: 1500
 					});
 					for (let index = 0; index < productosArray.length; index++) {
-						$("#fila"+productosArray[index]).remove();						
+						$("#fila"+productosArray[index]).remove();
 					}
 					$("#msgProducts").html("<h4>"+productsNotFound.length+" Productos no encontrados</h4>");
 					$("#containerFile").hide();
@@ -1171,11 +1172,11 @@ function guardaryeditar(e){
 		data: formData,
 		contentType: false,
 		processData: false,
-		success: function(datos){
+		success: function(respuesta){
 			swal({
 				position: 'top-end',
 				type: 'success',
-				title: 'Se guardo correctamente el articulo',
+				title: respuesta,
 				showConfirmButton: false,
 				timer: 1500
 			});
@@ -1256,10 +1257,10 @@ function mostrar(idarticulo){
 		function(data,status)
 		{
 			data=JSON.parse(data);
-			console.log(data);
+			console.log("DATA: ", data);
 			mostrarform(true);
 			$('.loader').hide();		
-			$("#idcategoria").val(data.categoria).prop("disabled", true);
+			$("#idcategoria").val(data.idcategoria).prop("disabled", true);
 			$("#idcategoria").selectpicker('refresh');
 			$("#idproveedor").val(data.idproveedor).prop("disabled", true);
 			$("#idproveedor").selectpicker('refresh');
@@ -1292,6 +1293,7 @@ function editarArticulo(idarticulo){
 		function(data,status)
 		{
 			data=JSON.parse(data);
+			console.log("ID CATEGORIA: ", data.idcategoria);
 			mostrarform(true);
 			$('.loader').hide();
 			$("#idcategoria").val(data.idcategoria);

@@ -13,7 +13,7 @@ require 'header.php';
 if ($_SESSION['compras']==1) {
 
  ?>
-<div class="content-wrapper">    
+<div class="content-wrapper" id="contenedor-principal">    
   <section class="content">
     <div class="row">
       <div class="col-md-12">
@@ -88,10 +88,14 @@ if ($_SESSION['compras']==1) {
                   <center><h4 aling="center">Información del cliente</h4></center>
                 </div>
                 <div class="form-group col-lg-4 col-md-8 col-xs-12">
-                  <label for="">Proveedor(*):</label>
-                  <input class="form-control" type="hidden" name="idingreso" id="idingreso">
-                  <select name="idproveedor" id="idproveedor" class="form-control selectpicker" data-live-search="true" required>        
-                  </select>
+                <label for="">Proveedor <span class="text-danger">*</span></label>                  
+                  <div class="input-group bootstrap-touchspin">
+                    <span class="input-group-btn"></span>
+                    <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-hand-o-right"></i></span>
+                      <input class="form-control" type="hidden" name="idingreso" id="idingreso">
+                      <select name="idproveedor" id="idproveedor" class="form-control selectpicker" data-live-search="true" required>        
+                      </select>
+                  </div>
                 </div>
                 <div class="form-group col-lg-4 col-md-4 col-xs-12" id="">
                   <label for="">Agregar proveedor</label><br>
@@ -100,22 +104,37 @@ if ($_SESSION['compras']==1) {
                   </a>
                 </div>
                 <div class="form-group col-lg-4 col-md-4 col-xs-12">
-                  <label for="">Fecha(*): </label>
-                  <input class="form-control" type="date" name="fecha_hora" id="fecha_hora" required>
+                <label for="">Fecha <span class="text-danger">*</span></label>                  
+                  <div class="input-group bootstrap-touchspin">
+                    <span class="input-group-btn"></span>
+                    <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-calendar"></i></span>
+                      <input class="form-control" type="date" name="fecha_hora" id="fecha_hora" required>
+                  </div>      
                 </div>
                 <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                  <label for="">Tipo Comprobante(*): </label>
-                  <select name="tipo_comprobante" id="tipo_comprobante" class="form-control selectpicker" required>
-                    <option value="Factura">Factura</option>
-                  </select>
+                <label for="">Tipo Comprobante <span class="text-danger">*</span></label>                  
+                  <div class="input-group bootstrap-touchspin">
+                    <span class="input-group-btn"></span>
+                    <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-hand-o-right"></i></span>
+                      <select name="tipo_comprobante" id="tipo_comprobante" class="form-control selectpicker" required>
+                        <option value="Factura">Factura</option>
+                      </select>
+                  </div>
                 </div>
-                <div class="form-group col-lg-2 col-md-2 col-xs-6">
-                  <label for="">Serie: </label>
-                  <input class="form-control" type="text" name="serie_comprobante" id="serie_comprobante" maxlength="7" placeholder="Serie" required>
+                <div class="form-group col-lg-3 col-md-2 col-xs-6">
+                <label for="">Serie <span class="text-danger">*</span></label>                  
+                  <div class="input-group bootstrap-touchspin">
+                    <span class="input-group-btn"></span>
+                    <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-keyboard-o"></i></span>
+                      <input class="form-control" type="text" name="serie_comprobante" id="serie_comprobante" maxlength="50" placeholder="Serie" required>
+                  </div>
                 </div>
-                <div class="form-group col-lg-2 col-md-2 col-xs-6">
-                  <label for="">Impuesto: </label>
-                  <input class="form-control" type="text" name="impuesto" id="impuesto">
+                <div class="form-group col-lg-3 col-md-2 col-xs-6">
+                  <label>Impuesto <span class="text-danger">*</span></label>
+                  <div class="input-group bootstrap-touchspin">                  
+                    <span class="input-group-addon bootstrap-touchspin-prefix">$</span>
+                    <input class="form-control" type="text" name="impuesto" id="impuesto">
+                  </div>
                 </div>
                 <div class="form-group col-lg-3 col-md-3 col-sm-6 col-xs-12" id="btnAgregarArt">
                   <a data-toggle="modal" href="#myModal" >

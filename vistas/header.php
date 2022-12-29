@@ -17,7 +17,7 @@
   <link rel="stylesheet "type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
   <link rel="stylesheet" href="../public/css/font-awesomes.min.css">  
-  <link rel="stylesheet" href="../public/css/style.css">
+  <link rel="stylesheet" href="../public/css/styles.css">
   <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">  
   <link rel="stylesheet" href="plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">  
   <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
@@ -33,7 +33,7 @@
       display: none;
     }
     #thMarca, #thFmsi, #thClave {
-      width: 90px;
+      /*width: 90px;*/
     }
     .loaderSearch {
       display: none;
@@ -53,6 +53,9 @@
       margin-left: 5px;
       margin-top: 2px
     }
+    #contenedor-principal {
+      background-color:white;
+    }
     body {
       font-family: "Roboto", Helvetica Neue, Helvetica, Arial, sans-serif;
       
@@ -61,7 +64,6 @@
 </head> 
 <body class="hold-transition sidebar-mini sidebar-collapse">
   <div class="wrapper">
-
    <!-- Preloader -->
    <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="../files/images/BrakeOneBrembo.png" alt="BrakeOneSystem" height="30" width="250">
@@ -221,7 +223,7 @@
           ?>  
           
           <?php 
-            if ($_SESSION['escritorio']==1) {
+            if ($_SESSION['cotizaciones']==1) {
               echo '<li class="nav-item">
               <a href="cotizaciones.php" class="nav-link">
                 <i class="nav-icon fas fa-mobile"></i>             

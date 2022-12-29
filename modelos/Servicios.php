@@ -102,10 +102,10 @@ public function eliminarCobro($idcobro, $importe, $idservicio) {
 public function guardarCobro($metodoPago, $banco, $importeCobro, $referenciaCobro, $idservicio, $fechaCobro, $idsucursal, $idcliente) {
 	$sw = true;
 	$sql = "UPDATE servicio SET pagado=pagado + '$importeCobro' WHERE idservicio='$idservicio'";
-	ejecutarConsulta($sql);
+	ejecutarConsulta($sql) or $sw=false;
 
 	$sql_cobro = "INSERT INTO formas_pago (forma_pago, banco, importe, referencia, idservicio, fecha_hora, idsucursal, idcliente) VALUES ('$metodoPago', '$banco', '$importeCobro', '$referenciaCobro', '$idservicio', '$fechaCobro', '$idsucursal', '$idcliente')";
-	ejecutarConsulta($sql_cobro);
+	ejecutarConsulta($sql_cobro) or $sw=false;
 	return $sw;
 }
 
@@ -232,8 +232,8 @@ public function listarDetalleTodo($idservicio){
 }
 
 //listar registros
-public function listar(){
-	$sql="SELECT v.idsucursal,v.idservicio,DATE(v.fecha_hora) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.marca, v.modelo, v.ano, v.estado FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario ORDER BY v.idservicio DESC";
+public function listar($idsucursal){
+	$sql="SELECT * FROM servicio WHERE idsucursal='$idsucursal' AND status != 'ANULADO'";
 	return ejecutarConsulta($sql);
 }
 
@@ -257,6 +257,7 @@ public function ultimoServicio() {
 	$sql = "SELECT * FROM servicio ORDER BY idservicio DESC limit 1";
 	return ejecutarConsulta($sql);
 }
+
 
 public function filtroPaginado($limit, $limit2, $busqueda, $fecha_inicio, $fecha_fin) {
 

@@ -9,7 +9,7 @@ if (!isset($_SESSION['nombre'])) {
 require 'header.php';
 if ($_SESSION['almacen']==1) {
  ?> 
-    <div class="content-wrapper">
+    <div class="content-wrapper" id="contenedor-principal">
     <!-- Main content -->
     <section class="content">
 
@@ -62,9 +62,9 @@ if ($_SESSION['almacen']==1) {
                 <option value="501">500 / Registros</option>
                 <option value="1001">1000 / Registros</option>
               </select>
-            </div>  
+            </div>              
 
-            <div id="global">
+            <div id="global" class="table-responsive text-nowrap">
               <div id="tablaResultados">
                 <section id="tabla_resultado"></section>
               </div>
@@ -81,109 +81,183 @@ if ($_SESSION['almacen']==1) {
             </div>
           </div>
 
-          <div class="panel-body" id="formularioregistros">  
+          <div class="panel-body table-responsive" id="formularioregistros">  
             <form action="" name="formulario" id="formulario" method="POST">
               <!--CLAVE DEL PRODUCTO-->    
-              <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                <label for="">Clave(*):</label>
+              <div class="form-group col-lg-4 col-md-6 col-xs-12">                
+                <label for="">Clave <span class="text-danger">*</span></label>
                 <input class="form-control" type="hidden" name="idarticulo" id="idarticulo">
-                <input class="form-control" type="text" name="codigo" id="codigo" maxlength="100" placeholder="Clave" required>
+                <div class="input-group bootstrap-touchspin">
+                  <span class="input-group-btn"></span>
+                  <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-keyboard-o"></i></span>
+                    <input class="form-control" type="text" name="codigo" id="codigo" maxlength="100" placeholder="Clave" required>     
+                  <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span><span class="input-group-btn"></span>
+                </div>                               
               </div>    
 
               <!--CLAVE DEL PRODUCTO-->
               <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                <label for="">Fmsi(*):</label>
-                <input class="form-control" type="text" name="fmsi" id="fmsi" maxlength="100" placeholder="Fmsi">
+                <label for="">Fmsi</label>                
+                <div class="input-group bootstrap-touchspin">
+                  <span class="input-group-btn"></span>
+                  <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-keyboard-o"></i></span>
+                    <input class="form-control" type="text" name="fmsi" id="fmsi" maxlength="100" placeholder="Fmsi">
+                </div>
               </div>
 
 
               <!--CATEGORIA DEL PRODUCTO-->
               <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                <label for="">Categoria(*):</label>
-                <select name="idcategoria" id="idcategoria" class="form-control selectpicker" data-Live-search="true" required></select>
+                <label for="">Categoria <span class="text-danger">*</span></label>                  
+                  <div class="input-group bootstrap-touchspin">                    
+                    <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-hand-o-right"></i></span>
+                      <select name="idcategoria" id="idcategoria" class="form-control selectpicker" data-Live-search="true" required></select>
+                  </div>        
               </div>
-
 
               <!--MARCA DEL PRODUCTO-->
               <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                <label for="">Marca(*):</label>
-                <input class="form-control" type="text" name="marca" id="marca" maxlength="100" placeholder="Marca" required>
+                <label for="">Marca <span class="text-danger">*</span></label>                  
+                  <div class="input-group bootstrap-touchspin">
+                    <span class="input-group-btn"></span>
+                    <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-keyboard-o"></i></span>
+                      <input class="form-control" type="text" name="marca" id="marca" maxlength="100" placeholder="Marca" required>
+                  </div>
               </div>
 
               <!--PROVEEDOR DEL PRODUCTO-->
-              <div class="form-group col-lg-6 col-md-8 col-xs-12">
-                <label for="">Proveedor(*):</label>
-                <select name="idproveedor" id="idproveedor" class="form-control selectpicker" data-live-search="true" required>
-                </select>
+              <div class="form-group col-lg-6 col-md-12 col-xs-12">
+                  <label for="">Proveedor <span class="text-danger">*</span></label>                  
+                  <div class="input-group bootstrap-touchspin">
+                    <span class="input-group-btn"></span>
+                    <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-hand-o-right"></i></span>
+                      <select name="idproveedor" id="idproveedor" class="form-control selectpicker" data-live-search="true" required>
+                      </select>
+                  </div>  
               </div>    
 
               <div class="form-group col-lg-12 col-md-6 col-xs-12">
-                <label for="">Descripción(*):</label>
-                <input class="form-control" type="text" name="descripcion" id="descripcion" maxlength="500" placeholder="Unidades (JUEGO / SET / PIEZA)" required>
+                <label for="">Descripción <span class="text-danger">*</span></label>
+                <div class="input-group bootstrap-touchspin">
+                  <span class="input-group-btn"></span>
+                  <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-file-text-o"></i></span>
+                    <input class="form-control" type="text" name="descripcion" id="descripcion" maxlength="500" placeholder="Unidades (JUEGO / SET / PIEZA)" required>
+                </div>
               </div> 
 
               <!--UNIDADES DEL PRODUCTO-->
               <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                <label for="">Unidades(*):</label>
-                <input class="form-control" type="text" name="unidades" id="unidades" maxlength="50" placeholder="Unidades (JUEGO / SET / PIEZA)" required>
-              </div>    
+                <label for="">Unidades <span class="text-danger">*</span></label>                  
+                <div class="input-group bootstrap-touchspin">
+                  <span class="input-group-btn"></span>
+                  <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-keyboard-o"></i></span>
+                    <input class="form-control" type="text" name="unidades" id="unidades" maxlength="50" placeholder="Unidades (JUEGO / SET / PIEZA)" required>
+                </div>
+              </div>
 
               <!--STOCK DEL PRODUCTO-->
-                <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                <label for="">Stock</label>
-                <input class="form-control" type="number" name="stock" id="stock"  required>
+              <div class="form-group col-lg-4 col-md-6 col-xs-12">                
+                <label>Stock <span class="text-danger">*</span></label>
+                    <div class="input-group bootstrap-touchspin"><span class="input-group-btn">
+                      <button class="btn btn-default bootstrap-touchspin-down" type="button">-</button></span>
+                        <input class="form-control" type="number" name="stock" id="stock"  required>
+                          <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>
+                          <span class="input-group-btn">
+                            <button class="btn btn-default bootstrap-touchspin-up" type="button">+</button>
+                          </span>
+                    </div>                
               </div>    
 
               <!--PASILLO DEL PRODUCTO-->
               <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                <label for="">Pasillo(*):</label>
-                <input class="form-control" type="text" name="pasillo" id="pasillo" maxlength="50" placeholder="Pasillo / Corredor" required>
+                  <label for="">Pasillo <span class="text-danger">*</span></label>                  
+                  <div class="input-group bootstrap-touchspin">
+                    <span class="input-group-btn"></span>
+                    <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-keyboard-o"></i></span>
+                      <input class="form-control" type="text" name="pasillo" id="pasillo" maxlength="50" placeholder="Pasillo / Corredor" required>
+                </div>
               </div>
 
               <!--COSTOS DEL PRODUCTO-->
-              <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label for="">Costo</label>
-                <input class="form-control" type="number" name="costo" id="costo"  required placeholder="$">
+              <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                <label>Precio Costo <span class="text-danger">*</span></label>
+                <div class="input-group bootstrap-touchspin">                  
+                  <span class="input-group-addon bootstrap-touchspin-prefix">$</span>
+                    <input class="form-control" type="number" step="any" name="costo" id="costo"  required>
+                  <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>                  
+                </div>    
               </div>
-              <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label for="">Precio Público</label>
-                <input class="form-control" type="number" name="publico" id="publico"  required placeholder="$">
+              <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                <label>Precio Público <span class="text-danger">*</span></label>
+                  <div class="input-group bootstrap-touchspin">                  
+                    <span class="input-group-addon bootstrap-touchspin-prefix">$</span>
+                      <input class="form-control" type="number" step="any" name="publico" id="publico"  required placeholder="$">
+                    <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>                  
+                  </div>  
               </div>
-              <div class="form-group col-lg-2 col-md-6 col-xs-12">  
-                <label for="">Precio Taller</label>
-                <input class="form-control" type="number" name="taller" id="taller"  required placeholder="$">
+              <div class="form-group col-lg-4 col-md-6 col-xs-12">  
+                <label>Precio Taller <span class="text-danger">*</span></label>
+                  <div class="input-group bootstrap-touchspin">                  
+                    <span class="input-group-addon bootstrap-touchspin-prefix">$</span>
+                      <input class="form-control" type="number" step="any" name="taller" id="taller"  required placeholder="$">
+                    <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>                  
+                  </div>
               </div>
-              <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label for="">Precio Credito Taller</label>
-                <input class="form-control" type="number" name="credito_taller" id="credito_taller"  required placeholder="$">
-              </div>
-              <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                <label for="">Mayoreo</label>
-                <input class="form-control" type="number" name="mayoreo" id="mayoreo"  required placeholder="$">
-              </div>
-              <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                
+              <div class="form-group col-lg-2 col-md-6 col-xs-12">                
               </div> 
+              <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                <label>Precio Credito Taller <span class="text-danger">*</span></label>
+                  <div class="input-group bootstrap-touchspin">                  
+                    <span class="input-group-addon bootstrap-touchspin-prefix">$</span>
+                      <input class="form-control" type="number" step="any" name="credito_taller" id="credito_taller"  required placeholder="$">
+                    <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>                  
+                  </div>
+              </div>              
+              <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                <label>Precio Mayoreo <span class="text-danger">*</span></label>
+                  <div class="input-group bootstrap-touchspin">                  
+                    <span class="input-group-addon bootstrap-touchspin-prefix">$</span>
+                      <input class="form-control" type="number" step="any" name="mayoreo" id="mayoreo"  required placeholder="$">
+                    <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>                  
+                  </div>
+              </div>            
+              <div class="form-group col-lg-2 col-md-6 col-xs-12">                
+              </div>  
               <div class="form-group col-lg-12 col-md-6 col-xs-12 text-center">
-                <label for="">Imagen:</label>
-                <input class="form-control" type="file" name="imagen" id="imagen" style="cursor:pointer">
-                <input type="hidden" name="imagenactual" id="imagenactual">
+                <label for="">Imagen del Producto </label>                  
+                  <div class="input-group bootstrap-touchspin">
+                    <span class="input-group-btn"></span>
+                    <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-camera-retro"></i></span>
+                    <input class="form-control" type="file" name="imagen" id="imagen" style="cursor:pointer">
+                    <input type="hidden" name="imagenactual" id="imagenactual">                    
+                  </div>
+              </div>
+              <div class="form-group col-lg-12 col-md-6 col-xs-12 text-center">                
                 <img src="" alt="" width="600px" height="320" id="imagenmuestra" class="img-thumbnail">
-              </div>
-              <div class="form-group col-lg-4 col-md-6 col-xs-12 text-center">                
-              </div>
+              </div>       
+              <div class="form-group col-lg-4 col-md-6 col-xs-12 text-center"></div>                     
               <div class="form-group col-lg-4 col-md-6 col-xs-12 text-center">
-                <label for="">Código de barras:</label>
-                <input class="form-control" type="text" name="barcode" id="barcode" placeholder="Código de barras" >
-                <br>
-                <button class="btn btn-success" type="button" onclick="generarbarcode()">Generar</button>
-                <button class="btn btn-info" type="button" onclick="imprimir()">Imprimir</button>
+                <label for="">Código de Barras </label>                  
+                <div class="input-group bootstrap-touchspin">
+                  <span class="input-group-btn"></span>
+                  <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-barcode"></i></span>
+                    <input class="form-control" type="text" name="barcode" id="barcode" placeholder="Código de barras" >                    
+                </div>
+              </div>
+              <br>                        
+              
+              <div class="form-group col-lg-4 col-md-6 col-xs-12 text-center">
+                <button class="btn btn-success" type="button" onclick="generarbarcode()">Generar Código de Barras</button>
+                <button class="btn btn-info" type="button" onclick="imprimir()">Imprimir Código de Barras</button>               
+              </div>       
+                            
+              <div class="form-group col-lg-12 col-md-6 col-xs-12 text-center">
                 <div id="print" class="text-center">
                   <svg id="barras"></svg>
                 </div>
-              </div>
-              <div class="form-group col-lg-4 col-md-6 col-xs-12 text-center">
-              </div>
+              </div> 
+
+              <div class="form-group col-lg-4 col-md-6 col-xs-12"><h1>&nbsp;</h1></div>
               <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i>  Guardar</button>
                 <button class="btn btn-danger" onclick="cancelarform()" type="button"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
@@ -196,7 +270,7 @@ if ($_SESSION['almacen']==1) {
   </section>
     <!-- /.content -->
 </div>
-<textarea name="comment" id="comment" cols="5" rows="2" style="height: 15px; border:none; color:transparent;" value="5"></textarea>
+<!--<textarea name="comment" id="comment" cols="5" rows="2" style="height: 15px; border:none; color:transparent;" value="5"></textarea>-->
 <?php 
   require('ediciones.php')
 ?>
@@ -208,7 +282,7 @@ require 'footer.php'
  ?>
  <script src="../public/js/JsBarcode.all.min.js"></script>
  <script src="../public/js/jquery.PrintArea.js"></script>
- <script src="scripts/articulo.js"></script>
+ <script src="scripts/articulosB1.js"></script>
  <?php 
 }
 

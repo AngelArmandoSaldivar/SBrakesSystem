@@ -2,8 +2,8 @@
   <div class="modal-dialog modal-lg" style="width: 100% !important;">
     <div class="modal-content" style="border-radius: 20px;">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title">Seleccionar articulos</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>        
       </div>
       <div class="modal-body">
         <div class="panel-body table-responsive">
@@ -123,11 +123,11 @@
 </div>
 
 <div class="modal fade" id="editProductRecepcion" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" style="width: 100% !important;">
+  <div class="modal-dialog modal-lg" style="width: 60% !important;">
     <div class="modal-content" style="border-radius: 20px;">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Editar producto</h4>
+        <h4 class="modal-title">Editar Producto </h4>
+        <button name="addProduct" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>       
       </div>
       <!--<div class="modal-body">-->
       <form action="" name="formularioProductoRecepcion" id="formularioProductoRecepcion" method="POST">
@@ -138,7 +138,7 @@
             </div>
             <div class="form-group col-lg-6 col-md-2 col-xs-6" id="divImpuesto">
               <label for="">Descripción </label>
-              <textarea class="form-control" id="descripcionProductoRec" name="descripcionProductoRec" rows="5" style="width: 280px;" required></textarea>
+              <textarea class="form-control" id="descripcionProductoRec" name="descripcionProductoRec" rows="5" style="width: 350px;" required></textarea>
             </div>
             <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
               <label for="">Cantidad </label>
@@ -759,7 +759,6 @@
   </div>
 </div>
 
-
 <div class="modal fade" id="editProductServicioGarantia" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" style="width: 50% !important;">
     <div class="modal-content" style="border-radius: 20px;">
@@ -882,8 +881,6 @@
   </div>
   </div>
 </div>
-
-
 
 <div class="modal fade" id="modal-traspasos" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" style="width: 50% !important;">
@@ -1171,3 +1168,249 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="modal-asignar-permisos" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" style="width: 70% !important;">
+    <div class="modal-content" style="border-radius: 20px;">
+      <div class="modal-header">
+      <div class="col-md-12" id="inicio_caja">          
+        <div class="table-responsive">
+          <h4 class="text-left"><i class="fa fa-lock" aria-hidden="true"></i> Asignar permisos y sucursales</h4>
+        </div>
+      </div>
+        <button name="addProduct" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>       
+      </div>
+      <form action="" name="formularioProductoServicio" id="formularioProductoServicio" method="POST">
+        <div class="panel-body table-responsive">
+            <div class="form-group col-lg-12 col-md-2 col-xs-6" id="divImpuesto">             
+              <div class="alert alert-info alert-styled-left text-blue-800 content-group">
+                  <span class="text-semibold">Estimado usuario</span>
+                  Los campos remarcados con <span class="text-danger"> * </span> son necesarios.
+                  <button type="button" class="close" data-dismiss="alert">×</button>
+                  <input type="hidden" id="txtProceso" name="txtProceso" class="form-control" value="">
+              </div>
+            </div>
+            <div class="form-group col-lg-6 col-md-2 col-xs-6" id="divImpuesto">              
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">                    
+                    <table id="table_permisos_usuario" class="table table-striped table-bordered table-condensed table-hover">
+                      <thead style="background-color:#A9D0F5">
+                        <th>Sucursal</th>
+                        <th>Permisos</th>
+                      </thead>
+                      <tfoot>
+                        <th></th>
+                        <th></th>
+                      </tfoot>
+                      <tbody>                
+                      </tbody>
+                    </table>
+
+                  </div>
+                </div>
+              </div> 
+            </div>                        
+        </div>
+      </form>          
+      <div class="modal-footer">        
+      <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
+        <button class="btn btn-success" type="submit" name="btnCierreCaja" id="btnCierreCaja"><i class="fa fa-save"></i> Cerrar Caja</button>        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-agregar-conciliacion" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" style="width: 60% !important;">
+    <div class="modal-content" style="border-radius: 20px;">
+      <div class="modal-header">
+        <h4 class="modal-title">Crear nueva conciliacion </h4>
+        <button name="addProduct" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>       
+      </div>
+      <form action="" name="formularioProductoServicio" id="formularioProductoServicio" method="POST">
+        <div class="panel-body table-responsive">
+          <div class="form-group col-lg-12 col-md-2 col-xs-6" id="divImpuesto">             
+            <div class="alert alert-info alert-styled-left text-blue-800 content-group">
+                <span class="text-semibold">Estimado usuario</span>
+                Los campos remarcados con <span class="text-danger"> * </span> son necesarios.
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <input type="hidden" id="txtProceso" name="txtProceso" class="form-control" value="">
+            </div>
+          </div>  
+
+          <div class="form-group col-lg-6 col-md-2 col-xs-6" id="">
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-12">
+                  <label>Folio servicio<span class="text-danger">*</span></label>                    
+                  <select name="idservicio" id="idservicio" class="form-control selectpicker" data-live-search="true" onchange="mostrarCliente()" required>
+                    <option value="" disabled selected>Seleccionar folio</option>
+                  </select>                    
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group col-lg-6 col-md-2 col-xs-6" id="divImpuesto">       
+            <div class="form-group">                                      
+              <label>Cliente<span class="text-danger">*</span></label>
+              <div class="input-group bootstrap-touchspin">
+                <span class="input-group-btn">                                
+                </span><span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-user pull-right" aria-hidden="true"></i></span>                                
+                <input class="form-control" type="hidden" name="idcliente" id="idcliente"></input>
+                <input class="form-control" type="input" name="txt_nombre_cliente" id="txt_nombre_cliente" readonly="true"></input>
+                <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>                                                    
+              </div>               
+            </div>                                           
+          </div>
+
+          <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">       
+            <div class="form-group">                                      
+              <label>Total Servicio<span class="text-danger">*</span></label>
+              <div class="input-group bootstrap-touchspin">
+                <span class="input-group-btn">                                
+                </span><span class="input-group-addon bootstrap-touchspin-prefix">$</i></span>                                
+                <input class="form-control" type="input" name="txt_total_servicio" id="txt_total_servicio" readonly="true"></input>
+                <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>                                                    
+              </div>               
+            </div>                                           
+          </div>
+
+          <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">       
+            <div class="form-group">                                      
+              <label>Total Pagado<span class="text-danger">*</span></label>
+              <div class="input-group bootstrap-touchspin">
+                <span class="input-group-btn">                                
+                </span><span class="input-group-addon bootstrap-touchspin-prefix">$</span>                                
+                <input class="form-control" type="input" name="txt_total_pagado" id="txt_total_pagado" readonly="true"></input>
+                <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>                                                    
+              </div>               
+            </div>                                           
+          </div>
+
+          <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">              
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-12">
+                  <label>Fecha<span class="text-danger">*</span></label>
+                  <div class="input-group bootstrap-touchspin"><span class="input-group-btn">                      
+                    <input class="form-control" type="date" name="txtFechaConciliacion" id="txtFechaConciliacion">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
+            <div class="form-group">
+              <div class="row">                
+                <label>Abono $<span class="text-danger">*</span></label>
+                <div class="input-group bootstrap-touchspin"><span class="input-group-btn">
+                  <button class="btn btn-default bootstrap-touchspin-down" type="button">-</button>
+                  </span><span class="input-group-addon bootstrap-touchspin-prefix">$</span>
+                  <input type="text" id="txtAbonoConciliacion" name="txtAbonoConciliacion" placeholder="EJ. 1500" class="touchspin-prefix form-control" value="0" style="text-transform: uppercase; display: block;" onkeyup="javascript:this.value=this.value.toUpperCase();" aria-required="true">
+                  <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span><span class="input-group-btn"><button class="btn btn-default bootstrap-touchspin-up" type="button">+</button></span></div>
+                <label id="" class="validation-error-label validation-valid-label" for="">Correcto.</label></div>              
+            </div>
+          </div>
+
+          <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">              
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-12">
+                  <label>Cargo $<span class="text-danger">*</span></label>
+                  <div class="input-group bootstrap-touchspin"><span class="input-group-btn">
+                    <button class="btn btn-default bootstrap-touchspin-down" type="button">-</button>  
+                    </span><span class="input-group-addon bootstrap-touchspin-prefix">$</span>                    
+                    <input type="text" id="txtCargoConciliacion" name="txtCargoConciliacion" placeholder="EJ. 1500" class="touchspin-prefix form-control" value="0" style="text-transform: uppercase; display: block;" onkeyup="javascript:this.value=this.value.toUpperCase();" aria-required="true">
+                    <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span><span class="input-group-btn"><button class="btn btn-default bootstrap-touchspin-up" type="button">+</button></span></div>
+                  <label id="" class="validation-error-label validation-valid-label" for="">Correcto.</label></div>
+                </div>
+            </div>
+          </div>
+
+          <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">              
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-12">
+                  <label>Tipo de mov.<span class="text-danger">*</span></label>
+                  <div class="input-group bootstrap-touchspin"><span class="input-group-btn">                      
+                    <select name="txtTipoMovConciliacion" id="txtTipoMovConciliacion" class="form-control selectpicker" required>
+                      <option value="" selected disabled hidden>Forma de pago</option>                        
+                      <option value="Deposito">DEPÓSITO</option>
+                      <option value="Tarjeta">TARJETA</option>
+                      <option value="Transferencia">TRASFERENCIA</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>                             
+
+          <div class="form-group col-lg-6 col-md-2 col-xs-6" id="">              
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-12">
+                  <label>Descripción <span class="text-danger"></span></label>
+                  <textarea class="form-control" id="txtDescripcionConciliacion" name="txtDescripcionConciliacion" rows="3" style="width: 100%;"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+                                                          
+          <div class="form-group col-lg-6 col-md-2 col-xs-6" id="">              
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-12">
+                  <label>Observaciones <span class="text-danger"></span></label>
+                  <textarea class="form-control" id="txtObservacionesConciliacion" name="txtObservacionesConciliacion" rows="3" style="width: 100%;"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </form>          
+      <div class="modal-footer">        
+        <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
+        <button class="btn btn-success" type="submit" name="btnGuardarConciliacion" id="btnGuardarConciliacion"><i class="fa fa-save"></i> Guardar</button>        
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+function mostrarCliente() {
+
+  var idservicio = $("#idservicio").val();
+
+  $.ajax({ 
+    url: "../ajax/caja.php?op=listarFoliosValidar", 
+    type: "POST",
+    data: {servicioid:idservicio},
+    error: (err) => {
+        swal({
+            title: 'Error!',
+            html: 'Ha surgido un error',
+            timer: 1000,
+            showConfirmButton: false,
+            type: 'warning',
+        })
+        console.log("Error: ", err);
+    },
+    success: (data) => {            
+        data = JSON.parse(data);
+        //console.log("DATA: ", data);
+        $("#txt_total_servicio").val(data.total_servicio);
+        $("#txt_total_pagado").val(data.pagado);
+        $("#idcliente").val(data.idcliente);
+        $("#txt_nombre_cliente").val(data.cliente);
+    }
+  })
+  
+
+}
+
+</script>

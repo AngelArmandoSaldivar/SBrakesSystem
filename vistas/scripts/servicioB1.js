@@ -46,8 +46,8 @@ function evaluarCaja() {
         },
         success: (data) => {
             data=JSON.parse(data); 
-			            
-            if(data.estado == "CERRADO") {
+						            
+			if(data == null) {				
 				swal({
 					title: 'Ups!',
 					text: "La caja aun no ha sido abierta.",
@@ -62,8 +62,24 @@ function evaluarCaja() {
 						`caja.php`,
 						"_self"
 					);
-				}, 1500);	
-			}		
+				}, 1500);
+			} else if(data.estado == "CERRADO") {
+				swal({
+					title: 'Ups!',
+					text: "La caja aun no ha sido abierta.",
+					imageUrl: '../files/images/unlock.gif',
+					imageWidth: 300,
+					imageHeight: 150,
+					showConfirmButton: true,
+					imageAlt: 'Custom image',
+				});
+				setTimeout(() => {
+					window.open(
+						`caja.php`,
+						"_self"
+					);
+				}, 1500);
+			}	
         }
     })
 }
@@ -1234,7 +1250,7 @@ function mostrarInfoClient(idcliente) {
 		$("#idcliente").val(idcliente).prop("disabled", false);
 		$("#idcliente").selectpicker('refresh');
 		$("#rfc").val(data.rfc).prop("disabled", true);
-		$("#direccion").val(data.direccion).prop("disabled", true);			
+		$("#direccion").val(data.direccion).prop("disabled", true);
 		$("#email").val(data.email).prop("disabled", true);
 		$("#telefono").val(data.telefono).prop("disabled", true);
 		$("#credito").val(data.credito).prop("disabled", true);

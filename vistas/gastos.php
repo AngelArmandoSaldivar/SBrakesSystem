@@ -9,12 +9,12 @@ if (!isset($_SESSION['nombre'])) {
 
 require 'header.php';
 
-if ($_SESSION['almacen']==1) {
+if ($_SESSION['compras']==1) {
     require_once "../modelos/Gasto.php";
     $gasto = new Gasto();
 
  ?>
-    <div class="content-wrapper">
+    <div class="content-wrapper" id="contenedor-principal">
     <!-- Main content -->
         <section class="content">
         <!-- Default box -->
@@ -48,43 +48,69 @@ if ($_SESSION['almacen']==1) {
                             <div class="form-group col-lg-4 col-md-6 col-xs-12">                                
                             </div> 
                             <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:right">
-                                <h5 id="total_gasto" name="total_gasto" width="400" height="300" value=""></h5>
+                                <!--<h5 id="total_gastos" name="total_gastos" width="400" height="300"></h5>-->
                             </div>
                         </div>
                         <div class="panel-body" style="height: 400px;" id="formularioregistros">
                             <form action="" name="formulario" id="formulario" method="POST">
                                 <div class="form-group col-lg-12 col-md-6 col-xs-12">
-                                    <label for="">Descripción</label>
-                                    <input class="form-control" type="hidden" name="idgasto" id="idgasto">
-                                    <textarea class="form-control" id="descripcion" name="descripcion" rows="3" style="width: 100%;"></textarea>
+                                    <label for="">Descripción <span class="text-danger">*</span></label>                  
+                                    <div class="input-group bootstrap-touchspin">
+                                        <span class="input-group-btn"></span>
+                                        <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-keyboard-o"></i></span>
+                                            <input class="form-control" type="hidden" name="idgasto" id="idgasto">
+                                            <textarea class="form-control" id="descripcion" name="descripcion" rows="3" style="width: 100%;"></textarea>
+                                    </div>
                                 </div>
                                 <div class="form-group col-lg-3 col-md-6 col-xs-12">
-                                    <label for="">Cantidad</label>
-                                    <input class="form-control" type="number" name="cantidad" id="cantidad" placeholder="Unidades">
+                                    <label>Cantidad <span class="text-danger">*</span></label>
+                                    <div class="input-group bootstrap-touchspin"><span class="input-group-btn">
+                                        <button class="btn btn-default bootstrap-touchspin-down" type="button">-</button></span>
+                                        <input class="form-control" type="number" name="cantidad" id="cantidad" placeholder="Unidades">
+                                        <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default bootstrap-touchspin-up" type="button">+</button>
+                                        </span>
+                                    </div>        
                                 </div>
                                 <div class="form-group col-lg-3 col-md-6 col-xs-12">
-                                    <label for="">Precio</label>
-                                    <input class="form-control" type="number" name="total_gasto" id="total_gasto" placeholder="$0.0">
+                                    <label>Precio <span class="text-danger">*</span></label>
+                                    <div class="input-group bootstrap-touchspin">                  
+                                        <span class="input-group-addon bootstrap-touchspin-prefix">$</span>
+                                        <input class="form-control" type="number" step="any" name="total_gasto" id="total_gasto" placeholder="$0.0">
+                                    </div>    
                                 </div>
                                 <div class="form-group col-lg-3 col-md-6 col-xs-12" id="">
-                                    <label for="">Método pago: </label>
-                                    <select name="metodoPago" id="metodoPago" class="form-control selectpicker" required>
-                                    <option value="" selected disabled hidden>Forma de pago</option>
-                                    <option value="Cheque">CHEQUE</option>
-                                    <option value="Tarjeta">TARJETA</option>
-                                    <option value="Efectivo">EFECTIVO</option>
-                                    <option value="Deposito">DEPÓSITO</option>
-                                    <option value="Tarjeta">TARJETA</option>
-                                    <option value="Transferencia">TRASFERENCIA</option>
-                                    </select>
+                                    <label for="">Mètodo de Pago <span class="text-danger">*</span></label>                  
+                                    <div class="input-group bootstrap-touchspin">
+                                        <span class="input-group-btn"></span>
+                                        <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-hand-o-right"></i></span>
+                                        <select name="metodoPago" id="metodoPago" class="form-control selectpicker" required>
+                                            <option value="" selected disabled hidden>Forma de pago</option>
+                                            <option value="Cheque">CHEQUE</option>
+                                            <option value="Tarjeta">TARJETA</option>
+                                            <option value="Efectivo">EFECTIVO</option>
+                                            <option value="Deposito">DEPÓSITO</option>
+                                            <option value="Tarjeta">TARJETA</option>
+                                            <option value="Transferencia">TRASFERENCIA</option>
+                                        </select>
+                                    </div>        
                                 </div>
                                 <div class="form-group col-lg-3 col-md-6 col-xs-12" id="">
-                                    <label for="">Fecha(*): </label>
-                                    <input class="form-control" type="date" name="fecha_hora" id="fecha_hora" required>
+                                    <label for="">Fecha <span class="text-danger">*</span></label>                  
+                                    <div class="input-group bootstrap-touchspin">
+                                        <span class="input-group-btn"></span>
+                                        <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-calendar"></i></span>
+                                            <input class="form-control" type="date" name="fecha_hora" id="fecha_hora" required>
+                                    </div>            
                                 </div>
                                 <div class="form-group col-lg-12 col-md-6 col-xs-12">
-                                    <label for="">Información adicional</label>                                    
-                                    <textarea class="form-control" id="informacionAdicional" name="informacionAdicional" rows="3" style="width: 100%;"></textarea>
+                                    <label for="">Descripción <span class="text-danger">*</span></label>                  
+                                    <div class="input-group bootstrap-touchspin">
+                                        <span class="input-group-btn"></span>
+                                        <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-keyboard-o"></i></span>                                
+                                            <textarea class="form-control" id="informacionAdicional" name="informacionAdicional" rows="3" style="width: 100%;"></textarea>
+                                    </div>            
                                 </div>
                                 <div class="form-group col-lg-12 col-md-6 col-xs-12">
                                     <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i>  Guardar</button>
@@ -104,7 +130,7 @@ if ($_SESSION['almacen']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/gasto.js"></script>
+ <script src="scripts/gastoB1.js"></script>
  <?php 
 }
 

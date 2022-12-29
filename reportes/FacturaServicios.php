@@ -298,7 +298,7 @@ function addClientAdresse( $cliente, $domicilio ,$email, $telefono, $marca, $mod
     $r2E = $this->w - 145;
     $r2     = $r1 + 68;
     $y1     = 60;
-    $this->Image('../files/images/BrakeOneBrembo.png',45,8,120);
+    $this->Image('../files/images/S-BRAKES.PNG',89,8,30);
     $this->SetXY( $r1, $y1);
     $this->SetFont("Arial","B",2);
     $this->SetFont('Arial','',9);
@@ -547,11 +547,11 @@ function addTVAs( $impuesto, $total_venta, $simbolo )
 
     $this->SetXY( $this->w - 165, $this->h - 59+19 );
     $this->SetFont( "Arial", "", 8);
-    $this->Cell( 5, 15, "SARATOGA #313-C, COL. PORTALES NORTE C.P. 03300 ALCALDIA BENITO JUAREZ, CDMX."); 
+    $this->Cell( 5, 15, "SEVILLA #312-C, COL. PORTALES NORTE ALCALDIA BENITO JUAREZ, CDMX."); 
 
-    $this->SetXY( $this->w - 150, $this->h - 59+23 );
+    $this->SetXY( $this->w - 125, $this->h - 59+23 );
     $this->SetFont( "Arial", "", 8);
-    $this->Cell( 5, 15, "TELS. (55) 4563 / 2063 (55) 6840 / 2850 (55) 7653 / 6116 (55) 5273 / 3450"); 
+    $this->Cell(5, 15, "TELS. (55) 228 055 77"); 
 }
 
 // add a watermark (temporary estimate, DUPLICATA...)

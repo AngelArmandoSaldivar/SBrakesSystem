@@ -41,6 +41,8 @@ if(!isset($_SESSION["nombre"])) {
 				$rspta=$articulo->insertar($codigo,$costo, $barcode, $credito_taller, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $mayoreo, $pasillo, $publico, $stock, $taller, $unidades, $idsucursal, $imagen);
 				echo $rspta ? "Articulo registrado correctamente" : "No se registro correctamente";
 			}else{
+				echo "ID ARTICULO: ". $idarticulo. " / CODIGO: " . $codigo. " / COSTO: ". $costo." / BARCODE: " . $barcode . " / CREDITO TALLER: " . $credito_taller;
+				echo "\nDESCRIPCION: " . $descripcion. " / FMSI: " . $fmsi . " / ID CATEGORIA: " . $idcategoria . " / ID PROVEEDOR: " . $idproveedor. " / MARCA: " . $marca. " / MAYOREO: " . $mayoreo. " / PASILLO: " . $pasillo. " / PUBLICO: ". $publico. " / STOCK: ". $stock. " / TALLER: " . $taller. " / UNIDADES: ". $unidades. " / IMAGEN: " . $imagen;
 				$rspta=$articulo->editar($idarticulo,$codigo,$costo, $barcode, $credito_taller, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $mayoreo, $pasillo, $publico, $stock, $taller, $unidades, $imagen);
 				echo $rspta ? " Articulo actualizado correctamente" : "No se pudo actualizar los datos";
 			}
@@ -162,8 +164,8 @@ if(!isset($_SESSION["nombre"])) {
 				<button id='botonTaller' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarTaller()'><i class='fa fa-eye'></i> Mostrar Taller</button>
 				<button id='botonCredito' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarCredito()'><i class='fa fa-eye'></i> Mostrar Credito</button>
 				<button id='botonMostrador' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarPublico()'><i class='fa fa-eye'></i> Mostrar Publico</button>
-				<button id='botonCosto' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarCosto()'><i class='fa fa-eye'></i> Mostrar Costo</button>
-				<table class='table table-xxs table-hover' id='tableArticulos'>
+				<button id='botonCosto' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarCosto()'><i class='fa fa-eye'></i> Mostrar Costo</button>				
+				<table class='table table-striped table-hover w-auto' id='tableArticulos'>
 					<thead class='table-light'>
 						<tr>
 							<th id='thClave' class='bg-info w-40' scope='col'>Clave
@@ -292,7 +294,7 @@ if(!isset($_SESSION["nombre"])) {
 					}
 				}
 				echo "</tbody>
-				</table>				
+				</table>
 				";
 			}else{
 				echo "<center><h4>No hemos encotrado ningun articulo (ง︡'-'︠)ง con: "."<strong class='text-uppercase'>".$termino."</strong><h4><center>";

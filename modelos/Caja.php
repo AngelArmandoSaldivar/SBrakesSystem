@@ -81,8 +81,24 @@ class Caja{
         return ejecutarConsulta($sql);
     }
 
+    public function montoInicialHoy($FECHA, $IDSUCURSAL) {
+        $sql = "SELECT * FROM caja_1 WHERE DATE(fecha_hora) = '$FECHA' AND idsucursal='$IDSUCURSAL'";
+        return ejecutarConsultaSimpleFila($sql);
+    }
+
+    public function ultimoRegistroCaja($idsucursal) {
+        $sql = "SELECT detalle, estado, DATE(fecha_hora) AS fecha, idcaja, idsucursal, idusuario, monto_final, monto_inicial 
+                FROM caja_1 
+                WHERE idsucursal='$idsucursal' 
+                ORDER BY idcaja DESC limit 1";
+        return ejecutarConsultaSimpleFila($sql);
+    }
+
     public function montoInicial($idscucursal) {
-        $sql = "SELECT * FROM caja_1 WHERE DATE(fecha_hora) = DATE(DATE(now())-1) AND idsucursal='$idscucursal';";
+        $sql = "SELECT detalle, estado, DATE(fecha_hora) as fecha, idcaja, idsucursal, idusuario, monto_final, monto_inicial 
+                FROM caja_1 
+                WHERE DATE(fecha_hora) = DATE(DATE(now())-1)
+                AND idsucursal='$idscucursal';";
         return ejecutarConsultaSimpleFila($sql);
     }
 
@@ -113,7 +129,8 @@ class Caja{
         return $sw;
     }
 
-    public function montoFinal($fechaCierre, $montoFinal, $idscucursal) {
+    public function montoFinal($fechaCierre, $montoFinal, $idscucursal) {        
+        $montoFinal = floatval($montoFinal);        
         $sw = true;        
         $sql = "UPDATE caja_1 
                 SET monto_final='$montoFinal', estado='CERRADO' 
@@ -126,6 +143,104 @@ class Caja{
                 AND DATE(fecha_hora)='$fechaCierre'";
         ejecutarConsulta($sql2) or $sw = false;
         return $sw;
+    }
+
+    public function mostrarConciliacion($idsucursal, $busqueda) {
+        $sql = "SELECT DATE(fp.fecha_hora) AS fecha, fp.color_cargo, fp.observaciones, fp.color_importe, fp.forma_pago, fp.importe, p.nombre, v.remision, fp.cargo, fp.idpago, fp.idservicio
+        FROM formas_pago AS fp
+        INNER JOIN persona AS p
+        ON fp.idcliente = p.idpersona
+        INNER JOIN servicio AS v
+        ON fp.idservicio = v.idservicio
+        /*INNER JOIN servicio AS s
+        ON s.idservicio = fp.idservicio*/
+        WHERE YEAR(DATE(fp.fecha_hora)) = YEAR(CURRENT_DATE()) 
+        AND MONTH(DATE(fp.fecha_hora)) = MONTH(CURRENT_DATE())
+        AND (fp.forma_pago = 'Tarjeta' || fp.forma_pago = 'Deposito' || fp.forma_pago = 'Transferencia')
+        AND fp.idsucursal='$idsucursal'
+        AND v.status!='ANULADO'
+        AND p.nombre LIKE '%$busqueda%'";
+        return ejecutarConsulta($sql);
+    }
+
+    public function saldoFila($idsucursal) {
+        $sql = "SELECT fp.idservicio AS IDSERVICIO, fp.cargo AS CARGO, fp.idsucursal AS ID_SUCURSAL, fp.forma_pago AS FORMA_PAGO, DATE(fp.fecha_hora) AS fecha,fp.importe as IMPORTE, SUM(SUM(fp.importe - fp.cargo)) OVER (ORDER BY fp.idpago ASC) AS SALDO_TOTAL
+                FROM formas_pago fp
+                INNER JOIN persona AS p
+                ON fp.idcliente = p.idpersona
+                INNER JOIN servicio AS s
+                ON fp.idservicio = s.idservicio
+                WHERE YEAR(DATE(fp.fecha_hora)) = YEAR(CURRENT_DATE())
+                AND MONTH(DATE(fp.fecha_hora)) = MONTH(CURRENT_DATE())
+                AND (fp.forma_pago = 'Tarjeta' || fp.forma_pago = 'Deposito' || fp.forma_pago = 'Transferencia')
+                AND fp.idsucursal='$idsucursal'
+                AND s.status!='ANULADO'
+                GROUP BY fp.idpago,
+                fp.importe;";
+        return ejecutarConsulta($sql);
+    }
+
+    public function saldoMesPasado($idsucursal) {
+
+        $sql = "SELECT SUM(fp.importe - fp.cargo) AS importe
+        FROM formas_pago fp
+        INNER JOIN servicio AS s
+        ON fp.idservicio = s.idservicio
+        WHERE MONTH(DATE(fp.fecha_hora))  = MONTH(CURRENT_DATE()) -1
+        AND (fp.forma_pago = 'Tarjeta' || fp.forma_pago = 'Deposito' || fp.forma_pago = 'Transferencia')
+        AND fp.idsucursal='$idsucursal'
+        AND s.status != 'ANULADO'";
+        return ejecutarConsultaSimpleFila($sql);
+    }
+    
+    public function editarConciliacion($IDPAGO, $FECHA, $TIPO_MOVIMIENTO, $CARGO, $ABONO, $COLOR_CARGO, $COLOR_IMPORTE, $OBSERVACIONES, $MONTOVIEJO, $IDSERVICIO, $IDSERVICIOSUNICOS) {
+        $contador = 0;
+        $contadorMontoViejo = 0;
+        $contadorFormasPago = 0;
+        $sw = true;
+        while ($contadorMontoViejo < count($IDSERVICIOSUNICOS)) {           
+            $sqlupdate = "UPDATE servicio 
+                          SET pagado=pagado - $MONTOVIEJO[$contadorMontoViejo]
+                          WHERE idservicio='$IDSERVICIOSUNICOS[$contadorMontoViejo]'";
+            ejecutarConsulta($sqlupdate) or $sw = false;            
+            $contadorMontoViejo = $contadorMontoViejo + 1;
+        }
+
+        while ($contador < count($IDPAGO)) {                  
+            $sql_servicio = "UPDATE servicio 
+                             SET pagado=pagado + $ABONO[$contador]
+                             WHERE idservicio='$IDSERVICIO[$contador]'";
+	        ejecutarConsulta($sql_servicio) or $sw = false;
+            $sw = true;
+            $contador = $contador + 1;            
+        }
+
+        while ($contadorFormasPago < count($IDPAGO)) {
+            $sql = "UPDATE formas_pago 
+            SET fecha_hora='$FECHA[$contadorFormasPago]', forma_pago='$TIPO_MOVIMIENTO[$contadorFormasPago]', cargo='$CARGO[$contadorFormasPago]', importe='$ABONO[$contadorFormasPago]', color_cargo='$COLOR_CARGO[$contadorFormasPago]', color_importe='$COLOR_IMPORTE[$contadorFormasPago]', observaciones='$OBSERVACIONES[$contadorFormasPago]'
+            WHERE idpago=$IDPAGO[$contadorFormasPago]";
+            ejecutarConsulta($sql) or $sw = false;
+            $contadorFormasPago = $contadorFormasPago + 1;
+        }
+        return $sw;
+    }    
+
+    public function guardarConcicilacion($fecha, $cargo, $abono, $tipoMov, $idCliente, $descripicion, $observaciones, $idservicio, $idsucursal) {
+        $sw = true;        
+        $sql_servicio = "UPDATE servicio SET pagado=pagado + '$abono' WHERE idservicio='$idservicio'";
+        ejecutarConsulta($sql_servicio) or $sw=false;
+        $sql = "INSERT INTO formas_pago (forma_pago, importe, cargo, fecha_hora, observaciones, idsucursal, idservicio, idcliente)
+                VALUES('$tipoMov', '$abono', '$cargo', '$fecha', '$observaciones', '$idsucursal', '$idservicio', '$idCliente')";
+        ejecutarConsulta($sql) or $sw=false;
+        return $sw;
+    }
+
+    public function pagosViejos($idsucursal, $idservicio) {
+        $sql = "SELECT pagado AS PAGADO_VIEJO, idservicio AS IDSERVICIO
+        FROM servicio        
+        WHERE idsucursal='$idsucursal'
+        AND idservicio='$idservicio'";
+        return ejecutarConsultaSimpleFila($sql);
     }
 
 }

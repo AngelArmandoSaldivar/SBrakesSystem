@@ -63,7 +63,7 @@ switch ($_GET["op"]) {
 	case 'buscarCotizacion':
 		$busquedaCotizacion=$_GET['busquedaCotizacion'];
 		$rspta=$cotizacion->mostrarCotizacion($busquedaCotizacion);
-		echo json_encode($rspta);
+		echo $rspta ? json_encode($rspta) : "404";
 	break;
 
 	case 'detallesCotizacion':
@@ -1399,12 +1399,6 @@ switch ($_GET["op"]) {
 								echo "<br><br>";
 							}
 						break;
-
-
-
-
-
-
 
 				case 'listarProductosSucursal':
 

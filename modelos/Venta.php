@@ -206,7 +206,7 @@ public function mostrar($idventa){
 	return ejecutarConsultaSimpleFila($sql);
 }
 
-public function editarPago($idpago, $metodoPago, $banco, $importeCobro, $referenciaCobro, $importeviejo, $idventa) {	
+public function editarPago($idpago, $metodoPago, $banco, $importeCobro, $referenciaCobro, $importeviejo, $idventa) {
 	$sw = true;
 	$sql = "UPDATE venta SET pagado=pagado - $importeviejo WHERE idventa='$idventa'";
 	ejecutarConsulta($sql);

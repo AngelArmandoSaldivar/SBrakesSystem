@@ -40,9 +40,9 @@ function evaluarCaja() {
             })
         },
         success: (data) => {
-            data=JSON.parse(data); 
-			            
-            if(data.estado == "CERRADO") {
+            data=JSON.parse(data); 						
+
+			if(data == null) {				
 				swal({
 					title: 'Ups!',
 					text: "La caja aun no ha sido abierta.",
@@ -58,7 +58,24 @@ function evaluarCaja() {
 						"_self"
 					);
 				}, 1500);
-			}		
+			} else if(data.estado == "CERRADO") {
+				swal({
+					title: 'Ups!',
+					text: "La caja aun no ha sido abierta.",
+					imageUrl: '../files/images/unlock.gif',
+					imageWidth: 300,
+					imageHeight: 150,
+					showConfirmButton: true,
+					imageAlt: 'Custom image',
+				});
+				setTimeout(() => {
+					window.open(
+						`caja.php`,
+						"_self"
+					);
+				}, 1500);
+			}
+						
         }
     })
 }
@@ -884,7 +901,8 @@ function mostrar(idingreso){
 	detalleMostrar(idingreso);
 }
 
-function editarProductoRecepcion(idarticulo) {	
+function editarProductoRecepcion(idarticulo, idRecepcion) {
+	console.log("ID RECEPCION: " + idRecepcion);	
 	var idIngreso = document.getElementById("idingreso").value;
 	$.post("../ajax/ingreso.php?op=mostrarProductoIngreso&idarticulo="+idarticulo+"&idIngreso="+idIngreso,function(data){		
 		data = JSON.parse(data);
@@ -892,7 +910,7 @@ function editarProductoRecepcion(idarticulo) {
 		$("#idProductoRec").val(data.idarticulo).prop("disabled", true);		
 		$("#descripcionProductoRec").val(data.descripcion).prop("disabled", false);
 		$("#cantidadProductoRec").val(data.cantidad).prop("disabled", false);
-		$("#precioProductoRec").val(data.precio_compra).prop("disabled", false);		
+		$("#precioProductoRec").val(data.precio_compra).prop("disabled", false);			
 	});	
 }
 

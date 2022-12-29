@@ -2,6 +2,9 @@
     require_once "../modelos/Usuario.php";
     $usuario=new Usuario();
     $idusuario = $_GET["idusuario"];
+    if (!$idusuario) {
+        header("Location: login.html");
+    } else {
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,27 +29,34 @@
     <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
 </head>
 <body>
+    <div class="preloader flex-column justify-content-center align-items-center">
+        <img class="animation__shake" src="../files/images/BrakeOneBrembo.png" alt="BrakeOneSystem" height="30" width="250">
+    </div>
     <div style="color: white; text-align: center; font-size: 20px; padding: 0 50px; height: 64px; line-height: 64px; background: #001529">Selecciona la sucursal</div>
     <div class="row" style="margin-left: -8px; margin-right: -8px; height: 100%;">
         <?php 
             $rspta = $usuario->sucursales($idusuario);
             while($reg = $rspta->fetch_object()) {
-                echo '<div class="form-group col-lg-2 col-md-4 col-xs-12" style="padding-left: 8px; padding-right: 8px; height: 200px; width: 200px; line-height: 200px; text-align: center; font-size: 16px; color: white; margin: 20px;">                            
-                            <div class="small-box bg-info">                               
-                                <div class="icon">
-                                    <i class="fas fa-home"></i>
-                                </div>
-                                <a class="small-box-footer" onclick="sucursalSeleccionada('.$reg->idsucursal.')" style="cursor:pointer;">
-                                '.$reg->nombre.' <i class="fas fa-arrow-circle-right"></i>
-                                </a>
-                            </div>
-                        </div>';
+                echo '
+                <div class="form-group col-lg-2 col-md-4 col-xs-12" style="padding-left: 8px; padding-right: 8px; height: 200px; width: 200px; line-height: 200px; text-align: center; font-size: 16px; color: white; margin: 20px;">                            
+                    <div class="small-box bg-info">                               
+                        <div class="icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <a class="small-box-footer" onclick="sucursalSeleccionada('.$reg->idsucursal.')" style="cursor:pointer;">
+                        '.$reg->nombre.' <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>';
             }
-        ?>       
-        
+        ?>
     </div>
 </body>
 </html>
+
+<?php 
+    }
+?>
 
 <script src="../public/js/jquery.min.js"></script>
 <script src="../public/js/bootstrap.min.js"></script>

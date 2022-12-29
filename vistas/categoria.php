@@ -12,7 +12,7 @@ require 'header.php';
 if ($_SESSION['almacen']==1) {
 
  ?>
-    <div class="content-wrapper">
+    <div class="content-wrapper" id="contenedor-principal">
     <!-- Main content -->
     <section class="content">
 
@@ -48,13 +48,21 @@ if ($_SESSION['almacen']==1) {
     <div class="panel-body" style="height: 400px;" id="formularioregistros">
       <form action="" name="formulario" id="formulario" method="POST">
         <div class="form-group col-lg-6 col-md-6 col-xs-12">
-          <label for="">Nombre</label>
-          <input class="form-control" type="hidden" name="idcategoria" id="idcategoria">
-          <input class="form-control" type="text" name="nombre" id="nombre" maxlength="50" placeholder="Nombre" required>
+          <label for="">Nombre Categoria </label>                  
+          <div class="input-group bootstrap-touchspin">
+            <span class="input-group-btn"></span>
+            <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-keyboard-o"></i></span>
+              <input class="form-control" type="hidden" name="idcategoria" id="idcategoria">
+              <input class="form-control" type="text" name="nombre" id="nombre" maxlength="50" placeholder="Nombre" required>
+          </div>      
         </div>
-            <div class="form-group col-lg-6 col-md-6 col-xs-12">
-          <label for="">Descripcion</label>
-          <input class="form-control" type="text" name="descripcion" id="descripcion" maxlength="256" placeholder="Descripcion">
+        <div class="form-group col-lg-6 col-md-6 col-xs-12">
+          <label for="">Descripción </label>                  
+          <div class="input-group bootstrap-touchspin">
+            <span class="input-group-btn"></span>
+            <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-file-text-o"></i></span>
+              <input class="form-control" type="text" name="descripcion" id="descripcion" maxlength="256" placeholder="Descripcion">
+          </div>        
         </div>
         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i>  Guardar</button>

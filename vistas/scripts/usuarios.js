@@ -10,27 +10,35 @@ function init(){
    })
 
    $("#imagenmuestra").hide();
-//mostramos los permisos
-$.post("../ajax/usuario.php?op=permisos&id=", function(r){
-	$("#permisos").html(r);
-});
+	//mostramos los permisos
+	$.post("../ajax/usuario.php?op=permisos&id=", function(r){
+		$("#permisos").html(r);
+	});
 
-$.post("../ajax/usuario.php?op=sucursales&id=", function(r){
-	$("#sucursales").html(r);
-});
+	$.post("../ajax/usuario.php?op=sucursales&id=", function(r){
+		$("#sucursales").html(r);
+	});
 
-//cargamos los items al select sucursal
-$.post("../ajax/usuario.php?op=selectSucursal", function(r){
-	$("#idsucursal").html(r);
-	$('#idsucursal').selectpicker('refresh');
-});
+	//cargamos los items al select sucursal
+	$.post("../ajax/usuario.php?op=selectSucursal", function(r){
+		$("#idsucursal").html(r);
+		$('#idsucursal').selectpicker('refresh');
+	});	
 }
+
+$("#permisos_usuario").on("click", () => {	
+	$.post("../ajax/usuario.php?op=listarSucursales",function(r){
+		console.log("Registros: ", r);
+		$("#table_permisos_usuario").html(r);
+	});
+})
 
 function activarPopover() {
 	$(function () {
 		$('[data-toggle="popover"]').popover()		
 	})
 }
+
 
 //funcion limpiar
 function limpiar(){

@@ -1113,7 +1113,8 @@ switch ($_GET["op"]) {
 											<td><p>$ ".$tallerMiles."</p></td>
 											<td><p>$ ".$creditoMiles."</p></td>
 											<td><p>$ ".$mayoreoMiles."</p></td>
-											<td><p>".$fila["stock"]." pz</p></td>";
+											<td><p>".$fila["stock"]." pz</p></td>
+											<td><button style='width: 40px' class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\", \"".$fila["costo"]."\", \"".$fila["publico"]."\", \"".$fila["taller"]."\", \"".$fila["credito_taller"]."\", \"".$fila["mayoreo"]."\" )'><span class='fa fa-plus'></span></button></td>";
 									}
 								}
 							}

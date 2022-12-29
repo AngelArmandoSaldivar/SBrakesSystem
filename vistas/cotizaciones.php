@@ -9,7 +9,7 @@ if (!isset($_SESSION['nombre'])) {
 
 require 'header.php';
 
-if ($_SESSION['almacen']==1) {
+if ($_SESSION['cotizaciones']==1) {
 
  ?>
 <div class="content-wrapper">
@@ -573,7 +573,7 @@ if ($_SESSION['almacen']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/cotizaciones.js"></script>
+ <script src="scripts/cotizacion.js"></script>
  <?php 
 }
 

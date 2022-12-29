@@ -12,7 +12,7 @@ require 'header.php';
 if ($_SESSION['almacen']==1) {
 
  ?>
-    <div class="content-wrapper">
+    <div class="content-wrapper" id="contenedor-principal">
     <!-- Main content -->
     <section class="content">
 
