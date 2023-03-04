@@ -7,22 +7,54 @@ class Articulo{
 	public function __construct(){
 
 	}
-	//metodo insertar registro
-	public function insertar($codigo, $costo, $barcode, $credito_taller, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $mayoreo, $pasillo, $publico, $stock, $taller, $unidades, $idsucursal, $imagen){		
-		$sql="INSERT INTO articulo (codigo, costo, barcode, credito_taller, descripcion, fmsi, idcategoria, categoria, idproveedor, marca, mayoreo, pasillo, publico, stock, taller, unidades, estado, idsucursal, imagen) VALUES ('$codigo', '$costo', '$barcode', '$credito_taller', '$descripcion', '$fmsi', 21, '$idcategoria', '$idproveedor', '$marca', '$mayoreo', '$pasillo', '$publico', '$stock', '$taller', '$unidades', '1', '$idsucursal', '$imagen')";
-		usleep(140000);
-		return ejecutarConsulta($sql);
+
+	function consultaMarcaPorId($idMarca) {
+		
 	}
+
+	//metodo insertar registro
+	public function insertar($codigo, $costo, $barcode, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $pasillo,$stock, $unidades, $idsucursal, $imagen, $stock_ideal, $bandera_inventariable){						
+				
+		$sql = "SELECT * FROM marca WHERE idMarca='$marca'";
+		$data = ejecutarConsulta($sql);
+		$publico = 0.0;
+		$taller = 0.0;
+		$credito_taller = 0.0;
+		$mayoreo = 0.0;
+		while($fila=$data->fetch_array(MYSQLI_ASSOC)){
+			$publico = ((($fila["utilidad_1"] / 100) * $costo) + $costo);
+			$taller = ((($fila["utilidad_2"] / 100) * $costo) + $costo);
+			$credito_taller = ((($fila["utilidad_3"] / 100) * $costo) + $costo);
+			$mayoreo = ((($fila["utilidad_4"] / 100) * $costo) + $costo);
+		}
+		
+		$sql="INSERT INTO articulo (codigo, costo, barcode, credito_taller, descripcion, fmsi, idcategoria, idproveedor, marca, mayoreo, pasillo, publico, stock, stock_ideal, taller, unidades, estado, idsucursal, imagen, bandera_inventariable) VALUES ('$codigo', '$costo', '$barcode', '$credito_taller', '$descripcion', '$fmsi', $idcategoria, '$idproveedor', '$marca', '$mayoreo', '$pasillo', '$publico', '$stock', '$stock_ideal', '$taller', '$unidades', '1', '$idsucursal', '$imagen', '$bandera_inventariable')";		
+		return ejecutarConsulta($sql);
+		return $marca;
+	}		
 
 	public function guardarPedido($clave, $marca, $cantidad, $fecha, $estadoPedido, $notas, $fecha_registro, $idsucursalProducto, $idsucursal) {
 		$sql = "INSERT INTO pedidos (clave, marca, cantidad, idsucursalProducto, idsucursal, fecha_pedido, fecha_registro, estadoPedido, notas, status) VALUES 
-									('$clave', '$marca', '$cantidad', '$idsucursalProducto', '$idsucursal', '$fecha', '$fecha_registro', '$estadoPedido', '$notas', '1')";
-		usleep(140000);
+									('$clave', '$marca', '$cantidad', '$idsucursalProducto', '$idsucursal', '$fecha', '$fecha_registro', '$estadoPedido', '$notas', '1')";		
 		return ejecutarConsulta($sql);
 	}
 		
-	public function editar($idarticulo,$codigo,$costo, $barcode, $credito_taller,$descripcion,$fmsi,$idcategoria, $idproveedor, $marca,$mayoreo,$pasillo,$publico,$stock,$taller,$unidades, $imagen){
-		$sql="UPDATE articulo SET codigo='$codigo', costo='$costo', barcode='$barcode', credito_taller='$credito_taller', descripcion='$descripcion', fmsi='$fmsi', idcategoria='$idcategoria', idproveedor='$idproveedor', marca='$marca', mayoreo='$mayoreo', pasillo='$pasillo', publico='$publico', stock='$stock', taller='$taller', unidades='$unidades', imagen='$imagen'
+	public function editar($idarticulo,$codigo,$costo, $barcode, $descripcion,$fmsi,$idcategoria, $idproveedor, $marca, $pasillo, $stock, $unidades, $imagen, $stock_ideal, $bandera_inventariable){
+
+		$sql = "SELECT * FROM marca WHERE idMarca='$marca'";
+		$data = ejecutarConsulta($sql);
+		$publico = 0.0;
+		$taller = 0.0;
+		$credito_taller = 0.0;
+		$mayoreo = 0.0;
+		while($fila=$data->fetch_array(MYSQLI_ASSOC)){
+			$publico = ((($fila["utilidad_1"] / 100) * $costo) + $costo);
+			$taller = ((($fila["utilidad_2"] / 100) * $costo) + $costo);
+			$credito_taller = ((($fila["utilidad_3"] / 100) * $costo) + $costo);
+			$mayoreo = ((($fila["utilidad_4"] / 100) * $costo) + $costo);
+		}
+
+		$sql="UPDATE articulo SET codigo='$codigo', costo='$costo', barcode='$barcode', credito_taller='$credito_taller', descripcion='$descripcion', fmsi='$fmsi', idcategoria='$idcategoria', idproveedor='$idproveedor', marca='$marca', mayoreo='$mayoreo', pasillo='$pasillo', publico='$publico', stock='$stock', stock_ideal='$stock_ideal', taller='$taller', unidades='$unidades', imagen='$imagen', bandera_inventariable='$bandera_inventariable'
 		WHERE idarticulo='$idarticulo'";
 		usleep(140000);
 		return ejecutarConsulta($sql);
@@ -78,10 +110,12 @@ class Articulo{
 		a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
 		a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock
 		FROM articulo a INNER JOIN categoria c ON a.idcategoria=c.idcategoria
-		WHERE a.codigo LIKE '%$busqueda%' OR
+		WHERE 
+		(a.codigo LIKE '%$busqueda%' OR
 		a.fmsi LIKE '%$busqueda%' OR
 		a.marca LIKE '%$busqueda%' OR
-		a.descripcion LIKE '%$busqueda%'
+		a.descripcion LIKE '%$busqueda%')
+		AND estado = 1
 		ORDER BY a.stock > 0 DESC, a.marca ASC LIMIT $limit OFFSET $limit2";
 		//usleep(90000);
 		return ejecutarConsulta($sql);
@@ -96,8 +130,7 @@ class Articulo{
 		a.fmsi LIKE '%$busqueda%' OR
 		a.marca LIKE '%$busqueda%' OR
 		a.descripcion LIKE '%$busqueda%'
-		ORDER BY a.stock DESC";
-		//usleep(90000);
+		ORDER BY a.stock DESC";		
 		return ejecutarConsulta($sql);
 	}
 
@@ -107,12 +140,7 @@ class Articulo{
 	}
 
 	public function actualizarPrecios($clave) {				
-		$sw = true;
-		/*while ($index < count($clave)) {
-			echo $clave[$index];
-			ejecutarConsulta($sql) or $sw=false;
-			$index=$index+1;
-		}*/
+		$sw = true;		
 		foreach ($clave as $key => $value) {			
 			$sql = "UPDATE articulo 
 					SET costo='$value[costo]', publico='$value[publico]', taller='$value[taller]', credito_taller='$value[credito]', mayoreo='$value[mayoreo]'
@@ -131,25 +159,16 @@ class Articulo{
 							'$value[marca]','$value[publico]', '$value[taller]', '$value[credito]', '$value[mayoreo]', 
 							'$value[costo]', '$value[idproveedor]', '$value[pasillo]', '$value[unidad]', 
 							'$fecha_ingreso', '$idsucursal')";
-			ejecutarConsulta($sql) or $sw=false;
-			/*$categoria = $value["categoria"];
-			$clave = $value["clave"];
-			$descripcion = $value["descripcion"];
-			$fmsi = $value["fmsi"];
-			$marca = $value["marca"];
-			$publico = $value["publico"];
-			$taller = $value["taller"];
-			$credito = $value["credito"];
-			$idproveedor = $value["idproveedor"];
-			/*$sql = "INSERT INTO articulo
-							(categoria, idcategoria, codigo, idproveedor, idsucursal)
-							VALUES('$categoria', 21, '$clave', '$idproveedor',$idsucursal)";
-			ejecutarConsulta($sql) or $sw=false;*/
+			ejecutarConsulta($sql) or $sw=false;			
 		}
 		return $sw;
+	}	
+
+	public function buscaMarcaPorId($id) {
+		$sql = "SELECT * FROM marca WHERE idmarca = '$id'";
+		return ejecutarConsultaSimpleFila($sql);
 	}
 
 }
-//B22-131614
 
  ?>

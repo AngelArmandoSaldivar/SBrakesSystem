@@ -12,10 +12,15 @@ function init(){
 	});
 
    //cargamos los items al select categoria
-   $.post("../ajax/articulo.php?op=selectCategoria", function(r){		
-   	$("#idcategoria").html(r);
-   	$("#idcategoria").selectpicker('refresh');
-   });
+	$.post("../ajax/articulo.php?op=selectCategoria", function(r){		
+			$("#idcategoria").html(r);
+			$("#idcategoria").selectpicker('refresh');
+	});
+
+   	$.post("../ajax/articulo.php?op=selectMarca", function(r){
+		$("#marca").html(r);
+		$("#marca").selectpicker('refresh');
+	});
 
     //cargamos los items al select proveedor
 	$.post("../ajax/ingreso.php?op=selectProveedor", function(r){				
@@ -1087,6 +1092,7 @@ function limpiar(){
 	$("#idcategoria").val("");
 	$("#codigo").val("");
 	$("#stock").val("");
+	$("#stock_ideal").val("");
 	$("#descripcion").val("");
 	$("#fmsi").val("");
 	$("#marca").val("");
@@ -1112,6 +1118,8 @@ function mostrarform(flag){
 		$("#idcategoria").selectpicker('refresh');
 		$("#idproveedor").prop("disabled", false);
 		$("#idproveedor").selectpicker('refresh');
+		$("#bandera_inventariable").prop("disabled", false);
+		$("#bandera_inventariable").selectpicker('refresh');
 		$("#codigo").prop("disabled", false);
 		$("#fmsi").prop("disabled", false);
 		$("#marca").prop("disabled", false);
@@ -1119,6 +1127,7 @@ function mostrarform(flag){
 		$("#pasillo").prop("disabled", false);
 		$("#nombre").prop("disabled", false);
 		$("#stock").prop("disabled", false);
+		$("#stock_ideal").prop("disabled", false);
 		$("#costo").prop("disabled", false);
 		$("#publico").prop("disabled", false);
 		$("#taller").prop("disabled", false);
@@ -1179,8 +1188,8 @@ function guardaryeditar(e){
 				title: respuesta,
 				showConfirmButton: false,
 				timer: 1500
-			});
-			mostrarform(false);
+			})						
+			window.location.href = "articulo.php";
 			// tabla.ajax.reload();
 		}
 	});
@@ -1253,17 +1262,28 @@ function guardarSolicitudArticulo() {
 
 function mostrar(idarticulo){
 	$('.loader').show();
+
+	const numberFormat = Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'});
+
 	$.post("../ajax/articulo.php?op=mostrar",{idarticulo : idarticulo},
 		function(data,status)
-		{
+			{						
+
 			data=JSON.parse(data);
 			console.log("DATA: ", data);
+			
+			publico = numberFormat.format(data.publico);
+			taller = numberFormat.format(data.taller);
+			credito = numberFormat.format(data.credito_taller);
+			mayoreo = numberFormat.format(data.mayoreo);			
 			mostrarform(true);
-			$('.loader').hide();		
+			$('.loader').hide();
 			$("#idcategoria").val(data.idcategoria).prop("disabled", true);
 			$("#idcategoria").selectpicker('refresh');
 			$("#idproveedor").val(data.idproveedor).prop("disabled", true);
 			$("#idproveedor").selectpicker('refresh');
+			$("#bandera_inventariable").val(data.bandera_inventariable).prop("disabled", true);
+			$("#bandera_inventariable").selectpicker('refresh');
 			$("#codigo").val(data.codigo).prop("disabled", true);
 			$("#fmsi").val(data.fmsi).prop("disabled", true);
 			$("#marca").val(data.marca).prop("disabled", true);
@@ -1271,11 +1291,12 @@ function mostrar(idarticulo){
 			$("#pasillo").val(data.pasillo).prop("disabled", true);
 			$("#nombre").val(data.nombre).prop("disabled", true);
 			$("#stock").val(data.stock).prop("disabled", true);
+			$("#stock_ideal").val(data.stock_ideal).prop("disabled", true);
 			$("#costo").val(data.costo).prop("disabled", true);
-			$("#publico").val(data.publico).prop("disabled", true);
-			$("#taller").val(data.taller).prop("disabled", true);
-			$("#credito_taller").val(data.credito_taller).prop("disabled", true);
-			$("#mayoreo").val(data.mayoreo).prop("disabled", true);
+			$("#publico").val(publico).prop("disabled", true);
+			$("#taller").val(taller).prop("disabled", true);
+			$("#credito_taller").val(credito).prop("disabled", true);
+			$("#mayoreo").val(mayoreo).prop("disabled", true);
 			$("#descripcion").val(data.descripcion).prop("disabled", true);
 			$("#barcode").val(data.barcode).prop("disabled", true);
 			$("#idarticulo").val(data.idarticulo).prop("disabled", true);
@@ -1283,6 +1304,14 @@ function mostrar(idarticulo){
 			$("#imagenmuestra").show();
 			$("#imagenmuestra").attr("src","../files/articulos/"+data.imagen);
 			$("#imagenactual").val(data.imagen);
+			$.post("../ajax/articulo.php?op=mostrarMarcaId",{idMarca : data.marca}, function(res) {
+				dataMarca = JSON.parse(res);
+				console.log("DATA MARCA: " + dataMarca.utilidad_1);
+				$("#utilidadPublico").text(dataMarca.utilidad_1 + "%")
+				$("#utilidadTaller").text(dataMarca.utilidad_2 + "%")
+				$("#utilidadCreditoTaller").text(dataMarca.utilidad_3 + "%")
+				$("#utilidadMayoreo").text(dataMarca.utilidad_4 + "%")
+			})
 		});
 		limpiar();
 }
@@ -1291,15 +1320,16 @@ function editarArticulo(idarticulo){
 	$('.loader').show();
 	$.post("../ajax/articulo.php?op=mostrar",{idarticulo : idarticulo},
 		function(data,status)
-		{
-			data=JSON.parse(data);
-			console.log("ID CATEGORIA: ", data.idcategoria);
+		{			
+			data=JSON.parse(data);			
 			mostrarform(true);
 			$('.loader').hide();
 			$("#idcategoria").val(data.idcategoria);
 			$("#idcategoria").selectpicker('refresh');
 			$("#idproveedor").val(data.idproveedor);
 			$("#idproveedor").selectpicker('refresh');
+			$("#bandera_inventariable").val(data.bandera_inventariable);
+			$("#bandera_inventariable").selectpicker('refresh');
 			$("#codigo").val(data.codigo);
 			$("#fmsi").val(data.fmsi);
 			$("#marca").val(data.marca);
@@ -1307,6 +1337,7 @@ function editarArticulo(idarticulo){
 			$("#pasillo").val(data.pasillo);
 			$("#nombre").val(data.nombre);
 			$("#stock").val(data.stock);
+			$("#stock_ideal").val(data.stock_ideal);
 			$("#costo").val(data.costo);
 			$("#publico").val(data.publico);
 			$("#taller").val(data.taller);
@@ -1390,6 +1421,15 @@ function exportarExcel() {
 	window.open(
 		`../reportes/exportExcel.php`,
 		'_blank');
+}
+
+function mostrarImagen(id) {
+	$.post("../ajax/articulo.php?op=mostrarPorId" , {ìdArticulo : id}, function(e){				
+		data = JSON.parse(e);
+		console.log("IMAGEN DEL PRODUCTO: " + data.imagen);
+		$("#modalImagenProducrto").attr("src","../files/articulos/"+data.imagen);
+		$("#claveProductoModal").val(data.codigo);
+	});
 }
 
 init();

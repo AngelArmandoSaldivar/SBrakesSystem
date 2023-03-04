@@ -36,16 +36,16 @@ if ($_SESSION['cotizaciones']==1) {
                   <img src="../files/images/loader.gif" alt="" width="35px">
                 </div>
               </div>
-              <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-4">
                 <label>Fecha Inicio</label>
                 <input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" value="">
               </div>
-              <div class="form-group col-lg-4 col-md-6 col-sm-6 col-xs-12">
+              <div class="form-group col-lg-4 col-md-6 col-sm-6 col-xs-4">
                 <label>Fecha Fin</label>
                 <input type="date" class="form-control" name="fecha_fin" id="fecha_fin" value="">
               </div>          
-            <div class="form-group col-lg-2 col-md-6 col-xs-12" style="text-align:left;">
-              <label>Limite de registros</label>
+            <div class="form-group col-lg-2 col-md-6 col-xs-4" style="text-align:left;">
+              <label>Paginas</label>
               <select name="limite_registros" id="limite_registros" class="form-control selectpicker" >
                 <option value="" disabled selected>Seleccionar limite</option>                  
                 <option value="50">50 / Registros</option>
@@ -54,7 +54,8 @@ if ($_SESSION['cotizaciones']==1) {
                 <option value="500">500 / Registros</option>
                 <option value="1000">1000 / Registros</option>
               </select>
-            </div>
+            </div>                                
+
             <div id="global">
               <div id="tablaResultados">
                 <section id="tabla_resultado"></section>
@@ -73,9 +74,30 @@ if ($_SESSION['cotizaciones']==1) {
           <div class="box-header with-border" id="formularioregistros">
             <div class="panel-body table-responsive">   
               <form action="" name="formulario" id="formulario" method="POST">
+
                 <div class="form-group col-lg-12 col-md-6 col-xs-12">
                   <center><h4 aling="center">Información del cliente</h4></center>
                 </div>
+
+                <!--<div class="form-group col-lg-4 col-md-12 col-xs-12">
+                  <label for="">Cliente(*):</label>
+                  <input class="form-control" type="hidden" name="idservicio" id="idservicio" tabindex="1">
+                  <br>
+                                        
+                  <button type="button" class="btn dropdown-toggle bs-placeholder btn-default" data-bs-toggle="dropdown" role="button" id="btn-cliente" title="Seleccionar cliente" aria-expanded="false" onclick="mostrarLista()">
+                    <span class="filter-option pull-left" id="btn-nombre-cliente">Seleccionar cliente</span>&nbsp;                                                         
+                    </span>
+                  </button>
+
+                  <div class="dropdown-menu open col-lg-12 col-md-6 col-xs-12" role="combobox" style="max-height: 395.406px; overflow: hidden; min-height: 134px;" id="contenedorLista">
+                    <div class="bs-searchbox">
+                      <input type="text" class="form-control" autocomplete="off" role="textbox" value="" name="searchSelect" id="searchSelect" onblur="onBlurText()" aria-label="Search">
+                      <br>
+                      <section id="contenedorOpciones"></section>
+                    </div>
+                  </div>                
+                </div>-->
+                
                 <div class="form-group col-lg-4 col-md-8 col-xs-12">
                 <label for="">Cliente(*):</label>
                 <input class="form-control" type="hidden" name="idservicio" id="idservicio">
@@ -93,7 +115,7 @@ if ($_SESSION['cotizaciones']==1) {
               </div>
 
               <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
-                <label for="">RFC: </label>
+                <label for="">RFC: </label>                
                 <input class="form-control" type="text" name="rfc" id="rfc">
               </div>
 
@@ -127,13 +149,14 @@ if ($_SESSION['cotizaciones']==1) {
               <div class="form-group col-lg-12 col-md-6 col-xs-12">
                 <center><h4 aling="center">Detalles cotización</h4></center>
               </div>
-              <div class="form-group col-lg-2 col-md-4 col-xs-12">
+              <div class="form-group col-lg-2 col-md-4 col-xs-6">
                 <label for="">Fecha(*): </label>
                 <input class="form-control" type="date" name="fecha_hora" id="fecha_hora" required>
               </div>
-              <div class="form-group col-lg-2 col-md-6 col-xs-12">
+              <div class="form-group col-lg-2 col-md-6 col-xs-6">
                 <label for="">Tipo Comprobante(*): </label>
                   <select name="tipo_comprobante" id="tipo_comprobante" class="form-control selectpicker" required>                    
+                    <option value="Remision">Remision</option>
                     <option value="Factura">Factura</option>
                   </select>
               </div>
@@ -142,7 +165,7 @@ if ($_SESSION['cotizaciones']==1) {
                 <input class="form-control" type="text" name="impuesto" id="impuesto">
               </div>
 
-              <div class="form-group col-lg-2 col-md-6 col-xs-12">
+              <div class="form-group col-lg-2 col-md-6 col-xs-6" style="visibility:hidden">
                 <label for="">Tipo de precio </label>
                   <select name="tipo_precio" id="tipo_precio" class="form-control selectpicker">
                   <option value="" disabled selected>Tipo Precio</option>
@@ -152,16 +175,35 @@ if ($_SESSION['cotizaciones']==1) {
                     <option value="mayoreo">Mayoreo</option>
                   </select>
               </div>
-                
-                <div class="form-group col-lg-2 col-md-4 col-xs-12" id="estatus"> 
-                  <a data-toggle="modal" href="#editarDetalleVenta">                   
-                    <button class="btn btn-primary" type="submit" id="" onclick="mostrarDetalleServicioEdit()">Editar</button>
-                  </a>
-                </div>
               
               <div class="form-group col-lg-12 col-md-6 col-xs-12">
                     <center><h4 aling="center">Información de auto</h4></center>
               </div>
+
+              <!--<div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
+                <label for="">Automovil: </label>
+                <select name="idauto" id="idauto" class="form-control selectpicker" data-live-search="true">
+                  <option value="" disabled selected>Seleccionar auto</option>
+                </select>
+              </div>
+
+              <div class="form-group col-lg-2 col-md-12 col-xs-12">
+                <label for="">Automovil(*):</label>
+                <br>
+                                      
+                <button type="button" class="btn dropdown-toggle bs-placeholder btn-default" data-bs-toggle="dropdown" role="button" id="btn-automovil" title="Seleccionar automovil" aria-expanded="false" onclick="mostrarListaAutomovil()">
+                  <span class="filter-option pull-left" id="btn-nombre-automovil">Seleccionar Auto</span>&nbsp;                                                         
+                  </span>
+                </button>
+
+                <div class="dropdown-menu open col-lg-12 col-md-6 col-xs-12" role="combobox" style="max-height: 395.406px; overflow: hidden; min-height: 134px;" id="contenedorListaAutomovil">
+                  <div class="bs-searchbox">
+                    <input type="text" class="form-control" autocomplete="off" role="textbox" value="" name="searchSelectAutomovil" id="searchSelectAutomovil" onblur="onBlurTextAutomovil()" aria-label="Search">
+                    <br>
+                    <section id="contenedorOpcionesAutomovil"></section>
+                  </div>
+                </div>                
+              </div>-->
 
               <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
                 <label for="">Automovil: </label>
@@ -234,9 +276,10 @@ if ($_SESSION['cotizaciones']==1) {
                     <th>Precio Venta</th>
                     <th>Descuento</th>
                     <th>Subtotal</th>
-                    <th>Acciones</th>
+                    <th>Imagen</th>                
                   </thead>
                   <tfoot style="background-color:#A9D0F5">                    
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>

@@ -18,9 +18,10 @@ if ($_SESSION['servicios']==1) {
         <!-- Default box -->
     <div class="row">
       <div class="col-md-12">
-        <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
+        <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px; background-color: #e3dfff63;">
           <div class="box-header with-border">
-            <center><h4 class="box-title">Servicios </h4></center>
+            <br />
+            <center><h4 class="box-title">VENTAS </h4></center>
             <div class="box-tools pull-right"></div>          
             <div class="panel-body table-responsive" id="listadoregistros">
               <section>
@@ -70,7 +71,7 @@ if ($_SESSION['servicios']==1) {
               </nav>
             </div>
           </div>   
-          <div class="box-header with-border" id="formularioregistros">
+          <div class="box-header with-border" id="formularioregistros"> 
             <div class="panel-body table-responsive">   
               <form action="" name="formulario" id="formulario" method="POST">
 
@@ -119,20 +120,20 @@ if ($_SESSION['servicios']==1) {
                     <input class="form-control" type="text" name="tipoPrecio" id="tipoPrecio">
                   </div>
 
-                  <div class="form-group col-lg-3 col-md-2 col-xs-6" id="divImpuesto">
+                  <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
                     <label for="">Email: </label>
                     <input class="form-control" type="text" name="email" id="email">
                   </div>
 
-                  <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
+                  <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
                     <label for="">Número móvil: </label>
                     <input class="form-control" type="text" name="telefono" id="telefono">
                   </div>
 
                   <div class="form-group col-lg-2 col-md-2 col-xs-6" id="divImpuesto">
-                    <label for="">Días Crédito: </label>
+                    <label for="">Días de Crédito: </label>
                     <input class="form-control" type="text" name="credito" id="credito">
-                  </div>
+                  </div>                  
 
                   <div class="form-group col-lg-2 col-md-4 col-xs-12" id="historialServicios">
                     <label for="">Historial servicios</label><br>                  
@@ -140,35 +141,37 @@ if ($_SESSION['servicios']==1) {
                   </div>
                 </div>
 
-                <input type="hidden" id="idclient" name="idclient" value="" style="border:none; color:white;">  
-                <div class="col-lg-12" id="detalleServicioDivider"><hr class="mt-5 mb-3"  style="width:80%"/></div>
+                <div class="col-lg-12" id="detalleAutoDivider"><hr class="mt-5 mb-3"  style="width:80%"/></div>               
 
-                <div class="list-group-item col-lg-12" id="detalleServicio">
+                <div class="list-group-item col-lg-12" id="divDetallesVenta">
                   <div class="form-group col-lg-12 col-md-6 col-xs-12">
                     <center><h4 aling="center">Detalles servicio</h4></center>
                   </div>
                   <div class="form-group col-lg-2 col-md-4 col-xs-12">
                     <label for="">Entrada(*): </label>
-                    <input class="form-control" type="date" name="fecha_entrada" id="fecha_entrada" required>
+                    <input class="form-control" type="date" name="fecha_entrada" id="fecha_entrada" value="<?php echo date("Y-m-d"); ?>" required>
                   </div>  
 
                   <div class="form-group col-lg-2 col-md-4 col-xs-12">
                     <label for="">Salida(*): </label>
-                    <input class="form-control" type="date" name="fecha_salida" id="fecha_salida">
+                    <input class="form-control" type="date" name="fecha_salida" id="fecha_salida" value="<?php echo date("Y-m-d"); ?>">
                   </div>  
 
-                  <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                  <div class="form-group col-lg-3 col-md-6 col-xs-12">
                     <label for="">Tipo Comprobante(*): </label>
                       <select name="tipo_comprobante" id="tipo_comprobante" class="form-control selectpicker" required>                    
-                        <option value="Factura">Factura</option>
+                        <option value="Remision">Remisión</option>
+                        <option value="Factura">Factura</option>                        
                       </select>
-                  </div>
-                  <div class="form-group col-lg-1 col-md-2 col-xs-6">
-                    <label for="">Impuesto: </label>
-                    <input class="form-control" type="text" name="impuesto" id="impuesto">
-                  </div>
-
-                  <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                  </div>                                   
+                  <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                    <label for="">Remisionar </label>
+                      <select name="remision" id="remision" class="form-control selectpicker">                    
+                        <option value="1">Remisionar</option>
+                        <option value="0">No remisionar</option>
+                      </select>
+                  </div> 
+                  <div class="form-group col-lg-3 col-md-6 col-xs-12" style="visibility:hidden">
                     <label for="">Tipo de precio </label>
                       <select name="tipo_precio" id="tipo_precio" class="form-control selectpicker">
                       <option value="" disabled selected>Tipo Precio</option>
@@ -178,19 +181,16 @@ if ($_SESSION['servicios']==1) {
                         <option value="mayoreo">Mayoreo</option>
                       </select>
                   </div> 
-                  <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label for="">Remisionar </label>
-                      <select name="remision" id="remision" class="form-control selectpicker">                    
-                        <option value="1">Remisionar</option>
-                        <option value="0">No remisionar</option>
-                      </select>
-                  </div> 
-                  <div class="form-group col-lg-1 col-md-4 col-xs-12" id="editarDetalleServicio"> 
+                  <div class="form-group col-lg-3 col-md-4 col-xs-12" id="editarDetalleServicio"> 
                     <label for="">Editar</label><br>
                     <a data-toggle="modal" href="#editarDetalleVenta">                   
                       <button class="btn btn-primary" type="submit" id="btnEditarInformacionCliente" onclick="mostrarDetalleServicioEdit()">Editar</button>
                     </a>
                   </div>           
+                  <div class="form-group col-lg-1 col-md-2 col-xs-6" style="visibility:hidden">
+                    <label for="">Impuesto: </label>
+                    <input class="form-control" type="text" name="impuesto" id="impuesto">
+                  </div>
                 </div>     
 
                 <div class="col-lg-12" id="detalleAutoDivider"><hr class="mt-5 mb-3"  style="width:80%"/></div>
@@ -232,7 +232,7 @@ if ($_SESSION['servicios']==1) {
                   </div>
                   <div class="form-group col-lg-2 col-md-2 col-xs-6">
                     <label for="">Año: </label>
-                    <input class="form-control" type="number" name="ano" id="ano" min="1000"  placeholder="yyyy">
+                    <input class="form-control" type="number" name="ano" id="ano" placeholder="yyyy">
                   </div>
                   <div class="form-group col-lg-2 col-md-2 col-xs-6">
                     <label for="">Color: </label>
@@ -240,7 +240,11 @@ if ($_SESSION['servicios']==1) {
                   </div>
                   <div class="form-group col-lg-2 col-md-2 col-xs-6">
                     <label for="">Kms: </label>
-                    <input class="form-control" type="number" name="kms" id="kms" min="1"  placeholder="Kms">
+                    <input class="form-control" type="number" name="kms" id="kms" placeholder="Kms">
+                  </div>
+                  <div class="form-group col-lg-2 col-md-2 col-xs-6">
+                    <label for="">Vin: </label>
+                    <input class="form-control" type="text" name="vin" id="vin" placeholder="Vin">
                   </div>
                 </div>
                 <div class="col-lg-12"><hr class="mt-5 mb-3"  style="width:80%"/></div>
@@ -310,7 +314,6 @@ if ($_SESSION['servicios']==1) {
                           <th>Precio Venta</th>
                           <th>Descuento</th>
                           <th>Subtotal</th>
-                          <th>Acciones</th>
                         </thead>
                         <tfoot style="background-color:#A9D0F5">                    
                           <th></th>
@@ -321,8 +324,7 @@ if ($_SESSION['servicios']==1) {
                           <th></th>
                           <th></th>
                           <th>TOTAL</th>
-                          <th><h5 id="total">$ 0.00</h5><input type="hidden" name="total_servicio" id="total_servicio"></th>
-                          <th></th>
+                          <th><h5 id="total">$ 0.00</h5><input type="hidden" name="total_servicio" id="total_servicio"></th>                          
                         </tfoot>
                         <tbody>                
                         </tbody>
@@ -330,7 +332,7 @@ if ($_SESSION['servicios']==1) {
                   </div>
                 </div>
               <form>
-            </div>   
+            </div></div>
             <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
             </div>       
             <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -634,6 +636,10 @@ if ($_SESSION['servicios']==1) {
             <label for="">Kms</label>
             <input class="form-control" type="number" name="kmsAdd" id="kmsAdd" min="0" placeholder="Kms" value="" required>
           </div>
+          <div class="form-group col-lg-4 col-md-6 col-xs-12">
+            <label for="">VIN</label>
+            <input class="form-control" type="text" name="vinAdd" id="vinAdd" placeholder="Vin" value="" required>
+          </div>
           <div class="form-group col-lg-2 col-md-3 col-sm-6 col-xs-12" id="">
             <button id="btnAgregar" type="button" class="btn btn-primary" onclick="guardarAuto()" data-dismiss="modal"><span class="fa fa-plus"></span>Agregar</button>
           </div>
@@ -653,7 +659,7 @@ if ($_SESSION['servicios']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/servicioB1.js"></script>
+ <script src="scripts/servicio.js"></script>
  <?php 
 }
 

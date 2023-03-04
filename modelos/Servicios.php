@@ -10,7 +10,7 @@ public function __construct(){
 }
 
 //metodo insertar registro
-public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_entrada,$fecha_salida,$remision,$impuesto,$total_servicio,$marca, $modelo, $ano, $color, $kms,$placas,$idarticulo,$clave,$marcaArticulo,$fmsi,$descripcion,$cantidad,$precio_servicio,$descuento, $idsucursal, $idsucursalproducto){
+public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_entrada,$fecha_salida,$remision,$impuesto,$total_servicio,$marca, $modelo, $ano, $color, $kms,$placas,$idarticulo,$clave,$marcaArticulo,$fmsi,$descripcion,$cantidad,$precio_servicio,$descuento, $idsucursal, $idsucursalproducto){	
 	$total_servicio = substr($total_servicio, 1);
 	$caracter = ",";
 	$posicion = strpos($total_servicio, $caracter);
@@ -49,8 +49,8 @@ public function guardarGarantia($idservicio, $idarticulo, $descripcion, $cantida
 }
 
 public function maxRemision() {
-	$sql = "SELECT MAX(remision) as maxRemision from servicio";
-	return ejecutarConsulta($sql);
+	$sql = "SELECT MAX(remision) as maxRemision, tipo_comprobante from servicio";
+	return ejecutarConsultaSimpleFila($sql);
 }
 
 public function editarRemision($idservicio, $remision) {
@@ -239,12 +239,12 @@ public function listar($idsucursal){
 
 
 public function serviciocabecera($idservicio){
-	$sql= "SELECT v.idservicio, v.idcliente, p.nombre AS cliente, p.direccion,p.email, p.telefono, v.idusuario, u.nombre AS usuario, v.tipo_comprobante, DATE(v.fecha_entrada) AS fecha, v.impuesto, v.total_servicio, v.marca, v.modelo, v.color, v.kms, v.placas FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE v.idservicio='$idservicio'";
+	$sql= "SELECT DATE(v.fecha_entrada) as fecha_entrada,v.idservicio, v.idcliente, p.nombre AS cliente, p.direccion,p.email, p.telefono, v.idusuario, u.nombre AS usuario, v.tipo_comprobante, DATE(v.fecha_entrada) AS fecha, v.impuesto, v.total_servicio, v.marca, v.modelo, v.color, v.kms, v.placas FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE v.idservicio='$idservicio'";
 	return ejecutarConsulta($sql);
 }
 
 public function serviciodetalles($idservicio){
-	$sql="SELECT d.idservicio, a.codigo AS articulo, a.codigo, d.cantidad,d.fmsi, d.descripcion, d.precio_servicio, d.descuento, d.codigo, (d.cantidad*d.precio_servicio-d.descuento) AS subtotal FROM detalle_servicio d INNER JOIN articulo a ON d.idarticulo=a.idarticulo WHERE d.idservicio='$idservicio' AND d.estado=0";
+	$sql="SELECT d.idservicio, a.codigo AS articulo, a.codigo, d.cantidad,d.fmsi, d.descripcion, d.precio_servicio, d.descuento, d.codigo, d.marca, d.codigo as clave, (d.cantidad*d.precio_servicio-d.descuento) AS subtotal FROM detalle_servicio d INNER JOIN articulo a ON d.idarticulo=a.idarticulo WHERE d.idservicio='$idservicio' AND d.estado=0";
     	return ejecutarConsulta($sql);
 }
 
@@ -289,8 +289,8 @@ public function filtroPaginado($limit, $limit2, $busqueda, $fecha_inicio, $fecha
 	return ejecutarConsulta($sql);
 }
 
-public function guardarAuto($idcliente, $placas, $marca, $modelo, $ano, $color, $kms) {
-	$sql_auto="INSERT INTO autos (placas, marca, modelo, ano, color, kms, idcliente) VALUES('$placas', '$marca', '$modelo', '$ano', '$color', '$kms', '$idcliente')";
+public function guardarAuto($idcliente, $placas, $marca, $modelo, $ano, $color, $kms, $vin) {
+	$sql_auto="INSERT INTO autos (placas, marca, modelo, ano, color, kms, idcliente, vin) VALUES('$placas', '$marca', '$modelo', '$ano', '$color', '$kms', '$idcliente', '$vin')";
 	return ejecutarConsulta($sql_auto);
 }
 
@@ -319,6 +319,17 @@ public function reporteServicios($fecha_inicio, $fecha_fin) {
 			WHERE DATE(fecha_entrada) >= '$fecha_inicio' 
 			AND DATE(fecha_entrada) <= '$fecha_fin'
 			AND v.status != 'ANULADO' ORDER BY v.idservicio DESC";
+	return ejecutarConsulta($sql);
+}
+
+
+//======================================//
+//=============== ORDEN COMPRA==================//
+//======================================//
+
+public function registrarOrdenCompra($idarticulo, $fecha, $cantidad) {
+	$sql = "INSERT INTO orden_compra (idproducto, fecha_orden, cantidad) 
+			VALUES ('$idarticulo', '$fecha', '$cantidad')";
 	return ejecutarConsulta($sql);
 }
 

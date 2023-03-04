@@ -166,11 +166,11 @@ function LoadData($file)
 function fact_dev($num )
 {
 
-    $rt  = $this->w - 122;
-    $rt2  = $rt + 30;
+    $rt  = $this->w - 140;
+    $rt2  = $rt + 75;
     $this->SetXY( $rt+2, 30,6+2);
     $this->SetFont( "Arial", "B", 16 );
-    $this->Cell($rt2-$rt -1,6, "REMISION", 'B', 0, "C", );
+    $this->Cell($rt2-$rt -1,6, "TICKET SIN VALOR FISCAL", 'B', 0, "C", );
     
     $r1  = $this->w - 200;
     $r2  = $r1 + 68;
@@ -298,7 +298,7 @@ function addClientAdresse( $cliente, $domicilio ,$email, $telefono, $marca, $mod
     $r2E = $this->w - 145;
     $r2     = $r1 + 68;
     $y1     = 60;
-    $this->Image('../files/images/S-BRAKES.PNG',89,8,30);
+    $this->Image('../files/images/BrakeOneBrembo.png',68,8,80);
     $this->SetXY( $r1, $y1);
     $this->SetFont("Arial","B",2);
     $this->SetFont('Arial','',9);
@@ -491,7 +491,7 @@ function addCadreTVAs($letras)
     $this->SetFont( "Arial", "B", 8);
     $r1  = 10;
     $r2  = $r1 + 120;
-    $y1  = $this->h - 75;
+    $y1  = $this->h - 98;
     $y2  = $y1+20;
     // $this->RoundedRect($r1, $y1, ($r2 - $r1), ($y2-$y1), 2.5, 'D');
     // $this->Line( $r1, $y1+4, $r2, $y1+4);
@@ -506,7 +506,7 @@ function addCadreEurosFrancs($impuesto)
 {
     $r1  = $this->w - 65;
     $r2  = $r1 + 60;
-    $y1  = $this->h - 75;
+    $y1  = $this->h - 98;
     $y2  = $y1+20;
     // $this->RoundedRect($r1, $y1, ($r2 - $r1), ($y2-$y1), 2.5, 'D');
     // $this->Line( $r1+20,  $y1, $r1+20, $y2);
@@ -525,7 +525,7 @@ function addTVAs( $impuesto, $total_venta, $simbolo )
     $re  = $this->w - 35;
     $rei  = $this->w - 0;
     $rf  = $this->w - 0;
-    $y1  = $this->h - 74;
+    $y1  = $this->h - 98;
     $this->SetFont( "Arial", "", 9);
 
      $this->Line( $re+20, $y1+25, 12, $y1+25);
@@ -538,20 +538,30 @@ function addTVAs( $impuesto, $total_venta, $simbolo )
     $formatTotal = number_format($total_venta, 2);
     $this->Cell( $length, 2, $formatTotal);   
 
-    $this->SetXY( $this->w - 190, $this->h - 59+12 );
+    $this->SetXY( $this->w - 190, $this->h - 75+12 );
     $this->SetFont( "Arial", "", 8);
     $this->Cell( 5, 3, "GARANTIA RECTIFICADO DISCOS: 5 DIAS, GARANTIA BALATAS: 30 DIAS O 1,000 KMS LO QUE OCURRA PRIMERO, SOBRE"); 
-    $this->SetXY( $this->w - 190, $this->h - 59+14 );
+    $this->SetXY( $this->w - 190, $this->h - 73+14 );
     $this->SetFont( "Arial", "", 8);
     $this->Cell( 5, 10, "DEFECTOS DE FABRICACION, RECOMENDACION: NO ABUSE DE LOS FRENOS DURANTE LOS PRIMEROS 200-300 KMS."); 
 
-    $this->SetXY( $this->w - 165, $this->h - 59+19 );
+    $this->SetXY( $this->w - 165, $this->h - 72+19 );
     $this->SetFont( "Arial", "", 8);
-    $this->Cell( 5, 15, "SEVILLA #312-C, COL. PORTALES NORTE ALCALDIA BENITO JUAREZ, CDMX."); 
+    $this->Cell( 5, 15, "SARATOGA #313-C, COL. PORTALES NORTE ALCALDIA BENITO JUAREZ, CDMX. CP. 03303"); 
 
-    $this->SetXY( $this->w - 125, $this->h - 59+23 );
+    $this->SetXY( $this->w - 125, $this->h - 70+23 );
     $this->SetFont( "Arial", "", 8);
-    $this->Cell(5, 15, "TELS. (55) 228 055 77"); 
+    $this->Cell(5, 15, "TELS. (55) 7653-6116 / (55) 684-02850"); 
+
+    $this->SetXY( $this->w - 125, $this->h - 68+26 );
+    $this->SetFont( "Arial", "", 8);
+    //$this->Cell(5, 15, "TELS. (55) 7653-6116 / (55) 684-02850"); 
+    $r1     = $this->w - 180;
+    $r2Y = $this->w - 65;
+    $r2E = $this->w - 145;
+    $r2     = $r1 + 68;
+    $y1     = 60;
+    $this->Image('../files/images/QR.jpeg',95,262,35);
 }
 
 // add a watermark (temporary estimate, DUPLICATA...)

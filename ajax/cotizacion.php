@@ -1,6 +1,8 @@
 <?php 
 require_once "../modelos/Cotizacion.php";
 require_once "../modelos/Persona.php";
+require_once "../modelos/Articulo.php";
+
 if (strlen(session_id())<1)
 	session_start();
 	//SESIONES
@@ -9,6 +11,8 @@ if (strlen(session_id())<1)
 
 $cotizacion = new Cotizacion();
 $persona=new Persona();
+$articulo = new Articulo();
+
 $idservicio=isset($_POST["idservicio"])? limpiarCadena($_POST["idservicio"]):"";
 $idauto=isset($_POST["idauto"])? limpiarCadena($_POST["idauto"]):"";
 $idcliente=isset($_POST["idcliente"])? limpiarCadena($_POST["idcliente"]):"";
@@ -39,11 +43,11 @@ $placas=isset($_POST["placas"])? limpiarCadena($_POST["placas"]):"";
 
 switch ($_GET["op"]) {
 	case 'guardaryeditar':
-	if (empty($idservicio)) {
+	if (empty($idservicio)) {						
 		$rspta=$cotizacion->insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora, $impuesto,$total_cotizacion,$marca, $modelo, $ano, $color, $kms, $placas, $_POST["idarticulo"],$_POST["clave"],$_POST["marca"], $_POST["fmsi"],$_POST["descripcion"],$_POST["cantidad"],$_POST["precio_cotizacion"],$_POST["descuento"], $idsucursal, $_POST["idsucursalArticulo"]);		
 		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
 	}
-	break;
+	break;	
 
 	case 'guardarGarantia':
 		$idservicio=$_GET['idservicio'];
@@ -54,6 +58,18 @@ switch ($_GET["op"]) {
 		$precioGarantia=$_GET['precioGarantia'];
 		$rspta=$cotizacion->guardarGarantia($idservicio, $idarticulo, $descripcion, $cantidad, $idsucursal, $fecha_hora, $precioGarantia);
 		echo $rspta ? "Se guardo correctamente la garantia" : "No se pudo guardar la garantia";
+		break;
+
+	case 'listarDetalleIdCotizacion':
+		$id=$_GET['idCotizacion'];
+		$rspta=$cotizacion->mostrarDetalleCotizacion($id);
+		echo json_encode($rspta);
+		break;		
+
+	case 'mostrarArticulo':
+		$id = $_GET["idArticulo"];
+		$rspta=$articulo->mostrar($id);
+		echo json_encode($rspta);
 		break;
 
 	case 'listarDetalleGarantias':
@@ -405,9 +421,13 @@ switch ($_GET["op"]) {
 	case 'listarDetalle':
 		//recibimos el idservicio
 		$id=$_GET['id'];
-
+		$imagen = $_GET["imagen"];
+		//$imagen=$_GET["imagen"];
 		$rspta=$cotizacion->listarDetalle($id);
 		$total=0;
+		$des = 0;
+		$sub = 0;
+		$total1 = 0;
 		echo ' <thead style="background-color:#A9D0F5; font-size: 12px;">
 		<th>Opciones</th>		
 		<th>Clave</th>
@@ -418,9 +438,12 @@ switch ($_GET["op"]) {
         <th>Precio Venta</th>
         <th>Descuento</th>
         <th>Subtotal</th>
-		<th>Acciones</th>
+		<th>Imagen</th>
        </thead>';
 		while ($reg=$rspta->fetch_object()) {
+			$des = $reg->descuento / 100;
+			$total1 = $reg->cantidad * $reg->precio_cotizacion;
+			$sub = ($total1 - ($total1 * $des));
 			echo '<tr class="filas" id="filas" style="font-size:12px">
 			<td></td>			
 			<td><input type="hidden" value="'.$reg->idarticulo.'" id="idarticulo" name="idarticulo"></input>'.$reg->codigo.'</td>
@@ -431,8 +454,8 @@ switch ($_GET["op"]) {
 			<td>$'.number_format($reg->precio_cotizacion, 2).'</td>
 			<td>'.$reg->descuento.'</td>
 			<td>$'.number_format($reg->subtotal, 2).'</td>
-			<td></td>';
-			$total=$total+($reg->precio_cotizacion*$reg->cantidad-$reg->descuento);
+			<td><img src="../files/articulos/'.$imagen.'" alt="" width="250px" height="150" id="imagenmuestra" class="img-thumbnail"></td>';
+			$total += $sub;
 		}
 		echo '<tfoot style="background-color:#A9D0F5; font-size: 12px;">		
 		<th></th>
@@ -442,9 +465,9 @@ switch ($_GET["op"]) {
 		<th></th>
 		<th></th>
 		<th></th>
+		<th></th>
 		<th>TOTAL</th>
         <th><p id="total">$ '.number_format($total, 2).'</p><input type="hidden" name="total_servicio" id="total_servicio"></th>
-		<th></th>
        </tfoot>';
 		break;
 
@@ -742,6 +765,7 @@ switch ($_GET["op"]) {
 		
 			$consultaBD=$consulta;
 			if($consultaBD->num_rows>=1){
+				
 				echo "
 				<table class='responsive-table table table-hover table-bordered' style='font-size:12px' id='tableArticulos'>
 					<thead class='table-light'>
@@ -757,7 +781,7 @@ switch ($_GET["op"]) {
 						</tr>
 					</thead>
 				<tbody>";
-				while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){
+				while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){					
 					if($fila["idsucursal"] == $idsucursal && $acceso ==="admin") {							
 							if ($fila["tipo_comprobante"]=='Ticket') {
 								$url='../reportes/exTicket.php?id=';
@@ -975,10 +999,85 @@ switch ($_GET["op"]) {
 				}
 			break;
 
-		case 'selectCliente':
-			require_once "../modelos/Persona.php";
-			$persona = new Persona();
+		case 'filtroCliente': 			
+			$consulta="";
+			$termino= "";
 
+			if (!isset($_POST['cliente'])) {								
+				$consulta = $persona->filtroCliente("");				
+				if($consulta->num_rows>=1){
+					while ($res = $consulta->fetch_array(MYSQLI_ASSOC)) {
+					echo"						
+							<li>
+								<a tabindex='2' onclick='clienteSeleccionado(".$res['idpersona'].",\"".$res['nombre']."\")' id='btn-lista' class='list-group-item list-group-item-action'>
+									<P style='font-size:12px'>".$res['nombre']."</p>
+								</a>
+							</li>                      
+						";
+					}
+				}
+			}
+
+			if(isset($_POST['cliente']))
+			{
+				$termino=$conexion->real_escape_string($_POST['cliente']);				
+				$consulta = $persona->filtroCliente($termino);				
+				if($consulta->num_rows>=1){
+					while ($res = $consulta->fetch_array(MYSQLI_ASSOC)) {
+					echo"						
+							<li>
+								<a tabindex='2' onclick='clienteSeleccionado(".$res['idpersona'].",\"".$res['nombre']."\")' id='btn-lista' class='list-group-item list-group-item-action'>
+								<P style='font-size:12px'>".$res['nombre']."</p>
+								</a>
+							</li>                      
+						";
+					}
+				}
+
+			}
+
+			break;	
+			
+			case 'filtroAuto': 			
+				$consulta="";
+				$termino= "";			
+	
+				if (!isset($_POST['auto'])) {								
+					$consulta = $persona->filtroAuto("");
+					if($consulta->num_rows>=1){
+						while ($res = $consulta->fetch_array(MYSQLI_ASSOC)) {
+						echo"						
+								<li>
+									<a tabindex='2' onclick='clienteSeleccionado(".$res['idauto'].",\"".$res['marca']."\",".$res['modelo']."\")' id='btn-lista' class='list-group-item list-group-item-action'>
+										<P style='font-size:12px'>".$res['marca']." ".$res["modelo"]."</p>
+									</a>
+								</li>                      
+							";
+						}
+					}
+				}
+	
+				if(isset($_POST['auto']))
+				{
+					$termino=$conexion->real_escape_string($_POST['auto']);				
+					$consulta = $persona->filtroAuto($termino);
+					if($consulta->num_rows>=1){
+						while ($res = $consulta->fetch_array(MYSQLI_ASSOC)) {
+						echo"						
+								<li>
+									<a tabindex='2' onclick='clienteSeleccionado(".$res['idauto'].",\"".$res['marca']."\",".$res['modelo']."\")' id='btn-lista' class='list-group-item list-group-item-action'>
+										<P style='font-size:12px'>".$res['marca']." ".$res["modelo"]."</p>
+									</a>
+								</li>                     
+							";
+						}
+					}
+	
+				}
+	
+				break;	
+
+		case 'selectCliente':			
 			$rspta = $persona->listarc();
 			echo '<option value="" disabled selected>Seleccionar cliente</option>';
 			while ($reg = $rspta->fetch_object()) {
@@ -1002,7 +1101,7 @@ switch ($_GET["op"]) {
 
 		break;
 
-			case 'listarProductos':
+			case 'listarProductos':				
 	
 				$consulta="SELECT * FROM articulo ORDER BY stock DESC LIMIT 100";
 					$termino= "";
@@ -1083,9 +1182,11 @@ switch ($_GET["op"]) {
 											<td><p>$ ".$tallerMiles."</p></td>
 											<td><p>$ ".$creditoMiles."</p></td>
 											<td><p>$ ".$publicMiles."</p></td>
-											<td><p>$ ".$costoMiles."</p></td>																				
-											
-											<td><button style='width: 40px;' type='button' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\", \"".$fila["costo"]."\", \"".$fila["publico"]."\", \"".$fila["taller"]."\", \"".$fila["credito_taller"]."\", \"".$fila["mayoreo"]."\" )'><i class='fa fa-plus'></i></button></a></td>
+											<td><p>$ ".$costoMiles."</p></td>
+											<td>
+												<button style='width: 40px;' type='button' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\", \"".$fila["costo"]."\", \"".$fila["publico"]."\", \"".$fila["taller"]."\", \"".$fila["credito_taller"]."\", \"".$fila["mayoreo"]."\" )'><i class='fa fa-plus'></i></button></a>
+												<button style='width: 40px;' type='button' class='btn btn-success btn-xs' data-dismiss='modal' onclick='agregarDetalleImagen(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\", \"".$fila["costo"]."\", \"".$fila["publico"]."\", \"".$fila["taller"]."\", \"".$fila["credito_taller"]."\", \"".$fila["mayoreo"]."\", \"".$fila["imagen"]."\")'><i class='fa fa-plus'></i></button></a>
+											</td>										
 										</tr>";
 									} else if($fila["stock"] >=1 && $tipo_precio == null){
 										$precio = "publico";
@@ -1100,7 +1201,10 @@ switch ($_GET["op"]) {
 											<td><p>$ ".$creditoMiles."</p></td>
 											<td><p>$ ".$mayoreoMiles."</p></td>
 											<td><p>".$fila["stock"]." pz</p></td>										
-											<td><button style='width: 40px' class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\", \"".$fila["costo"]."\", \"".$fila["publico"]."\", \"".$fila["taller"]."\", \"".$fila["credito_taller"]."\", \"".$fila["mayoreo"]."\" )'><span class='fa fa-plus'></span></button></td>
+											<td>
+												<button style='width: 40px' class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\", \"".$fila["costo"]."\", \"".$fila["publico"]."\", \"".$fila["taller"]."\", \"".$fila["credito_taller"]."\", \"".$fila["mayoreo"]."\" )'><span class='fa fa-plus'></span></button>
+												<button style='width: 40px;' type='button' class='btn btn-success btn-xs' data-dismiss='modal' onclick='agregarDetalleImagen(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\", \"".$fila["costo"]."\", \"".$fila["publico"]."\", \"".$fila["taller"]."\", \"".$fila["credito_taller"]."\", \"".$fila["mayoreo"]."\", \"".$fila["imagen"]."\")'><i class='fa fa-plus'></i></button></a>
+											</td>
 										</tr>";
 									} else if($fila["stock"] < 1){
 										echo "<tr style='color:red;'>
@@ -1114,7 +1218,10 @@ switch ($_GET["op"]) {
 											<td><p>$ ".$creditoMiles."</p></td>
 											<td><p>$ ".$mayoreoMiles."</p></td>
 											<td><p>".$fila["stock"]." pz</p></td>
-											<td><button style='width: 40px' class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\", \"".$fila["costo"]."\", \"".$fila["publico"]."\", \"".$fila["taller"]."\", \"".$fila["credito_taller"]."\", \"".$fila["mayoreo"]."\" )'><span class='fa fa-plus'></span></button></td>";
+											<td>
+												<button style='width: 40px' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\", \"".$fila["costo"]."\", \"".$fila["publico"]."\", \"".$fila["taller"]."\", \"".$fila["credito_taller"]."\", \"".$fila["mayoreo"]."\" )'><span class='fa fa-plus'></span></button>
+												<button style='width: 40px;' type='button' class='btn btn-success btn-xs' data-dismiss='modal' onclick='agregarDetalleImagen(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\", \"".$fila["costo"]."\", \"".$fila["publico"]."\", \"".$fila["taller"]."\", \"".$fila["credito_taller"]."\", \"".$fila["mayoreo"]."\", \"".$fila["imagen"]."\")'><i class='fa fa-plus'></i></button></a>
+											</td>";
 									}
 								}
 							}

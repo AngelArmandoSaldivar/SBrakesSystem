@@ -122,5 +122,36 @@ switch ($_GET["op"]) {
                   "aaData"=>$data); 
           echo json_encode($results);
               break;
+
+
+              case 'ordenCompra':          
+                $fecha_inicio=$_REQUEST["fecha_inicio"];                
+      
+                $rspta=$consulta->ordenCompra($fecha_inicio);
+                $data=Array();          
+      
+                while ($reg=$rspta->fetch_object()) {                 
+                  //$importe = number_format($reg->importe);
+                  //$totalImporte = number_format($reg->importe * $reg->cantidad);
+                  $costoUnitario = 0;
+                  $costoUnitario = ($reg->costo * ($reg->descuento / 100) + $reg->costo);
+                  $data[]=array(
+                        "0"=>$reg->codigo,
+                        "1"=>$reg->descripcionMarca,
+                        "2"=>$reg->cantidad,
+                        "3"=>$reg->descripcion,                        
+                        "4"=>$reg->costo,
+                        "5"=>$reg->descuento,
+                        "6"=>$costoUnitario,
+                        "7"=>$costoUnitario
+                          );                  
+                }
+                $results=array(
+                        "sEcho"=>1,//info para datatables
+                        "iTotalRecords"=>count($data),//enviamos el total de registros al datatable
+                        "iTotalDisplayRecords"=>count($data),//enviamos el total de registros a visualizar
+                        "aaData"=>$data); 
+                echo json_encode($results);
+                    break;
 }
  ?>

@@ -10,7 +10,7 @@ public function __construct(){
 }
 
 //metodo insertar registro
-public function insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_comprobante,$fecha_hora,$impuesto,$total_compra,$idarticulo,$clave,$fmsi,$descripcion,$cantidad,$precio_compra, $idsucursal, $idsucursalArticulo){	
+public function insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_comprobante,$fecha_hora,$impuesto,$total_compra,$idarticulo,$clave,$fmsi,$descripcion,$cantidad,$precio_compra, $idsucursal, $idsucursalArticulo, $descuento){	
 	$total_compra = substr($total_compra, 1);
 	$caracter = ",";
 	$posicion = strpos($total_compra, $caracter);
@@ -27,54 +27,51 @@ public function insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_compro
 	 $sw=true;
 	 while ($num_elementos < count($idarticulo)) {
 
-	 	$sql_detalle="INSERT INTO detalle_ingreso (idingreso,idproveedor,idusuario,serie_comprobante,tipo_comprobante,idarticulo,clave,fmsi,descripcion,cantidad,precio_compra,tipoMov) VALUES('$idingresonew','$idproveedor','$idusuario','$serie_comprobante','$tipo_comprobante','$idarticulo[$num_elementos]','$clave[$num_elementos]','$fmsi[$num_elementos]','$descripcion[$num_elementos]','$cantidad[$num_elementos]','$precio_compra[$num_elementos]','RECEPCIÓN')";		
+	 	$sql_detalle="INSERT INTO detalle_ingreso (idingreso,idproveedor,idusuario,serie_comprobante,tipo_comprobante,idarticulo,clave,fmsi,descripcion,cantidad,precio_compra,tipoMov, descuento) VALUES('$idingresonew','$idproveedor','$idusuario','$serie_comprobante','$tipo_comprobante','$idarticulo[$num_elementos]','$clave[$num_elementos]','$fmsi[$num_elementos]','$descripcion[$num_elementos]','$cantidad[$num_elementos]','$precio_compra[$num_elementos]','RECEPCIÓN', '$descuento[$num_elementos]')";		
 	 	ejecutarConsulta($sql_detalle) or $sw=false;
 
 		$sql_kardex = "INSERT INTO kardex (fecha_entrada, folio, clave, fmsi, idcliente_proveedor, cantidad, importe, tipoMov, estado, idventa, idarticulo, idsucursalArticulo, idsucursalVenta) VALUES ('$fecha_hora', '$serie_comprobante', '$clave[$num_elementos]', '$fmsi[$num_elementos]', '$idproveedor', '$cantidad[$num_elementos]', '$precio_compra[$num_elementos]', 'RECEPCION','ACTIVO', '$idingresonew', '$idarticulo[$num_elementos]', '$idsucursalArticulo[$num_elementos]', '$idsucursal')";
 		ejecutarConsulta($sql_kardex) or $sw=false;
 
 	 	$num_elementos=$num_elementos+1;
-	 }
-	 sleep(1);
+	 }	 
 	 return $sw;
 }
 
 public function addProductoIngreso($idarticulo,$articulo,$fmsi,$marca,$descripcion,$publico,$stock,$idIngreso, $idproveedor, $datetime, $folio, $idsucursal, $idarticuloSucursal) {
-	$bandera = true;
+	$bandera = true;	
 	$sql = "INSERT INTO detalle_ingreso
 			(idingreso,idarticulo,clave,fmsi,marca, descripcion,tipoMov,cantidad,precio_compra,descuento) 
 			VALUES('$idIngreso','$idarticulo', '$articulo','$fmsi','$marca','$descripcion','RECEPCIÓN','$stock','$publico','0')";
-	ejecutarConsulta($sql);
-
+	ejecutarConsulta($sql) or $bandera=false;
+	
 	$sql_ingreso = "UPDATE ingreso SET total_compra=total_compra+'$publico' WHERE idingreso='$idIngreso'";
-	ejecutarConsulta($sql_ingreso);
-
+	ejecutarConsulta($sql_ingreso) or $bandera=false;
+	
 	$sql_kardex = "INSERT INTO kardex (fecha_hora, folio, clave, fmsi, idcliente_proveedor, cantidad, importe, tipoMov, estado, idarticulo, idventa, idsucursalArticulo, idsucursalVenta) VALUES ('$datetime', '$folio', '$articulo', '$fmsi', '$idproveedor', '$stock', '$publico', 'RECEPCION','ACTIVO', '$idarticulo', '$idIngreso', '$idarticuloSucursal', '$idsucursal')";
-		 ejecutarConsulta($sql_kardex) or $sw=false;
-	sleep(1);
+		 ejecutarConsulta($sql_kardex) or $bandera=false;
+	
 	return $bandera;
 }
 
 public function editarGuardarProductoIngreso($p1, $p2, $p3, $idarticulo, $idingreso, $precioViejo, $stockViejo) {
 	$bandera = true;
 	$sql_ingreso = "UPDATE ingreso SET total_compra=total_compra-($precioViejo*$stockViejo) WHERE idingreso='$idingreso'";
-	ejecutarConsulta($sql_ingreso);
+	ejecutarConsulta($sql_ingreso) or $bandera=false;
 	$sql_articulo = "UPDATE articulo SET stock=stock-$stockViejo WHERE idarticulo='$idarticulo'";
-	ejecutarConsulta($sql_articulo);
-	sleep(1);
+	ejecutarConsulta($sql_articulo) or $bandera=false;	
 
 	$sql = "UPDATE detalle_ingreso SET descripcion='$p1', cantidad='$p2', precio_compra='$p3' WHERE idingreso='$idingreso' AND idarticulo='$idarticulo'";
-	ejecutarConsulta($sql);
+	ejecutarConsulta($sql) or $bandera=false;
 
 	$sql_kardex = "UPDATE kardex SET cantidad='$p2', importe='$p3' WHERE idventa='$idingreso' AND idarticulo='$idarticulo'";
-	ejecutarConsulta($sql_kardex);
+	ejecutarConsulta($sql_kardex) or $bandera=false;
 
 	$sql_ventaTotalNew = "UPDATE ingreso SET total_compra = total_compra + ($p2 * $p3) WHERE idingreso='$idingreso'";
-	ejecutarConsulta($sql_ventaTotalNew);
+	ejecutarConsulta($sql_ventaTotalNew) or $bandera=false;
 
 	$sql_articuloStockNew = "UPDATE articulo SET stock=stock+$p2 WHERE idarticulo='$idarticulo'";
-	ejecutarConsulta($sql_articuloStockNew);
-	sleep(1);
+	ejecutarConsulta($sql_articuloStockNew) or $bandera=false;	
 	return $bandera;
 }
 
@@ -91,9 +88,7 @@ public function anular($idingreso){
 			echo $reg->cantidad."<br>";
 			$sqlOldStock2 = ejecutarConsulta($sqlOldStock);
 			while($reg2 = $sqlOldStock2->fetch_object()) {						
-				$restar = $reg2->stock - $reg->cantidad;
-				// echo "PRODUCTO: ".$reg2->codigo. " NEW STOCK: ".$sum."<br>";
-				//UPDATE NEW STOCK ARTICULO
+				$restar = $reg2->stock - $reg->cantidad;				
 				$sql_update_articulo = "UPDATE articulo SET stock='$restar' WHERE idarticulo='$reg->idarticulo'";
 				ejecutarConsulta($sql_update_articulo);
 			}
@@ -106,8 +101,7 @@ public function anular($idingreso){
 		ejecutarConsulta($stateDetalle);
 
 		$stateDetalle = "UPDATE kardex SET estado='ANULADO' WHERE folio='$idingreso'";
-		ejecutarConsulta($stateDetalle);
-		sleep(1);
+		ejecutarConsulta($stateDetalle);		
 	 return $sw;
 }
 
@@ -131,14 +125,12 @@ public function eliminarProductoIngreso($p1, $p2, $p3, $p4) {
 
 //metodo para mostrar registros
 public function mostrar($idingreso){
-	$sql="SELECT i.idingreso,DATE(i.fecha_hora) as fecha,i.idproveedor,p.nombre as proveedor,u.idusuario,u.nombre as usuario, i.tipo_comprobante,i.serie_comprobante,i.total_compra,i.impuesto,i.estado FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario WHERE idingreso='$idingreso'";
-	sleep(1);
+	$sql="SELECT i.idingreso,DATE(i.fecha_hora) as fecha,i.idproveedor,p.nombre as proveedor,u.idusuario,u.nombre as usuario, i.tipo_comprobante,i.serie_comprobante,i.total_compra,i.impuesto,i.estado FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario WHERE idingreso='$idingreso'";	
 	return ejecutarConsultaSimpleFila($sql);
 }
 
 public function listarDetalle($idingreso){
-	$sql="SELECT di.idingreso,di.estado,di.idarticulo,di.clave,di.fmsi, di.descripcion,(di.cantidad*di.precio_compra) as subtotal, a.codigo,di.precio_compra, di.cantidad FROM detalle_ingreso di INNER JOIN articulo a ON di.idarticulo=a.idarticulo WHERE di.idingreso='$idingreso' AND di.estado='0'";
-	sleep(1);
+	$sql="SELECT di.descuento, di.idingreso,di.estado,di.idarticulo,di.clave,di.fmsi, di.descripcion,(di.cantidad*di.precio_compra) as subtotal, a.codigo,di.precio_compra, di.cantidad FROM detalle_ingreso di INNER JOIN articulo a ON di.idarticulo=a.idarticulo WHERE di.idingreso='$idingreso' AND di.estado='0'";	
 	return ejecutarConsulta($sql);
 }
 
@@ -164,24 +156,19 @@ public function filtroPaginado($limit, $limit2, $busqueda, $fecha_inicio, $fecha
 	if($busqueda != "" && $fecha_inicio == "" && $fecha_fin == "") {
 		$sql = "SELECT i.idsucursal, i.estado, i.tipo_comprobante, i.total_compra, i.idingreso, DATE(i.fecha_hora) AS fecha, i.idproveedor, u.idusuario, p.nombre as proveedor, u.nombre as usuario FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario WHERE i.estado = 'NORMAL' AND p.nombre LIKE '%$busqueda%' OR i.idingreso LIKE '%$busqueda%' OR i.estado LIKE '%$busqueda%' ORDER BY idingreso DESC LIMIT $limit OFFSET $limit2";
 	}
-	if($busqueda != "" && $fecha_inicio != "" && $fecha_fin == "") {
-		echo "<br>"."Llegaste 1 Model";
+	if($busqueda != "" && $fecha_inicio != "" && $fecha_fin == "") {		
 		$sql = "SELECT i.idsucursal, i.estado, i.tipo_comprobante, i.total_compra, i.idingreso, DATE(i.fecha_hora) AS fecha, i.idproveedor, u.idusuario, p.nombre as proveedor, u.nombre as usuario FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario WHERE i.estado = 'NORMAL' AND DATE(i.fecha_hora) >= '$fecha_inicio' AND p.nombre LIKE '%$busqueda%' OR i.idingreso LIKE '%$busqueda%' OR i.estado LIKE '%$busqueda%' ORDER BY idingreso DESC LIMIT $limit OFFSET $limit2";	
 	}
-	if($busqueda == "" && $fecha_inicio != "" && $fecha_fin == "") {
-		echo "<br>"."Llegaste 2 Model";
+	if($busqueda == "" && $fecha_inicio != "" && $fecha_fin == "") {		
 		$sql = "SELECT i.idsucursal, i.estado, i.tipo_comprobante, i.total_compra, i.idingreso, DATE(i.fecha_hora) AS fecha, i.idproveedor, u.idusuario, p.nombre as proveedor, u.nombre as usuario FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario WHERE i.estado = 'NORMAL' AND DATE(i.fecha_hora) >= '$fecha_inicio' ORDER BY idingreso DESC LIMIT $limit OFFSET $limit2";		
 	}
-	if($busqueda == "" && $fecha_inicio == "" && $fecha_fin != "") {
-		echo "<br>"."Llegaste 3 Model";
+	if($busqueda == "" && $fecha_inicio == "" && $fecha_fin != "") {		
 		$sql = "SELECT i.idsucursal, i.estado, i.tipo_comprobante, i.total_compra, i.idingreso, DATE(i.fecha_hora) AS fecha, i.idproveedor, u.idusuario, p.nombre as proveedor, u.nombre as usuario FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario WHERE i.estado = 'NORMAL' AND DATE(i.fecha_hora) <= '$fecha_fin' ORDER BY idingreso DESC LIMIT $limit OFFSET $limit2";		
 	}
-	if($busqueda != "" && $fecha_inicio == "" && $fecha_fin != "") {	
-		echo "<br>"."Llegaste 4 Model";
+	if($busqueda != "" && $fecha_inicio == "" && $fecha_fin != "") {			
 		$sql = "SELECT i.idsucursal, i.estado, i.tipo_comprobante, i.total_compra, i.idingreso, DATE(i.fecha_hora) AS fecha, i.idproveedor, u.idusuario, p.nombre as proveedor, u.nombre as usuario FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario WHERE i.estado = 'NORMAL' AND DATE(i.fecha_hora) <= '$fecha_fin' AND p.nombre LIKE '%$busqueda%' OR i.idingreso LIKE '%$busqueda%' OR i.estado LIKE '%$busqueda%' ORDER BY idingreso DESC LIMIT $limit OFFSET $limit2";
 	}
-	if($busqueda == "" && $fecha_inicio != "" && $fecha_fin != "") {
-		echo "<br>"."Llegaste 5 Model";
+	if($busqueda == "" && $fecha_inicio != "" && $fecha_fin != "") {		
 		$sql = "SELECT i.idsucursal, i.estado, i.tipo_comprobante, i.total_compra, i.idingreso, DATE(i.fecha_hora) AS fecha, i.idproveedor, u.idusuario, p.nombre as proveedor, u.nombre as usuario FROM ingreso i INNER JOIN persona p ON i.idproveedor=p.idpersona INNER JOIN usuario u ON i.idusuario=u.idusuario WHERE i.estado = 'NORMAL' AND DATE(i.fecha_hora) >= '$fecha_inicio' AND DATE(i.fecha_hora) <= '$fecha_fin' ORDER BY idingreso DESC LIMIT $limit OFFSET $limit2";		
 	}
 	if($busqueda != "" && $fecha_inicio != "" && $fecha_fin != "") {

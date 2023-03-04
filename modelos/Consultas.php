@@ -80,6 +80,15 @@ public function sumaVentaProductos() {
 	return ejecutarConsulta($sql);
 }
 
+public function ordenCompra($fecha_inicio) {
+	$sql = "SELECT mr.descripcion AS descripcionMarca, ar.codigo, op.cantidad, ar.descripcion, ar.costo, op.descuento, op.fecha_orden
+			FROM orden_compra op 
+			INNER JOIN articulo ar ON op.idproducto = ar.idarticulo
+			INNER JOIN marca mr ON ar.marca = mr.idmarca
+			WHERE DATE(op.fecha_orden)='$fecha_inicio';";
+	return ejecutarConsulta($sql);
+}
+
 }
 
  ?>

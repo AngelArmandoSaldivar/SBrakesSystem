@@ -143,11 +143,9 @@ if ($_SESSION['compras']==1) {
                 </div>
                 <div class="form-group col-lg-3 col-md-3 col-sm-6 col-xs-12" id="btnAgregarArticulosEdit">
                   <a data-toggle="modal" href="#myModalProductsEdit" >
-                    <button id="btnAgregarArticulosEdit" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Add Articulos</button>
+                    <button id="btnAgregarArticulosEdit" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Articulos</button>
                   </a>
                 </div>
-
-
 
                 <div class="form-group col-lg-12 col-md-6 col-xs-12">
                     <center><h4 aling="center">Productos Recepción</h4></center>
@@ -165,7 +163,6 @@ if ($_SESSION['compras']==1) {
                       <th>Costo</th>
                       <th>Descuento</th>
                       <th>Subtotal</th>
-                      <th>Acciones</th>
                     </thead>
                     <tfoot style="background-color:#A9D0F5">
                       <th></th>
@@ -176,8 +173,7 @@ if ($_SESSION['compras']==1) {
                       <th></th>
                       <th></th>
                       <th>TOTAL</th>
-                      <th><p id="total">$ 0.00</p><input type="hidden" name="total_compra" id="total_compra"></th>
-                      <th></th>
+                      <th><p id="total">$ 0.00</p><input type="hidden" name="total_compra" id="total_compra"></th>                      
                     </tfoot>
                     <tbody>                
                     </tbody>
@@ -436,7 +432,7 @@ if ($_SESSION['compras']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/recepciones.js"></script>
+ <script src="scripts/ingresosB1.js"></script>
  <?php 
 }
 

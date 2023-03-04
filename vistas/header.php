@@ -17,7 +17,7 @@
   <link rel="stylesheet "type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
   <link rel="stylesheet" href="../public/css/font-awesomes.min.css">  
-  <link rel="stylesheet" href="../public/css/styles.css">
+  <link rel="stylesheet" href="../public/css/estilos.css">
   <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">  
   <link rel="stylesheet" href="plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">  
   <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
@@ -97,14 +97,7 @@
           echo '<a href="ingreso.php" class="nav-link">Compras</a>';
         }
       ?>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-      <?php 
-        if ($_SESSION['ventas']==1) {
-          echo '<a href="venta.php" class="nav-link">Ventas</a>';
-        }
-      ?>
-      </li>
+      </li>      
       <li class="nav-item d-none d-sm-inline-block">
       <?php 
         if ($_SESSION['servicios']==1) {
@@ -135,9 +128,7 @@
       </li>
       <li class="nav-item dropdown">
         <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Reportes</a>
-        <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">              
-            <li><a data-toggle='modal' href='#filtroFechaReportes' class="dropdown-item">Ventas </a></li>                            
-            <li class="dropdown-divider"></li>
+        <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
             <li><a data-toggle='modal' href='#filtroServiciosFechaReportes' class="dropdown-item">Servicios</a></li>                                             
           </ul>
         </li>
@@ -333,37 +324,16 @@
                     <p>Proveedores</p>
                   </a>
                 </li>
+                <li class="nav-item">
+                  <a href="ordenCompra.php" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Ordenen de compra </p>
+                  </a>
+                </li>
               </ul>
             </li>';
             }
-          ?>
-          <?php 
-            if ($_SESSION['ventas']==1) {
-              echo '<li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="fa fa-shopping-cart"></i>
-                <p>
-                  Ventas
-                  <i class="right fas fa-angle-left"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="venta.php" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Ventas</p>
-                  </a>
-                </li>                
-                <li class="nav-item">
-                  <a href="cliente.php" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Clientes</p>
-                  </a>
-                </li>               
-              </ul>
-            </li>';
-            }
-          ?>
+          ?>         
           <?php 
            if ($_SESSION['servicios']==1) {
               echo '<li class="nav-item">
@@ -381,6 +351,12 @@
                     <p>Servicios</p>
                   </a>
                 </li>
+                <li class="nav-item">
+                  <a href="cliente.php" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Clientes</p>
+                  </a>
+                </li>   
               </ul>
             </li>';
             }

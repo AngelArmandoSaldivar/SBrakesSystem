@@ -18,13 +18,15 @@ if(!isset($_SESSION["nombre"])) {
 	$nombre=isset($_POST["nombre"])? limpiarCadena($_POST["nombre"]):"";
 	$marca=isset($_POST["marca"])? limpiarCadena($_POST["marca"]):"";
 	$costo=isset($_POST["costo"])? limpiarCadena($_POST["costo"]):"";
-	$publico=isset($_POST["publico"])? limpiarCadena($_POST["publico"]):"";
-	$taller=isset($_POST["taller"])? limpiarCadena($_POST["taller"]):"";
-	$credito_taller=isset($_POST["credito_taller"])? limpiarCadena($_POST["credito_taller"]):"";
-	$mayoreo=isset($_POST["mayoreo"])? limpiarCadena($_POST["mayoreo"]):"";
+	//$publico=isset($_POST["publico"])? limpiarCadena($_POST["publico"]):"";
+	//$taller=isset($_POST["taller"])? limpiarCadena($_POST["taller"]):"";
+	//$credito_taller=isset($_POST["credito_taller"])? limpiarCadena($_POST["credito_taller"]):"";
+	//$mayoreo=isset($_POST["mayoreo"])? limpiarCadena($_POST["mayoreo"]):"";
 	$stock=isset($_POST["stock"])? limpiarCadena($_POST["stock"]):"";	
+	$stock_ideal=isset($_POST["stock_ideal"])? limpiarCadena($_POST["stock_ideal"]):"";	
 	$descripcion=isset($_POST["descripcion"])? limpiarCadena($_POST["descripcion"]):"";
 	$imagen=isset($_POST["imagen"])? limpiarCadena($_POST["imagen"]):"";
+	$bandera_inventariable=isset($_POST["bandera_inventariable"])? limpiarCadena($_POST["bandera_inventariable"]):"";
 
 	switch ($_GET["op"]) {
 		case 'guardaryeditar':
@@ -38,12 +40,10 @@ if(!isset($_SESSION["nombre"])) {
 				}
 			}
 			if (empty($idarticulo)) {
-				$rspta=$articulo->insertar($codigo,$costo, $barcode, $credito_taller, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $mayoreo, $pasillo, $publico, $stock, $taller, $unidades, $idsucursal, $imagen);
-				echo $rspta ? "Articulo registrado correctamente" : "No se registro correctamente";
-			}else{
-				echo "ID ARTICULO: ". $idarticulo. " / CODIGO: " . $codigo. " / COSTO: ". $costo." / BARCODE: " . $barcode . " / CREDITO TALLER: " . $credito_taller;
-				echo "\nDESCRIPCION: " . $descripcion. " / FMSI: " . $fmsi . " / ID CATEGORIA: " . $idcategoria . " / ID PROVEEDOR: " . $idproveedor. " / MARCA: " . $marca. " / MAYOREO: " . $mayoreo. " / PASILLO: " . $pasillo. " / PUBLICO: ". $publico. " / STOCK: ". $stock. " / TALLER: " . $taller. " / UNIDADES: ". $unidades. " / IMAGEN: " . $imagen;
-				$rspta=$articulo->editar($idarticulo,$codigo,$costo, $barcode, $credito_taller, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $mayoreo, $pasillo, $publico, $stock, $taller, $unidades, $imagen);
+				$rspta=$articulo->insertar($codigo,$costo, $barcode, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $pasillo, $stock, $unidades, $idsucursal, $imagen, $stock_ideal, $bandera_inventariable);
+				echo $rspta ? "Articulo registrado correctamente" : "Articulo no registrado correctamente";				
+			}else{				
+				$rspta=$articulo->editar($idarticulo,$codigo,$costo, $barcode, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $pasillo, $stock, $unidades, $imagen, $stock_ideal, $bandera_inventariable);
 				echo $rspta ? " Articulo actualizado correctamente" : "No se pudo actualizar los datos";
 			}
 		break;
@@ -102,6 +102,16 @@ if(!isset($_SESSION["nombre"])) {
 		case 'mostrar':
 			$rspta=$articulo->mostrar($idarticulo);
 			echo json_encode($rspta);
+			break;
+		case 'mostrarMarcaId':
+			$idMarca = $_POST['idMarca'];
+			$rspta=$articulo->buscaMarcaPorId($idMarca);
+			echo json_encode($rspta);
+			break;
+		case 'mostrarPorId':
+			$idarticulo = $_POST['ìdArticulo'];
+			$rspta=$articulo->mostrar($idarticulo);
+			echo json_encode($rspta);
 			break;	
 		case 'listarArticulos': 
 			$array = array();
@@ -126,12 +136,12 @@ if(!isset($_SESSION["nombre"])) {
 
 			if(!empty($_POST['articulos']) && empty($_POST['limites']) && empty($_POST['inicio_registros']) && empty($_POST["total_registros"])) {				
 				$termino=$conexion->real_escape_string($_POST['articulos']);
-				usleep(100000);								
+				usleep(100000);
 				$consulta=$articulo->articulosPagination(50,0, $termino);
 
 			} 
 			else if(!empty($_POST['articulos']) && !empty($_POST['limites'])) {	
-				usleep(100000);								
+				usleep(100000);
 				$termino=$conexion->real_escape_string($_POST['articulos']);
 				$limites=$conexion->real_escape_string($_POST['limites']);
 				$consulta=$articulo->articulosPagination($limites,0, $termino);
@@ -165,7 +175,7 @@ if(!isset($_SESSION["nombre"])) {
 				<button id='botonCredito' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarCredito()'><i class='fa fa-eye'></i> Mostrar Credito</button>
 				<button id='botonMostrador' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarPublico()'><i class='fa fa-eye'></i> Mostrar Publico</button>
 				<button id='botonCosto' data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='mostrarCosto()'><i class='fa fa-eye'></i> Mostrar Costo</button>				
-				<table class='table table-striped table-hover w-auto' id='tableArticulos'>
+				<table class='table table-striped table-hover' id='tableArticulos'>
 					<thead class='table-light'>
 						<tr>
 							<th id='thClave' class='bg-info w-40' scope='col'>Clave
@@ -220,6 +230,9 @@ if(!isset($_SESSION["nombre"])) {
 								<td><p>$ ".$costoMiles."</p></td>
 								<td>
 									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
+									<a data-toggle='modal' href='#modalImagenArticulo'>
+										<button title='Mostrar Imagen Articulo' data-toggle='popover' data-trigger='hover' data-content='Mostrar Imagen Articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrarImagen(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
+									</a>
 									<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar articulo' data-placement='bottom' class='btn btn-warning btn-xs' onclick='editarArticulo(".$fila["idarticulo"].")'><i class='fa fa-pencil'></i></button>
 									<button title='Eliminar' data-toggle='popover' data-trigger='hover' data-content='Eliminar articulo' data-placement='top' class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idarticulo"].")')><i class='fa fa-close'></i></button>
 									<a data-toggle='modal' href='#solicitarArticulo'>
@@ -243,6 +256,9 @@ if(!isset($_SESSION["nombre"])) {
 								<td><p>$ ".$costoMiles."</p></td>
 								<td>
 									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
+									<a data-toggle='modal' href='#modalImagenArticulo'>
+										<button title='Mostrar Imagen Articulo' data-toggle='popover' data-trigger='hover' data-content='Mostrar Imagen Articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrarImagen(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
+									</a>
 									<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar articulo' data-placement='bottom' class='btn btn-warning btn-xs' onclick='editarArticulo(".$fila["idarticulo"].")'><i class='fa fa-pencil'></i></button>
 									<button title='Eliminar' data-toggle='popover' data-trigger='hover' data-content='Eliminar articulo' data-placement='top' class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idarticulo"].")')><i class='fa fa-close'></i></button>
 									<a data-toggle='modal' href='#solicitarArticulo'>
@@ -267,6 +283,9 @@ if(!isset($_SESSION["nombre"])) {
 								<td><p>$ ".$costoMiles."</p></td>
 								<td>
 									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
+									<a data-toggle='modal' href='#modalImagenArticulo'>
+										<button title='Mostrar Imagen Articulo' data-toggle='popover' data-trigger='hover' data-content='Mostrar Imagen Articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrarImagen(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
+									</a>
 									<a data-toggle='modal' href='#solicitarArticulo'>
 										<button title='Solicitar' data-toggle='popover' data-trigger='hover' data-content='Solicitar articulo' data-placement='bottom' class='btn btn-info btn-xs' onclick='mostrarArticuloSolicitud(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button>
 									</a>
@@ -286,6 +305,9 @@ if(!isset($_SESSION["nombre"])) {
 								<td><p>$ ".$costoMiles."</p></td>
 								<td>
 								<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
+								<a data-toggle='modal' href='#modalImagenArticulo'>
+									<button title='Mostrar Imagen Articulo' data-toggle='popover' data-trigger='hover' data-content='Mostrar Imagen Articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrarImagen(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
+								</a>
 								<a data-toggle='modal' href='#solicitarArticulo'>
 									<button title='Solicitar' data-toggle='popover' data-trigger='hover' data-content='Solicitar articulo' data-placement='bottom' class='btn btn-info btn-xs' onclick='solicitar(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button>
 								</a>
@@ -308,7 +330,19 @@ if(!isset($_SESSION["nombre"])) {
 				$rspta=$categoria->select();
 
 				while ($reg=$rspta->fetch_object()) {
-					echo '<option value=' . $reg->nombre.'>'.$reg->nombre.'</option>';
+					echo '<option value=' . $reg->idcategoria.'>'.$reg->nombre.'</option>';
+				}
+				
+				break;
+
+			case 'selectMarca':
+				require_once "../modelos/Marca.php";
+				$marca=new Marca();
+
+				$rspta=$marca->select();
+
+				while ($reg=$rspta->fetch_object()) {
+					echo '<option value=' . $reg->idmarca.'>'.$reg->descripcion.'</option>';
 				}
 				
 				break;

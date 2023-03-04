@@ -64,7 +64,7 @@ if (!isset($_SESSION['nombre'])) {
                                         <div class="tabbable">                                            
                                             <ul class="nav nav-tabs nav-tabs-highlight">
                                                 <li class="active"><a href="#label-tab-efectivos" data-toggle="tab">ENTRADAS EFECTIVO <span id="span-dev" class="label bg-success position-right">*</span></a></li>      
-                                                <li><a href="#label-tab-tarjetas" data-toggle="tab">ENTRADAS TARJETA <span id="span-ing" class="label label-success position-right">*</span></a></li>
+                                                <li><a href="#label-tab-tarjetas" data-toggle="tab">ENTRADAS BANCOS <span id="span-ing" class="label label-success position-right">*</span></a></li>
                                                 <li><a href="#label-tab-caja2" data-toggle="tab">CAJA 2 <span id="span-ing" class="label label-success position-right">*</span></a></li>
                                             </ul>                                            
                                             <div class="tab-content">

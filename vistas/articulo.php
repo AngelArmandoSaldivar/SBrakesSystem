@@ -44,16 +44,16 @@ if ($_SESSION['almacen']==1) {
             <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
             <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">              
             </div>             
-            <div class="form-group col-lg-4 col-sm-4" style="text-align:left;">
+            <div class="form-group col-lg-4 col-md-6 col-xs-4" style="text-align:left;">
               <button title="Exportar" id="btnagregarservicio" data-toggle='popover' data-trigger='hover' data-content='Exportar articulos a Excel' data-placement='right' class='btn btn-success' title="Agregar nuevo articulo" onclick="exportarExcel()"><i class="fa fa-file-excel-o"></i> Exportar a Excel</button>
             </div>
             
-            <div class="form-group col-lg-4 col-sm-4" style="text-align:left;">
+            <div class="form-group col-lg-4 col-md-6 col-xs-4" style="text-align:left;">
             <a data-toggle="modal" href="#cambiarPreciosProductos">
               <button title="Cambiar precios" id="btnCanbiarPrecios" data-toggle='popover' data-trigger='hover' data-content='Cambiar precios productos' data-placement='right' class='btn btn-primary' title="Cambiar precios"><i class="fa fa-usd"></i> Cambiar precios</button>
             </a>
             </div>
-            <div class="form-group col-lg-4 col-sm-4" style="text-align:left;">
+            <div class="form-group col-lg-4 col-md-6 col-xs-4" style="text-align:left;">
               <select name="limite_registros" id="limite_registros" class="form-control selectpicker">
                 <option value="" disabled selected>Seleccionar limite</option>
                 <option value="51">50 / Registros</option>
@@ -116,12 +116,21 @@ if ($_SESSION['almacen']==1) {
               </div>
 
               <!--MARCA DEL PRODUCTO-->
-              <div class="form-group col-lg-6 col-md-6 col-xs-12">
+              <!--<div class="form-group col-lg-6 col-md-6 col-xs-12">
                 <label for="">Marca <span class="text-danger">*</span></label>                  
                   <div class="input-group bootstrap-touchspin">
                     <span class="input-group-btn"></span>
                     <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-keyboard-o"></i></span>
                       <input class="form-control" type="text" name="marca" id="marca" maxlength="100" placeholder="Marca" required>
+                  </div>
+              </div>-->
+
+              <!--MARCA DEL PRODUCTO-->
+              <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                <label for="">Marca <span class="text-danger">*</span></label>                  
+                  <div class="input-group bootstrap-touchspin">                    
+                    <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-hand-o-right"></i></span>
+                      <select name="marca" id="marca" class="form-control selectpicker" data-Live-search="true" required></select>
                   </div>
               </div>
 
@@ -141,7 +150,7 @@ if ($_SESSION['almacen']==1) {
                 <div class="input-group bootstrap-touchspin">
                   <span class="input-group-btn"></span>
                   <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-file-text-o"></i></span>
-                    <input class="form-control" type="text" name="descripcion" id="descripcion" maxlength="500" placeholder="Unidades (JUEGO / SET / PIEZA)" required>
+                    <textarea class="form-control" type="text" name="descripcion" id="descripcion" maxlength="500" placeholder="Desscripciòn" required ></textarea>
                 </div>
               </div> 
 
@@ -156,7 +165,7 @@ if ($_SESSION['almacen']==1) {
               </div>
 
               <!--STOCK DEL PRODUCTO-->
-              <div class="form-group col-lg-4 col-md-6 col-xs-12">                
+              <div class="form-group col-lg-2 col-md-6 col-xs-12">                
                 <label>Stock <span class="text-danger">*</span></label>
                     <div class="input-group bootstrap-touchspin"><span class="input-group-btn">
                       <button class="btn btn-default bootstrap-touchspin-down" type="button">-</button></span>
@@ -166,17 +175,30 @@ if ($_SESSION['almacen']==1) {
                             <button class="btn btn-default bootstrap-touchspin-up" type="button">+</button>
                           </span>
                     </div>                
-              </div>    
+              </div>   
+
+              <div class="form-group col-lg-2 col-md-6 col-xs-12">                
+                <label>Stock Ideal<span class="text-danger">*</span></label>
+                    <div class="input-group bootstrap-touchspin"><span class="input-group-btn">
+                      <button class="btn btn-default bootstrap-touchspin-down" type="button">-</button></span>
+                        <input class="form-control" type="number" name="stock_ideal" id="stock_ideal"  required>
+                          <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>
+                          <span class="input-group-btn">
+                            <button class="btn btn-default bootstrap-touchspin-up" type="button">+</button>
+                          </span>
+                    </div>                
+              </div>
 
               <!--PASILLO DEL PRODUCTO-->
               <div class="form-group col-lg-4 col-md-6 col-xs-12">
                   <label for="">Pasillo <span class="text-danger">*</span></label>                  
-                  <div class="input-group bootstrap-touchspin">
-                    <span class="input-group-btn"></span>
+                  <div class="input-group bootstrap-touchspin">                    
                     <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-keyboard-o"></i></span>
                       <input class="form-control" type="text" name="pasillo" id="pasillo" maxlength="50" placeholder="Pasillo / Corredor" required>
                 </div>
               </div>
+
+              <div class="form-group col-lg-12 col-md-6 col-xs-12"></div> 
 
               <!--COSTOS DEL PRODUCTO-->
               <div class="form-group col-lg-4 col-md-6 col-xs-12">
@@ -191,37 +213,49 @@ if ($_SESSION['almacen']==1) {
                 <label>Precio Público <span class="text-danger">*</span></label>
                   <div class="input-group bootstrap-touchspin">                  
                     <span class="input-group-addon bootstrap-touchspin-prefix">$</span>
-                      <input class="form-control" type="number" step="any" name="publico" id="publico"  required placeholder="$">
-                    <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>                  
+                      <input class="form-control" type="text" step="any" name="publico" id="publico"  required placeholder="$" readonly>
+                    <span class="input-group-addon bootstrap-touchspin-prefix" id="utilidadPublico">%                      
+                    </span>
                   </div>  
               </div>
               <div class="form-group col-lg-4 col-md-6 col-xs-12">  
                 <label>Precio Taller <span class="text-danger">*</span></label>
                   <div class="input-group bootstrap-touchspin">                  
                     <span class="input-group-addon bootstrap-touchspin-prefix">$</span>
-                      <input class="form-control" type="number" step="any" name="taller" id="taller"  required placeholder="$">
-                    <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>                  
+                      <input class="form-control" type="text" step="any" name="taller" id="taller"  required placeholder="$" readonly>
+                      <span class="input-group-addon bootstrap-touchspin-prefix" id="utilidadTaller">%                      
+                      </span>
                   </div>
               </div>
-              <div class="form-group col-lg-2 col-md-6 col-xs-12">                
-              </div> 
+             
               <div class="form-group col-lg-4 col-md-6 col-xs-12">
                 <label>Precio Credito Taller <span class="text-danger">*</span></label>
                   <div class="input-group bootstrap-touchspin">                  
                     <span class="input-group-addon bootstrap-touchspin-prefix">$</span>
-                      <input class="form-control" type="number" step="any" name="credito_taller" id="credito_taller"  required placeholder="$">
-                    <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>                  
+                      <input class="form-control" type="text" step="any" name="credito_taller" id="credito_taller"  required placeholder="$" readonly>
+                      <span class="input-group-addon bootstrap-touchspin-prefix" id="utilidadCreditoTaller">%                      
+                      </span>
                   </div>
               </div>              
               <div class="form-group col-lg-4 col-md-6 col-xs-12">
                 <label>Precio Mayoreo <span class="text-danger">*</span></label>
                   <div class="input-group bootstrap-touchspin">                  
                     <span class="input-group-addon bootstrap-touchspin-prefix">$</span>
-                      <input class="form-control" type="number" step="any" name="mayoreo" id="mayoreo"  required placeholder="$">
-                    <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>                  
+                      <input class="form-control" type="text" step="any" name="mayoreo" id="mayoreo"  required placeholder="$" readonly>
+                      <span class="input-group-addon bootstrap-touchspin-prefix" id="utilidadMayoreo">%                      
+                      </span>
                   </div>
-              </div>            
-              <div class="form-group col-lg-2 col-md-6 col-xs-12">                
+              </div>
+              <div class="form-group col-lg-4 col-md-6 col-xs-12">   
+                <label for="">Inventariable? <span class="text-danger">*</span></label>                  
+                  <div class="input-group bootstrap-touchspin">
+                    <span class="input-group-btn"></span>
+                    <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-hand-o-right"></i></span>
+                    <select name="bandera_inventariable" id="bandera_inventariable" class="form-control selectpicker" required>
+                      <option value="0">SI</option>
+                      <option value="1">NO</option>
+                    </select>
+                  </div>
               </div>  
               <div class="form-group col-lg-12 col-md-6 col-xs-12 text-center">
                 <label for="">Imagen del Producto </label>                  
@@ -282,7 +316,7 @@ require 'footer.php'
  ?>
  <script src="../public/js/JsBarcode.all.min.js"></script>
  <script src="../public/js/jquery.PrintArea.js"></script>
- <script src="scripts/articulosB1.js"></script>
+ <script src="scripts/articulo.js"></script>
  <?php 
 }
 

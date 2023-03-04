@@ -290,8 +290,7 @@ function saldoInicialConciliacion() {
             })
             console.log("Error: ", err);
         },
-        success: (data) => {               
-            console.log("LLEGASTE");
+        success: (data) => {
             data = JSON.parse(data)                          
                 $("#saldo_inicial_conciliacion").text(data.importe);               
         }
@@ -299,8 +298,7 @@ function saldoInicialConciliacion() {
 
 }
 
-function saldos() {
-    //console.log("SALDO DEL MES PASADO: ", saldoMesPasado);
+function saldos() {    
     $.ajax({ 
         url: "../ajax/caja.php?op=saldoMesPasado", 
         type: "POST", 
@@ -406,8 +404,7 @@ function montoInicial() {
                         })
                     },
                     success: (data) => {                        
-                        data = JSON.parse(data)
-                        console.log("DATA HOY==== ", data);
+                        data = JSON.parse(data)                        
                         $("#fecha_apertura_caja").val(TODAY);                    
                         $("#txtMontoInicial").val(data.monto_inicial);
                         
@@ -415,8 +412,7 @@ function montoInicial() {
                     }
                 })
                 
-            } else {
-                console.log("DATA MONTO AYER");
+            } else {                
                 $.ajax({
                     url : '../ajax/caja.php?op=montoInicial',
                     type : 'POST',
@@ -448,11 +444,10 @@ function montoInicial() {
                                     })
                                 },
                                 success: (dataUltimoRegistro) => {
-                                    dataUltimoRegistro = JSON.parse(dataUltimoRegistro);                                    
-                                    console.log("DATA ULTIMO REGISTRO: ", dataUltimoRegistro);
+                                    dataUltimoRegistro = JSON.parse(dataUltimoRegistro);
                                     if(dataUltimoRegistro.estado == "ABIERTO") {
                                         swal({
-                                            title: 'La caja del dia anterior aun no se ha cerrado',
+                                            title: `La caja con la fecha ${dataUltimoRegistro.fecha} aun no se ha cerrado`,
                                             text: "Cerrar caja!",
                                             icon: 'warning',
                                             type: 'warning',
@@ -479,7 +474,7 @@ function montoInicial() {
                             console.log("SI HAY REGISTRO DEL DIA DE AYER");
                             if(data.estado == "ABIERTO") {                               
                                 swal({
-                                    title: 'La caja del dia anterior aun no se ha cerrado',
+                                    title: `La caja con la fecha ${data.fecha} aun no se ha cerrado`,
                                     text: "Cerrar caja!",
                                     icon: 'warning',
                                     type: 'warning',
@@ -526,8 +521,7 @@ function abrirCerrarCaja() {
         success: (data) => {
             data=JSON.parse(data);
             console.log("LLEGASTE DATA: ", data);
-            if(data == null) {
-                console.log("Entraste aqui");
+            if(data == null) {                
                 $("#cerrarCaja").hide();
                 $("#divEfectivo").hide();
                 $("#divVales").hide();
@@ -537,8 +531,7 @@ function abrirCerrarCaja() {
                 $("#divCajaDos").hide();
                 $("#movimientos_caja").hide();
                 $("#divInicioCaja").show();
-            } else {                  
-                console.log(data.estado);     
+            } else {                                     
                 switch (data.estado) {                      
                     case 'ABIERTO':                        
                         $("#cerrarCaja").show();
@@ -553,8 +546,7 @@ function abrirCerrarCaja() {
                         $("#modal-abrir-caja").modal('hide'); 
                         break;
 
-                    case 'CERRADO':
-                        console.log("Llegaste cerrados");
+                    case 'CERRADO':                        
                         $("#divInicioCaja").show();
                         $("#divEfectivo").hide();
                         $("#divVales").hide();
@@ -573,9 +565,7 @@ function abrirCerrarCaja() {
     })
 }
 
-$("#btnAperturaCaja").on("click", () => {
-
-    console.log("LLEGASTE APERTURA CAJA");
+$("#btnAperturaCaja").on("click", () => {    
 
     $.ajax({
         url : '../ajax/caja.php?op=evaluarCaja',
@@ -621,7 +611,8 @@ $("#btnAperturaCaja").on("click", () => {
                             imageHeight: 150,
                             imageAlt: 'Custom image',
                         })
-                        abrirCerrarCaja();                    
+                        //abrirCerrarCaja();                                    
+                        location. reload();
                     }
                 })
             } else {
@@ -650,7 +641,7 @@ $("#btnAperturaCaja").on("click", () => {
                             imageHeight: 150,
                             imageAlt: 'Custom image',
                         })
-                        abrirCerrarCaja();                        
+                        location. reload();                     
                     }
                 })
             }

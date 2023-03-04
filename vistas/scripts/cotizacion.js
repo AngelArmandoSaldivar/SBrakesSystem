@@ -1,5 +1,5 @@
 var tabla;
-
+var pesosMexicanos = Intl.NumberFormat('es-MX', {style: 'currency', currency: 'MXN'});
 //funcion que se ejecuta al inicio
 function init(){
    mostrarform(false);
@@ -1266,12 +1266,10 @@ $(document).on('keyup', '#busquedaProductEdit', function(){
 	let articuloAlmacen = document.getElementById("busquedaProductAlmacen").value;
 	let articuloEdit = document.getElementById("busquedaProductEdit").value;
 	let articuloAlmacenEdit = document.getElementById("busquedaProductAlmacenEdit").value;
-
 	obtener_registrosProductos(articulo);
 	obtener_registrosProductos_almacen(articuloAlmacen);
 	obtener_registrosProductosEdit(articuloEdit);
 	almacenEdit(articuloAlmacenEdit);
-
 }, 5000);*/
 
 //funcion para guardaryeditar
@@ -1389,19 +1387,28 @@ function viewClient(idservicio) {
 	)
 }
 
-function detallesServicio(idservicio) {	
-	$.post("../ajax/cotizacion.php?op=listarDetalle&id="+idservicio,function(r){			
-		$('.loader').show();
-		if(r.length < 0) {
-			$("#detalles").html(r);
-			$('.loader').hide();
-		} else {
-			setTimeout(() => {
-				$("#detalles").html(r);
-				$('.loader').hide();
-			}, 1000);
-		}
-	});
+function detallesServicio(idservicio) {
+
+	$.post("../ajax/cotizacion.php?op=listarDetalleIdCotizacion&idCotizacion="+idservicio,function(r) {				
+		data = JSON.parse(r);		
+		$.post("../ajax/cotizacion.php?op=mostrarArticulo&idArticulo="+data.idarticulo,function(a) {				
+			dataArticulo = JSON.parse(a);
+			console.log("DATA: " + dataArticulo.imagen);
+			$.post("../ajax/cotizacion.php?op=listarDetalle&id="+idservicio + "&imagen=" + dataArticulo.imagen,function(r){			
+				$('.loader').show();
+				if(r.length < 0) {
+					$("#detalles").html(r);
+					$('.loader').hide();
+				} else {
+					setTimeout(() => {
+						$("#detalles").html(r);
+						$('.loader').hide();
+					}, 1000);
+				}
+			});
+		})	
+	
+	});	
 }
 function detallesServicioAnulado(idservicio) {	
 	$.post("../ajax/cotizacion.php?op=listarDetalleAnulado&id="+idservicio,function(r){			
@@ -1950,9 +1957,9 @@ function marcarImpuesto(){
 	}
 }
 
-function agregarDetalle(idarticulo,articulo,fmsi, descripcion,marca,publico1, stock, idsucursal, costo, publico, taller, credito, mayoreo){
+function agregarDetalle(idarticulo,articulo,fmsi, descripcion,marca,publico1, stock, idsucursal, costo, publico, taller, credito, mayoreo){	
 	
-	var precioCot = 0;
+	var precioCot = 0.0;
 	let tipoPrecio = document.getElementById("tipo_precio").value;
 
 	precioCot = tipoPrecio == "publico" ? publico : tipoPrecio == "taller" ? taller : tipoPrecio == "credito_taller" ? credito : tipoPrecio == "mayoreo" ? mayoreo : publico1;
@@ -1967,11 +1974,10 @@ function agregarDetalle(idarticulo,articulo,fmsi, descripcion,marca,publico1, st
 		'<td><input type="hidden" name="fmsi[]" id="fmsi[]" value="'+fmsi+'">'+fmsi+'</td>'+
 		'<td><input type="hidden" name="marca[]" id="marca[]" value="'+marca+'">'+marca+'</td>'+
 		'<td><textarea class="form-control" id="descripcion[]" name="descripcion[]" rows="2" style="width: 280px;" value="'+descripcion+'">'+descripcion+'</textarea></td>'+
-        '<td><input style="width: 55px;" type="number" name="cantidad[]" id="cantidad[]" value="'+cantidad+'" max="" min="1"></td>'+
-        '<td><input style="width: 70px;" type="number" name="precio_cotizacion[]" id="precio_cotizacion[]" value="'+precioCot+'"></td>'+
-        '<td><input style="width: 70px;" type="number" name="descuento[]" value="'+descuento+'"></td>'+
-        '<td><span id="subtotal'+cont+'" name="subtotal">'+precioCot*cantidad+'</span></td>'+
-        '<td><button type="button" title="Actualizar" onclick="modificarSubtotales()" style="width: 40px;" class="btn btn-info btn-xs"><i class="fa fa-refresh"></i></button></td>'+
+        '<td><input style="width: 55px;" type="number" onblur="modificarSubtotales()" name="cantidad[]" id="cantidad[]" value="'+cantidad+'" max="" min="1"></td>'+
+        '<td><input style="width: 70px;" type="number" onblur="modificarSubtotales()" name="precio_cotizacion[]" id="precio_cotizacion[]" step="any" value="'+ precioCot +'"></td>'+
+        '<td><input style="width: 70px;" type="number" onblur="modificarSubtotales()" name="descuento[]" value="'+descuento+'"></td>'+
+        '<td><span id="subtotal'+cont+'" name="subtotal">'+ precioCot*cantidad +'</span></td>'+
 		'</tr>';
 		cont++;
 		detalles++;
@@ -1982,6 +1988,41 @@ function agregarDetalle(idarticulo,articulo,fmsi, descripcion,marca,publico1, st
 		alert("error al ingresar el detalle, revisar las datos del articulo ");
 	}
 }
+
+
+function agregarDetalleImagen(idarticulo,articulo,fmsi, descripcion,marca,publico1, stock, idsucursal, costo, publico, taller, credito, mayoreo, imagen){
+	
+	var precioCot = 0;
+	let tipoPrecio = document.getElementById("tipo_precio").value;
+	
+	precioCot = tipoPrecio == "publico" ? publico : tipoPrecio == "taller" ? taller : tipoPrecio == "credito_taller" ? credito : tipoPrecio == "mayoreo" ? mayoreo : publico1;	
+
+	var cantidad=1;
+	var descuento=0;
+
+	if (idarticulo!="") {
+		var fila='<tr style="font-size:12px" class="filas" id="fila'+cont+'">'+
+        '<td><button style="width: 40px;" title="Eliminar" type="button" class="btn btn-danger btn-xs" onclick="eliminarDetalle('+cont+')">X</button></td>'+        
+		'<td><input type="hidden" name="clave[]" value="'+articulo+'"> <input class="form-control" type="hidden" name="idsucursalArticulo[]" value="'+idsucursal+'"> <input class="form-control" type="hidden" name="idarticulo[]" value="'+idarticulo+'">'+articulo+'</td>'+
+		'<td><input type="hidden" name="fmsi[]" id="fmsi[]" value="'+fmsi+'">'+fmsi+'</td>'+
+		'<td><input type="hidden" name="marca[]" id="marca[]" value="'+marca+'">'+marca+'</td>'+
+		'<td><textarea class="form-control" id="descripcion[]" name="descripcion[]" rows="2" style="width: 280px;" value="'+descripcion+'">'+descripcion+'</textarea></td>'+
+        '<td><input style="width: 55px;" type="number" onblur="modificarSubtotales()" name="cantidad[]" id="cantidad[]" value="'+cantidad+'" max="" min="1"></td>'+
+        '<td><input style="width: 70px;" type="number" onblur="modificarSubtotales()" name="precio_cotizacion[]" id="precio_cotizacion[]" step="any" value="'+ precioCot +'"></td>'+
+        '<td><input style="width: 70px;" type="number" onblur="modificarSubtotales()" name="descuento[]" value="'+descuento+'"></td>'+
+        '<td><span id="subtotal'+cont+'" name="subtotal">'+ precioCot*cantidad + '</span></td>'+
+		'<td><img src="../files/articulos/'+imagen+'" alt="" width="250px" height="310" id="imagenmuestra" class="img-thumbnail"></td>'+        
+		'</tr>';
+		cont++;
+		detalles++;
+		$('#detalles').append(fila);
+		modificarSubtotales();
+
+	}else{
+		alert("error al ingresar el detalle, revisar las datos del articulo ");
+	}
+}
+
 
 function agregarDetalleEdit(idarticulo,articulo,fmsi, marca, descripcion,publico, stock, idarticuloSucursal){	
 	stock = 1;
@@ -2039,10 +2080,13 @@ function modificarSubtotales(){
 		var inpS=sub[i];
 		var des=desc[i];
 		var fmsis = fmsi[i];
-		var descrip = descripcion[i];		
-		inpS.value=(inpV.value*inpP.value)-des.value;
-		document.getElementsByName("subtotal")[i].innerHTML=inpS.value;
+		var descrip = descripcion[i];
+		var descuento = des.value / 100;	
+		var cantPrec = inpV.value * inpP.value;
+		var nuevoCosto = (cantPrec - (cantPrec * descuento));
+		inpS.value=nuevoCosto;
 
+		document.getElementsByName("subtotal")[i].innerHTML=inpS.value;
 	}
 	calcularTotales();
 }
@@ -2054,7 +2098,7 @@ function calcularTotales(){
 	for (var i = 0; i < sub.length; i++) {
 		total += document.getElementsByName("subtotal")[i].value;
 	}
-	$("#total").html("$." + total);
+	$("#total").html("$" + total);
 	$("#total_cotizacion").val(total);
 	evaluar();
 }

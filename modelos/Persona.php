@@ -103,13 +103,40 @@ public function listarc(){
 }
 
 public function listarAutos($idpersona) {
-	$sql = "SELECT * FROM autos WHERE idcliente='$idpersona'";
+	$sql = "SELECT * FROM autos WHERE idcliente='$idpersona' LIMIT 30";
 	sleep(1);
 	return ejecutarConsulta($sql);
 }
 
 public function listarClientes() {
 	$sql = "SELECT nombre FROM persona WHERE tipo_persona = 'Cliente'";
+	return ejecutarConsulta($sql);
+}
+
+public function filtroCliente($cliente) {   
+	$sql = "";
+	if (!isset($cliente)) {
+		$sql = "SELECT *
+			FROM persona c
+			WHERE c.tipo_persona = 'Cliente'
+			ORDER BY c.nombre DESC
+			LIMIT 30";
+	} else {
+		$sql = "SELECT *
+				FROM persona c
+				WHERE c.tipo_persona = 'Cliente' AND
+				c.nombre LIKE '%$cliente%'
+				ORDER BY c.nombre DESC
+				LIMIT 30";
+	}
+	return ejecutarConsulta($sql);
+}
+
+public function filtroAuto($auto) {
+	$sql = "SELECT * FROM autos 
+			WHERE marca LIKE '%$auto%'
+			AND modelo LIKE '%$auto%'
+			LIMIT 30";	
 	return ejecutarConsulta($sql);
 }
 

@@ -191,6 +191,11 @@ public function mostrarCotizacion($busqueda){
 	return ejecutarConsultaSimpleFila($sql);
 }
 
+public function mostrarDetalleCotizacion($id) {
+	$sql = "SELECT * FROM detalle_cotizacion WHERE idcotizacion='$id'";
+	return ejecutarConsultaSimpleFila($sql);
+}
+
 }
 
  ?>

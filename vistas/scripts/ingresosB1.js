@@ -9,6 +9,7 @@ function init(){
    mostrarform(false);
    obtener_registros();
    obtener_registrosProductos();
+   obtener_registrosProductosEdit();
 
    $("#formulario").on("submit",function(e){
    	guardaryeditar(e);
@@ -661,8 +662,7 @@ $(document).on('keyup', '#busqueda', function(){
 	if (valorBusqueda!="")
 	{
 		obtener_registros(valorBusqueda);
-		if(window.scrollY) {
-			console.log("LLEGASTE: ", scrollY);
+		if(window.scrollY) {			
 			window.scroll(0,scrollY)
 		}
 	}
@@ -814,7 +814,7 @@ $(document).on('keyup', '#busquedaProductEdit', function(){
 	}
 	else
 	{
-		limpiar();
+		//limpiar();
 		obtener_registrosProductosEdit();
 	}
 });
@@ -878,6 +878,7 @@ function viewClient(idingreso) {
 function detalleMostrar(idingreso) {
 	$.post("../ajax/ingreso.php?op=listarDetalle&id="+idingreso,function(r){
 		$('.loader').show();
+		console.log("LONGITUD: " + r.length);
 		if(r.length < 0) {
 			$("#detalles").html(r);
 			$('.loader').hide();
@@ -914,7 +915,7 @@ function editarProductoRecepcion(idarticulo, idRecepcion) {
 	});	
 }
 
-function detallesRecepcionEditar(idingreso) {
+function detallesRecepcionEditar(idingreso) {	
 
 	$.post("../ajax/ingreso.php?op=mostrarDetalleRecepcion&id="+idingreso,function(r){		
 		$('.loader').show();
@@ -952,8 +953,7 @@ function editarGuardarProductoRecepcion() {
 			contentType: false,
 			processData: false,
    
-			success: function(datos){   
-				console.log("DATOS: ", datos);
+			success: function(datos){   				
 			   swal({
 				   title: datos,
 				   text: 'Se actualizo correctamente el articulo del ingreso.',
@@ -964,7 +964,7 @@ function editarGuardarProductoRecepcion() {
 			   $("#formularioProductoRecepcion")[0].reset();
 			   $("#editProductRecepcion").modal('hide');
 			   detallesRecepcionEditar(idIngreso);
-			},
+			},			
 	   });				
 	});
 }
@@ -1106,22 +1106,19 @@ function marcarImpuesto(){
 
 function agregarDetalle(idarticulo,articulo,fmsi, descripcion,costo, idarticuloSucursal){
 	var cantidad=1;	
-	var descuento = 0;
-
-	console.log("ID ARTICULO: ", idarticulo);
+	var descuento = 0;	
 
 	if (idarticulo!="") {
-		var fila='<tr class="filas" id="fila'+cont+'">'+
+		var fila='<tr style="font-size:11px" class="filas" id="fila'+cont+'">'+
         '<td><button style="width: 40px;" type="button" class="btn btn-danger btn-xs" onclick="eliminarDetalle('+cont+')">X</button></td>'+
         '<td><input type="hidden" name="idarticulo[]" value="'+idarticulo+'">'+idarticulo+'</td>'+
 		'<td><input type="hidden" name="idarticuloSucursal[]" id="idarticuloSucursal[]" value="'+idarticuloSucursal+'"><input type="hidden" name="clave[]" value="'+articulo+'">'+articulo+'</td>'+
 		'<td><input type="hidden" name="fmsi[]" id="fmsi[]" value="'+fmsi+'">'+fmsi+'</td>'+
 		'<td><textarea class="form-control" id="descripcion[]" name="descripcion[]" rows="2" style="width: 280px;" value="'+descripcion+'">'+descripcion+'</textarea></td>'+
-        '<td><input style="width: 55px;" type="number" name="cantidad[]" id="cantidad[]" value="'+cantidad+'"></td>'+
-        '<td><input style="width: 70px;" type="number" name="precio_compra[]" id="precio_compra[]" value="'+costo+'"></td>'+
-        '<td><input style="width: 70px;" type="number" name="descuento[]" value="'+descuento+'"></td>'+
-        '<td><span id="subtotal'+cont+'" name="subtotal">'+costo*cantidad+'</span></td>'+
-        '<td><button style="width: 40px;" type="button" onclick="modificarSubtotales()" class="btn btn-info btn-xs"><i class="fa fa-refresh"></i></button></td>'+
+        '<td><input style="width: 55px;" type="number" onblur="modificarSubtotales()" name="cantidad[]" id="cantidad[]" value="'+cantidad+'"></td>'+
+        '<td><input style="width: 70px;" type="number" onblur="modificarSubtotales()" name="precio_compra[]" id="precio_compra[]" step="any" value="'+costo+'"></td>'+
+        '<td><input style="width: 70px;" type="number" onblur="modificarSubtotales()" name="descuento[]" id="descuento[]" value="'+descuento+'"></td>'+
+        '<td><span id="subtotal'+cont+'" name="subtotal">'+costo*cantidad+'</span></td>'+        
 		'</tr>';
 		cont++;
 		detalles++;
@@ -1157,16 +1154,24 @@ function agregarDetalleEdit(idarticulo,articulo,fmsi, marca, descripcion,publico
 		   },
 			contentType: false,
 			processData: false,
-	
+			error: () => {
+				swal({
+					title: 'Error!',
+					html: 'Ha surgido un error',
+					timer: 1000,					
+					showConfirmButton: false,
+					type: 'warning',					
+				})
+			},
 			success: function(data){
 			   swal({
 				   position: 'top-end',
 				   type: 'success',
 				   title: data,
 				   showConfirmButton: true,				   
-			   });
+			   });			   
 			   detallesRecepcionEditar(idingreso);
-			},
+			}
 		});
 
 	}else{
@@ -1175,16 +1180,22 @@ function agregarDetalleEdit(idarticulo,articulo,fmsi, marca, descripcion,publico
 }
 
 function modificarSubtotales(){
+	console.log("LLEGASTE");
 	var cant=document.getElementsByName("cantidad[]");
 	var prec=document.getElementsByName("precio_compra[]");
 	var sub=document.getElementsByName("subtotal");
+	var desc=document.getElementsByName("descuento[]");
 
 	for (var i = 0; i < cant.length; i++) {
 		var inpC=cant[i];
 		var inpP=prec[i];
 		var inpS=sub[i];
+		var des=desc[i];
+		var descuento = des.value / 100;
+		var cantPrec = inpC.value * inpP.value;
+		var nuevoCosto = (cantPrec - (cantPrec * descuento));
 
-		inpS.value=inpC.value*inpP.value;
+		inpS.value=nuevoCosto;
 		document.getElementsByName("subtotal")[i].innerHTML=pesosMexicanos.format(inpS.value);
 	}
 
@@ -1211,7 +1222,7 @@ function evaluar(){
 		$("#btnGuardar").show();
 	}
 	else
-	{
+	{	
 		$("#btnGuardar").hide();
 		cont=0;
 	}

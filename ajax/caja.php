@@ -109,7 +109,7 @@ if(!isset($_SESSION["nombre"])) {
                         <tr>
                             <th id="thConc">Fecha</th>
                             <th id="thConc">Tipo de mov</th>
-                            <th id="thConc">Descripcion</th>
+                            <th id="thConc">Cliente</th>
                             <th id="thConc">Cargo</th>  
                             <th id="thConc">Abono</th>
                             <th id="thConc">Saldo</th>
@@ -236,8 +236,7 @@ if(!isset($_SESSION["nombre"])) {
         case 'mostrarCheques':
             $fecha = $_GET["fecha_actual"];
             $rspta = $caja->mostrarCheques($idsucursal, $fecha);
-            $rsptaserv = $caja->mostrarChequesServicio($idsucursal, $fecha);
-            $total_cheques_ventas = 0.0;
+            $rsptaserv = $caja->mostrarChequesServicio($idsucursal, $fecha);            
             $total_cheques_servicios = 0.0;           
             echo '<table class="table table-xxs" style="font-size:12px">
                     <tbody>
@@ -249,35 +248,25 @@ if(!isset($_SESSION["nombre"])) {
                             </tr>                                               
                         </thead> 
                         <tbody>';
-            while ($fila=$rspta->fetch_array(MYSQLI_ASSOC)) {
-                if($fila["fecha"] == $fecha) {
-                    $total_cheques_ventas += $fila["importeVenta"];
-                    echo '
-                        <tr>
-                            <td>'.$fila["idpagoVenta"].'</td>
-                            <td>'.$fila["nombreVenta"]." REM. ".$fila["remisionVenta"].'</td>
-                            <td>$'.number_format($fila["importeVenta"], 2).'</td>
-                        </tr>
-                    ';
-                }
-                while ($res = $rsptaserv->fetch_array(MYSQLI_ASSOC)) {
-                    if($res["fecha"] == $fecha) {
-                        $total_cheques_servicios += $res["importeServicio"];
-                        echo '
-                            <tr>
-                                <td>'.$res["idpagoServicio"].'</td>
-                                <td>'.$res["nombreServicio"]." REM. ".$res["remisionServicio"].'</td>
-                                <td>$'.number_format($res["importeServicio"], 2).'</td>
-                            </tr>
-                        ';
-                    }
-                }                
-            }
+           
+                        while ($res = $rsptaserv->fetch_array(MYSQLI_ASSOC)) {
+                            if($res["fecha"] == $fecha) {
+                                $total_cheques_servicios += $res["importeServicio"];
+                                echo '
+                                    <tr>
+                                        <td>'.$res["idpagoServicio"].'</td>
+                                        <td>'.$res["nombreServicio"]." REM. ".$res["remisionServicio"].'</td>
+                                        <td>$'.number_format($res["importeServicio"], 2).'</td>
+                                    </tr>
+                                ';
+                            }
+                        }                
+            
             echo '<tbody>
                     <tr>
                         <th></th>                                                        
                         <th style="text-align:right">Total cheques</th>
-                        <th>$'.number_format($total_cheques_servicios + $total_cheques_ventas, 2).'</th>
+                        <th>$'.number_format($total_cheques_servicios, 2).'</th>
                     </tr>                     
                     </tbody>
                 </table>';
@@ -286,9 +275,8 @@ if(!isset($_SESSION["nombre"])) {
             case 'mostrarEfectivos':
                 $fecha = $_GET["fecha_actual"];
                 $rspta = $caja->mostrarEfectivos($idsucursal, $fecha);
-                $rsptaserv = $caja->mostrarEfectivosServicio($idsucursal, $fecha);
-                $total_cheques_ventas = 0.0;
-                $total_cheques_servicios = 0.0;
+                $rsptaserv = $caja->mostrarEfectivosServicio($idsucursal, $fecha);                
+                $total_efectivo = 0.0;
                 echo '<table class="table table-xxs" style="font-size:12px">
                         <tbody>
                             <thead class="table-light">
@@ -299,20 +287,10 @@ if(!isset($_SESSION["nombre"])) {
                                 </tr>                                               
                             </thead> 
                             <tbody>';
-                while ($fila=$rspta->fetch_array(MYSQLI_ASSOC)) {
-                    if($fila["fecha"] == $fecha) {
-                        $total_cheques_ventas += $fila["importeVenta"];
-                        echo '
-                            <tr>
-                                <td>'.$fila["idpagoVenta"].'</td>
-                                <td>'.$fila["nombreVenta"]."REM. ".$fila["remisionVenta"].'</td>
-                                <td>$'.number_format($fila["importeVenta"], 2).'</td>
-                            </tr>
-                        ';
-                    }                    
+                              
                     while ($res = $rsptaserv->fetch_array(MYSQLI_ASSOC)) {
                     if($res["fecha"] == $fecha) {
-                        $total_cheques_servicios += $res["importeServicio"];
+                        $total_efectivo += $res["importeServicio"];
                         echo '
                             <tr>
                                 <td>'.$res["idpagoServicio"].'</td>
@@ -320,14 +298,14 @@ if(!isset($_SESSION["nombre"])) {
                                 <td>$'.number_format($res["importeServicio"], 2).'</td>
                             </tr>
                         ';
-                    }                    
+                                     
                     }
                 }                
                 echo '<tbody>
                         <tr>
                             <th></th>                                                        
                             <th style="text-align:right">Total efectivo</th>
-                            <th>$'.number_format($total_cheques_servicios + $total_cheques_ventas, 2).'</th>
+                            <th>$'.number_format($total_efectivo, 2).'</th>
                         </tr>                     
                         </tbody>
                     </table>';
@@ -413,57 +391,51 @@ if(!isset($_SESSION["nombre"])) {
                     $regv=$rspta->fetch_object();
                     $totalv=$regv->total;
                     $fecha = $_GET["fecha_actual"];
-                    $rspta = $caja->mostrarEfectivos($idsucursal, $fecha);
+                    //$rspta = $caja->mostrarEfectivos($idsucursal, $fecha);
                     $rsptaserv = $caja->mostrarEfectivosServicio($idsucursal, $fecha);
                     $total_efectivo_ventas = 0.0;
                     $total_efectivo_servicios = 0.0;
                     $gran_total_entradas = 0.0;
                     $gran_total_salidas = 0.0;
                 
-                    while ($fila=$rspta->fetch_array(MYSQLI_ASSOC)) {
-                        if($fila["fecha"] == $fecha) {
-                            $total_efectivo_ventas += $fila["importeVenta"];                        
-                        }
-                        while ($res = $rsptaserv->fetch_array(MYSQLI_ASSOC)) {
-                            if($res["fecha"] == $fecha) {
-                                $total_efectivo_servicios += $res["importeServicio"];                        
-                            }
+                   
+                    while ($res = $rsptaserv->fetch_array(MYSQLI_ASSOC)) {
+                        if($res["fecha"] == $fecha) {
+                            $total_efectivo_servicios += $res["importeServicio"];                        
                         }
                     }
+                    
                      
                     $rsptache = $caja->mostrarCheques($idsucursal, $fecha);
                     $rsptaservche = $caja->mostrarChequesServicio($idsucursal, $fecha);
                     $total_cheques_ventas = 0.0;
                     $total_cheques_servicios = 0.0;                               
-                    while ($fila=$rsptache->fetch_array(MYSQLI_ASSOC)) {
-                        if($fila["fecha"] == $fecha) {
-                            $total_cheques_ventas += $fila["importeVenta"];                            
+                   
+                    while ($res = $rsptaservche->fetch_array(MYSQLI_ASSOC)) {
+                        if($res["fecha"] == $fecha) {
+                            $total_cheques_servicios += $res["importeServicio"];                               
                         }
-                        while ($res = $rsptaservche->fetch_array(MYSQLI_ASSOC)) {
-                            if($res["fecha"] == $fecha) {
-                                $total_cheques_servicios += $res["importeServicio"];                               
-                            }
-                        }                
-                    }
+                    }                
+                    
 
                     $rspta_traspasos = $caja->mostrarTrasasos($idsucursal);
                     $total_traspasos = 0.0;                    
                     while ($fila=$rspta_traspasos->fetch_array(MYSQLI_ASSOC)) {                        
                         if($fila["fecha"] == $fecha) {
-                            $total_traspasos = $fila["monto_final"];                            
+                            $total_traspasos = $fila["monto_final"];
                         }
                     }
 
                     
-                    $rspta_gastos = $caja->mostrarGastos($idsucursal);                        
-                    $total_gastos = 0.0;                   
+                    $rspta_gastos = $caja->mostrarGastos($idsucursal);
+                    $total_gastos = 0.0;
                     while ($fila=$rspta_gastos->fetch_array(MYSQLI_ASSOC)) {
                         if($fila["fecha"] == $fecha) {
-                            $total_gastos += $fila["total_gasto"];                           
+                            $total_gastos += $fila["total_gasto"];
                         }
                     }
 
-                    $gran_total_entradas = $total_efectivo_servicios + $total_efectivo_ventas + $total_cheques_servicios + $total_cheques_ventas;
+                    $gran_total_entradas = $total_efectivo_servicios + $total_cheques_servicios;
                     $gran_total_salidas = $total_traspasos + $total_gastos;
 
 
@@ -478,14 +450,14 @@ if(!isset($_SESSION["nombre"])) {
                             <tr>
                                 <td></td>
                                 <td style="text-align:right"><b>Total Efectivo</b></td>
-                                <td>$'.number_format($total_efectivo_servicios + $total_efectivo_ventas, 2).'</td>
+                                <td>$'.number_format($total_efectivo_servicios, 2).'</td>
                             </tr>
                         ';
                         echo '
                             <tr>
                                 <td></td>
                                 <td style="text-align:right"><b>Total cheques</b></td>
-                                <td>$'.number_format($total_cheques_servicios + $total_cheques_ventas, 2).'</td>
+                                <td>$'.number_format($total_cheques_servicios, 2).'</td>
                             </tr>
                         ';
                         echo '

@@ -10,6 +10,7 @@ function init(){
    mostrarform(false);
    obtener_registros();
    obtener_registrosProductos();
+   obtener_registrosProductosEdit();
 
    $("#formulario").on("submit",function(e){
    	guardaryeditar(e);
@@ -27,6 +28,7 @@ function init(){
 	var month=("0"+(now.getMonth()+1)).slice(-2);
 	var today=now.getFullYear()+"-"+(month)+"-"+(day);
 	$("#fecha_entrada").val(today).prop("disabled", false);
+	$("#fecha_salida").val(today).prop("disabled", false);
 	evaluarCaja();
 }
 
@@ -323,6 +325,7 @@ function buscarCotizacion() {
 			$("#ano").val(data.ano).prop("disabled", false);
 			$("#color").val(data.color).prop("disabled", false);
 			$("#kms").val(data.kms).prop("disabled", false);
+			$("#vin").val(data.vin).prop("disabled", false);
 
 			$.post("../ajax/servicio.php?op=selectAuto&id="+data.idcliente,function(r){
 				$("#idauto").html(r);
@@ -365,12 +368,12 @@ function detalleCotizacion(idcotizacion, idsucursal) {
 			'<td><input type="hidden" name="fmsi[]" id="fmsi[]" value="'+data[index].fmsi+'">'+data[index].fmsi+'</td>'+
 			'<td><input type="hidden" name="marca[]" id="marca[]" value="'+data[index].marca+'">'+data[index].marca+'</td>'+
 			'<td><textarea class="form-control" id="descripcion[]" name="descripcion[]" rows="2" style="width: 280px;" value="'+data[index].descripcion+'">'+data[index].descripcion+'</textarea></td>'+
-			'<td><input style="width: 55px;" type="number" name="cantidad[]" id="cantidad[]" value="'+cantidad+'" max="'+data[index].cantidad+'" min="1"></td>'+		
-			'<td><input style="width: 70px;" type="number" name="precio_servicio[]" id="precio_servicio[]" value="'+data[index].precio_cotizacion+'"></td>'+
-			'<td><input style="width: 70px;" type="number" name="descuento[]" value="'+descuento+'"></td>'+
-			'<td><span id="subtotal'+index+'" name="subtotal" value="'+sub+'"></span></td>'+
-			'<td><button type="button" title="Actualizar" onclick="modificarSubtotales()" class="btn btn-info btn-xs" style="width: 40px;"><i class="fa fa-refresh"></i></button></td>'+
-			'</tr>';
+			'<td><input style="width: 55px;" type="number" onblur="modificarSubtotales()" name="cantidad[]" id="cantidad[]" value="'+cantidad+'" max="'+data[index].cantidad+'" min="1"></td>'+		
+			'<td><input style="width: 70px;" type="number" onblur="modificarSubtotales()" name="precio_servicio[]" id="precio_servicio[]" value="'+data[index].precio_cotizacion+'"></td>'+
+			'<td><input style="width: 70px;" type="number" onblur="modificarSubtotales()" name="descuento[]" value="'+descuento+'"></td>'+
+			'<td><span id="subtotal'+index+'" name="subtotal" value="'+sub+'"></span></td>'+			
+			'</tr>';			
+
 			$('#detalles').append(fila);
 			modificarSubtotales();
 			detalles ++;
@@ -1246,7 +1249,7 @@ function mostrarInfoClient(idcliente) {
 	function(data,status)
 	{
 		$('.loader').hide();
-		data=JSON.parse(data);
+		data=JSON.parse(data);		
 		$("#idcliente").val(idcliente).prop("disabled", false);
 		$("#idcliente").selectpicker('refresh');
 		$("#rfc").val(data.rfc).prop("disabled", true);
@@ -1254,6 +1257,9 @@ function mostrarInfoClient(idcliente) {
 		$("#email").val(data.email).prop("disabled", true);
 		$("#telefono").val(data.telefono).prop("disabled", true);
 		$("#credito").val(data.credito).prop("disabled", true);
+		var tipoPrecio = data.tipo_precio != "" ? data.tipo_precio : "publico";
+		$("#tipo_precio").val(tipoPrecio).prop("disabled", false);
+		$("#tipo_precio").selectpicker('refresh');		
 		if(data.tipo_precio == "publico") {
 			$("#tipoPrecio").val("Publico / Mostrador").prop("disabled", true);
 		} else if(data.tipo_precio == "taller") {
@@ -1287,6 +1293,7 @@ function selectCliente (){
 
 	$("#idcliente").change(modIdCliente);
 	function modIdCliente() {
+		console.log("LLEGASTE");
 		var idcliente = $("#idcliente option:selected").val();
 		mostrarInfoClient(idcliente);
 		document.getElementById("idclient").value=idcliente;
@@ -1303,12 +1310,15 @@ function selectCliente (){
 					function(data,status){
 						$('.loaderInfoAuto').hide();
 						data=JSON.parse(data);
+						console.log("DATA: " + data);
 						$("#placas").val(data.placas).prop("disabled", false);
 						$("#marcaAuto").val(data.marca).prop("disabled", false);						
 						$("#modelo").val(data.modelo).prop("disabled", false);
 						$("#ano").val(data.ano).prop("disabled", false);
 						$("#color").val(data.color).prop("disabled", false);
 						$("#kms").val(data.kms).prop("disabled", false);
+						$("#vin").val(data.vin).prop("disabled", false);
+						//$("#");
 				});
 				setTimeout(() => {
 					window.scroll({
@@ -1516,7 +1526,7 @@ $(document).on('keyup', '#busquedaProductAlmacen', function(){
 });
 
 function obtener_registrosProductosEdit(productosEdit){	
-	
+
 	$.ajax({
 		url : '../ajax/servicio.php?op=listarProductosEdit',
 		type : 'POST',
@@ -1529,6 +1539,7 @@ function obtener_registrosProductosEdit(productosEdit){
 }
 
 $(document).on('keyup', '#busquedaProductEdit', function(){	
+
 	var valorBusqueda=$(this).val();
 
 	console.log(valorBusqueda);
@@ -1539,7 +1550,7 @@ $(document).on('keyup', '#busquedaProductEdit', function(){
 	}
 	else
 	{
-		limpiar();
+		//limpiar();
 		obtener_registrosProductosEdit();
 	}
 });
@@ -1566,6 +1577,26 @@ function guardaryeditar(e){
 	 var kmAuto = document.getElementById("kms").value;
 	 var is_rem = document.getElementById("remision").value;
 	 var fechaSalida = document.getElementById("fecha_salida").value;
+	 var idProductos = document.getElementsByName("idarticulo[]");
+	 var cantidades = document.getElementsByName("cantidad[]");
+	 
+	 var bandera = false;
+
+	 for (let index = 0; index < idProductos.length; index++) {		
+
+		$.post("../ajax/articulo.php?op=mostrarPorId", {ìdArticulo : idProductos[index].value}, function(e){
+
+			data = JSON.parse(e);
+			if (cantidades[index].value >= data.stock_ideal) {
+				$.post("../ajax/servicio.php?op=registrarOrdenCompra", {ìdArticulo : data.idarticulo, fecha_orden : TODAY, cantidad : cantidades[index].value}, function(e){
+					console.log(e);									
+				})					
+			}
+	
+		})
+		
+		
+	 }	 
 
 	 if(is_rem == 1 && fechaSalida == "") {
 		swal({
@@ -1602,12 +1633,11 @@ function guardaryeditar(e){
 					position: 'top-end',
 					type: 'success',
 					title: datos,
-					showConfirmButton: true,
-					//timer: 1500
+					showConfirmButton: false,
+					timer: 1500
 				});				   
 				mostrarform(false);
-				obtener_registros();
-				limpiar();
+				obtener_registros();				
 			},
 			complete: function() {			   
 				$('.loader').hide();
@@ -1625,12 +1655,13 @@ function guardaryeditar(e){
 	 }	 
 }
 
-function agregarRemision(idservicio) {	
-	console.log("ID SERVICIO: ", idservicio);
+function agregarRemision(idservicio) {		
 	$.post("../ajax/servicio.php?op=maxRemision",
 	function(data,status)
 	{
-	let sumaRem = Number(data) + 1;		
+	data=JSON.parse(data);
+	let sumaRem = Number(data.maxRemision) + 1;
+	console.log("data: " + JSON.stringify(data));
 	$.ajax({
 		url: "../ajax/servicio.php?op=editarRemision&idservicio="+idservicio+"&remision="+ sumaRem,
 		type: "POST",
@@ -1638,13 +1669,23 @@ function agregarRemision(idservicio) {
 		contentType: false,
 		processData: false,
 
-		success: function(datos){   
+		success: function(datos){
 			$("#remOrSalida").modal('hide');
-			obtener_registrosProductos();	
-			window.open(
-				`../reportes/exFacturaServicio.php?id=${idservicio}`,
-				'_blank'
-			);					
+			obtener_registrosProductos();
+			var tipoComprobante = $("#tipo_comprobante").val();
+			console.log("TIPO: " + tipoComprobante);
+			if (tipoComprobante == "Factura") {
+				window.open(
+					`../reportes/exFacturaServicio.php?id=${idservicio}`,
+					'_blank'
+				);
+			} else {
+				window.open(
+					`../reportes/exTicket.php?id=${idservicio}`,
+					'_blank'
+				);
+			}	
+			limpiar();		
 		},
 	});
 	});
@@ -1972,8 +2013,9 @@ function infoPago() {
 		console.log(data);	
 		let totalPagar = data.total_servicio - data.pagado;
 		$("#clienteCobro").val(data.cliente).prop("disabled", true);
-		$("#totalCobro").val("$" + data.total_servicio).prop("disabled", true);			
-		$("#porPagar").val("$" + totalPagar).prop("disabled", true);
+		$("#totalCobro").val(pesosMexicanos.format(data.total_servicio)).prop("disabled", true);
+		$("#importeCobro").val(Number(data.total_servicio)).prop("disabled", false);
+		$("#porPagar").val(pesosMexicanos.format(totalPagar)).prop("disabled", true);
 
 		if(totalPagar == 0) {
 			$("#btnGuardarCobro").hide();
@@ -1992,7 +2034,7 @@ function mostrarPagoEdit(idpago) {
 		let totalPagar = data.total_servicio - data.pagado;
 		$("#clienteCobro").val(data.cliente).prop("disabled", true);
 		$("#totalCobro").val("$" + data.total_servicio).prop("disabled", true);			
-		$("#porPagar").val("$" + totalPagar).prop("disabled", true);		
+		$("#porPagar").val(pesosMexicanos.format(totalPagar)).prop("disabled", true);		
 		$("#btnGuardarCobro").show();
 	});
 
@@ -2178,11 +2220,12 @@ function guardarAuto() {
 	let ano =  $("#anoAdd").val();
 	let color =  $("#colorAdd").val();
 	let kms =  $("#kmsAdd").val();
+	var vin = $("#vinAdd").val();
 
 	$.ajax({
 		url: "../ajax/servicio.php?op=guardarAuto&idcliente="+idcliente+"&placas="+placas
 		+"&marca="+marca+"&modelo="+modelo+"&ano="+ano
-		+"&color="+color + "&kms=" + kms,
+		+"&color="+color + "&kms=" + kms + "&vin=" + vin,
 		type: "POST",
 		contentType: false,
 		processData: false,
@@ -2217,6 +2260,8 @@ function guardarAuto() {
 						$("#ano").val(data.ano).prop("disabled", false);
 						$("#color").val(data.color).prop("disabled", false);
 						$("#kms").val(data.kms).prop("disabled", false);
+						console.log("VIN DE AUTO: " + data.vin);
+						$("#vin").val(data.vin).prop("disabled", false);
 				});
 				
 			});
@@ -2310,8 +2355,8 @@ function marcarImpuesto(){
 
 function agregarDetalle(idarticulo,articulo,fmsi, descripcion,marca,publico, stock, idsucursal){
 	var cantidad=1;
-	var descuento=0;
-
+	var descuento=0;	
+	
 	if (idarticulo!="") {
 		var fila='<tr style="font-size:12px" class="filas" id="fila'+cont+'">'+
         '<td><button style="width: 40px;" title="Eliminar" type="button" class="btn btn-danger btn-xs" onclick="eliminarDetalle('+cont+')">X</button></td>'+        
@@ -2319,18 +2364,17 @@ function agregarDetalle(idarticulo,articulo,fmsi, descripcion,marca,publico, sto
 		'<td><input type="hidden" name="fmsi[]" id="fmsi[]" value="'+fmsi+'">'+fmsi+'</td>'+
 		'<td><input type="hidden" name="marca[]" id="marca[]" value="'+marca+'">'+marca+'</td>'+
 		'<td><textarea class="form-control" id="descripcion[]" name="descripcion[]" rows="2" style="width: 280px;" value="'+descripcion+'">'+descripcion+'</textarea></td>'+
-        '<td><input class="form-control" style="width: 55px;" type="number" name="cantidad[]" id="cantidad[]" value="'+cantidad+'" max="'+stock+'" min="1"></td>'+
-        '<td><input class="form-control" style="width: 70px;" type="number" name="precio_servicio[]" id="precio_servicio[]" value="'+publico+'"></td>'+
-        '<td><input class="form-control" style="width: 70px;" type="number" name="descuento[]" value="'+descuento+'"></td>'+
-        '<td><span id="subtotal'+cont+'" name="subtotal">'+pesosMexicanos.format(publico*cantidad)+'</span></td>'+
-        '<td><button type="button" title="Actualizar" onclick="modificarSubtotales()" style="width: 40px;" class="btn btn-info btn-xs"><i class="fa fa-refresh"></i></button></td>'+
+        '<td><input style="width: 55px;" type="number" onblur="modificarSubtotales()" name="cantidad[]" id="cantidad[]" value="'+cantidad+'" max="'+stock+'" min="1"></td>'+
+        '<td><input style="width: 70px;" type="number" onblur="modificarSubtotales()" name="precio_servicio[]" id="precio_servicio[]" step="any" value="'+publico+'"></td>'+
+        '<td><input style="width: 70px;" type="number" onblur="modificarSubtotales()" name="descuento[]" id="descuento[]" value="'+descuento+'"></td>'+
+        '<td><span id="subtotal'+cont+'" name="subtotal">'+ publico*cantidad +'</span></td>'+        
 		'</tr>';
 		cont++;
 		detalles++;
 		$('#detalles').append(fila);
 		modificarSubtotales();
 
-	}else{
+	} else {
 		alert("error al ingresar el detalle, revisar las datos del articulo ");
 	}
 }
@@ -2390,9 +2434,11 @@ function modificarSubtotales(){
 		var inpP=prev[i];
 		var inpS=sub[i];
 		var des=desc[i];
-		var fmsis = fmsi[i];
-		var descrip = descripcion[i];		
-		inpS.value=(inpV.value*inpP.value)-des.value;
+		var descuento = des.value / 100;
+		var cantPrec = inpV.value * inpP.value;
+		var nuevoCosto = (cantPrec - (cantPrec * descuento));
+
+		inpS.value=nuevoCosto;
 		document.getElementsByName("subtotal")[i].innerHTML=pesosMexicanos.format(inpS.value);
 
 	}
@@ -2429,5 +2475,25 @@ function eliminarDetalle(indice){
 	calcularTotales();
 	detalles=detalles-1;
 }
+
+function ticketFactura(idservicio) {
+	$("#idServicioImpresion").val(idservicio);
+}
+
+$("#btn-imp-ticket").on("click", () => {
+	var idServicio = $("#idServicioImpresion").val();	
+	window.open(
+		`../reportes/exTicket.php?id=${idServicio}`,
+		'_blank'
+	);
+})
+
+$("#btn-imp-factura").on("click", () => {	
+	var idServicio = $("#idServicioImpresion").val();	
+	window.open(
+		`../reportes/exFacturaServicio.php?id=${idServicio}`,
+		'_blank'
+	);
+})
 
 init();	

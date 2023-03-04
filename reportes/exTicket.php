@@ -8,7 +8,7 @@ if (!isset($_SESSION['nombre'])) {
   echo "debe ingresar al sistema correctamente para visualizar el reporte";
 }else{
 
-if ($_SESSION['ventas']==1) {
+if ($_SESSION['servicios']==1) {
 
 ?>
 
@@ -20,12 +20,12 @@ if ($_SESSION['ventas']==1) {
 <body onload="window.print();">
 	<?php 
 // incluimos la clase venta
-require_once "../modelos/Venta.php";
+require_once "../modelos/Servicios.php";
 
-$venta = new Venta();
+$servicio = new Servicios();
 
 //en el objeto $rspta obtenemos los valores devueltos del metodo ventacabecera del modelo
-$rspta = $venta->ventacabecera($_GET["id"]);
+$rspta = $servicio->serviciocabecera($_GET["id"]);
 
 $reg=$rspta->fetch_object();
 
@@ -65,7 +65,7 @@ $phone4 = "(55) 43834342";
 
 	<table border="0" align="center" width="250px">
 		<tr>
-			<td  align="left" style="font-size:12px;"><b>Folio: </b><?php echo $reg->idventa; ?></td>
+			<td  align="left" style="font-size:12px;"><b>Folio: </b><?php echo $reg->idservicio; ?></td>
 			<td align="right" style="font-size:12px;"><b>Fecha: </b><?php echo $reg->fecha_entrada; ?></td>
 		</tr>
 	</table>
@@ -97,18 +97,18 @@ $phone4 = "(55) 43834342";
 			<td colspan="4">===========================================</td>
 		</tr>
 		<?php		
-		$rsptad = $venta->ventadetalles($_GET["id"]);
+		$rsptad = $servicio->serviciodetalles($_GET["id"]);
 		$cantidad=0;		
 		while ($regd = $rsptad->fetch_object()) {						
 			$descripcion = substr($regd->descripcion, 0,40);
 		 	echo "<tr>";
 		 	echo "<td>".$regd->cantidad."</td>";
 		 	echo "<td>".$regd->clave." <br>".$regd->fmsi." <br>".$regd->marca."...</td>";
-			echo "<td>$".number_format($regd->precio_venta, 2)."</td>";
+			echo "<td>$".number_format($regd->precio_servicio, 2)."</td>";
 		 	echo "<td align='right'>$".number_format($regd->subtotal, 2)."</td>";
 		 	echo "</tr>";
 		 	$cantidad+=$regd->cantidad;
-		 } 
+		 }
 
 		 ?>
 		 <!--mostramos los totales de la venta-->
@@ -119,13 +119,13 @@ $phone4 = "(55) 43834342";
 		<tr>
 			<td></td><td></td>
 			<td align="right"><b>TOTAL:</b></td>
-			<td align="right"><b>$<?php echo number_format($reg->total_venta, 2); ?></b></td>			
+			<td align="right"><b>$<?php echo number_format($reg->total_servicio, 2); ?></b></td>			
 		</tr>	
 		<tr>
 			<td colspan="4" align="justify"><?php 
 				require_once "Letras.php";
 				$V = new EnLetras();
-				$total = $reg->total_venta;
+				$total = $reg->total_servicio;
 				$con_letra=strtoupper($V->convertir($total));
 				echo $con_letra;
 			?></td>

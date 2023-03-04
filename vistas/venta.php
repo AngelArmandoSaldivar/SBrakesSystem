@@ -82,6 +82,7 @@ if ($_SESSION['ventas']==1) {
           <div class="box-header with-border" id="formularioregistros"> 
             <div class="panel-body table-responsive">   
               <form action="" name="formulario" id="formulario" method="POST">
+              
                 <div class="list-group-item col-lg-12" id="infoCliente">
                   <div class="form-group col-lg-12 col-md-6 col-xs-12">
                     <center><h4 aling="center">Información del cliente</h4></center>
