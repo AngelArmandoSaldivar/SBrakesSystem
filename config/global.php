@@ -5,15 +5,15 @@ define("DB_HOST", "http://us-cdbr-east-06.cleardb.net");
 
 // nombre de la base de datos
 //define("DB_NAME", "xgcx1se8pwho5r2u");
-define("DB_NAME", "heroku_f071aa6f7714591");
+define("DB_NAME", "heroku_98bb8d5d04b3edc");
 
 //nombre de usuario de base de datos
 //define("DB_USERNAME", "nwnpnt2pi2dr55m9");
-define("DB_USERNAME", "b9424e5ecc1803");
+define("DB_USERNAME", "b8bc53875b9772");
 
 //conraseña del usuario de base de datos
 //define("DB_PASSWORD", "x64e18c96507j2ey");
-define("DB_PASSWORD", "0938208b");
+define("DB_PASSWORD", "7992e41f");
 
 //codificacion de caracteres
 define("DB_ENCODE", "utf8");
