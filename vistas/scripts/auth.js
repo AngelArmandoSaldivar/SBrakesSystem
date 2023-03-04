@@ -8,6 +8,7 @@ $("#frmAcceso").on('submit', function(e)
         {"logina":logina, "clavea":clavea},
         function(data)
         {
+            console.log("DATA: " + data);
             data = !data ? null : JSON.parse(data);
             console.log("DATA: ", data);
             if (!data) {
