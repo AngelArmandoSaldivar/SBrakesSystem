@@ -1108,6 +1108,10 @@ function limpiar(){
 	$("#print").hide();	
 	$("#imagenmuestra").attr("src","");
 	$("#imagenactual").val("");
+	$("#utilidadPublico").val("");
+	$("#utilidadTaller").val("");
+	$("#utilidadCreditoTaller").val("");
+	$("#utilidadMayoreo").val("");
 }
 
 //funcion mostrar formulario
@@ -1149,8 +1153,9 @@ function mostrarform(flag){
 
 //cancelar form
 function cancelarform(){
-	limpiar();
-	mostrarform(false);
+	//limpiar();
+	//mostrarform(false);
+	location.reload();
 }
 
 function actualizarStock(profile_viewer_uid) {	
@@ -1350,6 +1355,14 @@ function editarArticulo(idarticulo){
 			$("#imagenmuestra").show();
 			$("#imagenmuestra").attr("src","../files/articulos/"+data.imagen);
 			$("#imagenactual").val(data.imagen);
+			$.post("../ajax/articulo.php?op=mostrarMarcaId",{idMarca : data.marca}, function(res) {
+				dataMarca = JSON.parse(res);
+				console.log("DATA MARCA: " + dataMarca.utilidad_1);
+				$("#utilidadPublico").text(dataMarca.utilidad_1 + "%")
+				$("#utilidadTaller").text(dataMarca.utilidad_2 + "%")
+				$("#utilidadCreditoTaller").text(dataMarca.utilidad_3 + "%")
+				$("#utilidadMayoreo").text(dataMarca.utilidad_4 + "%")
+			})
 		});
 		limpiar();
 }

@@ -231,7 +231,7 @@ if(!isset($_SESSION["nombre"])) {
 								<td>
 									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
 									<a data-toggle='modal' href='#modalImagenArticulo'>
-										<button title='Mostrar Imagen Articulo' data-toggle='popover' data-trigger='hover' data-content='Mostrar Imagen Articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrarImagen(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
+										<button title='Mostrar Imagen Articulo' data-toggle='popover' data-trigger='hover' data-content='Mostrar Imagen Articulo' data-placement='top' class='btn btn-success btn-xs' onclick='mostrarImagen(".$fila["idarticulo"].")'><i class='fa fa-camera'></i></button>
 									</a>
 									<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar articulo' data-placement='bottom' class='btn btn-warning btn-xs' onclick='editarArticulo(".$fila["idarticulo"].")'><i class='fa fa-pencil'></i></button>
 									<button title='Eliminar' data-toggle='popover' data-trigger='hover' data-content='Eliminar articulo' data-placement='top' class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idarticulo"].")')><i class='fa fa-close'></i></button>
@@ -257,7 +257,7 @@ if(!isset($_SESSION["nombre"])) {
 								<td>
 									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
 									<a data-toggle='modal' href='#modalImagenArticulo'>
-										<button title='Mostrar Imagen Articulo' data-toggle='popover' data-trigger='hover' data-content='Mostrar Imagen Articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrarImagen(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
+										<button title='Mostrar Imagen Articulo' data-toggle='popover' data-trigger='hover' data-content='Mostrar Imagen Articulo' data-placement='top' class='btn btn-success btn-xs' onclick='mostrarImagen(".$fila["idarticulo"].")'><i class='fa fa-camera'></i></button>
 									</a>
 									<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar articulo' data-placement='bottom' class='btn btn-warning btn-xs' onclick='editarArticulo(".$fila["idarticulo"].")'><i class='fa fa-pencil'></i></button>
 									<button title='Eliminar' data-toggle='popover' data-trigger='hover' data-content='Eliminar articulo' data-placement='top' class='btn btn-danger btn-xs' onclick='desactivar(".$fila["idarticulo"].")')><i class='fa fa-close'></i></button>
@@ -284,7 +284,7 @@ if(!isset($_SESSION["nombre"])) {
 								<td>
 									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
 									<a data-toggle='modal' href='#modalImagenArticulo'>
-										<button title='Mostrar Imagen Articulo' data-toggle='popover' data-trigger='hover' data-content='Mostrar Imagen Articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrarImagen(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
+										<button title='Mostrar Imagen Articulo' data-toggle='popover' data-trigger='hover' data-content='Mostrar Imagen Articulo' data-placement='top' class='btn btn-success btn-xs' onclick='mostrarImagen(".$fila["idarticulo"].")'><i class='fa fa-camera'></i></button>
 									</a>
 									<a data-toggle='modal' href='#solicitarArticulo'>
 										<button title='Solicitar' data-toggle='popover' data-trigger='hover' data-content='Solicitar articulo' data-placement='bottom' class='btn btn-info btn-xs' onclick='mostrarArticuloSolicitud(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button>
@@ -306,7 +306,7 @@ if(!isset($_SESSION["nombre"])) {
 								<td>
 								<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
 								<a data-toggle='modal' href='#modalImagenArticulo'>
-									<button title='Mostrar Imagen Articulo' data-toggle='popover' data-trigger='hover' data-content='Mostrar Imagen Articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrarImagen(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
+									<button title='Mostrar Imagen Articulo' data-toggle='popover' data-trigger='hover' data-content='Mostrar Imagen Articulo' data-placement='top' class='btn btn-success btn-xs' onclick='mostrarImagen(".$fila["idarticulo"].")'><i class='fa fa-camera'></i></button>
 								</a>
 								<a data-toggle='modal' href='#solicitarArticulo'>
 									<button title='Solicitar' data-toggle='popover' data-trigger='hover' data-content='Solicitar articulo' data-placement='bottom' class='btn btn-info btn-xs' onclick='solicitar(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button>
