@@ -12,7 +12,6 @@ class Caja{
         $sql = "SELECT DATE(fp.fecha_hora) AS fecha, fp.idpago AS idpagoVenta, fp.importe AS importeVenta, p.nombre AS nombreVenta, v.remision AS remisionVenta 
                 FROM formas_pago fp 
                 INNER JOIN persona p ON fp.idcliente = p.idpersona 
-                INNER JOIN venta v ON v.idventa = fp.idventa 
                 WHERE fp.forma_pago='Cheque' 
                 AND p.tipo_persona='Cliente' 
                 AND fp.idsucursal='$idscucursal'";

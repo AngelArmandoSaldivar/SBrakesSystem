@@ -94,7 +94,7 @@
       <li class="nav-item d-none d-sm-inline-block">
       <?php 
         if ($_SESSION['compras']==1) { 
-          echo '<a href="ingreso.php" class="nav-link">Compras</a>';
+          echo '<a href="ingresos.php" class="nav-link">Compras</a>';
         }
       ?>
       </li>      
@@ -168,7 +168,7 @@
       </li>
     </ul>
   </nav>
-  <aside class="main-sidebar sidebar-dark-primary elevation-4" style="height: 700px;">
+  <aside class="main-sidebar sidebar-dark-primary elevation-4" style="height: 890px;">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
       <img src="../files/images/BrakeOneBrembo.png" alt="B1S" class="" style="opacity: .8" height="20" width="100">
@@ -301,7 +301,7 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="ingreso.php" class="nav-link">
+                  <a href="ingresos.php" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Recepciones</p>
                   </a>

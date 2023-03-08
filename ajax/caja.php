@@ -234,8 +234,7 @@ if(!isset($_SESSION["nombre"])) {
             break;
 
         case 'mostrarCheques':
-            $fecha = $_GET["fecha_actual"];
-            $rspta = $caja->mostrarCheques($idsucursal, $fecha);
+            $fecha = $_GET["fecha_actual"];            
             $rsptaserv = $caja->mostrarChequesServicio($idsucursal, $fecha);            
             $total_cheques_servicios = 0.0;           
             echo '<table class="table table-xxs" style="font-size:12px">
@@ -274,7 +273,6 @@ if(!isset($_SESSION["nombre"])) {
 
             case 'mostrarEfectivos':
                 $fecha = $_GET["fecha_actual"];
-                $rspta = $caja->mostrarEfectivos($idsucursal, $fecha);
                 $rsptaserv = $caja->mostrarEfectivosServicio($idsucursal, $fecha);                
                 $total_efectivo = 0.0;
                 echo '<table class="table table-xxs" style="font-size:12px">
@@ -386,8 +384,7 @@ if(!isset($_SESSION["nombre"])) {
 
                 case 'mostrarTotales':
 
-                    $fecha = $_GET["fecha_actual"];
-                    $rspta = $caja->mostrarTotales($idsucursal); 
+                    $fecha = $_GET["fecha_actual"];                    
                     $regv=$rspta->fetch_object();
                     $totalv=$regv->total;
                     $fecha = $_GET["fecha_actual"];
