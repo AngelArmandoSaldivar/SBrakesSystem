@@ -385,9 +385,7 @@ if(!isset($_SESSION["nombre"])) {
                 case 'mostrarTotales':
 
                     $fecha = $_GET["fecha_actual"];                    
-                    $regv=$rspta->fetch_object();
-                    $totalv=$regv->total;
-                    $fecha = $_GET["fecha_actual"];
+                                        
                     //$rspta = $caja->mostrarEfectivos($idsucursal, $fecha);
                     $rsptaserv = $caja->mostrarEfectivosServicio($idsucursal, $fecha);
                     $total_efectivo_ventas = 0.0;
