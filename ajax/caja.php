@@ -402,8 +402,7 @@ if(!isset($_SESSION["nombre"])) {
                         }
                     }
                     
-                     
-                    $rsptache = $caja->mostrarCheques($idsucursal, $fecha);
+                                        
                     $rsptaservche = $caja->mostrarChequesServicio($idsucursal, $fecha);
                     $total_cheques_ventas = 0.0;
                     $total_cheques_servicios = 0.0;                               
