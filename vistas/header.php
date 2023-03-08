@@ -301,7 +301,7 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="recepcion.php" class="nav-link">
+                  <a href="ingreso.php" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Recepciones</p>
                   </a>

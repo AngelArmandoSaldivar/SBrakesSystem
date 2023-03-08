@@ -1,7 +1,5 @@
 <?php
 //activamos almacenamiento en el buffer
-require "../config/Conexion.php";
-require "../modelos/ingreso.php";
 ob_start();
 session_start();
 if (!isset($_SESSION['nombre'])) {
@@ -432,7 +430,7 @@ if ($_SESSION['compras']==1) {
 
 require 'footer.php';
  ?>
- <!--<script src="scripts/ingreso.js"></script>-->
+ <script src="scripts/ingreso.js"></script>
  <?php 
 }
 
