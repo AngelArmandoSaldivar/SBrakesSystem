@@ -19,7 +19,7 @@ if ($_SESSION['almacen']==1) {
           <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
           <center>
             <div class="box-header with-border">
-                <h4 class="box-title">Articulos </h4>
+                <h4 class="box-title">Productos </h4>
             </div>
           </center>                    
 
@@ -257,7 +257,7 @@ if ($_SESSION['almacen']==1) {
                     </select>
                   </div>
               </div>  
-              <div class="form-group col-lg-12 col-md-6 col-xs-12 text-center">
+              <div class="form-group col-lg-6 col-md-6 col-xs-12 text-center">
                 <label for="">Imagen del Producto </label>                  
                   <div class="input-group bootstrap-touchspin">
                     <span class="input-group-btn"></span>
@@ -265,11 +265,28 @@ if ($_SESSION['almacen']==1) {
                     <input class="form-control" type="file" name="imagen" id="imagen" style="cursor:pointer">
                     <input type="hidden" name="imagenactual" id="imagenactual">                    
                   </div>
-              </div>
-              <div class="form-group col-lg-12 col-md-6 col-xs-12 text-center">                
+              </div>                  
+
+              <div class="form-group col-lg-6 col-md-6 col-xs-12 text-center">
+                <label for="">Dibujo Ténico </label>                  
+                  <div class="input-group bootstrap-touchspin">
+                    <span class="input-group-btn"></span>
+                    <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-camera-retro"></i></span>
+                    <input class="form-control" type="file" name="dibujoTecnico" id="dibujoTecnico" style="cursor:pointer">
+                    <input type="hidden" name="dibujoactual" id="dibujoactual">                    
+                  </div>
+              </div>       
+              <div class="form-group col-lg-6 col-md-6 col-xs-12 text-center">            
                 <img src="" alt="" width="600px" height="320" id="imagenmuestra" class="img-thumbnail">
               </div>       
-              <div class="form-group col-lg-4 col-md-6 col-xs-12 text-center"></div>                     
+              <div class="form-group col-lg-6 col-md-6 col-xs-12 text-center">
+                <img src="" alt="" width="600px" height="320" id="dibujoMuestra" class="img-thumbnail">
+              </div>
+                  
+              
+              <div class="form-group col-lg-12 col-md-6 col-xs-12 text-center"></div>                     
+               
+                              
               <div class="form-group col-lg-4 col-md-6 col-xs-12 text-center">
                 <label for="">Código de Barras </label>                  
                 <div class="input-group bootstrap-touchspin">
@@ -316,7 +333,7 @@ require 'footer.php'
  ?>
  <script src="../public/js/JsBarcode.all.min.js"></script>
  <script src="../public/js/jquery.PrintArea.js"></script>
- <script src="scripts/articulos.js"></script>
+ <script src="scripts/articulosB1.js"></script>
  <?php 
 }
 

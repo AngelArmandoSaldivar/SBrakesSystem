@@ -34,6 +34,7 @@ function init(){
 		$("#anterior").hide();
 	}
 	$("#imagenmuestra").hide();
+	$("#dibujoMuestra").hide();
 	$("#registerProduct").hide();
 	$("#containerProveedor").hide();
 	$("#containerMarca").hide();
@@ -1108,6 +1109,8 @@ function limpiar(){
 	$("#print").hide();	
 	$("#imagenmuestra").attr("src","");
 	$("#imagenactual").val("");
+	$("#dibujoMuestra").attr("src","");
+	$("#dibujoactual").val("");
 	$("#utilidadPublico").val("");
 	$("#utilidadTaller").val("");
 	$("#utilidadCreditoTaller").val("");
@@ -1308,7 +1311,10 @@ function mostrar(idarticulo){
 			$("#btnGuardar").hide();
 			$("#imagenmuestra").show();
 			$("#imagenmuestra").attr("src","../files/articulos/"+data.imagen);
-			$("#imagenactual").val(data.imagen);
+			$("#imagenactual").val(data.imagen);		
+			$("#dibujoMuestra").show();	
+			$("#dibujoMuestra").attr("src","../files/dibujos/"+data.dibujo_tecnico);
+			$("#dibujoactual").val(data.dibujo_tecnico);
 			$.post("../ajax/articulo.php?op=mostrarMarcaId",{idMarca : data.marca}, function(res) {
 				dataMarca = JSON.parse(res);
 				console.log("DATA MARCA: " + dataMarca.utilidad_1);
@@ -1353,8 +1359,11 @@ function editarArticulo(idarticulo){
 			$("#idarticulo").val(data.idarticulo);
 			$("#btnGuardar").show();
 			$("#imagenmuestra").show();
-			$("#imagenmuestra").attr("src","../files/articulos/"+data.imagen);
+			$("#dibujoMuestra").show();
+			$("#imagenmuestra").attr("src","../files/articulos/"+data.imagen);			
 			$("#imagenactual").val(data.imagen);
+			$("#dibujoMuestra").attr("src","../files/dibujos/"+data.dibujo_tecnico);
+			$("#dibujoactual").val(data.dibujo_tecnico);
 			$.post("../ajax/articulo.php?op=mostrarMarcaId",{idMarca : data.marca}, function(res) {
 				dataMarca = JSON.parse(res);
 				console.log("DATA MARCA: " + dataMarca.utilidad_1);
@@ -1441,7 +1450,8 @@ function mostrarImagen(id) {
 		data = JSON.parse(e);
 		console.log("IMAGEN DEL PRODUCTO: " + data.imagen);
 		$("#modalImagenProducrto").attr("src","../files/articulos/"+data.imagen);
-		$("#claveProductoModal").val(data.codigo);
+		$("#modalDibujoProducrto").attr("src","../files/dibujos/"+data.dibujo_tecnico);
+		$("#claveProductoModal").val(data.codigo);		
 	});
 }
 

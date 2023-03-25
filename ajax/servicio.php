@@ -103,7 +103,7 @@ switch ($_GET["op"]) {
 			echo '<tr class="filas" id="filas" style="font-size:12px">			
 			<td><input type="hidden" value="'.$reg->idarticulo.'" id="idarticulo" name="idarticulo"></input>'.$reg->codigo.'</td>
 			<td>'.$reg->fmsi.'</td>
-			<td>'.$reg->marca.'</td>
+			<td>'.$reg->descripcionMarca.'</td>
 			<td>'.$reg->descripcion.'</td>
 			<td>'.$reg->cantidad.'</td>
 			<td>$'.number_format($reg->precio_servicio, 2).'</td>
@@ -407,7 +407,7 @@ switch ($_GET["op"]) {
 			<td><button style="width: 40px;" title="Eliminar" type="button" class="btn btn-danger btn-xs" onclick="eliminarProductoServicio('.$reg->idservicio.', '.$reg->idarticulo.', '.$reg->cantidad.', '.$reg->precio_servicio.')">X</button></td>						
 			<td><input type="hidden" value="'.$reg->idarticulo.'" id="idarticulo" name="idarticulo"></input>'.$reg->codigo.'</td>
 			<td>'.$reg->fmsi.'</td>
-			<td>'.$reg->marca.'</td>
+			<td>'.$reg->descripcionMarca.'</td>
 			<td>'.$reg->descripcion.'</td>
 			<td>'.$reg->cantidad.'</td>
 			<td>$'.number_format($reg->precio_servicio, 2).'</td>
@@ -466,7 +466,7 @@ switch ($_GET["op"]) {
 			<td></td>			
 			<td><input type="hidden" value="'.$reg->idarticulo.'" id="idarticulo" name="idarticulo"></input>'.$reg->codigo.'</td>
 			<td>'.$reg->fmsi.'</td>
-			<td>'.$reg->marca.'</td>			
+			<td>'.$reg->descripcionMarca.'</td>			
 			<td>'.$reg->descripcion.'</td>
 			<td>'.$reg->cantidad.'</td>
 			<td>$'.number_format($reg->precio_servicio, 2).'</td>
@@ -903,7 +903,7 @@ switch ($_GET["op"]) {
 								<td><p>".$fila['cliente']."</td>
 								<td><p>".$fila['usuario']."</td>								
 								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
-								<td style='width:12px'><p>$ ".number_format($totalServicio=$fila["total_servicio"] - $fila["pagado"], 2)."</td>
+								<td><p>$ ".number_format($totalServicio=$fila["total_servicio"] - $fila["pagado"], 2)."</td>
 								<td><p>$ ".$miles."</td>
 								<td><p> ".$remision."</td>
 								<td>.$botones.</td>
@@ -1023,7 +1023,7 @@ switch ($_GET["op"]) {
 								<td><p>".$fila['cliente']."</td>
 								<td><p>".$fila['usuario']."</td>								
 								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
-								<td style='width:12px'><p>$ ".number_format($totalServicio=$fila["total_servicio"] - $fila["pagado"], 2)."</td>
+								<td><p>$ ".number_format($totalServicio=$fila["total_servicio"] - $fila["pagado"], 2)."</td>
 								<td><p>$ ".$miles."</td>
 								<td><p> ".$remision."</td>
 								<td>.$botones.</td>
@@ -1078,20 +1078,29 @@ switch ($_GET["op"]) {
 
 				$consulta = "";
 				if(!isset($_POST["productoEdit"])) {
-					$consulta="SELECT * FROM articulo ORDER BY stock DESC LIMIT 5";
+					$consulta="SELECT m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
+					a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
+					a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock, a.imagen
+					FROM articulo a INNER JOIN categoria c ON a.idcategoria=c.idcategoria
+					INNER JOIN marca m ON a.marca = m.idmarca
+					ORDER BY a.stock > 0 DESC, m.descripcion ASC LIMIT 50";
 				}				
 				$termino= "";
 				if(isset($_POST['productosEdit']))
 				{
 					$termino=$conexion->real_escape_string($_POST['productosEdit']);
 					usleep(10000);
-					$consulta="SELECT * FROM articulo
-					WHERE
-					codigo LIKE '%".$termino."%' OR
-					fmsi LIKE '%".$termino."%' OR
-					barcode LIKE '%".$termino."%' OR
-					descripcion LIKE '%".$termino."%' OR
-					marca LIKE '%".$termino."%' ORDER BY stock DESC LIMIT 50";
+					$consulta="SELECT m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
+					a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
+					a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock, a.imagen
+					FROM articulo a INNER JOIN categoria c ON a.idcategoria=c.idcategoria
+					INNER JOIN marca m ON a.marca = m.idmarca
+					WHERE 
+					a.codigo LIKE '%".$termino."%' OR
+					a.fmsi LIKE '%".$termino."%' OR
+					a.barcode LIKE '%".$termino."%' OR
+					a.descripcion LIKE '%".$termino."%' OR
+					m.descripcion LIKE '%".$termino."%' ORDER BY a.stock > 0 DESC, m.descripcion ASC LIMIT 50";
 				}
 				$consultaBD=$conexion->query($consulta);
 				if($consultaBD->num_rows>=1){
@@ -1132,7 +1141,7 @@ switch ($_GET["op"]) {
 									echo "<tr style='color:blue;'>
 										<td>".$fila['codigo']."</td>
 										<td>".$fila['fmsi']."</td>
-										<td>".$fila['marca']."</td>
+										<td>".$fila['descripcionMarca']."</td>
 										<td>".$delit."...</td>
 										<td><p>$ ".$costoMiles."</p></td>
 										<td><p>$ ".$publicMiles."</p></td>
@@ -1225,21 +1234,28 @@ switch ($_GET["op"]) {
 
 			case 'listarProductos':
 	
-				$consulta="SELECT * FROM articulo WHERE estado = 1 ORDER BY stock DESC LIMIT 100";
+				$consulta="SELECT m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
+				a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
+				a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock, a.imagen
+				FROM articulo a INNER JOIN categoria c ON a.idcategoria=c.idcategoria
+				INNER JOIN marca m ON a.marca = m.idmarca
+				ORDER BY a.stock > 0 DESC, m.descripcion ASC LIMIT 50";
 					$termino= "";
 					if(isset($_POST['productos']))
 					{
 						$termino=$conexion->real_escape_string($_POST['productos']);
 						usleep(10000);
-						$consulta="SELECT * FROM articulo
-						WHERE
-						(codigo LIKE '%".$termino."%' OR
-						fmsi LIKE '%".$termino."%' OR
-						barcode LIKE '%".$termino."%' OR
-						descripcion LIKE '%".$termino."%' OR
-						marca LIKE '%".$termino."%')
-						AND estado = 1
-						ORDER BY stock DESC LIMIT 100";
+						$consulta="SELECT m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
+						a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
+						a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock, a.imagen
+						FROM articulo a INNER JOIN categoria c ON a.idcategoria=c.idcategoria
+						INNER JOIN marca m ON a.marca = m.idmarca
+						WHERE 
+						a.codigo LIKE '%".$termino."%' OR
+						a.fmsi LIKE '%".$termino."%' OR
+						a.barcode LIKE '%".$termino."%' OR
+						a.descripcion LIKE '%".$termino."%' OR
+						m.descripcion LIKE '%".$termino."%' ORDER BY a.stock > 0 DESC, m.descripcion ASC LIMIT 50";
 					}
 					$consultaBD=$conexion->query($consulta);
 					if($consultaBD->num_rows>=1){
@@ -1299,7 +1315,7 @@ switch ($_GET["op"]) {
 										echo "<tr style='color:blue;'>
 											<td>".$fila['codigo']."</td>
 											<td>".$fila['fmsi']."</td>
-											<td>".$fila['marca']."</td>
+											<td>".$fila['descripcionMarca']."</td>
 											<td>".$delit."...</td>
 											<td><p>".$fila["stock"]." pz</p></td>
 											<td><p>$ ".$mayoreoMiles."</p></td>
@@ -1314,7 +1330,7 @@ switch ($_GET["op"]) {
 										echo "<tr style='color:blue;'>
 											<td>".$fila['codigo']."</td>
 											<td>".$fila['fmsi']."</td>
-											<td>".$fila['marca']."</td>
+											<td>".$fila['descripcionMarca']."</td>
 											<td>".$delit."...</td>
 											<td><p>$ ".$costoMiles."</p></td>
 											<td><p>$ ".$publicMiles."</p></td>
@@ -1328,7 +1344,7 @@ switch ($_GET["op"]) {
 										echo "<tr style='color:red;'>
 											<td>".$fila['codigo']."</td>
 											<td>".$fila['fmsi']."</td>
-											<td>".$fila['marca']."</td>
+											<td>".$fila['descripcionMarca']."</td>
 											<td>".$delit."...</td>
 											<td><p>$ ".$costoMiles."</p></td>
 											<td><p>$ ".$publicMiles."</p></td>

@@ -486,6 +486,21 @@ function addRemarque($remarque)
     $this->Cell($length,4, "Remarque : " . $remarque);
 }
 
+function totalArticulos($totalArticulos) {
+    $this->SetFont( "Arial", "B", 8);
+    $r1  = 153;
+    $r2  = $r1 + 120;
+    $y1  = $this->h - 98;
+    $y2  = $y1+10;
+    // $this->RoundedRect($r1, $y1, ($r2 - $r1), ($y2-$y1), 2.5, 'D');
+    // $this->Line( $r1, $y1+4, $r2, $y1+4);
+    $this->SetXY( $r1+9, $y1);
+    $this->Cell(20, -20, "TOTAL ARTICULOS.");
+    $this->SetFont( "Arial", "", 9);
+    $this->SetXY(176+10, $y2 - 8 );
+    $this->Cell(20,-15, $totalArticulos);
+}
+
 function addCadreTVAs($letras)
 {
     $this->SetFont( "Arial", "B", 8);

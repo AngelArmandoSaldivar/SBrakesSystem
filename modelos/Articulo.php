@@ -13,7 +13,7 @@ class Articulo{
 	}
 
 	//metodo insertar registro
-	public function insertar($codigo, $costo, $barcode, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $pasillo,$stock, $unidades, $idsucursal, $imagen, $stock_ideal, $bandera_inventariable){						
+	public function insertar($codigo, $costo, $barcode, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $pasillo,$stock, $unidades, $idsucursal, $imagen, $dibujo, $stock_ideal, $bandera_inventariable){						
 				
 		$sql = "SELECT * FROM marca WHERE idMarca='$marca'";
 		$data = ejecutarConsulta($sql);
@@ -28,7 +28,7 @@ class Articulo{
 			$mayoreo = ((($fila["utilidad_4"] / 100) * $costo) + $costo);
 		}
 		
-		$sql="INSERT INTO articulo (codigo, costo, barcode, credito_taller, descripcion, fmsi, idcategoria, idproveedor, marca, mayoreo, pasillo, publico, stock, stock_ideal, taller, unidades, estado, idsucursal, imagen, bandera_inventariable) VALUES ('$codigo', '$costo', '$barcode', '$credito_taller', '$descripcion', '$fmsi', $idcategoria, '$idproveedor', '$marca', '$mayoreo', '$pasillo', '$publico', '$stock', '$stock_ideal', '$taller', '$unidades', '1', '$idsucursal', '$imagen', '$bandera_inventariable')";		
+		$sql="INSERT INTO articulo (codigo, costo, barcode, credito_taller, descripcion, fmsi, idcategoria, idproveedor, marca, mayoreo, pasillo, publico, stock, stock_ideal, taller, unidades, estado, idsucursal, imagen, dibujo_tecnico, bandera_inventariable) VALUES ('$codigo', '$costo', '$barcode', '$credito_taller', '$descripcion', '$fmsi', $idcategoria, '$idproveedor', '$marca', '$mayoreo', '$pasillo', '$publico', '$stock', '$stock_ideal', '$taller', '$unidades', '1', '$idsucursal', '$imagen', '$dibujo', '$bandera_inventariable')";		
 		return ejecutarConsulta($sql);
 		return $marca;
 	}		
@@ -39,7 +39,7 @@ class Articulo{
 		return ejecutarConsulta($sql);
 	}
 		
-	public function editar($idarticulo,$codigo,$costo, $barcode, $descripcion,$fmsi,$idcategoria, $idproveedor, $marca, $pasillo, $stock, $unidades, $imagen, $stock_ideal, $bandera_inventariable){
+	public function editar($idarticulo,$codigo,$costo, $barcode, $descripcion,$fmsi,$idcategoria, $idproveedor, $marca, $pasillo, $stock, $unidades, $imagen, $dibujo, $stock_ideal, $bandera_inventariable){
 
 		$sql = "SELECT * FROM marca WHERE idMarca='$marca'";
 		$data = ejecutarConsulta($sql);
@@ -54,7 +54,7 @@ class Articulo{
 			$mayoreo = ((($fila["utilidad_4"] / 100) * $costo) + $costo);
 		}
 
-		$sql="UPDATE articulo SET codigo='$codigo', costo='$costo', barcode='$barcode', credito_taller='$credito_taller', descripcion='$descripcion', fmsi='$fmsi', idcategoria='$idcategoria', idproveedor='$idproveedor', marca='$marca', mayoreo='$mayoreo', pasillo='$pasillo', publico='$publico', stock='$stock', stock_ideal='$stock_ideal', taller='$taller', unidades='$unidades', imagen='$imagen', bandera_inventariable='$bandera_inventariable'
+		$sql="UPDATE articulo SET codigo='$codigo', costo='$costo', barcode='$barcode', credito_taller='$credito_taller', descripcion='$descripcion', fmsi='$fmsi', idcategoria='$idcategoria', idproveedor='$idproveedor', marca='$marca', mayoreo='$mayoreo', pasillo='$pasillo', publico='$publico', stock='$stock', stock_ideal='$stock_ideal', taller='$taller', unidades='$unidades', imagen='$imagen', dibujo_tecnico='$dibujo', bandera_inventariable='$bandera_inventariable'
 		WHERE idarticulo='$idarticulo'";
 		usleep(140000);
 		return ejecutarConsulta($sql);
@@ -79,7 +79,7 @@ class Articulo{
 
 	//listar registros
 	public function listar(){
-		$sql="SELECT * FROM articulo WHERE estado='1' ORDER BY stock DESC LIMIT 100";
+		$sql="SELECT *, m.descripcion AS descripcionMarca FROM articulo a INNER JOIN marca m ON a.marca = m.idmarca WHERE estado='1' ORDER BY stock DESC LIMIT 100;";
 		return ejecutarConsulta($sql);
 	}
 
@@ -106,10 +106,11 @@ class Articulo{
 	}
 
 	public function articulosPagination($limit, $limit2, $busqueda) {
-		$sql = "SELECT c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
+		$sql = "SELECT m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
 		a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
 		a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock
 		FROM articulo a INNER JOIN categoria c ON a.idcategoria=c.idcategoria
+		INNER JOIN marca m ON a.marca = m.idmarca
 		WHERE 
 		(a.codigo LIKE '%$busqueda%' OR
 		a.fmsi LIKE '%$busqueda%' OR

@@ -1133,6 +1133,11 @@ function crearCotizacion() {
 	$("#btnAddArt").show();
 	$("#addCliente").show();
 	$("#fecha_hora").prop("disabled", false);
+	var now = new Date();
+	var day =("0"+now.getDate()).slice(-2);
+	var month=("0"+(now.getMonth()+1)).slice(-2);
+	var today=now.getFullYear()+"-"+(month)+"-"+(day);
+	$("#fecha_entrada").val(today).prop("disabled", false);
 }
 
 //Salir form
@@ -1960,9 +1965,9 @@ function marcarImpuesto(){
 function agregarDetalle(idarticulo,articulo,fmsi, descripcion,marca,publico1, stock, idsucursal, costo, publico, taller, credito, mayoreo){	
 	
 	var precioCot = 0.0;
-	let tipoPrecio = document.getElementById("tipo_precio").value;
+	let tipoPrecio = document.getElementById("tipoPrecio").value;
 
-	precioCot = tipoPrecio == "publico" ? publico : tipoPrecio == "taller" ? taller : tipoPrecio == "credito_taller" ? credito : tipoPrecio == "mayoreo" ? mayoreo : publico1;
+	precioCot = tipoPrecio == "Publico" ? publico : tipoPrecio == "Taller" ? taller : tipoPrecio == "Credito Taller" ? credito : tipoPrecio == "Mayoreo" ? mayoreo : publico1;	
 
 	var cantidad=1;
 	var descuento=0;
@@ -1993,9 +1998,8 @@ function agregarDetalle(idarticulo,articulo,fmsi, descripcion,marca,publico1, st
 function agregarDetalleImagen(idarticulo,articulo,fmsi, descripcion,marca,publico1, stock, idsucursal, costo, publico, taller, credito, mayoreo, imagen){
 	
 	var precioCot = 0;
-	let tipoPrecio = document.getElementById("tipo_precio").value;
-	
-	precioCot = tipoPrecio == "publico" ? publico : tipoPrecio == "taller" ? taller : tipoPrecio == "credito_taller" ? credito : tipoPrecio == "mayoreo" ? mayoreo : publico1;	
+	let tipoPrecio = document.getElementById("tipoPrecio").value;	
+	precioCot = tipoPrecio == "Publico / Mostrador" ? publico : tipoPrecio == "Taller" ? taller : tipoPrecio == "Credito Taller" ? credito : tipoPrecio == "Mayoreo" ? mayoreo : publico1;	
 
 	var cantidad=1;
 	var descuento=0;

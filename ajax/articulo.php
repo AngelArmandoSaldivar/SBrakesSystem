@@ -26,6 +26,7 @@ if(!isset($_SESSION["nombre"])) {
 	$stock_ideal=isset($_POST["stock_ideal"])? limpiarCadena($_POST["stock_ideal"]):"";	
 	$descripcion=isset($_POST["descripcion"])? limpiarCadena($_POST["descripcion"]):"";
 	$imagen=isset($_POST["imagen"])? limpiarCadena($_POST["imagen"]):"";
+	$dibujoTecnico=isset($_POST["dibujoTecnico"])? limpiarCadena($_POST["dibujoTecnico"]):"";
 	$bandera_inventariable=isset($_POST["bandera_inventariable"])? limpiarCadena($_POST["bandera_inventariable"]):"";
 
 	switch ($_GET["op"]) {
@@ -39,11 +40,22 @@ if(!isset($_SESSION["nombre"])) {
 					move_uploaded_file($_FILES["imagen"]["tmp_name"], "../files/articulos/".$imagen);
 				}
 			}
-			if (empty($idarticulo)) {
-				$rspta=$articulo->insertar($codigo,$costo, $barcode, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $pasillo, $stock, $unidades, $idsucursal, $imagen, $stock_ideal, $bandera_inventariable);
+
+			if (!file_exists($_FILES['dibujoTecnico']['tmp_name'])|| !is_uploaded_file($_FILES['dibujoTecnico']['tmp_name'])) {
+				$dibujoTecnico=$_POST["dibujoactual"];
+			}else{
+				$ext2=explode(".", $_FILES["dibujoTecnico"]["name"]);
+				if ($_FILES['dibujoTecnico']['type']=="dibujoTecnico/jpg" || $_FILES['dibujoTecnico']['type']=="image/jpeg" || $_FILES['dibujoTecnico']['type']=="image/png") {
+					$dibujoTecnico=round(microtime(true)).'.'. end($ext2);
+					move_uploaded_file($_FILES["dibujoTecnico"]["tmp_name"], "../files/dibujos/".$dibujoTecnico);
+				}
+			}
+
+			if (empty($idarticulo)) {				
+				$rspta=$articulo->insertar($codigo,$costo, $barcode, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $pasillo, $stock, $unidades, $idsucursal, $imagen, $dibujoTecnico, $stock_ideal, $bandera_inventariable);
 				echo $rspta ? "Articulo registrado correctamente" : "Articulo no registrado correctamente";				
 			}else{				
-				$rspta=$articulo->editar($idarticulo,$codigo,$costo, $barcode, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $pasillo, $stock, $unidades, $imagen, $stock_ideal, $bandera_inventariable);
+				$rspta=$articulo->editar($idarticulo,$codigo,$costo, $barcode, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $pasillo, $stock, $unidades, $imagen, $dibujoTecnico, $stock_ideal, $bandera_inventariable);
 				echo $rspta ? " Articulo actualizado correctamente" : "No se pudo actualizar los datos";
 			}
 		break;
@@ -129,7 +141,7 @@ if(!isset($_SESSION["nombre"])) {
 
 		case 'listar':							
 
-			$cantidad = '';			
+			$cantidad = '';
 			$termino= "";
 									
 			$consulta = $articulo->articulosPagination(50, 0, "");
@@ -220,7 +232,7 @@ if(!isset($_SESSION["nombre"])) {
 								echo "<tr style='color:blue; font-size:11px;'>
 								<td style='width:20px'>".$fila['codigo']."</td>
 								<td style='width:10px;'>".$delitFmsi."</td>
-								<td style='width:10px;'>".$fila['marca']."</td>
+								<td style='width:10px;'>".$fila['descripcionMarca']."</td>
 								<td>".$delit."...</td>
 								<td><p>".$fila['stock']."pz</td>								
 								<td id='thStock'><p>$ ".$mayoreoMiles."</p></td>
@@ -246,7 +258,7 @@ if(!isset($_SESSION["nombre"])) {
 								echo "<tr style='color:red; font-size:11px;'>
 								<td style='width:20px'>".$fila['codigo']."</td>
 								<td style='width:10px;'>".$delitFmsi."</td>
-								<td style='width:10px;'>".$fila['marca']."</td>
+								<td style='width:10px;'>".$fila['descripcionMarca']."</td>
 								<td>".$delit."...</td>
 								<td id='thStock'><p>".$fila['stock']."pz</td>								
 								<td><p>$ ".$mayoreoMiles."</p></td>								
@@ -273,7 +285,7 @@ if(!isset($_SESSION["nombre"])) {
 							echo "<tr style='color:blue; font-size:11px;'>
 								<td style='width:20px'>".$fila['codigo']."</td>
 								<td style='width:10px;'>".$delitFmsi."</td>
-								<td style='width:10px;'>".$fila['marca']."</td>
+								<td style='width:10px;'>".$fila['descripcionMarca']."</td>
 								<td>".$delit."...</td>
 								<td><p>".$fila['stock']."pz</td>								
 								<td><p>$ ".$mayoreoMiles."</p></td>								
@@ -295,7 +307,7 @@ if(!isset($_SESSION["nombre"])) {
 							echo "<tr style='color:red; font-size:11px;'>
 								<td style='width:20px'>".$fila['codigo']."</td>
 								<td style='width:10px;'>".$delitFmsi."</td>
-								<td style='width:10px;'>".$fila['marca']."</td>
+								<td style='width:10px;'>".$fila['descripcionMarca']."</td>
 								<td>".$delit."...</td>
 								<td><p>".$fila['stock']."pz</td>								
 								<td><p>$ ".$mayoreoMiles."</p></td>								
@@ -328,7 +340,7 @@ if(!isset($_SESSION["nombre"])) {
 				$categoria=new Categoria();
 
 				$rspta=$categoria->select();
-
+				echo '<option value="" disabled selected>Seleccionar Categoria</option>';
 				while ($reg=$rspta->fetch_object()) {
 					echo '<option value=' . $reg->idcategoria.'>'.$reg->nombre.'</option>';
 				}
@@ -340,7 +352,7 @@ if(!isset($_SESSION["nombre"])) {
 				$marca=new Marca();
 
 				$rspta=$marca->select();
-
+				echo '<option value="" disabled selected>Seleccionar Marca</option>';
 				while ($reg=$rspta->fetch_object()) {
 					echo '<option value=' . $reg->idmarca.'>'.$reg->descripcion.'</option>';
 				}
@@ -352,7 +364,7 @@ if(!isset($_SESSION["nombre"])) {
 				$persona = new Persona();
 
 				$rspta = $persona->listarp();
-
+				echo '<option value="" disabled selected>Seleccionar Proveedor</option>';
 				while ($reg = $rspta->fetch_object()) {
 					echo '<option value='.$reg->idpersona.'>'.$reg->nombre.'</option>';
 				}

@@ -1435,6 +1435,13 @@ function crearServicio() {
 	$("#divFolioCotizacion").show();
 	$("#divBuscadorCotizacion").show();
 	$("#addCliente").show();
+
+	var now = new Date();
+	var day =("0"+now.getDate()).slice(-2);
+	var month=("0"+(now.getMonth()+1)).slice(-2);
+	var today=now.getFullYear()+"-"+(month)+"-"+(day);
+	$("#fecha_entrada").val(today).prop("disabled", false);
+	$("#fecha_salida").val(today).prop("disabled", false);
 }
 
 //Salir form
@@ -1673,19 +1680,12 @@ function agregarRemision(idservicio) {
 			$("#remOrSalida").modal('hide');
 			obtener_registrosProductos();
 			var tipoComprobante = $("#tipo_comprobante").val();
-			console.log("TIPO: " + tipoComprobante);
-			if (tipoComprobante == "Factura") {
-				window.open(
-					`../reportes/exFacturaServicio.php?id=${idservicio}`,
-					'_blank'
-				);
-			} else {
-				window.open(
-					`../reportes/exTicket.php?id=${idservicio}`,
-					'_blank'
-				);
-			}	
-			limpiar();		
+			console.log("TIPO: " + tipoComprobante);			
+			window.open(
+				`../reportes/exTicket.php?id=${idservicio}`,
+				'_blank'
+			);
+			limpiar();
 		},
 	});
 	});

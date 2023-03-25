@@ -86,15 +86,22 @@
       </li>
       <li class="nav-item d-none d-sm-inline-block">
       <?php 
+        if ($_SESSION['cotizaciones']==1) {
+          echo '<a href="cotizaciones.php" class="nav-link">Cotizaciones</a>';
+        }
+      ?>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+      <?php 
         if ($_SESSION['almacen']==1) {
-          echo '<a href="articulo.php" class="nav-link">Articulos</a>';
+          echo '<a href="articulo.php" class="nav-link">Productos</a>';
         }
       ?>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
       <?php 
         if ($_SESSION['compras']==1) { 
-          echo '<a href="ingresos.php" class="nav-link">Compras</a>';
+          echo '<a href="ingreso.php" class="nav-link">Compras</a>';
         }
       ?>
       </li>      
@@ -116,6 +123,13 @@
       <?php 
         if ($_SESSION['accesos']==1) {
           echo '<a href="usuario.php" class="nav-link">Usuarios</a>';
+        }
+      ?>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+      <?php 
+        if ($_SESSION['compras']==1) {
+          echo '<a href="proveedor.php" class="nav-link">Proveedores</a>';
         }
       ?>
       </li>
@@ -263,7 +277,7 @@
                 <li class="nav-item">
                   <a href="articulo.php" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Articulos</p>
+                    <p>Productos</p>
                   </a>
                 </li>
                 <li class="nav-item">
@@ -276,6 +290,12 @@
                   <a href="categoria.php" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Categorias</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="marca.php" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Marcas</p>
                   </a>
                 </li>
                 <li class="nav-item">

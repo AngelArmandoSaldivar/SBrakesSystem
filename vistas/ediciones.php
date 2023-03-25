@@ -1422,7 +1422,7 @@
 
           <div class="form-group col-lg-6 col-md-2 col-xs-6" id="divImpuesto">       
             <div class="form-group">
-              <label>Factura<span class="text-danger">*</span></label>
+              <label>Remisión<span class="text-danger">*</span></label>
               <div class="input-group bootstrap-touchspin">
                 <span class="input-group-btn">
                 </span><span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-hand-o-right" aria-hidden="true"></i></span>                                
@@ -1444,7 +1444,7 @@
   <div class="modal-dialog modal-lg" style="width: 100% !important;">
     <div class="modal-content" style="border-radius: 20px;">
       <div class="modal-header">
-        <h4 class="modal-title">Imagen del Producto  </h4>
+        <h4 class="modal-title">Imagen y Dibujo Técnico</h4>
         <button name="addProduct" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>       
       </div>
       <form action="" name="formularioProductoServicio" id="formularioProductoServicio" method="POST">
@@ -1461,9 +1461,14 @@
             </div>
           </div>
                     
-          <div class="form-group col-lg-12 col-md-12 col-xs-12 text-center">                
-            <img src="" alt="" width="500px" height="320" id="modalImagenProducrto" class="img-thumbnail">
-          </div>                
+          <div id="tablaResultados">
+            <div class="form-group col-lg-12 col-md-12 col-xs-12 text-center">                
+              <img src="" alt="" width="500px" height="320" id="modalImagenProducrto" class="img-thumbnail">
+            </div> 
+            <div class="form-group col-lg-12 col-md-12 col-xs-12 text-center">                
+              <img src="" alt="" width="500px" height="320" id="modalDibujoProducrto" class="img-thumbnail">
+            </div>   
+          </div>            
         </div>
       </form>          
       <div class="modal-footer">        
