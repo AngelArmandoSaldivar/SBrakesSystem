@@ -52,9 +52,9 @@ if(!isset($_SESSION["nombre"])) {
 			}
 
 			if (empty($idarticulo)) {				
-				$rspta=$articulo->insertar($codigo,$costo, $barcode, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $pasillo, $stock, $unidades, $idsucursal, $imagen, $dibujoTecnico, $stock_ideal, $bandera_inventariable);
+				$rspta=$articulo->insertar($codigo,$costo, $barcode, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $pasillo, $stock, $unidades, $idsucursal, $imagen, $dibujoTecnico, $stock_ideal, $bandera_inventariable);				
 				echo $rspta ? "Articulo registrado correctamente" : "Articulo no registrado correctamente";				
-			}else{				
+			}else{							
 				$rspta=$articulo->editar($idarticulo,$codigo,$costo, $barcode, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $pasillo, $stock, $unidades, $imagen, $dibujoTecnico, $stock_ideal, $bandera_inventariable);
 				echo $rspta ? " Articulo actualizado correctamente" : "No se pudo actualizar los datos";
 			}

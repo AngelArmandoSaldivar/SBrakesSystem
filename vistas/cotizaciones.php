@@ -278,7 +278,7 @@ if ($_SESSION['cotizaciones']==1) {
                     <th>Marca</th>
                     <th>Descripción</th>
                     <th>Cantidad</th>
-                    <th>Precio Venta</th>
+                    <th>Precio Unitario</th>
                     <th>Descuento</th>
                     <th>Subtotal</th>
                     <th>Imagen</th>                

@@ -30,7 +30,7 @@ class Articulo{
 		
 		$sql="INSERT INTO articulo (codigo, costo, barcode, credito_taller, descripcion, fmsi, idcategoria, idproveedor, marca, mayoreo, pasillo, publico, stock, stock_ideal, taller, unidades, estado, idsucursal, imagen, dibujo_tecnico, bandera_inventariable) VALUES ('$codigo', '$costo', '$barcode', '$credito_taller', '$descripcion', '$fmsi', $idcategoria, '$idproveedor', '$marca', '$mayoreo', '$pasillo', '$publico', '$stock', '$stock_ideal', '$taller', '$unidades', '1', '$idsucursal', '$imagen', '$dibujo', '$bandera_inventariable')";		
 		return ejecutarConsulta($sql);
-		return $marca;
+		//return $marca;
 	}		
 
 	public function guardarPedido($clave, $marca, $cantidad, $fecha, $estadoPedido, $notas, $fecha_registro, $idsucursalProducto, $idsucursal) {
