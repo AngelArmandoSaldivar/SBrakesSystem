@@ -450,11 +450,11 @@ switch ($_GET["op"]) {
 		echo ' <thead style="background-color:#A9D0F5; font-size: 12px;">
 		<th>Opciones</th>		
 		<th>Clave</th>
-		<th>Fmsi</th>
+		<th>FMSI</th>
 		<th>Marca</th>
-		<th>Descripción</th>       
+		<th>Descripción</th>
         <th>Cantidad</th>
-        <th>Precio Venta</th>
+        <th>Precio Unitario</th>
         <th>Descuento</th>
         <th>Subtotal</th>		
        </thead>';

@@ -9,7 +9,7 @@ if (!isset($_SESSION['nombre'])) {
 
 require 'header.php';
 
-if ($_SESSION['categoria']==1) {
+if ($_SESSION['roles']==1) {
 
  ?>
     <div class="content-wrapper" id="contenedor-principal">
@@ -22,7 +22,7 @@ if ($_SESSION['categoria']==1) {
         <div class="box" style="box-shadow: 5px 7px 10px #3300ff99;border-radius: 16px;">
         <center>
           <div class="box-header with-border">
-              <h4 class="box-title">Categorias</h4>
+              <h4 class="box-title">Roles</h4>
           </div>
         </center>
 
@@ -48,11 +48,11 @@ if ($_SESSION['categoria']==1) {
     <div class="panel-body" style="height: 400px;" id="formularioregistros">
       <form action="" name="formulario" id="formulario" method="POST">
         <div class="form-group col-lg-6 col-md-6 col-xs-12">
-          <label for="">Nombre Categoria </label>                  
+          <label for="">Nombre Rol </label>                  
           <div class="input-group bootstrap-touchspin">
             <span class="input-group-btn"></span>
             <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-keyboard-o"></i></span>
-              <input class="form-control" type="hidden" name="idcategoria" id="idcategoria">
+              <input class="form-control" type="hidden" name="idrol" id="idrol">
               <input class="form-control" type="text" name="nombre" id="nombre" maxlength="50" placeholder="Nombre" required>
           </div>      
         </div>
@@ -83,7 +83,7 @@ if ($_SESSION['categoria']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/categoria.js"></script>
+ <script src="scripts/roles.js"></script>
  <?php 
 }
 

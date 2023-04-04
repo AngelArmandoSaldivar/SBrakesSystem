@@ -100,7 +100,7 @@
       </li>
       <li class="nav-item d-none d-sm-inline-block">
       <?php 
-        if ($_SESSION['compras']==1) { 
+        if ($_SESSION['recepciones']==1) { 
           echo '<a href="ingreso.php" class="nav-link">Compras</a>';
         }
       ?>
@@ -114,28 +114,28 @@
       </li>
       <li class="nav-item d-none d-sm-inline-block">
       <?php 
-        if ($_SESSION['servicios']==1) {
+        if ($_SESSION['clientes']==1) {
           echo '<a href="cliente.php" class="nav-link">Clientes</a>';
         }
       ?>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
       <?php 
-        if ($_SESSION['accesos']==1) {
+        if ($_SESSION['usuarios']==1) {
           echo '<a href="usuario.php" class="nav-link">Usuarios</a>';
         }
       ?>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
       <?php 
-        if ($_SESSION['compras']==1) {
+        if ($_SESSION['proveedores']==1) {
           echo '<a href="proveedor.php" class="nav-link">Proveedores</a>';
         }
       ?>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
       <?php 
-        if ($_SESSION['sucursal']==1) {
+        if ($_SESSION['sucursales']==1) {
           echo '<a href="sucursal.php" class="nav-link">Sucursales</a>';
         }
       ?>
@@ -310,7 +310,7 @@
           ?>       
           
           <?php 
-            if ($_SESSION['compras']==1) { 
+            if ($_SESSION['recepciones']==1) { 
               echo '<li class="nav-item">
               <a href="#" class="nav-link">
               <i class="fa fa-th"></i>
@@ -382,7 +382,7 @@
             }
           ?>
           <?php 
-           if ($_SESSION['accesos']==1) {
+           if ($_SESSION['usuarios']==1) {
               echo '<li class="nav-item">
               <a href="#" class="nav-link">
                 <i class="fa fa-users"></i>
@@ -407,11 +407,27 @@
                   </a>
                 </li>
               </ul>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="rol.php" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Roles</p>
+                  </a>
+                </li>
+              </ul>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="asignacion.php" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Asignación</p>
+                  </a>
+                </li>
+              </ul>
             </li>';
             }
           ?>
           <?php 
-           if ($_SESSION['sucursal']==1) {
+           if ($_SESSION['sucursales']==1) {
               echo '<li class="nav-item">
               <a href="#" class="nav-link">
                 <i class="fa fa-map-marker"></i>

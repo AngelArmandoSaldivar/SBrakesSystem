@@ -11,11 +11,11 @@ public function __construct(){
 
 
 
-//listar registros
-public function listar(){
-	$sql="SELECT * FROM permiso";
-	return ejecutarConsulta($sql);
-}
+	//listar registros
+	public function listar(){
+		$sql="SELECT * FROM permiso";
+		return ejecutarConsulta($sql);
+	}
 }
 
  ?>

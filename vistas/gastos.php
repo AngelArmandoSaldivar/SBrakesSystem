@@ -9,7 +9,7 @@ if (!isset($_SESSION['nombre'])) {
 
 require 'header.php';
 
-if ($_SESSION['compras']==1) {
+if ($_SESSION['gastos']==1) {
     require_once "../modelos/Gasto.php";
     $gasto = new Gasto();
 

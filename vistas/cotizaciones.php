@@ -248,6 +248,11 @@ if ($_SESSION['cotizaciones']==1) {
                 <input class="form-control" type="number" name="kms" id="kms" min="1"  placeholder="Kms">
               </div>
 
+              <div class="form-group col-lg-2 col-md-2 col-xs-6">
+                <label for="">VIN: </label>
+                <input class="form-control" type="number" name="vin" id="vin" placeholder="vin">
+              </div>
+
               <div class="form-group col-lg-6 col-md-3 col-sm-6 col-xs-12">
                 <a data-toggle="modal" href="#myModal" id="btnAddArt">
                   <button id="btnAgregarArt" name="btnAgregarArt" type="button" class="btn btn-primary" required><span class="fa fa-plus"></span>Agregar Articulos</button>

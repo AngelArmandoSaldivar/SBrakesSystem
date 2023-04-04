@@ -227,7 +227,7 @@ if(!isset($_SESSION["nombre"])) {
 					$delitCodigo = substr($fila['codigo'], 0, 50);
 					$delitFmsi = substr($fila['fmsi'], 0, 50);
 					$stock_mdx = '';					
-					if($fila["idsucursal"] == $idsucursal && $acceso === "admin") {
+					if($fila["idsucursal"] == $idsucursal && $acceso === "2") {
 						if($fila["stock"] >= $fila["stock_ideal"]) {
 								echo "<tr style='color:blue; font-size:11px;'>
 								<td style='width:20px'>".$fila['codigo']."</td>

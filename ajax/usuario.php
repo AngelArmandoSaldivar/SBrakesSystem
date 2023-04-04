@@ -243,19 +243,84 @@ switch ($_GET["op"]) {
 		$idsucursal=$_POST['idsucursal'];
 		$_SESSION['idsucursal']=$idsucursal;
 
+		require_once "../modelos/Asignacion.php";
+		$asignacion=new Asignacion();
+
 		//obtenemos los permisos
-		$marcados=$usuario->listarmarcados($_SESSION['acceso']);
+		$marcados=$asignacion->consultarPorRol($_SESSION['acceso']);
 
 		//declaramos el array para almacenar todos los permisos
 		$valores=array();
 
 		//almacenamos los permisos marcados en al array
+		echo "SESSION: " . $_SESSION['escritorio']."\n";
+		$escritorio = 0; 
+		$almacen = 0;
+		$recepciones = 0;
+		$cotizaciones = 0;
+		$caja = 0;
+		$kardex = 0;
+		$categoria = 0;
+		$marcas = 0;
+		$pedidos = 0;
+		$gastos = 0;
+		$garantias = 0;
+		$proveedores = 0;
+		$ordenCompra = 0;
+		$servicios = 0;
+		$clientes = 0;
+		$usuarios = 0;
+		$permisos = 0;
+		$roles = 0;
+		$asignacion = 0;
+		$sucursales = 0;		
 		while ($per = $marcados->fetch_object()) {
-			array_push($valores, $per->permiso);
-		}
+			//array_push($valores, $per->nombre);			
+			if ($per->nombre == "Escritorio") { $escritorio = 1;}
+			if ($per->nombre == "Almacen") { $almacen = 1; }
+			if ($per->nombre == "Recepciones") { $recepciones = 1; }
+			if ($per->nombre == "Cotizaciones") { $cotizaciones = 1; }
+			if ($per->nombre == "Caja") { $caja = 1; }
+			if ($per->nombre == "Kardex") { $kardex = 1; }
+			if ($per->nombre == "Categoria") { $categoria = 1; }
+			if ($per->nombre == "Marcas") { $marcas = 1; }
+			if ($per->nombre == "Pedidos") { $pedidos = 1; }
+			if ($per->nombre == "Gastos") { $gastos = 1; }
+			if ($per->nombre == "Garantias") { $garantias = 1; }
+			if ($per->nombre == "Proveedores") { $proveedores = 1; }
+			if ($per->nombre == "OrdenCompra") { $ordenCompra = 1; }
+			if ($per->nombre == "Servicios") { $servicios = 1; }
+			if ($per->nombre == "Clientes") { $clientes = 1; }
+			if ($per->nombre == "Usuarios") { $usuarios = 1; }
+			if ($per->nombre == "Permisos") { $permisos = 1; }
+			if ($per->nombre == "Roles") { $roles = 1; }
+			if ($per->nombre == "Asignacion") { $asignacion = 1; }
+			if ($per->nombre == "Sucursales") { $sucursales = 1; }
+		}				
 
+		$escritorio == 1 ? $_SESSION['escritorio'] = 1 : $_SESSION['escritorio'] = 0;
+		$almacen == 1 ? $_SESSION['almacen'] = 1 : $_SESSION['almacen'] = 0;
+		$recepciones == 1 ? $_SESSION['recepciones'] = 1 : $_SESSION['recepciones'] = 0;
+		$cotizaciones == 1 ? $_SESSION['cotizaciones'] = 1 : $_SESSION['cotizaciones'] = 0;
+		$caja == 1 ? $_SESSION['caja'] = 1 : $_SESSION['caja'] = 0;			
+		$kardex == 1 ? $_SESSION['kardex'] = 1 : $_SESSION['kardex'] = 0;
+		$categoria == 1 ? $_SESSION['categoria'] = 1 : $_SESSION['categoria'] = 0;
+		$marcas == 1 ? $_SESSION['marcas'] = 1 : $_SESSION['marcas'] = 0;
+		$pedidos == 1 ? $_SESSION['pedidos'] = 1 : $_SESSION['pedidos'] = 0;			
+		$gastos == 1 ? $_SESSION['gastos'] = 1 : $_SESSION['gastos'] = 0;
+		$garantias == 1 ? $_SESSION['garantias'] = 1 : $_SESSION['garantias'] = 0;
+		$proveedores == 1 ? $_SESSION['proveedores'] = 1 : $_SESSION['proveedores'] = 0;
+		$ordenCompra == 1 ? $_SESSION['ordenCompra'] = 1 : $_SESSION['ordenCompra'] = 0;
+		$servicios == 1 ? $_SESSION['servicios'] = 1 : $_SESSION['servicios'] = 0;
+		$clientes == 1 ? $_SESSION['clientes'] = 1 : $_SESSION['clientes'] = 0;
+		$usuarios == 1 ? $_SESSION['usuarios'] = 1 : $_SESSION['usuarios'] = 0;
+		$permisos == 1 ? $_SESSION['permisos'] = 1 : $_SESSION['permisos'] = 0;
+		$roles == 1 ? $_SESSION['roles'] = 1 : $_SESSION['roles'] = 0;
+		$asignacion == 1 ? $_SESSION['asignacion'] = 1 : $_SESSION['asignacion'] = 0;
+		$sucursales == 1 ? $_SESSION['sucursales'] = 1 : $_SESSION['sucursales'] = 0;		
+		
 		//determinamos lo accesos al usuario
-		in_array(1, $valores)?$_SESSION['escritorio']=1:$_SESSION['escritorio']=0;
+		/*in_array(1, $valores)?$_SESSION['escritorio']=1:$_SESSION['escritorio']=0;
 		in_array(2, $valores)?$_SESSION['almacen']=1:$_SESSION['almacen']=0;
 		in_array(3, $valores)?$_SESSION['compras']=1:$_SESSION['compras']=0;
 		in_array(4, $valores)?$_SESSION['ventas']=1:$_SESSION['ventas']=0;		
@@ -266,7 +331,7 @@ switch ($_GET["op"]) {
 		in_array(9, $valores)?$_SESSION['caja']=1:$_SESSION['caja']=0;
 		in_array(10, $valores)?$_SESSION['servicios']=1:$_SESSION['servicios']=0;
 		in_array(11, $valores)?$_SESSION['cotizaciones']=1:$_SESSION['cotizaciones']=0;
-		in_array(12, $valores)?$_SESSION['sucursal']=1:$_SESSION['sucursal']=0;
+		in_array(12, $valores)?$_SESSION['sucursal']=1:$_SESSION['sucursal']=0;*/
 		echo "Ingresaste correctamente";
 		break;
 
@@ -286,7 +351,7 @@ switch ($_GET["op"]) {
 		$_SESSION['idusuario']=$fetch->idusuario;
 		$_SESSION['nombre']=$fetch->nombre;
 		$_SESSION['login']=$fetch->login;
-		$_SESSION['acceso']=$fetch->acceso;		
+		$_SESSION['acceso']=$fetch->acceso;
 	}
 	echo json_encode($fetch);
 	break;

@@ -24,5 +24,8 @@ switch ($_GET["op"]) {
              "aaData"=>$data); 
 		echo json_encode($results);
 		break;
+	case 'mostrar':
+		$rspta=$categoria->listar();
+		break;
 }
  ?>

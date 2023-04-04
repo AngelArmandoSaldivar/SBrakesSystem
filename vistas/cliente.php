@@ -7,7 +7,7 @@ if (!isset($_SESSION['nombre'])) {
 }else{
 
 require 'header.php';
-if ($_SESSION['ventas']==1) {
+if ($_SESSION['clientes']==1) {
  ?>
 <div class="content-wrapper">    
   <section class="content">      

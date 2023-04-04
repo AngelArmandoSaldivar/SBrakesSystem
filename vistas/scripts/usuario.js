@@ -24,6 +24,11 @@ function init(){
 		$("#idsucursal").html(r);
 		$('#idsucursal').selectpicker('refresh');
 	});	
+	
+	$.post("../ajax/rol.php?op=selectRol", function(r){
+		$("#idNivelUsuario").html(r);
+		$('#idNivelUsuario').selectpicker('refresh');
+	});	
 }
 
 $("#permisos_usuario").on("click", () => {	

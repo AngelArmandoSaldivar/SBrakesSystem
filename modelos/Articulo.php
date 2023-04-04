@@ -114,7 +114,7 @@ class Articulo{
 		WHERE 
 		(a.codigo LIKE '%$busqueda%' OR
 		a.fmsi LIKE '%$busqueda%' OR
-		a.marca LIKE '%$busqueda%' OR
+		m.descripcion LIKE '%$busqueda%' OR
 		a.descripcion LIKE '%$busqueda%')
 		AND estado = 1
 		ORDER BY a.stock > 0 DESC, a.marca ASC LIMIT $limit OFFSET $limit2";

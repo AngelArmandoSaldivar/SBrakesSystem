@@ -7,16 +7,16 @@ if (!isset($_SESSION['nombre'])) {
 }else{
 
 require 'header.php';
-if ($_SESSION['accesos']==1) {
+if ($_SESSION['usuarios']==1) {
  ?>
     <div class="content-wrapper" id="contenedor-principal">    
-      <section class="content">      
+      <section class="content">
         <div class="row">
           <div class="col-md-12">
             <div class="box">
               <div class="box-header with-border">
                 <h4 class="box-title">Usuarios </h4>
-                  <div class="box-tools pull-right">    
+                  <div class="box-tools pull-right">
                   </div>
               </div>
 
@@ -34,14 +34,14 @@ if ($_SESSION['accesos']==1) {
                     <section id="tabla_resultado"></section>
                   </div>
                 </div>
-              </div> 
+              </div>  
               <div class="panel-body" id="formularioregistros">
                 <form action="" name="formulario" id="formulario" method="POST">
                   <div class="form-group col-lg-4 col-md-12 col-xs-12">
                     <label for="">Nombre(*):</label>
                     <input class="form-control" type="hidden" name="idusuario" id="idusuario">
                     <input class="form-control" type="text" name="nombre" id="nombre" maxlength="100" placeholder="Nombre" required>
-                  </div>                 
+                  </div>
                   <div class="form-group col-lg-4 col-md-6 col-xs-12">
                     <label for="">Direccion</label>
                     <input class="form-control" type="text" name="direccion" id="direccion"  maxlength="70">
@@ -58,18 +58,14 @@ if ($_SESSION['accesos']==1) {
                     <label for="">Cargo</label>
                     <input class="form-control" type="text" name="cargo" id="cargo" maxlength="20" placeholder="Cargo">
                   </div>
-                  <div class="form-group col-lg-2 col-md-6 col-xs-12">
-                    <label for="">Nivel de usuario</label>
-                    <select name="idNivelUsuario" id="idNivelUsuario" class="form-control selectpicker">
-                      <option value="" disabled selected>Nivel de usuario</option>
-                      <option value="admin">Administrador</option>
-                      <option value="manager">Manager</option>
-                      <option value="mostrador">Mostrador</option>
-                      <option value="bodega">Bodega</option>
-                    </select>
+                  <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                    <label for="">Nivel de usuario<span class="text-danger">*</span></label>                  
+                    <div class="input-group bootstrap-touchspin">
+                      <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-hand-o-right"></i></span>
+                        <select name="idNivelUsuario" id="idNivelUsuario" class="form-control selectpicker" data-Live-search="true" required></select>
+                    </div>
                   </div>
-
-                  <div class="form-group col-lg-2 col-md-6 col-xs-12">
+                  <div class="form-group col-lg-4 col-md-6 col-xs-12">
                     <label for="">Sucursal(*):</label>
                     <select name="idsucursal" id="idsucursal" class="form-control selectpicker" data-live-search="true" required></select>
                   </div>
@@ -85,7 +81,7 @@ if ($_SESSION['accesos']==1) {
                     <input class="form-control" type="password" name="clave" id="clave" maxlength="64" placeholder="Clave">
                   </div>
 
-                  <div class="form-group col-lg-4 col-md-6 col-xs-12 text-center">
+                  <div class="form-group col-lg-12 col-md-6 col-xs-12 text-center">
                     <label for="">Foto de perfil:</label>
                     <input class="form-control" type="file" name="foto" id="foto" style="cursor:pointer">
                     <input type="hidden" name="fotoactual" id="fotoactual">                    
@@ -116,7 +112,7 @@ if ($_SESSION['accesos']==1) {
 }
 require 'footer.php';
  ?>
- <script src="scripts/usuarios.js"></script>
+ <script src="scripts/usuario.js"></script>
  <?php 
 }
 

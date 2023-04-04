@@ -431,11 +431,11 @@ switch ($_GET["op"]) {
 		echo ' <thead style="background-color:#A9D0F5; font-size: 12px;">
 		<th>Opciones</th>		
 		<th>Clave</th>
-		<th>Fmsi</th>
+		<th>FMSI</th>
 		<th>Marca</th>
 		<th>Descripción</th>       
         <th>Cantidad</th>
-        <th>Precio Venta</th>
+        <th>Precio Unitario</th>
         <th>Descuento</th>
         <th>Subtotal</th>
 		<th>Imagen</th>
@@ -826,7 +826,7 @@ switch ($_GET["op"]) {
 							}else{
 								$url='../reportes/exFacturaServicio.php?id=';
 							}
-							$miles = number_format($fila['total_servicio'], 2);							
+							$miles = number_format($fila['total_cotizacion'], 2);							
 							$cotizacions_pagina = 3;
 							$paginas = 13;
 							$totalServicio = 0;

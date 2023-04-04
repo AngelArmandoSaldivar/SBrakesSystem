@@ -8,7 +8,7 @@ if (!isset($_SESSION['nombre'])) {
 
 require 'header.php';
 
-if ($_SESSION['compras']==1) {
+if ($_SESSION['recepciones']==1) {
 
  ?>
 <div class="content-wrapper" id="contenedor-principal">    
