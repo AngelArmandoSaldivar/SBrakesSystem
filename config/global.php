@@ -1,7 +1,7 @@
 <?php 
 //ip de la pc servidor base de datos
 define("DB_HOST", "dbaas-db-9308649-do-user-4187525-0.b.db.ondigitalocean.com");
-define("DB_HOST", "localhost");
+//define("DB_HOST", "localhost");
 
 // nombre de la base de datos
 define("DB_NAME", "brakeone");
