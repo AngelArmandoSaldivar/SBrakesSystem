@@ -131,7 +131,7 @@ class Articulo{
 		a.fmsi LIKE '%$busqueda%' OR
 		a.marca LIKE '%$busqueda%' OR
 		a.descripcion LIKE '%$busqueda%'
-		ORDER BY a.stock DESC";		
+		ORDER BY a.stock DESC";
 		return ejecutarConsulta($sql);
 	}
 

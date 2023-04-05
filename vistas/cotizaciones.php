@@ -274,7 +274,7 @@ if ($_SESSION['cotizaciones']==1) {
                   <thead style="background-color:#A9D0F5; font-size: 12px;">
                     <th>Opciones</th>                    
                     <th>Clave</th>
-                    <th>Fmsi</th>
+                    <th>FMSI</th>
                     <th>Marca</th>
                     <th>Descripción</th>
                     <th>Cantidad</th>
