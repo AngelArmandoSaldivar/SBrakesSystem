@@ -25,7 +25,7 @@ $("#frmAcceso").on('submit', function(e)
                     var lat = pos.coords.latitude;
                     var lon = pos.coords.longitude;
     
-                    if(data.claveRol != "SUPER_USUARIO") {
+                    if(data.claveRol != "admin") {
                         swal({
                             title: `Bienvenido ${data.nombre}!`,
                             text: "",

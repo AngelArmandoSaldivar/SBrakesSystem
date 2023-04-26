@@ -659,7 +659,7 @@ if ($_SESSION['servicios']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/servicios.js"></script>
+ <script src="scripts/servicios_b1.js"></script>
  <?php 
 }
 

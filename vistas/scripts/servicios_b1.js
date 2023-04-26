@@ -1296,7 +1296,7 @@ function selectCliente (){
 		console.log("LLEGASTE");
 		var idcliente = $("#idcliente option:selected").val();
 		mostrarInfoClient(idcliente);
-		document.getElementById("idclient").value=idcliente;
+		//document.getElementById("idclient").value=idcliente;
 
 			$.post("../ajax/servicio.php?op=selectAuto&id="+idcliente,function(r){
 				$("#idauto").html(r);
@@ -2088,7 +2088,7 @@ function guardarCobro() {
 			processData: false,
 	
 			success: function(datos){				
-				alert("Se guardo correctamente el pago")
+				alert(datos)
 				$("#formularioAddCobro")[0].reset();
 				$("#modalAddCobro").modal('hide');
 				mostrarPagosEdit(idservicio);
@@ -2353,7 +2353,7 @@ function marcarImpuesto(){
 	}
 }
 
-function agregarDetalle(idarticulo,articulo,fmsi, descripcion,marca,publico, stock, idsucursal){
+function agregarDetalle(idarticulo,articulo,fmsi, descripcion,marca,idmarca, publico, stock, idsucursal){
 	var cantidad=1;
 	var descuento=0;	
 	
@@ -2362,7 +2362,7 @@ function agregarDetalle(idarticulo,articulo,fmsi, descripcion,marca,publico, sto
         '<td><button style="width: 40px;" title="Eliminar" type="button" class="btn btn-danger btn-xs" onclick="eliminarDetalle('+cont+')">X</button></td>'+        
 		'<td><input type="hidden" name="clave[]" value="'+articulo+'"> <input class="form-control" type="hidden" name="idsucursalArticulo[]" value="'+idsucursal+'"> <input class="form-control" type="hidden" name="idarticulo[]" value="'+idarticulo+'">'+articulo+'</td>'+
 		'<td><input type="hidden" name="fmsi[]" id="fmsi[]" value="'+fmsi+'">'+fmsi+'</td>'+
-		'<td><input type="hidden" name="marca[]" id="marca[]" value="'+marca+'">'+marca+'</td>'+
+		'<td><input type="hidden" name="marca[]" id="marca[]" value="'+idmarca+'">'+marca+'</td>'+
 		'<td><textarea class="form-control" id="descripcion[]" name="descripcion[]" rows="2" style="width: 280px;" value="'+descripcion+'">'+descripcion+'</textarea></td>'+
         '<td><input style="width: 55px;" type="number" onblur="modificarSubtotales()" name="cantidad[]" id="cantidad[]" value="'+cantidad+'" max="'+stock+'" min="1"></td>'+
         '<td><input style="width: 70px;" type="number" onblur="modificarSubtotales()" name="precio_servicio[]" id="precio_servicio[]" step="any" value="'+publico+'"></td>'+

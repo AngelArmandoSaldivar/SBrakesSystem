@@ -782,7 +782,7 @@ switch ($_GET["op"]) {
 					</thead>
 				<tbody>";
 				while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){					
-					if($fila["idsucursal"] == $idsucursal && $acceso ==="admin") {							
+					if($fila["idsucursal"] == $idsucursal && $acceso == "1") {							
 							if ($fila["tipo_comprobante"]=='Ticket') {
 								$url='../reportes/exTicket.php?id=';
 							}else{
@@ -820,7 +820,7 @@ switch ($_GET["op"]) {
 							</tr>
 							";												
 							
-					} else if($fila["idsucursal"] == $idsucursal && $acceso != "admin"){						
+					} else if($fila["idsucursal"] == $idsucursal && $acceso != "1"){						
 							if ($fila["tipo_comprobante"]=='Ticket') {
 								$url='../reportes/exTicket.php?id=';
 							}else{

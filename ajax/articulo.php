@@ -52,7 +52,7 @@ if(!isset($_SESSION["nombre"])) {
 			}
 
 			if (empty($idarticulo)) {				
-				$rspta=$articulo->insertar($codigo,$costo, $barcode, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $pasillo, $stock, $unidades, $idsucursal, $imagen, $dibujoTecnico, $stock_ideal, $bandera_inventariable);				
+				$rspta=$articulo->insertar($codigo,$costo, $barcode, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $pasillo, $stock, $unidades, $idsucursal, $imagen, $dibujoTecnico, $stock_ideal, $bandera_inventariable);								
 				echo $rspta ? "Articulo registrado correctamente" : "Articulo no registrado correctamente";				
 			}else{							
 				$rspta=$articulo->editar($idarticulo,$codigo,$costo, $barcode, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $pasillo, $stock, $unidades, $imagen, $dibujoTecnico, $stock_ideal, $bandera_inventariable);
@@ -74,7 +74,7 @@ if(!isset($_SESSION["nombre"])) {
 			$consulta = $articulo->filtroArticulosCopy("");
 			if(!empty($_POST['busquedaCopy'])) {
 				$termino=$conexion->real_escape_string($_POST['busquedaCopy']);
-				usleep(100000);
+				//usleep(100000);
 				$consulta=$articulo->filtroArticulosCopy($termino);
 			}
 			$consultaBD=$consulta;
@@ -148,25 +148,25 @@ if(!isset($_SESSION["nombre"])) {
 
 			if(!empty($_POST['articulos']) && empty($_POST['limites']) && empty($_POST['inicio_registros']) && empty($_POST["total_registros"])) {				
 				$termino=$conexion->real_escape_string($_POST['articulos']);
-				usleep(100000);
+				//usleep(100000);
 				$consulta=$articulo->articulosPagination(50,0, $termino);
 
 			} 
 			else if(!empty($_POST['articulos']) && !empty($_POST['limites'])) {	
-				usleep(100000);
+				//usleep(100000);
 				$termino=$conexion->real_escape_string($_POST['articulos']);
 				$limites=$conexion->real_escape_string($_POST['limites']);
 				$consulta=$articulo->articulosPagination($limites,0, $termino);
 
 			} else if(!empty($_POST['busqueda']) && !empty($_POST['inicio_registros']) && !empty($_POST["total_registros"])) {								
-				usleep(100000);				
+				//usleep(100000);				
 				$busqueda=$conexion->real_escape_string($_POST['busqueda']);
 				$inicio=$conexion->real_escape_string($_POST['inicio_registros']);
 				$fin=$conexion->real_escape_string($_POST['total_registros']);				
 				$consulta=$articulo->articulosPagination($fin,$inicio, $busqueda);
 
 			} else if(!empty($_POST['inicio_registros']) && !empty($_POST["total_registros"])) {
-				usleep(100000);				
+				//usleep(100000);				
 				$inicio=$conexion->real_escape_string($_POST['inicio_registros']);
 				$fin=$conexion->real_escape_string($_POST['total_registros']);				
 				$consulta=$articulo->articulosPagination($fin,$inicio, "");
@@ -227,7 +227,7 @@ if(!isset($_SESSION["nombre"])) {
 					$delitCodigo = substr($fila['codigo'], 0, 50);
 					$delitFmsi = substr($fila['fmsi'], 0, 50);
 					$stock_mdx = '';					
-					if($fila["idsucursal"] == $idsucursal && $acceso === "2") {
+					if($fila["idsucursal"] == $idsucursal && $acceso == "1") {
 						if($fila["stock"] >= $fila["stock_ideal"]) {
 								echo "<tr style='color:blue; font-size:11px;'>
 								<td style='width:20px'>".$fila['codigo']."</td>
@@ -280,7 +280,7 @@ if(!isset($_SESSION["nombre"])) {
 							</tr>";								
 						}
 					}
-					else if($fila["idsucursal"] == $idsucursal && $acceso != "admin"){
+					else if($fila["idsucursal"] == $idsucursal && $acceso != "1"){
 						if($fila["stock"] >= $fila["stock_ideal"]) {
 							echo "<tr style='color:blue; font-size:11px;'>
 								<td style='width:20px'>".$fila['codigo']."</td>

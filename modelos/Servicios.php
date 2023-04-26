@@ -18,11 +18,11 @@ public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_entrada,
 	$extraer1 = $posicion > 0 ? substr($total_servicio, 0, $posicion) : $total_servicio;
 	$extraer2 = $posicion > 0 ? substr($total_servicio, $posicion + 1, 50) : "";
 	$nuevo_total = $extraer2 != "" ? intval($extraer1.$extraer2) : $total_servicio;
-	$sql="INSERT INTO servicio (idcliente,idusuario,tipo_comprobante,fecha_entrada,fecha_salida, is_remision, impuesto,total_servicio,pagado,marca, modelo, ano, color, kms, placas, estado,idsucursal,status) 
-						VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_entrada','$fecha_salida','$remision', '$impuesto','$nuevo_total','0','$marca', '$modelo', '$ano', '$color', '$kms','$placas', 'PENDIENTE', '$idsucursal', 'PENDIENTE')";	
-	 $idservicionew=ejecutarConsulta_retornarID($sql);
-	 $num_elementos=0;
-	 $sw=true;
+	$sw=true;
+	$sql="INSERT INTO servicio (idcliente,idusuario,tipo_comprobante,fecha_entrada,fecha_salida, is_remision, impuesto,total_servicio,marca, modelo, ano, color, kms, placas, estado,idsucursal,status) 
+	VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_entrada','$fecha_salida','$remision', 0 ,'$nuevo_total','$marca', '$modelo', '$ano', '$color', '$kms','$placas', 'PENDIENTE', '$idsucursal', 'PENDIENTE')";	
+	 $idservicionew=ejecutarConsulta_retornarID($sql) or $sw = false;	 
+	 $num_elementos=0;	 
 	 while ($num_elementos < count($idarticulo)) {
 	 	$sql_detalle="INSERT INTO detalle_servicio (idservicio,idarticulo,codigo,fmsi,descripcion,tipoMov,cantidad,precio_servicio,descuento, marca) VALUES('$idservicionew','$idarticulo[$num_elementos]', '$clave[$num_elementos]','$fmsi[$num_elementos]','$descripcion[$num_elementos]','SERVICIO','$cantidad[$num_elementos]','$precio_servicio[$num_elementos]','$descuento[$num_elementos]', '$marcaArticulo[$num_elementos]')";
 	 	ejecutarConsulta($sql_detalle) or $sw=false;
@@ -30,8 +30,8 @@ public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_entrada,
 		 $sql_kardex = "INSERT INTO kardex (fecha_entrada, folio, clave, fmsi, idcliente_proveedor, cantidad, importe, tipoMov, estado, idsucursalArticulo, idsucursalVenta) VALUES ('$fecha_entrada', $idservicionew, '$clave[$num_elementos]', '$fmsi[$num_elementos]', '$idcliente', '$cantidad[$num_elementos]', '$precio_servicio[$num_elementos]', 'SERVICIO', 'ACTIVO', '$idsucursalproducto[$num_elementos]', '$idsucursal')";
 		 ejecutarConsulta($sql_kardex) or $sw=false;
 	 	$num_elementos=$num_elementos+1;
-	 }	
-	 sleep(1);
+	 }
+	 //sleep(1);
 	 return $sw;
 }
 
@@ -48,8 +48,8 @@ public function guardarGarantia($idservicio, $idarticulo, $descripcion, $cantida
 	return $sw;
 }
 
-public function maxRemision() {
-	$sql = "SELECT MAX(remision) as maxRemision, tipo_comprobante from servicio";
+public function maxRemision($idsucursal) {
+	$sql = "SELECT MAX(remision) as maxRemision from servicio WHERE idsucursal='$idsucursal'";
 	return ejecutarConsultaSimpleFila($sql);
 }
 
@@ -101,11 +101,13 @@ public function eliminarCobro($idcobro, $importe, $idservicio) {
 
 public function guardarCobro($metodoPago, $banco, $importeCobro, $referenciaCobro, $idservicio, $fechaCobro, $idsucursal, $idcliente) {
 	$sw = true;
-	$sql = "UPDATE servicio SET pagado=pagado + '$importeCobro' WHERE idservicio='$idservicio'";
-	ejecutarConsulta($sql) or $sw=false;
-
+	
 	$sql_cobro = "INSERT INTO formas_pago (forma_pago, banco, importe, referencia, idservicio, fecha_hora, idsucursal, idcliente) VALUES ('$metodoPago', '$banco', '$importeCobro', '$referenciaCobro', '$idservicio', '$fechaCobro', '$idsucursal', '$idcliente')";
 	ejecutarConsulta($sql_cobro) or $sw=false;
+
+	$impoteNuevo = floatval($importeCobro);
+	$sql = "UPDATE servicio SET pagado=pagado + $impoteNuevo WHERE idservicio='$idservicio'";
+	ejecutarConsulta($sql) or $sw=false;
 	return $sw;
 }
 

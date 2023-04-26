@@ -288,7 +288,7 @@ switch ($_GET["op"]) {
 			if ($per->nombre == "Gastos") { $gastos = 1; }
 			if ($per->nombre == "Garantias") { $garantias = 1; }
 			if ($per->nombre == "Proveedores") { $proveedores = 1; }
-			if ($per->nombre == "OrdenCompra") { $ordenCompra = 1; }
+			if ($per->nombre == "Orden_Compra") { $ordenCompra = 1; }
 			if ($per->nombre == "Servicios") { $servicios = 1; }
 			if ($per->nombre == "Clientes") { $clientes = 1; }
 			if ($per->nombre == "Usuarios") { $usuarios = 1; }

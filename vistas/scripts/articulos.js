@@ -1196,7 +1196,7 @@ function guardaryeditar(e){
 				title: respuesta,
 				showConfirmButton: false,
 				timer: 1500
-			})						
+			})
 			window.location.href = "articulo.php";
 			// tabla.ajax.reload();
 		}
@@ -1278,7 +1278,7 @@ function mostrar(idarticulo){
 			{						
 
 			data=JSON.parse(data);
-			console.log("DATA: ", data);
+			console.log("DATA PRODUCTO: ", data);
 			
 			publico = numberFormat.format(data.publico);
 			taller = numberFormat.format(data.taller);
@@ -1290,11 +1290,16 @@ function mostrar(idarticulo){
 			$("#idcategoria").selectpicker('refresh');
 			$("#idproveedor").val(data.idproveedor).prop("disabled", true);
 			$("#idproveedor").selectpicker('refresh');
+
+			console.log("MARCA: " + data.descripcion);
+			$("#marca").val(data.idmarca).prop("disabled", true);
+			$("#marca").selectpicker('refresh');
+
 			$("#bandera_inventariable").val(data.bandera_inventariable).prop("disabled", true);
 			$("#bandera_inventariable").selectpicker('refresh');
 			$("#codigo").val(data.codigo).prop("disabled", true);
 			$("#fmsi").val(data.fmsi).prop("disabled", true);
-			$("#marca").val(data.marca).prop("disabled", true);
+			//$("#marca").val(data.descripcion).prop("disabled", true);
 			$("#unidades").val(data.unidades).prop("disabled", true);
 			$("#pasillo").val(data.pasillo).prop("disabled", true);
 			$("#nombre").val(data.nombre).prop("disabled", true);
@@ -1343,7 +1348,9 @@ function editarArticulo(idarticulo){
 			$("#bandera_inventariable").selectpicker('refresh');
 			$("#codigo").val(data.codigo);
 			$("#fmsi").val(data.fmsi);
-			$("#marca").val(data.marca);
+			$("#marca").val(data.idmarca).prop("disabled", false);
+			$("#marca").selectpicker('refresh');
+			//$("#marca").val(data.marca);
 			$("#unidades").val(data.unidades);
 			$("#pasillo").val(data.pasillo);
 			$("#nombre").val(data.nombre);

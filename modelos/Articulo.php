@@ -72,7 +72,10 @@ class Articulo{
 
 	//metodo para mostrar registros
 	public function mostrar($idarticulo){
-		$sql="SELECT * FROM articulo WHERE idarticulo='$idarticulo'";
+		$sql="SELECT * FROM articulo a
+		INNER JOIN marca m
+		ON a.marca = m.idmarca
+		WHERE idarticulo='$idarticulo'";
 		usleep(140000);
 		return ejecutarConsultaSimpleFila($sql);
 	}

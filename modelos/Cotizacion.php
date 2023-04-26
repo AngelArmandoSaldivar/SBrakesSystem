@@ -12,18 +12,26 @@ public function __construct(){
 //metodo insertar registro
 public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$impuesto,$total_cotizacion,$marca, $modelo, $ano, $color, $kms,$placas,$idarticulo,$clave,$marcaArticulo,$fmsi,$descripcion,$cantidad,$precio_cotizacion,$descuento, $idsucursal, $idsucursalproducto){        
 
-	$sql="INSERT INTO cotizacion (idcliente,idusuario,tipo_comprobante,fecha_hora, impuesto,total_cotizacion,marca, modelo, ano, color, kms, placas,idsucursal) 
-						VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_hora', '$impuesto','$total_cotizacion','$marca', '$modelo', '$ano', '$color', '$kms','$placas', '$idsucursal')";	
-	 $idservicionew=ejecutarConsulta_retornarID($sql);
-	 $num_elementos=0;
-	 $sw=true;     
-	 while ($num_elementos < count($idarticulo)) {        
+	$sw=true;	
+	$idservicionew;
+	if($marca != null) {
+		$sql="INSERT INTO cotizacion (idcliente,idusuario,tipo_comprobante,fecha_hora ,total_cotizacion,marca, modelo, ano, color, kms, placas,idsucursal) 
+		VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_hora' ,'$total_cotizacion','$marca', '$modelo', '$ano', '$color', '$kms','$placas', '$idsucursal')";	
+		$idservicionew=ejecutarConsulta_retornarID($sql) or $sw = false;
+	} else {
+		$sql="INSERT INTO cotizacion (idcliente,idusuario,tipo_comprobante,fecha_hora ,total_cotizacion,idsucursal) 
+		VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_hora' ,'$total_cotizacion','$idsucursal')";	
+		$idservicionew=ejecutarConsulta_retornarID($sql) or $sw = false;
+	}
+	
+	 $num_elementos=0;	 
+	 while ($num_elementos < count($idarticulo)) {      		
 	 	$sql_detalle="INSERT INTO detalle_cotizacion (idcotizacion,idarticulo,codigo,fmsi,descripcion,tipoMov,cantidad,precio_cotizacion,descuento, marca) 
-                                            VALUES('$idservicionew','$idarticulo[$num_elementos]', '$clave[$num_elementos]','$fmsi[$num_elementos]','$descripcion[$num_elementos]','COTIZACION','$cantidad[$num_elementos]','$precio_cotizacion[$num_elementos]','$descuento[$num_elementos]', '$marcaArticulo[$num_elementos]')";
+                                            VALUES( $idservicionew,'$idarticulo[$num_elementos]', '$clave[$num_elementos]','$fmsi[$num_elementos]','$descripcion[$num_elementos]','COTIZACION','$cantidad[$num_elementos]', '$precio_cotizacion[$num_elementos]' ,'$descuento[$num_elementos]', '$marcaArticulo[$num_elementos]')";
 	 	ejecutarConsulta($sql_detalle) or $sw=false;
         $num_elementos=$num_elementos+1;
 	 }
-	 sleep(1);
+	 //sleep(1);
 	 return $sw;
 }
 

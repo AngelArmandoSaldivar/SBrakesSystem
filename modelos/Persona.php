@@ -98,7 +98,7 @@ public function listarp(){
 }
 public function listarc(){
 	$sql="SELECT * FROM persona WHERE tipo_persona='Cliente'";
-	sleep(1);
+	//sleep(1);
 	return ejecutarConsulta($sql);
 }
 

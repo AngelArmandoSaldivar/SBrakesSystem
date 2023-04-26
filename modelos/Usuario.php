@@ -58,7 +58,7 @@ public function listarmarcados($nivUsuario){
 
 public function verificar($login,$clave){
 	$sql="SELECT r.nombre AS claveRol, s.lat,s.lng, u.idusuario,u.nombre,u.telefono,u.email,u.cargo, u.acceso, u.idsucursal, u.login FROM usuario u INNER JOIN sucursal s ON u.idsucursal = s.idsucursal 
-			INNER JOIN ROL r ON u.acceso = r.idrol WHERE u.login='$login' AND u.clave='$clave' AND u.condicion='1'";
+			INNER JOIN rol r ON u.acceso = r.idrol WHERE u.login='$login' AND u.clave='$clave' AND u.condicion='1'";
 	return ejecutarConsulta($sql);
 }
 

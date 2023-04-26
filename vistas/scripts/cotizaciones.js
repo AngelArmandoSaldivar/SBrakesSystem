@@ -260,7 +260,7 @@ function actualizarFechaSalida(idservicio, fecha_salida) {
 		success: function(datos){			
 			//alert("Fecha de salida actualizada");
 			$("#remOrSalida").modal('hide');
-			obtener_registrosProductos();			
+			obtener_registrosProductos();	
 		},
 	});
 }

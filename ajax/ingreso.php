@@ -136,6 +136,8 @@ switch ($_GET["op"]) {
 	case 'listarDetalle':
 		//recibimos el idingreso
 		$id=$_GET['id'];
+		
+		echo "ID: " . $id."\n";
 
 		$rspta=$ingreso->listarDetalle($id);
 		$total=0;
@@ -400,7 +402,7 @@ switch ($_GET["op"]) {
 
 				while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){
 					if($fila["idsucursal"] == $idsucursal) {
-						if($acceso === "admin") {
+						if($acceso == "1") {
 							if ($fila["tipo_comprobante"]=='Ticket') {
 								$url='../reportes/exTicket.php?id=';
 							}else{

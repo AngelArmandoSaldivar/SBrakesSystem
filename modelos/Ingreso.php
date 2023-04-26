@@ -25,8 +25,7 @@ public function insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_compro
 	 $idingresonew=ejecutarConsulta_retornarID($sql);
 	 $num_elementos=0;
 	 $sw=true;
-	 while ($num_elementos < count($idarticulo)) {
-
+	 while ($num_elementos < count($idarticulo)) {				
 	 	$sql_detalle="INSERT INTO detalle_ingreso (idingreso,idproveedor,idusuario,serie_comprobante,tipo_comprobante,idarticulo,clave,fmsi,descripcion,cantidad,precio_compra,tipoMov, descuento) VALUES('$idingresonew','$idproveedor','$idusuario','$serie_comprobante','$tipo_comprobante','$idarticulo[$num_elementos]','$clave[$num_elementos]','$fmsi[$num_elementos]','$descripcion[$num_elementos]','$cantidad[$num_elementos]','$precio_compra[$num_elementos]','RECEPCIÓN', '$descuento[$num_elementos]')";		
 	 	ejecutarConsulta($sql_detalle) or $sw=false;
 

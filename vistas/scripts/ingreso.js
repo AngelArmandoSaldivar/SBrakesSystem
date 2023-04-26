@@ -880,9 +880,11 @@ function detalleMostrar(idingreso) {
 		$('.loader').show();
 		console.log("LONGITUD: " + r.length);
 		if(r.length < 0) {
+			console.log("FORM: " + r);
 			$("#detalles").html(r);
 			$('.loader').hide();
 		} else {
+			console.log("FORM: " + r);
 		setTimeout(() => {
 			$("#detalles").html(r);
 			$('.loader').hide();

@@ -184,7 +184,7 @@ public function anular($idventa){
 
 public function mostrarInfoClient($idcliente){
 	$sql="SELECT * FROM persona WHERE tipo_persona='Cliente' AND idpersona='$idcliente'";
-	sleep(1);
+	//sleep(1);
 	return ejecutarConsultaSimpleFila($sql);
 }
 

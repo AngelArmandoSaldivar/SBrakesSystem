@@ -172,7 +172,7 @@ switch ($_GET["op"]) {
 		break;
 
 	case 'maxRemision' :
-		$rspta=$servicio->maxRemision();
+		$rspta=$servicio->maxRemision($idsucursal);
 		/*while ($reg=$rspta->fetch_object()) {
 			echo $reg;
 		}*/
@@ -801,7 +801,7 @@ switch ($_GET["op"]) {
 					</thead>
 				<tbody>";				
 				while($fila=$consultaBD->fetch_array(MYSQLI_ASSOC)){
-					if($fila["idsucursal"] == $idsucursal && $acceso ==="admin") {	
+					if($fila["idsucursal"] == $idsucursal && $acceso == "1") {	
 						if($fila["status"] != 'ANULADO') {
 							if ($fila["tipo_comprobante"]=='Ticket') {
 								$url='../reportes/exTicket.php?id=';
@@ -930,7 +930,7 @@ switch ($_GET["op"]) {
 								";
 						}					
 							
-					} else if($fila["idsucursal"] == $idsucursal && $acceso != "admin"){
+					} else if($fila["idsucursal"] == $idsucursal && $acceso != "1"){
 						if($fila["status"] != 'ANULADO') {
 							if ($fila["tipo_comprobante"]=='Ticket') {
 								$url='../reportes/exTicket.php?id=';
@@ -1033,15 +1033,17 @@ switch ($_GET["op"]) {
 						} else {
 							$miles = number_format($fila['total_servicio'], 2);														
 							$totalServicio = 0;							
-							echo "<tr style='color:black'>								
+							echo "<tr style='color:black'>		
+								<td>".$fila['idservicio']."</td>						
 								<td>".$fila['fecha_entrada']."</td>
-								<td>".$fechaSalida."</td>
+								<td>".$fila['fecha_salida']."</td>
 								<td>".$fila["status"]."</td>
 								<td><p>".$fila['cliente']."</td>
 								<td><p>".$fila['usuario']."</td>								
 								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
 								<td><p>$ ".number_format($totalServicio=$fila["total_servicio"] - $fila["pagado"])."</td>
 								<td><p>$ ".$miles."</td>
+								<td>R-".$fila['remision']."</td>	
 								<td>
 									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrarAnulado(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
 								</td>
@@ -1323,7 +1325,7 @@ switch ($_GET["op"]) {
 											<td><p>$ ".$creditoMiles."</p></td>
 											<td><p>$ ".$publicMiles."</p></td>
 											<td><p>$ ".$costoMiles."</p></td>
-											<td><button style='width: 40px' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\" )'><span class='fa fa-plus'></span></button></td>
+											<td><button style='width: 40px' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["descripcionMarca"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\" )'><span class='fa fa-plus'></span></button></td>
 										</tr>";
 									} else if($fila["stock"] >=1 && $tipo_precio == null){
 										$precio = "publico";
@@ -1338,7 +1340,7 @@ switch ($_GET["op"]) {
 											<td><p>$ ".$creditoMiles."</p></td>
 											<td><p>$ ".$mayoreoMiles."</p></td>
 											<td><p>".$fila["stock"]." pz</p></td>										
-											<td><button style='width: 40px' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$precio]."\" , \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
+											<td><button style='width: 40px' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["descripcionMarca"]."\", \"".$fila["marca"]."\", \"".$fila[$precio]."\" , \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
 										</tr>";
 									} else if($fila["stock"] < 1){
 										echo "<tr style='color:red;'>
@@ -1427,7 +1429,7 @@ switch ($_GET["op"]) {
 												<td><p>$ ".$creditoMiles."</p></td>
 												<td><p>$ ".$mayoreoMiles."</p></td>
 												<td><p>".$fila["stock"]." pz</p></td>										
-												<td><button style='width: 40px: height:12px' class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\" , \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
+												<td><button style='width: 40px: height:12px' class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["descripcionMarca"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\" , \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
 											</tr>";
 										} else if($fila["stock"] >=1 && $tipo_precio == null){
 											$precio = "publico";
@@ -1443,7 +1445,7 @@ switch ($_GET["op"]) {
 												<td><p>$ ".$creditoMiles."</p></td>
 												<td><p>$ ".$mayoreoMiles."</p></td>
 												<td><p>".$fila["stock"]." pz</p></td>										
-												<td><button style='width: 40px: height:12px' class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
+												<td><button style='width: 40px: height:12px' class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["descripcionMarca"]."\", \"".$fila["marca"]."\", \"".$fila[$precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
 											</tr>";
 										}
 									}

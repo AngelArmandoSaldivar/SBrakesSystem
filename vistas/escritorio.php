@@ -51,15 +51,15 @@ if ($_SESSION['escritorio']==1) {
   }
   
     //obtener valores para cargar al grafico de barras
-  $servicios12 = $consulta->serviciossultimos_12meses();
-  $ingresos12 = $consulta->ingresosultimos_12meses();
+  /*$servicios12 = $consulta->serviciossultimos_12meses();
+  $ingresos12 = $consulta->ingresosultimos_12meses();*/
   $fechasv = '';
   $fechass = '';
   $fechasi = '';
   $totaless = '';
   $totalesi = '';
 
-  while ($regfechaserv = $servicios12->fetch_object()) {      
+  /*while ($regfechaserv = $servicios12->fetch_object()) {      
     if($regfechaserv->idsucursal == $idsucursal) {      
       $fechass = $fechass.'"'.$regfechaserv->fecha.'",';
       $totaless = $totaless.$regfechaserv->total.',';
@@ -70,7 +70,7 @@ if ($_SESSION['escritorio']==1) {
       $fechasi=$fechasi.'"'.$regfechai->fecha.'",';
       $totalesi=$totalesi.$regfechai->total.',';
     }    
-  }
+  }*/
 
 
   //quitamos la ultima coma
@@ -333,22 +333,22 @@ if ($_SESSION['escritorio']==1) {
           <div class="progress-group">
             Servicios
             <?php 
-              $sql="SELECT estado, idsucursal, DATE_FORMAT(fecha_entrada,'%M') AS fecha, SUM(total_servicio) AS total, (ROUND(SUM(total_servicio) * 100) / 1000000) AS porcentaje FROM servicio WHERE MONTH(fecha_entrada) = MONTH(CURRENT_DATE()) AND status != 'ANULADO' AND idsucursal='$idsucursal';";
+              /*$sql="SELECT estado, idsucursal, DATE_FORMAT(fecha_entrada,'%M') AS fecha, SUM(total_servicio) AS total, (ROUND(SUM(total_servicio) * 100) / 1000000) AS porcentaje FROM servicio WHERE MONTH(fecha_entrada) = MONTH(CURRENT_DATE()) AND status != 'ANULADO' AND idsucursal='$idsucursal';";
               $result = ejecutarConsulta($sql);
 
               while($row = $result->fetch_assoc()) {
                 $total = number_format($row["total"], 2);
                 echo "<span class='float-right'><b>$</b>$row[total]</span>";
-              }
+              }*/
           
             ?>          
             <div class="progress progress-sm">
               <?php 
-              $sql="SELECT estado, idsucursal, DATE_FORMAT(fecha_entrada,'%M') AS fecha, SUM(total_servicio) AS total, (ROUND(SUM(total_servicio) * 100) / 1000000) AS porcentaje FROM servicio WHERE MONTH(fecha_entrada) = MONTH(CURRENT_DATE()) AND status != 'ANULADO' AND idsucursal='$idsucursal'";
+              /*$sql="SELECT estado, idsucursal, DATE_FORMAT(fecha_entrada,'%M') AS fecha, SUM(total_servicio) AS total, (ROUND(SUM(total_servicio) * 100) / 1000000) AS porcentaje FROM servicio WHERE MONTH(fecha_entrada) = MONTH(CURRENT_DATE()) AND status != 'ANULADO' AND idsucursal='$idsucursal'";
               $result = ejecutarConsulta($sql);
                 while($row = $result->fetch_assoc()) {
                   echo "<div class='progress-bar bg-primary' style='width: $row[porcentaje]%'></div>";              
-                }              
+                }*/              
               ?>
             </div>
           </div>       
@@ -356,21 +356,21 @@ if ($_SESSION['escritorio']==1) {
           <div class="progress-group">
             <span class="progress-text">Compras</span>
             <?php 
-              $sqlventa="SELECT estado, idsucursal, DATE_FORMAT(fecha_hora,'%M') AS fecha, SUM(total_compra) AS total, (ROUND(SUM(total_compra) * 100) / 1000000) AS porcentaje FROM ingreso WHERE MONTH(fecha_hora) = MONTH(CURRENT_DATE()) AND estado='NORMAL' AND idsucursal='$idsucursal'";
+              /*$sqlventa="SELECT estado, idsucursal, DATE_FORMAT(fecha_hora,'%M') AS fecha, SUM(total_compra) AS total, (ROUND(SUM(total_compra) * 100) / 1000000) AS porcentaje FROM ingreso WHERE MONTH(fecha_hora) = MONTH(CURRENT_DATE()) AND estado='NORMAL' AND idsucursal='$idsucursal'";
               $resultventa = ejecutarConsulta($sqlventa);
               while($row = $resultventa->fetch_assoc()) {
                 $total = number_format($row["total"], 2);
                 echo "<span class='float-right'><b>$</b>$row[total]</span>";
-              }          
+              }  */        
             ?> 
 
             <div class="progress progress-sm">
               <?php 
-                $sqlventa="SELECT estado, idsucursal, DATE_FORMAT(fecha_hora,'%M') AS fecha, SUM(total_compra) AS total, (ROUND(SUM(total_compra) * 100) / 1000000) AS porcentaje FROM ingreso WHERE MONTH(fecha_hora) = MONTH(CURRENT_DATE()) AND estado='NORMAL' AND idsucursal='$idsucursal'";
+                /*$sqlventa="SELECT estado, idsucursal, DATE_FORMAT(fecha_hora,'%M') AS fecha, SUM(total_compra) AS total, (ROUND(SUM(total_compra) * 100) / 1000000) AS porcentaje FROM ingreso WHERE MONTH(fecha_hora) = MONTH(CURRENT_DATE()) AND estado='NORMAL' AND idsucursal='$idsucursal'";
                 $resultingreso = ejecutarConsulta($sqlventa);
                 while($row = $resultingreso->fetch_assoc()) {
                   echo "<div class='progress-bar bg-success' style='width: $row[porcentaje]%'></div>";              
-                }
+                }*/
               ?>               
             </div>
           </div>
@@ -382,7 +382,7 @@ if ($_SESSION['escritorio']==1) {
         <div class="col-sm-4 col-6">
           <div class="description-block border-right">            
             <?php 
-              $sqlservicio="SELECT DATE_FORMAT(fecha_entrada,'%M') AS fecha, SUM(total_servicio) AS total, (ROUND(SUM(total_servicio) * 100) / 1000000) AS porcentaje FROM servicio WHERE MONTH(fecha_entrada) = MONTH(CURRENT_DATE()) AND status != 'ANULADO' AND idsucursal='$idsucursal';";
+              /*$sqlservicio="SELECT DATE_FORMAT(fecha_entrada,'%M') AS fecha, SUM(total_servicio) AS total, (ROUND(SUM(total_servicio) * 100) / 1000000) AS porcentaje FROM servicio WHERE MONTH(fecha_entrada) = MONTH(CURRENT_DATE()) AND status != 'ANULADO' AND idsucursal='$idsucursal';";
               $sqlserviciobefore="SELECT DATE_FORMAT(fecha_entrada,'%M') AS fecha, SUM(total_servicio) AS total FROM servicio WHERE MONTH(fecha_entrada) = MONTH(DATE_ADD(CURDATE(),INTERVAL -1 MONTH)) AND status != 'ANULADO' AND idsucursal='$idsucursal';";
               $resultservicio = ejecutarConsulta($sqlservicio);
               $resultserviciobefore = ejecutarConsulta($sqlserviciobefore);
@@ -407,7 +407,7 @@ if ($_SESSION['escritorio']==1) {
                 echo "<span class='description-percentage text-success'><i class='fas fa-caret-up'></i>$porcentajeTotales%</span>";
               }
               $diferencia = number_format($totalservicios - $totalservicios_before, 2);
-              echo "<h5 class='description-header'>$$diferencia</h5>";
+              echo "<h5 class='description-header'>$$diferencia</h5>";*/
             ?>
             <span class="description-text">Comparación / mes pasado / Servicios</span>
           </div>
@@ -416,7 +416,7 @@ if ($_SESSION['escritorio']==1) {
         <div class="col-sm-4 col-6">
           <div class="description-block border-right">            
             <?php 
-              $sqlservicio="SELECT DATE_FORMAT(fecha_hora,'%M') AS fecha, SUM(total_compra) AS total, (ROUND(SUM(total_compra) * 100) / 1000000) AS porcentaje FROM ingreso WHERE MONTH(fecha_hora) = MONTH(CURRENT_DATE()) AND estado = 'NORMAL' AND idsucursal='$idsucursal';";
+              /*$sqlservicio="SELECT DATE_FORMAT(fecha_hora,'%M') AS fecha, SUM(total_compra) AS total, (ROUND(SUM(total_compra) * 100) / 1000000) AS porcentaje FROM ingreso WHERE MONTH(fecha_hora) = MONTH(CURRENT_DATE()) AND estado = 'NORMAL' AND idsucursal='$idsucursal';";
               $sqlserviciobefore="SELECT DATE_FORMAT(fecha_hora,'%M') AS fecha, SUM(total_compra) AS total FROM ingreso WHERE MONTH(fecha_hora) = MONTH(DATE_ADD(CURDATE(),INTERVAL -1 MONTH)) AND estado = 'NORMAL' AND idsucursal='$idsucursal';";
               $resultservicio = ejecutarConsulta($sqlservicio);
               $resultserviciobefore = ejecutarConsulta($sqlserviciobefore);
@@ -441,7 +441,7 @@ if ($_SESSION['escritorio']==1) {
                 echo "<span class='description-percentage text-success'><i class='fas fa-caret-up'></i>$porcentajeTotales%</span>";
               }
               $diferencia = number_format($totalservicios - $totalservicios_before, 2);
-              echo "<h5 class='description-header'>$$diferencia</h5>";
+              echo "<h5 class='description-header'>$$diferencia</h5>";*/
             ?>
             <span class="description-text">Comparación / mes pasado / Compras</span>
           </div>
@@ -563,7 +563,7 @@ require 'footer.php';
         pointStrokeColor: '#000000',
         pointHighlightFill: '#00000',
         pointHighlightStroke: '#337ab7fc',
-        data: [<?php echo $totaless ?>]
+        data: []
       },
       {
         label: 'Ingresos',
@@ -578,7 +578,7 @@ require 'footer.php';
         pointStrokeColor: '#000000',
         pointHighlightFill: '#00000',
         pointHighlightStroke: '#28a745',
-        data: [<?php echo $totalesi ?>]
+        data: []
       },      
     ]
   }
@@ -734,4 +734,3 @@ require 'footer.php';
 
 ob_end_flush();
   ?>
-
