@@ -1,8 +1,8 @@
 <?php 
 require_once "global.php";
 
-//$conexion=new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_NAME, 25060);
-$conexion=new mysqli("dbaas-db-9308649-do-user-4187525-0.b.db.ondigitalocean.com",DB_USERNAME,DB_PASSWORD,DB_NAME, 25060);
+//$conexion=new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_NAME/*, 25060*/);
+$conexion=new mysqli("dbaas-db-9308649-do-user-4187525-0.b.db.ondigitalocean.com","doadmin","AVNS_7cgC06x5ktFMDFKiXNW","brakeone", 25060);
 
 mysqli_query($conexion, 'SET NAMES "'.DB_ENCODE.'"');
 

@@ -71,7 +71,7 @@ function displayHTMLTable(results) {
 	table += "<tr>";
 	table += "<th class='bg-info' scope='col' width:50px; style='width:80px;'>Clave</th>";
 	table += "<th id='' class='bg-info' scope='col' style='width:80px;'>Fmsi</th>";
-	table += "<th id='' class='bg-info' scope='col' style='width:80px;'>Producto</th>";
+	table += "<th id='' class='bg-info' scope='col' style='width:80px;'>Categoria</th>";
 	table += "<th id='' class='bg-info' scope='col' style='width:80px;'>Unidad</th>";
 	table += "<th id='' class='bg-info' scope='col' style='width:80px;'>Marca</th>";
 	table += "<th id='' class='bg-info' scope='col' style='width:80px;'>Proveedor</th>";
@@ -286,10 +286,10 @@ $('#registerProduct').on("click",function(e){
 				imageUrl: '../files/images/loader.gif',
 			})
 		},
-		error: () => {
+		error: (err) => {
 			swal({
 				title: 'Error!',
-				html: 'Ha surgido un error',
+				html: err,
 				timer: 1000,					
 				showConfirmButton: false,
 				type: 'warning',
@@ -759,9 +759,6 @@ function obtenerRegistrosSiguiente(pagina) {
 		let inicio_registros = (total_registros - 50);
 		$('.loaderSearch').show();
 
-		console.log("Inicio 3: ", inicio_registros);
-		console.log("Fin 3: ", 50);
-
 		$.ajax({
 			url : '../ajax/articulo.php?op=listar',
 			type : 'POST',
@@ -1058,7 +1055,7 @@ function obtener_registros(articulos){
 }
 
 //Filtro busqueda
-$(document).on('keyup', '#busqueda', function(){
+/*$(document).on('keyup', '#busqueda', function(){
 	
 	var valorBusqueda=$(this).val();	
 	
@@ -1069,6 +1066,23 @@ $(document).on('keyup', '#busqueda', function(){
 	} else {				
 		obtener_registros();
 	}
+});*/
+
+$(document).ready(function() {
+    $('form').submit(function(e) {
+        e.preventDefault();
+        // o return false;
+		console.log($("#busqueda").val());
+		var valorBusqueda=$("#busqueda").val();	
+	
+		if (valorBusqueda!="")
+		{		
+			obtener_registros(valorBusqueda);
+
+		} else {				
+			obtener_registros();
+		}
+    });
 });
 
 

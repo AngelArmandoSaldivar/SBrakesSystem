@@ -109,6 +109,7 @@ class Articulo{
 	}
 
 	public function articulosPagination($limit, $limit2, $busqueda) {
+		
 		$sql = "SELECT m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
 		a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
 		a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock
@@ -121,6 +122,7 @@ class Articulo{
 		a.descripcion LIKE '%$busqueda%')
 		AND estado = 1
 		ORDER BY a.stock > 0 DESC, a.marca ASC LIMIT $limit OFFSET $limit2";
+
 		//usleep(90000);
 		return ejecutarConsulta($sql);
 	}
@@ -139,7 +141,7 @@ class Articulo{
 	}
 
 	public function listarArticulos() {
-		$sql = "SELECT * FROM articulo";
+		$sql = "SELECT * FROM articulo limit 2";
 		return ejecutarConsulta($sql);
 	}
 
@@ -154,15 +156,15 @@ class Articulo{
 		return $sw;
 	}
 
-	public function registrarProductos($object, $fecha_ingreso, $idsucursal) {
+	public function registrarProductos($object, $idsucursal) {
 		$sw = true;
 		foreach ($object as $key => $value) {
 			$sql = "INSERT INTO articulo
-							(categoria, idcategoria, codigo, descripcion, fmsi, marca, publico, taller, credito_taller,mayoreo, costo, idproveedor, pasillo, unidades, fecha_ingreso, idsucursal)
-							VALUES('$value[categoria]', 21,  '$value[clave]', '$value[descripcion]', '$value[fmsi]', 
+							(idcategoria, codigo, descripcion, fmsi, marca, publico, taller, credito_taller,mayoreo, costo, idproveedor, pasillo, unidades, idsucursal)
+							VALUES('$value[categoria]', '$value[clave]', '$value[descripcion]', '$value[fmsi]', 
 							'$value[marca]','$value[publico]', '$value[taller]', '$value[credito]', '$value[mayoreo]', 
 							'$value[costo]', '$value[idproveedor]', '$value[pasillo]', '$value[unidad]', 
-							'$fecha_ingreso', '$idsucursal')";
+							'$idsucursal')";
 			ejecutarConsulta($sql) or $sw=false;			
 		}
 		return $sw;

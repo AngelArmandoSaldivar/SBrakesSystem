@@ -66,8 +66,8 @@ if(!isset($_SESSION["nombre"])) {
 			break;
 		case 'registrarProductos':
 			$array = $_POST["arrayJsonProductos"];
-			$fecha_ingreso = $_POST["fecha_ingreso"];
-			$rspta = $articulo->registrarProductos($array, $fecha_ingreso, $idsucursal);
+			//$fecha_ingreso = $_POST["fecha_ingreso"];
+			$rspta = $articulo->registrarProductos($array, $idsucursal);
 			echo $rspta ? "Productos registrados correctamente" : "Error!";
 			break;
 		case 'copiarBusqueda':
@@ -144,7 +144,7 @@ if(!isset($_SESSION["nombre"])) {
 			$cantidad = '';
 			$termino= "";
 									
-			$consulta = $articulo->articulosPagination(50, 0, "");
+			$consulta = $articulo->articulosPagination(20, 0, "");
 
 			if(!empty($_POST['articulos']) && empty($_POST['limites']) && empty($_POST['inicio_registros']) && empty($_POST["total_registros"])) {				
 				$termino=$conexion->real_escape_string($_POST['articulos']);

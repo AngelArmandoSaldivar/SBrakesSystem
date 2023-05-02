@@ -24,6 +24,12 @@
   <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">  
   <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
   <script src="https://kit.fontawesome.com/9a94a93f86.js" crossorigin="anonymous"></script>
+
+
+  <link href="https://cdn.datatables.net/v/bs/dt-1.13.4/datatables.min.css" rel="stylesheet"/>
+  <script src="https://cdn.datatables.net/v/bs/dt-1.13.4/datatables.min.js"></script>
+
+
   <style>
     .loader {
       display: none;

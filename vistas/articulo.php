@@ -29,10 +29,23 @@ if ($_SESSION['almacen']==1) {
                 <button title="Registrar" id="btnagregarservicio" data-toggle='popover' data-trigger='hover' data-content='Registrar nueva articulo' data-placement='bottom' class='btn btn-success' title="Agregar nuevo articulo" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i> Agregar Nuevo</button></h1>
                 </div>
                 <div class="form-group col-lg-4 col-md-6 col-xs-12" style="position:relative;">
-                  <center>
-                    <input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;">
-                  </center>
-                </div>
+                 
+                    <!--<input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;">-->                      
+                  <form onsubmit="event.preventDefault();">                  
+                    <center>
+                      <div class="form-group col-lg-12 col-md-2 col-xs-6" id="divImpuesto">
+                          <div class="form-group">
+                              <div class="input-group bootstrap-touchspin">
+                                  <span class="input-group-btn">                                
+                                  </span><span class="input-group-addon bootstrap-touchspin-prefix">Buscar: </span>                                                                            
+                                  <input class="form-control" type="input" name="busqueda" id="busqueda"></input>
+                                  <span class="input-group-addon bootstrap-touchspin-postfix"><i class="fa fa-search pull-right" aria-hidden="true"></i></span>                                                    
+                              </div>
+                          </div>                                           
+                      </div> 
+                    </center>
+                  </form>                  
+                </div>                
             </section>
             <div class="form-group col-lg-4 col-md-6 col-xs-12">
               <div class="loaderSearch">
@@ -45,10 +58,14 @@ if ($_SESSION['almacen']==1) {
             <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">              
             </div>             
             <div class="form-group col-lg-4 col-md-6 col-xs-4" style="text-align:left;">
-              <button title="Exportar" id="btnagregarservicio" data-toggle='popover' data-trigger='hover' data-content='Exportar articulos a Excel' data-placement='right' class='btn btn-success' title="Agregar nuevo articulo" onclick="exportarExcel()"><i class="fa fa-file-excel-o"></i> Exportar a Excel</button>
+              
             </div>
             
             <div class="form-group col-lg-4 col-md-6 col-xs-4" style="text-align:left;">
+              <button title="Exportar" id="btnagregarservicio" data-toggle='popover' data-trigger='hover' data-content='Exportar articulos a Excel' data-placement='right' class='btn btn-success' title="Agregar nuevo articulo" onclick="exportarExcel()"><i class="fa fa-file-excel-o"></i> Exportar a Excel</button>
+            </div>
+
+            <div class="form-group col-lg-4 col-md-6 col-xs-4" style="text-align:left;">            
             <a data-toggle="modal" href="#cambiarPreciosProductos">
               <button title="Cambiar precios" id="btnCanbiarPrecios" data-toggle='popover' data-trigger='hover' data-content='Cambiar precios productos' data-placement='right' class='btn btn-primary' title="Cambiar precios"><i class="fa fa-usd"></i> Cambiar precios</button>
             </a>
@@ -333,7 +350,7 @@ require 'footer.php'
  ?>
  <script src="../public/js/JsBarcode.all.min.js"></script>
  <script src="../public/js/jquery.PrintArea.js"></script>
- <script src="scripts/articulos.js"></script>
+ <script src="scripts/articulo.js"></script>
  <?php 
 }
 
