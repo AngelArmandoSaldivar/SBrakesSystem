@@ -193,8 +193,9 @@ if(!isset($_SESSION["nombre"])) {
 							<th id='thClave' class='bg-info w-40' scope='col'>Clave
 							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarClave()'><i class='fa fa-eye-slash'></i></button>							
 							</th>
-							<th id='thFmsi' class='bg-info' scope='col'>FMSI
+							<th id='thFmsi' class='bg-info w-2' scope='col'>FMSI
 							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarFmsi()'><i class='fa fa-eye-slash'></i></button></th>
+							<th id='thFmsi' class='bg-info w-2' scope='col'>Formulación</th>
 							<th id='thMarca' class='bg-info' scope='col'>Marca
 							<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarMarca()'><i class='fa fa-eye-slash'></i></button></th>
 							<th id='thDescripcion' class='bg-info' scope='col'>Descripción
@@ -223,15 +224,18 @@ if(!isset($_SESSION["nombre"])) {
 					$creditoMiles = number_format($fila['credito_taller'], 2);
 					$mayoreoMiles = number_format($fila['mayoreo'], 2);
 					$descrip = $fila['descripcion'];
-					$delit = substr($descrip, 0,12);
+					$delit = substr($descrip, 0,18);
 					$delitCodigo = substr($fila['codigo'], 0, 50);
 					$delitFmsi = substr($fila['fmsi'], 0, 50);
-					$stock_mdx = '';					
+					$stock_mdx = '';			
+					$extrae = $fila['codigo'] != '' ? substr($fila['codigo'], -1) : '';
+					$formulacionExtra = $extrae == 'X' && $fila['descripcionMarca'] == "BREMBO" ? "EXTRA" : ($extrae == 'N' && $fila['descripcionMarca'] == "BREMBO" ? 'CERAMICA' : "BAJOS METALES");
 					if($fila["idsucursal"] == $idsucursal && $acceso == "1") {
 						if($fila["stock"] >= $fila["stock_ideal"]) {
 								echo "<tr style='color:blue; font-size:11px;'>
-								<td style='width:20px'>".$fila['codigo']."</td>
-								<td style='width:10px;'>".$delitFmsi."</td>
+								<td style='width:20px'>".$fila['codigo']."</td>								
+								<td style='width:5px; height:5px;'>".$delitFmsi."</td>
+								<td style='width:20px'>".$formulacionExtra."</td>
 								<td style='width:10px;'>".$fila['descripcionMarca']."</td>
 								<td>".$delit."...</td>
 								<td><p>".$fila['stock']."pz</td>								
@@ -256,8 +260,9 @@ if(!isset($_SESSION["nombre"])) {
 							";
 						} else if($fila["stock"] < $fila["stock_ideal"]){							
 								echo "<tr style='color:red; font-size:11px;'>
-								<td style='width:20px'>".$fila['codigo']."</td>
+								<td style='width:20px'>".$fila['codigo']."</td>								
 								<td style='width:10px;'>".$delitFmsi."</td>
+								<td style='width:20px'>".$formulacionExtra."</td>
 								<td style='width:10px;'>".$fila['descripcionMarca']."</td>
 								<td>".$delit."...</td>
 								<td id='thStock'><p>".$fila['stock']."pz</td>								
@@ -283,8 +288,9 @@ if(!isset($_SESSION["nombre"])) {
 					else if($fila["idsucursal"] == $idsucursal && $acceso != "1"){
 						if($fila["stock"] >= $fila["stock_ideal"]) {
 							echo "<tr style='color:blue; font-size:11px;'>
-								<td style='width:20px'>".$fila['codigo']."</td>
+								<td style='width:20px'>".$fila['codigo']."</td>								
 								<td style='width:10px;'>".$delitFmsi."</td>
+								<td style='width:20px'>".$formulacionExtra."</td>
 								<td style='width:10px;'>".$fila['descripcionMarca']."</td>
 								<td>".$delit."...</td>
 								<td><p>".$fila['stock']."pz</td>								
@@ -305,8 +311,9 @@ if(!isset($_SESSION["nombre"])) {
 						} 						
 						else if($fila["stock"] < $fila["stock_ideal"]) {
 							echo "<tr style='color:red; font-size:11px;'>
-								<td style='width:20px'>".$fila['codigo']."</td>
+								<td style='width:20px'>".$fila['codigo']."</td>								
 								<td style='width:10px;'>".$delitFmsi."</td>
+								<td style='width:20px'>".$formulacionExtra."</td>
 								<td style='width:10px;'>".$fila['descripcionMarca']."</td>
 								<td>".$delit."...</td>
 								<td><p>".$fila['stock']."pz</td>								
