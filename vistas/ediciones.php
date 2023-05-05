@@ -7,12 +7,23 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>        
       </div>
       <div class="modal-body">
-        <div class="panel-body table-responsive">
-          <div class="form-group col-lg-10 col-md-8 col-xs-12">
-            <section>            
-              <center><input class="form-control me-2" type="text" name="busquedaProductEdit" id="busquedaProductEdit" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;"></center><br><br>
-            </section>
-          </div>
+        <div class="panel-body table-responsive">          
+          <div class="form-group col-lg-4 col-md-6 col-xs-12" style="position:relative;">                                
+            <form onsubmit="event.preventDefault();">                  
+              <center>
+                <div class="form-group col-lg-12 col-md-2 col-xs-6" id="divImpuesto">
+                    <div class="form-group">
+                        <div class="input-group bootstrap-touchspin">
+                            <span class="input-group-btn">                                
+                            </span><span class="input-group-addon bootstrap-touchspin-prefix">Buscar: </span>                                                                            
+                            <input class="form-control" type="input" name="busquedaProductEdit" id="busquedaProductEdit"></input>
+                            <span class="input-group-addon bootstrap-touchspin-postfix"><i class="fa fa-search pull-right" aria-hidden="true"></i></span>                                                    
+                        </div>
+                    </div>
+                </div> 
+              </center>
+            </form>                  
+          </div>           
           <div class="form-group col-lg-2 col-md-8 col-xs-12">              
             <a data-toggle="modal" href="#agregarProducto">
               <button id="btnAgregarArt" type="button" class="btn btn-primary" onclick="cerrarModalEdit()"><span class="fa fa-plus"></span>Registrar Producto</button>

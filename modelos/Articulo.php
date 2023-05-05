@@ -72,7 +72,7 @@ class Articulo{
 
 	//metodo para mostrar registros
 	public function mostrar($idarticulo){
-		$sql="SELECT * FROM articulo a
+		$sql="SELECT *, a.descripcion AS descripcionArticulo FROM articulo a
 		INNER JOIN marca m
 		ON a.marca = m.idmarca
 		WHERE idarticulo='$idarticulo'";

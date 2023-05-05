@@ -1246,7 +1246,7 @@ switch ($_GET["op"]) {
 					if(isset($_POST['productos']))
 					{
 						$termino=$conexion->real_escape_string($_POST['productos']);
-						usleep(10000);
+						//usleep(10000);
 						$consulta="SELECT m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
 						a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
 						a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock, a.imagen

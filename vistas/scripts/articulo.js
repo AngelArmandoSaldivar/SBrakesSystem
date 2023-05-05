@@ -320,7 +320,7 @@ function ocultarStock() {
 		$('.loaderSearch').hide();
 		$("#botonStock").show();
 		$("#thStock").hide();
-  		$('td:nth-child(5)').hide();
+  		$('td:nth-child(6)').hide();
 	}, 400);	
 }
 
@@ -331,7 +331,7 @@ function mostrarStock() {
 		$('.loaderSearch').hide();
 		$("#botonStock").hide();
 		$("#thStock").show();
-  		$('td:nth-child(5)').show();	
+  		$('td:nth-child(6)').show();	
 	}, 400);	
 }
 
@@ -341,7 +341,7 @@ function ocultarMayoreo() {
 		$('.loaderSearch').hide()
 		$("#botonMayoreo").show();
 		$("#thMayoreo").toggle();
-  		$('td:nth-child(6)').toggle();
+  		$('td:nth-child(11)').toggle();
 	}, 400);	
 }
 
@@ -351,7 +351,7 @@ function mostrarMayoreo() {
 		$('.loaderSearch').hide()
 		$("#botonMayoreo").hide();
 		$("#thMayoreo").toggle();
-		$('td:nth-child(6)').toggle();
+		$('td:nth-child(11)').toggle();
 	}, 400);  	
 }
 
@@ -361,7 +361,7 @@ function ocultarTaller() {
 		$('.loaderSearch').hide()
 		$("#botonTaller").show();
 		$("#thTaller").toggle();
-  		$('td:nth-child(7)').toggle();
+  		$('td:nth-child(9)').toggle();
 	}, 400);	
 }
 
@@ -371,7 +371,7 @@ function mostrarTaller() {
 		$('.loaderSearch').hide()
 		$("#botonTaller").hide();
 		$("#thTaller").toggle();
-		$('td:nth-child(7)').toggle();
+		$('td:nth-child(9)').toggle();
 	}, 400);  	
 }
 
@@ -381,7 +381,7 @@ function ocultarCredito() {
 		$('.loaderSearch').hide()
 		$("#botonCredito").show();
 		$("#thCredito").toggle();
-  		$('td:nth-child(8)').toggle();
+  		$('td:nth-child(10)').toggle();
 	}, 400);	
 }
 
@@ -391,7 +391,7 @@ function mostrarCredito() {
 		$('.loaderSearch').hide()
 		$("#botonCredito").hide();
 		$("#thCredito").toggle();
-		$('td:nth-child(8)').toggle();
+		$('td:nth-child(10)').toggle();
 	}, 400);  	
 }
 
@@ -401,7 +401,7 @@ function ocultarPublico() {
 		$('.loaderSearch').hide()
 		$("#botonMostrador").show();
 		$("#thPublico").toggle();
-  		$('td:nth-child(9)').toggle();
+  		$('td:nth-child(8)').toggle();
 	}, 400);	
 }
 
@@ -411,7 +411,7 @@ function mostrarPublico() {
 		$('.loaderSearch').hide()
 		$("#botonMostrador").hide();
 		$("#thPublico").toggle();
-		$('td:nth-child(9)').toggle();
+		$('td:nth-child(8)').toggle();
 	}, 400);  	
 }
 
@@ -421,7 +421,7 @@ function ocultarCosto() {
 		$('.loaderSearch').hide()
 		$("#botonCosto").show();
 		$("#thCosto").toggle();
-  		$('td:nth-child(10)').toggle();
+  		$('td:nth-child(7)').toggle();
 	}, 400);	
 }
 
@@ -431,7 +431,7 @@ function mostrarCosto() {
 		$('.loaderSearch').hide()
 		$("#botonCosto").hide();
 		$("#thCosto").toggle();
-		$('td:nth-child(10)').toggle();
+		$('td:nth-child(7)').toggle();
 	}, 400);
 }
 
@@ -441,7 +441,7 @@ function ocultarDescripcion() {
 		$('.loaderSearch').hide()
 		$("#botonDescripcion").show();
 		$("#thDescripcion").toggle();
-  		$('td:nth-child(4)').toggle();
+  		$('td:nth-child(5)').toggle();
 	}, 400);	
 }
 
@@ -451,7 +451,7 @@ function mostrarDescripcion() {
 		$('.loaderSearch').hide()
 		$("#botonDescripcion").hide();
 		$("#thDescripcion").toggle();
-		$('td:nth-child(4)').toggle();
+		$('td:nth-child(5)').toggle();
 	}, 400);
 }
 
@@ -461,7 +461,7 @@ function ocultarMarca() {
 		$('.loaderSearch').hide()
 		$("#botonMarca").show();
 		$("#thMarca").toggle();
-  		$('td:nth-child(3)').toggle();
+  		$('td:nth-child(4)').toggle();
 	}, 400);	
 }
 
@@ -471,7 +471,7 @@ function mostrarMarca() {
 		$('.loaderSearch').hide()
 		$("#botonMarca").hide();
 		$("#thMarca").toggle();
-		$('td:nth-child(3)').toggle();
+		$('td:nth-child(4)').toggle();
 	}, 400);
 }
 
@@ -1303,9 +1303,7 @@ function mostrar(idarticulo){
 			$("#idcategoria").val(data.idcategoria).prop("disabled", true);
 			$("#idcategoria").selectpicker('refresh');
 			$("#idproveedor").val(data.idproveedor).prop("disabled", true);
-			$("#idproveedor").selectpicker('refresh');
-
-			console.log("MARCA: " + data.descripcion);
+			$("#idproveedor").selectpicker('refresh');			
 			$("#marca").val(data.idmarca).prop("disabled", true);
 			$("#marca").selectpicker('refresh');
 
@@ -1324,7 +1322,7 @@ function mostrar(idarticulo){
 			$("#taller").val(taller).prop("disabled", true);
 			$("#credito_taller").val(credito).prop("disabled", true);
 			$("#mayoreo").val(mayoreo).prop("disabled", true);
-			$("#descripcion").val(data.descripcion).prop("disabled", true);
+			$("#descripcion").val(data.descripcionArticulo).prop("disabled", true);
 			$("#barcode").val(data.barcode).prop("disabled", true);
 			$("#idarticulo").val(data.idarticulo).prop("disabled", true);
 			$("#btnGuardar").hide();
@@ -1334,14 +1332,30 @@ function mostrar(idarticulo){
 			$("#dibujoMuestra").show();	
 			$("#dibujoMuestra").attr("src","../files/dibujos/"+data.dibujo_tecnico);
 			$("#dibujoactual").val(data.dibujo_tecnico);
-			$.post("../ajax/articulo.php?op=mostrarMarcaId",{idMarca : data.marca}, function(res) {
+			var precioCosto = Number(data.costo);
+			var precioPublico = Number(data.publico);
+			var precioTaller = Number(data.taller);
+			var precioCreditoTaller = Number(data.credito_taller);
+			var precioMayoreo = Number(data.mayoreo);
+
+			var utilidadPublico = Math.trunc(((precioPublico / precioCosto) * 100) - 100);
+			var utilidadTaller = Math.trunc(((precioTaller / precioCosto) * 100) - 100);
+			var utilidadCredito = Math.trunc(((precioCreditoTaller / precioCosto) * 100) - 100);
+			var utilidadMayoreo = Math.trunc(((precioMayoreo / precioCosto) * 100) - 100);
+
+			$("#utilidadPublico").text(utilidadPublico + "%");
+			$("#utilidadTaller").text(utilidadTaller + "%");
+			$("#utilidadCreditoTaller").text(utilidadCredito + "%");
+			$("#utilidadMayoreo").text(utilidadMayoreo + "%");
+
+			/*$.post("../ajax/articulo.php?op=mostrarMarcaId",{idMarca : data.marca}, function(res) {
 				dataMarca = JSON.parse(res);
 				console.log("DATA MARCA: " + dataMarca.utilidad_1);
 				$("#utilidadPublico").text(dataMarca.utilidad_1 + "%")
 				$("#utilidadTaller").text(dataMarca.utilidad_2 + "%")
 				$("#utilidadCreditoTaller").text(dataMarca.utilidad_3 + "%")
 				$("#utilidadMayoreo").text(dataMarca.utilidad_4 + "%")
-			})
+			})*/
 		});
 		limpiar();
 }

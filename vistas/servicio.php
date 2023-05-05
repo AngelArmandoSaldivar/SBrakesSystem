@@ -373,11 +373,24 @@ if ($_SESSION['servicios']==1) {
             </a>
           </div>
 
-          <div class="form-group col-lg-4 col-md-8 col-xs-12">
-            <section>            
-              <center><input class="form-control me-2" type="text" name="busquedaProduct" id="busquedaProduct" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;"></center><br><br>
-            </section>
-          </div>
+          <div class="form-group col-lg-4 col-md-6 col-xs-12" style="position:relative;">                                     
+            <form onsubmit="event.preventDefault();">                  
+              <center>
+                <div class="form-group col-lg-12 col-md-2 col-xs-6" id="divImpuesto">
+                    <div class="form-group">
+                        <div class="input-group bootstrap-touchspin">
+                            <span class="input-group-btn">                                
+                            </span><span class="input-group-addon bootstrap-touchspin-prefix">Buscar: </span>                                                                            
+                            <input class="form-control" type="input" name="busquedaProduct" id="busquedaProduct"></input>
+                            <span class="input-group-addon bootstrap-touchspin-postfix"><i class="fa fa-search pull-right" aria-hidden="true"></i></span>                                                    
+                        </div>
+                    </div>                                           
+                </div> 
+              </center>
+            </form>                  
+          </div> 
+
+
           <div class="form-group col-lg-4 col-md-8 col-xs-12"  style="text-align:right">              
             <a data-toggle="modal" href="#agregarProductoAlmacen">
               <button id="btnAgregarArt" type="button" class="btn btn-primary" onclick="cerrarModal()"><span class="fa fa-search-plus"></span> Buscar en otro almacen</button>
@@ -659,7 +672,7 @@ if ($_SESSION['servicios']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/servicios_b1.js"></script>
+ <script src="scripts/servicios.js"></script>
  <?php 
 }
 

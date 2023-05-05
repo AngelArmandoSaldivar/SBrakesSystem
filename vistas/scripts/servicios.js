@@ -1491,7 +1491,7 @@ function obtener_registrosProductos(productos){
 	})
 }
 
-$(document).on('keyup', '#busquedaProduct', function(){
+/*$(document).on('keyup', '#busquedaProduct', function(){
 	var valorBusqueda=$(this).val();
 	
 	if (valorBusqueda!="")
@@ -1502,6 +1502,23 @@ $(document).on('keyup', '#busquedaProduct', function(){
 	{
 		obtener_registrosProductos();
 	}
+});*/
+
+$(document).ready(function() {
+    $('form').submit(function(e) {
+        e.preventDefault();
+        // o return false;
+		console.log($("#busquedaProduct").val());
+		var valorBusqueda=$("#busquedaProduct").val();	
+	
+		if (valorBusqueda!="")
+		{		
+			obtener_registrosProductos(valorBusqueda);
+
+		} else {				
+			obtener_registrosProductos();
+		}
+    });
 });
 
 //Productos de otros almaneces
