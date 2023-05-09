@@ -25,14 +25,21 @@ if ($_SESSION['almacen']==1) {
 
           <div class="table-responsive" id="table-search">
             <section>
-                <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                <button title="Registrar" id="btnagregarservicio" data-toggle='popover' data-trigger='hover' data-content='Registrar nueva articulo' data-placement='bottom' class='btn btn-success' title="Agregar nuevo articulo" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i> Agregar Nuevo</button></h1>
+              <div class="box-header with-border col-md-10">  
+                <div class="btn-group" role="group">
+                  <button title="Registrar" id="btnagregarservicio" data-toggle='popover' data-trigger='hover' data-content='Registrar nueva articulo' data-placement='bottom' class='btn btn-success' title="Agregar nuevo articulo" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i> Agregar Nuevo</button></h1>
+                </div>                                                                      
+                <div class="btn-group" role="group">
+                  <button title="Exportar" id="btnagregarservicio" data-toggle='popover' data-trigger='hover' data-content='Exportar articulos a Excel' data-placement='right' class='btn btn-success' title="Agregar nuevo articulo" onclick="exportarExcel()"><i class="fa fa-file-excel-o"></i> Exportar a Excel</button>
+                </div>                          
+                <div class="btn-group" role="group" id="movimientos_caja">
+                  <a data-toggle="modal" href="#cambiarPreciosProductos">
+                    <button title="Cambiar precios" id="btnCanbiarPrecios" data-toggle='popover' data-trigger='hover' data-content='Cambiar precios productos' data-placement='right' class='btn btn-primary' title="Cambiar precios"><i class="fa fa-usd"></i> Cambiar precios</button>
+                  </a>
                 </div>
-                <div class="form-group col-lg-4 col-md-6 col-xs-12" style="position:relative;">
-                 
-                    <!--<input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;">-->                      
+                <div class="btn-group" role="group" id="movimientos_caja">
                   <form onsubmit="event.preventDefault();">                  
-                    <center>
+                   
                       <div class="form-group col-lg-12 col-md-2 col-xs-6" id="divImpuesto">
                           <div class="form-group">
                               <div class="input-group bootstrap-touchspin">
@@ -43,49 +50,36 @@ if ($_SESSION['almacen']==1) {
                               </div>
                           </div>                                           
                       </div> 
-                    </center>
-                  </form>                  
-                </div>                
+                    
+                  </form>    
+                </div>
+              </div>            
+                <div class="btn-group" role="group" id="movimientos_caja">
+                  <select name="limite_registros" id="limite_registros" class="form-control selectpicker">
+                    <option value="" disabled selected>Seleccionar limite</option>
+                    <option value="51">50 / Registros</option>
+                    <option value="101">100 / Registros</option>
+                    <option value="201">200 / Registros</option>
+                    <option value="501">500 / Registros</option>
+                    <option value="1001">1000 / Registros</option>
+                  </select>                 
+              </div>                  
             </section>
             <div class="form-group col-lg-4 col-md-6 col-xs-12">
               <div class="loaderSearch">
                 <img src="../files/images/loader.gif" alt="" width="35px">
               </div>
-            </div>
-
-            <div class="form-group col-lg-4 col-sm-12 col-xs-12" style="text-align:left;"></div>
-            <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
-            <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">              
-            </div>             
-            <div class="form-group col-lg-4 col-md-6 col-xs-4" style="text-align:left;">
-              
-            </div>
-            
-            <div class="form-group col-lg-4 col-md-6 col-xs-4" style="text-align:left;">
-              <button title="Exportar" id="btnagregarservicio" data-toggle='popover' data-trigger='hover' data-content='Exportar articulos a Excel' data-placement='right' class='btn btn-success' title="Agregar nuevo articulo" onclick="exportarExcel()"><i class="fa fa-file-excel-o"></i> Exportar a Excel</button>
-            </div>
-
-            <div class="form-group col-lg-4 col-md-6 col-xs-4" style="text-align:left;">            
-            <a data-toggle="modal" href="#cambiarPreciosProductos">
-              <button title="Cambiar precios" id="btnCanbiarPrecios" data-toggle='popover' data-trigger='hover' data-content='Cambiar precios productos' data-placement='right' class='btn btn-primary' title="Cambiar precios"><i class="fa fa-usd"></i> Cambiar precios</button>
-            </a>
-            </div>
-            <div class="form-group col-lg-4 col-md-6 col-xs-4" style="text-align:left;">
-              <select name="limite_registros" id="limite_registros" class="form-control selectpicker">
-                <option value="" disabled selected>Seleccionar limite</option>
-                <option value="51">50 / Registros</option>
-                <option value="101">100 / Registros</option>
-                <option value="201">200 / Registros</option>
-                <option value="501">500 / Registros</option>
-                <option value="1001">1000 / Registros</option>
-              </select>
-            </div>              
-
-            <div id="global" class="table-responsive text-nowrap">
+            </div>                            
+                        
+            <div id="global" class="table-responsive">
               <div id="tablaResultados">
                 <section id="tabla_resultado"></section>
               </div>
             </div>
+
+            <!--<div class="table-responsive-lg">
+              <section id="tabla_resultado"></section>
+            </div>-->
     
             <div class="form-group col-lg-12 col-md-6 col-xs-12">
               <nav aria-label="Page navigation example" style="text-align:right; margin-right:5px">

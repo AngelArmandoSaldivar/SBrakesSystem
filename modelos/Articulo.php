@@ -108,23 +108,71 @@ class Articulo{
 		return ejecutarConsulta($sql);
 	}
 
-	public function articulosPagination($limit, $limit2, $busqueda) {
-		
-		$sql = "SELECT m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
-		a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
-		a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock
-		FROM articulo a INNER JOIN categoria c ON a.idcategoria=c.idcategoria
-		INNER JOIN marca m ON a.marca = m.idmarca
-		WHERE 
-		(a.codigo LIKE '%$busqueda%' OR
-		a.fmsi LIKE '%$busqueda%' OR
-		m.descripcion LIKE '%$busqueda%' OR
-		a.descripcion LIKE '%$busqueda%')
-		AND estado = 1
-		ORDER BY a.stock > 0 DESC, a.marca ASC LIMIT $limit OFFSET $limit2";
+	public function articulosPagination($limit, $limit2, $busqueda, $busqueda2) {
 
-		//usleep(90000);
-		return ejecutarConsulta($sql);
+		if ($busqueda != '' && $busqueda2 == '') {			
+			$sql = "SELECT c.nombre AS nombreCategoria, m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
+			a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
+			a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock
+			FROM articulo a INNER JOIN categoria c ON a.idcategoria=c.idcategoria
+			INNER JOIN marca m ON a.marca = m.idmarca
+			WHERE
+			(a.codigo LIKE '%$busqueda%' OR
+			a.fmsi LIKE '%$busqueda%' OR
+			m.descripcion LIKE '%$busqueda%' OR
+			a.descripcion LIKE '%$busqueda%')
+			AND estado = 1
+			ORDER BY a.stock > 0 DESC, a.marca ASC LIMIT $limit OFFSET $limit2";
+			return ejecutarConsulta($sql);	
+		} else 						
+		
+		if ($busqueda != '' && $busqueda2 != '') {				
+			$sql = "SELECT * FROM (SELECT c.nombre AS nombreCategoria, m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
+					a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
+					a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock
+					FROM articulo a INNER JOIN categoria c ON a.idcategoria=c.idcategoria
+					INNER JOIN marca m ON a.marca = m.idmarca
+					WHERE
+					(a.codigo LIKE '%$busqueda%' OR
+					a.fmsi LIKE '%$busqueda%' OR
+					m.descripcion LIKE '%$busqueda%' OR
+					a.descripcion LIKE '%$busqueda%')
+					AND a.estado = 1
+					ORDER BY a.stock > 0 DESC, a.marca ASC LIMIT $limit OFFSET $limit2
+					) AS tabla1
+					
+					UNION ALL
+					SELECT * FROM (SELECT cat.nombre AS nombreCategoria, mar.descripcion AS descripcionMarca, cat.nombre, ar.codigo, ar.fmsi, ar.idarticulo, ar.idcategoria, ar.descripcion, ar.estado,
+					ar.marca, ar.publico, ar.taller, ar.credito_taller, ar.mayoreo, ar.costo, ar.idproveedor, ar.stock_ideal,
+					ar.pasillo, ar.unidades, ar.barcode, ar.fecha_ingreso, ar.ventas, ar.idsucursal, ar.stock
+					FROM articulo ar INNER JOIN categoria cat ON ar.idcategoria=cat.idcategoria
+					INNER JOIN marca mar ON ar.marca = mar.idmarca
+					WHERE
+					(ar.codigo LIKE '%$busqueda2%' OR
+					ar.fmsi LIKE '%$busqueda2%' OR
+					mar.descripcion LIKE '%$busqueda2%' OR
+					ar.descripcion LIKE '%$busqueda2%')
+					AND ar.estado = 1
+					ORDER BY ar.stock > 0 DESC, ar.marca ASC LIMIT $limit OFFSET $limit2
+					) AS tabla2;";
+					return ejecutarConsulta($sql);
+		} else {		
+		$sql = "SELECT c.nombre AS nombreCategoria, m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
+				a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
+				a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock
+				FROM articulo a INNER JOIN categoria c ON a.idcategoria=c.idcategoria
+				INNER JOIN marca m ON a.marca = m.idmarca
+				WHERE
+				(a.codigo LIKE '%$busqueda%' OR
+				a.fmsi LIKE '%$busqueda%' OR
+				m.descripcion LIKE '%$busqueda%' OR
+				a.descripcion LIKE '%$busqueda%')
+				AND estado = 1
+				ORDER BY a.stock > 0 DESC, a.marca ASC LIMIT $limit OFFSET $limit2";
+				return ejecutarConsulta($sql);	
+		}
+
+				
 	}
 
 	public function filtroArticulosCopy($busqueda) {
