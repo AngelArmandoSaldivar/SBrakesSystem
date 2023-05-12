@@ -1340,12 +1340,12 @@ switch ($_GET["op"]) {
 											<td>".$fila['fmsi']."</td>
 											<td>".$fila['descripcionMarca']."</td>
 											<td>".$delit."...</td>
+											<td><p>".$fila["stock"]." pz</p></td>
 											<td><p>$ ".$costoMiles."</p></td>
 											<td><p>$ ".$publicMiles."</p></td>
 											<td><p>$ ".$tallerMiles."</p></td>
 											<td><p>$ ".$creditoMiles."</p></td>
-											<td><p>$ ".$mayoreoMiles."</p></td>
-											<td><p>".$fila["stock"]." pz</p></td>										
+											<td><p>$ ".$mayoreoMiles."</p></td>																					
 											<td><button style='width: 40px' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["descripcionMarca"]."\", \"".$fila["marca"]."\", \"".$fila[$precio]."\" , \"".$fila["taller"]."\" , \"".$fila["credito_taller"]."\" , \"".$fila["mayoreo"]."\" , \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
 										</tr>";
 									} else if($fila["stock"] < 1){
@@ -1354,12 +1354,12 @@ switch ($_GET["op"]) {
 											<td>".$fila['fmsi']."</td>
 											<td>".$fila['descripcionMarca']."</td>
 											<td>".$delit."...</td>
+											<td><p>".$fila["stock"]." pz</p></td>
 											<td><p>$ ".$costoMiles."</p></td>
 											<td><p>$ ".$publicMiles."</p></td>
 											<td><p>$ ".$tallerMiles."</p></td>
 											<td><p>$ ".$creditoMiles."</p></td>
-											<td><p>$ ".$mayoreoMiles."</p></td>
-											<td><p>".$fila["stock"]." pz</p></td>";
+											<td><p>$ ".$mayoreoMiles."</p></td>";
 									}
 								}
 							}
