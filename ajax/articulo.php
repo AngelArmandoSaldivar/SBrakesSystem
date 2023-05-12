@@ -18,10 +18,10 @@ if(!isset($_SESSION["nombre"])) {
 	$nombre=isset($_POST["nombre"])? limpiarCadena($_POST["nombre"]):"";
 	$marca=isset($_POST["marca"])? limpiarCadena($_POST["marca"]):"";
 	$costo=isset($_POST["costo"])? limpiarCadena($_POST["costo"]):"";
-	//$publico=isset($_POST["publico"])? limpiarCadena($_POST["publico"]):"";
-	//$taller=isset($_POST["taller"])? limpiarCadena($_POST["taller"]):"";
-	//$credito_taller=isset($_POST["credito_taller"])? limpiarCadena($_POST["credito_taller"]):"";
-	//$mayoreo=isset($_POST["mayoreo"])? limpiarCadena($_POST["mayoreo"]):"";
+	$publico=isset($_POST["publico"])? limpiarCadena($_POST["publico"]):"";
+	$taller=isset($_POST["taller"])? limpiarCadena($_POST["taller"]):"";
+	$credito_taller=isset($_POST["credito_taller"])? limpiarCadena($_POST["credito_taller"]):"";
+	$mayoreo=isset($_POST["mayoreo"])? limpiarCadena($_POST["mayoreo"]):"";
 	$stock=isset($_POST["stock"])? limpiarCadena($_POST["stock"]):"";	
 	$stock_ideal=isset($_POST["stock_ideal"])? limpiarCadena($_POST["stock_ideal"]):"";	
 	$descripcion=isset($_POST["descripcion"])? limpiarCadena($_POST["descripcion"]):"";
@@ -52,10 +52,10 @@ if(!isset($_SESSION["nombre"])) {
 			}
 
 			if (empty($idarticulo)) {				
-				$rspta=$articulo->insertar($codigo,$costo, $barcode, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $pasillo, $stock, $unidades, $idsucursal, $imagen, $dibujoTecnico, $stock_ideal, $bandera_inventariable);								
+				$rspta=$articulo->insertar($codigo,$costo, $publico, $taller, $credito_taller, $mayoreo, $barcode, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $pasillo, $stock, $unidades, $idsucursal, $imagen, $dibujoTecnico, $stock_ideal, $bandera_inventariable);								
 				echo $rspta ? "Articulo registrado correctamente" : "Articulo no registrado correctamente";				
 			}else{							
-				$rspta=$articulo->editar($idarticulo,$codigo,$costo, $barcode, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $pasillo, $stock, $unidades, $imagen, $dibujoTecnico, $stock_ideal, $bandera_inventariable);
+				$rspta=$articulo->editar($idarticulo,$codigo,$costo, $publico, $taller, $credito_taller, $mayoreo, $barcode, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $pasillo, $stock, $unidades, $imagen, $dibujoTecnico, $stock_ideal, $bandera_inventariable);
 				echo $rspta ? " Articulo actualizado correctamente" : "No se pudo actualizar los datos";
 			}
 		break;
@@ -144,6 +144,7 @@ if(!isset($_SESSION["nombre"])) {
 			$cantidad = '';
 			$termino= "";
 			$termino2 = "";
+
 			$consulta = $articulo->articulosPagination(20, 0, "", "");
 
 			if(!empty($_POST['articulos']) 

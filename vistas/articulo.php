@@ -224,7 +224,7 @@ if ($_SESSION['almacen']==1) {
                 <label>Precio Público <span class="text-danger">*</span></label>
                   <div class="input-group bootstrap-touchspin">                  
                     <span class="input-group-addon bootstrap-touchspin-prefix">$</span>
-                      <input class="form-control" type="text" step="any" name="publico" id="publico"  required placeholder="$" readonly>
+                      <input class="form-control" type="text" step="any" name="publico" id="publico" placeholder="$">
                     <span class="input-group-addon bootstrap-touchspin-prefix" id="utilidadPublico">%                      
                     </span>
                   </div>  
@@ -233,7 +233,7 @@ if ($_SESSION['almacen']==1) {
                 <label>Precio Taller <span class="text-danger">*</span></label>
                   <div class="input-group bootstrap-touchspin">                  
                     <span class="input-group-addon bootstrap-touchspin-prefix">$</span>
-                      <input class="form-control" type="text" step="any" name="taller" id="taller"  required placeholder="$" readonly>
+                      <input class="form-control" type="text" step="any" name="taller" id="taller" placeholder="$">
                       <span class="input-group-addon bootstrap-touchspin-prefix" id="utilidadTaller">%                      
                       </span>
                   </div>
@@ -243,7 +243,7 @@ if ($_SESSION['almacen']==1) {
                 <label>Precio Credito Taller <span class="text-danger">*</span></label>
                   <div class="input-group bootstrap-touchspin">                  
                     <span class="input-group-addon bootstrap-touchspin-prefix">$</span>
-                      <input class="form-control" type="text" step="any" name="credito_taller" id="credito_taller"  required placeholder="$" readonly>
+                      <input class="form-control" type="text" step="any" name="credito_taller" id="credito_taller" placeholder="$">
                       <span class="input-group-addon bootstrap-touchspin-prefix" id="utilidadCreditoTaller">%                      
                       </span>
                   </div>
@@ -252,7 +252,7 @@ if ($_SESSION['almacen']==1) {
                 <label>Precio Mayoreo <span class="text-danger">*</span></label>
                   <div class="input-group bootstrap-touchspin">                  
                     <span class="input-group-addon bootstrap-touchspin-prefix">$</span>
-                      <input class="form-control" type="text" step="any" name="mayoreo" id="mayoreo"  required placeholder="$" readonly>
+                      <input class="form-control" type="text" step="any" name="mayoreo" id="mayoreo" placeholder="$">
                       <span class="input-group-addon bootstrap-touchspin-prefix" id="utilidadMayoreo">%                      
                       </span>
                   </div>

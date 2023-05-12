@@ -11,6 +11,7 @@ public function __construct(){
 
 //metodo insertar registro
 public function insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_comprobante,$fecha_hora,$impuesto,$total_compra,$idarticulo,$clave,$fmsi,$descripcion,$cantidad,$precio_compra, $idsucursal, $idsucursalArticulo, $descuento){	
+	$impuesto = 0.0;
 	$total_compra = substr($total_compra, 1);
 	$caracter = ",";
 	$posicion = strpos($total_compra, $caracter);

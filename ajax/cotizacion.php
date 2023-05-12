@@ -947,7 +947,7 @@ switch ($_GET["op"]) {
 										<td><p>$ ".$creditoMiles."</p></td>
 										<td><p>$ ".$mayoreoMiles."</p></td>
 										<td><p>".$fila["stock"]." pz</p></td>										
-										<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalleEdit(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["marca"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
+										<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalleEdit(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcionMarca"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
 									</tr>";
 								} else if($fila["stock"] >=1 && $tipo_precio == null){
 									$precio = "publico";
@@ -1197,8 +1197,8 @@ switch ($_GET["op"]) {
 											<td><p>$ ".$publicMiles."</p></td>
 											<td><p>$ ".$costoMiles."</p></td>
 											<td>
-												<button style='width: 40px;' type='button' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\", \"".$fila["costo"]."\", \"".$fila["publico"]."\", \"".$fila["taller"]."\", \"".$fila["credito_taller"]."\", \"".$fila["mayoreo"]."\" )'><i class='fa fa-plus'></i></button></a>
-												<button style='width: 40px;' type='button' class='btn btn-success btn-xs' data-dismiss='modal' onclick='agregarDetalleImagen(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\", \"".$fila["costo"]."\", \"".$fila["publico"]."\", \"".$fila["taller"]."\", \"".$fila["credito_taller"]."\", \"".$fila["mayoreo"]."\", \"".$fila["imagen"]."\")'><i class='fa fa-plus'></i></button></a>
+												<button style='width: 40px;' type='button' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["descripcionMarca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\", \"".$fila["costo"]."\", \"".$fila["publico"]."\", \"".$fila["taller"]."\", \"".$fila["credito_taller"]."\", \"".$fila["mayoreo"]."\" )'><i class='fa fa-plus'></i></button></a>
+												<button style='width: 40px;' type='button' class='btn btn-success btn-xs' data-dismiss='modal' onclick='agregarDetalleImagen(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["descripcionMarca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\", \"".$fila["costo"]."\", \"".$fila["publico"]."\", \"".$fila["taller"]."\", \"".$fila["credito_taller"]."\", \"".$fila["mayoreo"]."\", \"".$fila["imagen"]."\")'><i class='fa fa-plus'></i></button></a>
 											</td>										
 										</tr>";
 									} else if($fila["stock"] >=1 && $tipo_precio == null){
@@ -1215,8 +1215,8 @@ switch ($_GET["op"]) {
 											<td><p>$ ".$mayoreoMiles."</p></td>
 											<td><p>".$fila["stock"]." pz</p></td>										
 											<td>
-												<button style='width: 40px' class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\", \"".$fila["costo"]."\", \"".$fila["publico"]."\", \"".$fila["taller"]."\", \"".$fila["credito_taller"]."\", \"".$fila["mayoreo"]."\" )'><span class='fa fa-plus'></span></button>
-												<button style='width: 40px;' type='button' class='btn btn-success btn-xs' data-dismiss='modal' onclick='agregarDetalleImagen(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\", \"".$fila["costo"]."\", \"".$fila["publico"]."\", \"".$fila["taller"]."\", \"".$fila["credito_taller"]."\", \"".$fila["mayoreo"]."\", \"".$fila["imagen"]."\")'><i class='fa fa-plus'></i></button></a>
+												<button style='width: 40px' class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["descripcionMarca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\", \"".$fila["costo"]."\", \"".$fila["publico"]."\", \"".$fila["taller"]."\", \"".$fila["credito_taller"]."\", \"".$fila["mayoreo"]."\" )'><span class='fa fa-plus'></span></button>
+												<button style='width: 40px;' type='button' class='btn btn-success btn-xs' data-dismiss='modal' onclick='agregarDetalleImagen(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["descripcionMarca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\", \"".$fila["costo"]."\", \"".$fila["publico"]."\", \"".$fila["taller"]."\", \"".$fila["credito_taller"]."\", \"".$fila["mayoreo"]."\", \"".$fila["imagen"]."\")'><i class='fa fa-plus'></i></button></a>
 											</td>
 										</tr>";
 									} else if($fila["stock"] < 1){
@@ -1232,8 +1232,8 @@ switch ($_GET["op"]) {
 											<td><p>$ ".$mayoreoMiles."</p></td>
 											<td><p>".$fila["stock"]." pz</p></td>
 											<td>
-												<button style='width: 40px' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\", \"".$fila["costo"]."\", \"".$fila["publico"]."\", \"".$fila["taller"]."\", \"".$fila["credito_taller"]."\", \"".$fila["mayoreo"]."\" )'><span class='fa fa-plus'></span></button>
-												<button style='width: 40px;' type='button' class='btn btn-success btn-xs' data-dismiss='modal' onclick='agregarDetalleImagen(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\", \"".$fila["costo"]."\", \"".$fila["publico"]."\", \"".$fila["taller"]."\", \"".$fila["credito_taller"]."\", \"".$fila["mayoreo"]."\", \"".$fila["imagen"]."\")'><i class='fa fa-plus'></i></button></a>
+												<button style='width: 40px' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["descripcionMarca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\", \"".$fila["costo"]."\", \"".$fila["publico"]."\", \"".$fila["taller"]."\", \"".$fila["credito_taller"]."\", \"".$fila["mayoreo"]."\" )'><span class='fa fa-plus'></span></button>
+												<button style='width: 40px;' type='button' class='btn btn-success btn-xs' data-dismiss='modal' onclick='agregarDetalleImagen(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["descripcionMarca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\", \"".$fila["costo"]."\", \"".$fila["publico"]."\", \"".$fila["taller"]."\", \"".$fila["credito_taller"]."\", \"".$fila["mayoreo"]."\", \"".$fila["imagen"]."\")'><i class='fa fa-plus'></i></button></a>
 											</td>";
 									}
 								}

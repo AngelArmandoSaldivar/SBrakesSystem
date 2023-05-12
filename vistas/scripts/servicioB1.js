@@ -360,24 +360,30 @@ function detalleCotizacion(idcotizacion, idsucursal) {
 	$.post("../ajax/servicio.php?op=detallesCotizacion&idcotizacion=" + idcotizacion,
 	function(data,status)
 	{		
-		data = JSON.parse(data);
-		for (let index = 0; index < data.length; index++) {
-			var fila='<tr style="font-size:12px" class="filas" id="fila'+index+'">'+
-			'<td><button style="width: 40px;" title="Eliminar" type="button" class="btn btn-danger btn-xs" onclick="eliminarDetalle('+index+')">X</button></td>'+        
-			'<td><input type="hidden" name="clave[]" value="'+data[index].codigo+'"> <input class="form-control" type="hidden" name="idsucursalArticulo[]" value="'+idsucursal+'"> <input class="form-control" type="hidden" name="idarticulo[]" value="'+data[index].idarticulo+'">'+data[index].codigo+'</td>'+
-			'<td><input type="hidden" name="fmsi[]" id="fmsi[]" value="'+data[index].fmsi+'">'+data[index].fmsi+'</td>'+
-			'<td><input type="hidden" name="marca[]" id="marca[]" value="'+data[index].marca+'">'+data[index].marca+'</td>'+
-			'<td><textarea class="form-control" id="descripcion[]" name="descripcion[]" rows="2" style="width: 280px;" value="'+data[index].descripcion+'">'+data[index].descripcion+'</textarea></td>'+
-			'<td><input style="width: 55px;" type="number" onblur="modificarSubtotales()" name="cantidad[]" id="cantidad[]" value="'+cantidad+'" max="'+data[index].cantidad+'" min="1"></td>'+		
-			'<td><input style="width: 70px;" type="number" onblur="modificarSubtotales()" name="precio_servicio[]" id="precio_servicio[]" value="'+data[index].precio_cotizacion+'"></td>'+
-			'<td><input style="width: 70px;" type="number" onblur="modificarSubtotales()" name="descuento[]" value="'+descuento+'"></td>'+
-			'<td><span id="subtotal'+index+'" name="subtotal" value="'+sub+'"></span></td>'+			
-			'</tr>';			
-
-			$('#detalles').append(fila);
-			modificarSubtotales();
-			detalles ++;
-		}		
+		data = JSON.parse(data);			
+			for (let index = 0; index < data.length; index++) {
+				$.post("../ajax/articulo.php?op=mostrar",{idarticulo : data[index].idarticulo},
+				function(res,status){
+					res = JSON.parse(res);
+					//if (data[index].cantidad <= res.stock) {						
+						var fila='<tr style="font-size:12px" class="filas" id="fila'+index+'">'+
+						'<td><button style="width: 40px;" title="Eliminar" type="button" class="btn btn-danger btn-xs" onclick="eliminarDetalle('+index+')">X</button></td>'+        
+						'<td><input type="hidden" name="clave[]" value="'+data[index].codigo+'"> <input class="form-control" type="hidden" name="idsucursalArticulo[]" value="'+idsucursal+'"> <input class="form-control" type="hidden" name="idarticulo[]" value="'+data[index].idarticulo+'">'+data[index].codigo+'</td>'+
+						'<td><input type="hidden" name="fmsi[]" id="fmsi[]" value="'+data[index].fmsi+'">'+data[index].fmsi+'</td>'+
+						'<td><input type="hidden" name="marca[]" id="marca[]" value="'+data[index].marca+'">'+data[index].descripcionMarca+'</td>'+
+						'<td><textarea class="form-control" id="descripcion[]" name="descripcion[]" rows="2" style="width: 280px;" value="'+data[index].descripcion+'">'+data[index].descripcion+'</textarea></td>'+
+						'<td><input style="width: 55px;" type="number" onblur="modificarSubtotales()" name="cantidad[]" id="cantidad[]" value="'+data[index].cantidad+'" max="'+res.stock+'" min="1"></td>'+		
+						'<td><input style="width: 70px;" type="number" onblur="modificarSubtotales()" name="precio_servicio[]" id="precio_servicio[]" value="'+data[index].precio_cotizacion+'"></td>'+
+						'<td><input style="width: 70px;" type="number" onblur="modificarSubtotales()" name="descuento[]" value="'+descuento+'"></td>'+
+						'<td><span id="subtotal'+index+'" name="subtotal" value="'+sub+'"></span></td>'+			
+						'</tr>';			
+			
+						$('#detalles').append(fila);
+						modificarSubtotales();
+						detalles ++;
+					//}
+				})			
+			}		
 		if(detalles > 0) {
 			$("#btnGuardar").show();
 		} else {
@@ -2370,9 +2376,13 @@ function marcarImpuesto(){
 	}
 }
 
-function agregarDetalle(idarticulo,articulo,fmsi, descripcion,marca,idmarca, publico, stock, idsucursal){
+function agregarDetalle(idarticulo,articulo,fmsi, descripcion,marca,idmarca, publico, taller, credito, mayoreo, stock, idsucursal){
 	var cantidad=1;
 	var descuento=0;	
+
+	let tipoPrecio = document.getElementById("tipoPrecio").value;
+
+	precioServ = tipoPrecio == "Publico / Mostrador" ? publico : tipoPrecio == "Taller" ? taller : tipoPrecio == "Credito Taller" ? credito : tipoPrecio == "Mayoreo" ? mayoreo : publico;	
 	
 	if (idarticulo!="") {
 		var fila='<tr style="font-size:12px" class="filas" id="fila'+cont+'">'+
@@ -2382,9 +2392,9 @@ function agregarDetalle(idarticulo,articulo,fmsi, descripcion,marca,idmarca, pub
 		'<td><input type="hidden" name="marca[]" id="marca[]" value="'+idmarca+'">'+marca+'</td>'+
 		'<td><textarea class="form-control" id="descripcion[]" name="descripcion[]" rows="2" style="width: 280px;" value="'+descripcion+'">'+descripcion+'</textarea></td>'+
         '<td><input style="width: 55px;" type="number" onblur="modificarSubtotales()" name="cantidad[]" id="cantidad[]" value="'+cantidad+'" max="'+stock+'" min="1"></td>'+
-        '<td><input style="width: 70px;" type="number" onblur="modificarSubtotales()" name="precio_servicio[]" id="precio_servicio[]" step="any" value="'+publico+'"></td>'+
+        '<td><input style="width: 70px;" type="number" onblur="modificarSubtotales()" name="precio_servicio[]" id="precio_servicio[]" step="any" value="'+precioServ+'"></td>'+
         '<td><input style="width: 70px;" type="number" onblur="modificarSubtotales()" name="descuento[]" id="descuento[]" value="'+descuento+'"></td>'+
-        '<td><span id="subtotal'+cont+'" name="subtotal">'+ publico*cantidad +'</span></td>'+        
+        '<td><span id="subtotal'+cont+'" name="subtotal">'+ precioServ*cantidad +'</span></td>'+        
 		'</tr>';
 		cont++;
 		detalles++;
@@ -2396,13 +2406,17 @@ function agregarDetalle(idarticulo,articulo,fmsi, descripcion,marca,idmarca, pub
 	}
 }
 
-function agregarDetalleEdit(idarticulo,articulo,fmsi, marca, descripcion,publico, stock, idarticuloSucursal){	
+function agregarDetalleEdit(idarticulo,articulo,fmsi, marca, descripcion,publico, taller, credito, mayoreo, stock, idarticuloSucursal){	
 	stock = 1;
 
 	//console.log("ID ARTICULO: ", idarticulo, "\nCÓDIGO: ", articulo, "\nFMSI: ", fmsi, "\nMARCA: ", marca, "\nDESCRIPCIÓN: ", descripcion, "\nCOSTO: ", publico, "\nCANTIDAD: ", stock);	
 	var idservicio = document.getElementById("idservicio").value;	
 	var idcliente = document.getElementById("idcliente").value;
 	console.log(`ID SERVICIO:${idservicio.trim()}`);
+
+	let tipoPrecio = document.getElementById("tipoPrecio").value;
+
+	precioServ = tipoPrecio == "Publico" ? publico : tipoPrecio == "Taller" ? taller : tipoPrecio == "Credito Taller" ? credito : tipoPrecio == "Mayoreo" ? mayoreo : publico;	
 
 	var now = new Date();
 	var day =("0"+now.getDate()).slice(-2);
@@ -2414,7 +2428,7 @@ function agregarDetalleEdit(idarticulo,articulo,fmsi, marca, descripcion,publico
 		$.ajax({
 			url: "../ajax/servicio.php?op=guardarProductoServicio&idservicios=" + idservicio + "&idArticulo=" + idarticulo + "&codigoArticulo="+articulo
 			+ "&fmsiArticulo="+ fmsi + "&marcaArticulo="+marca + "&descripcionArticulo="+descripcion
-			+ "&costoArticulo="+publico + "&cantidadArticulo="+stock+"&servicioId="+idservicio + "&dateTime=" + today
+			+ "&costoArticulo="+precioServ + "&cantidadArticulo="+stock+"&servicioId="+idservicio + "&dateTime=" + today
 			+ "&idcliente=" + idcliente + "&idarticuloSucursal=" + idarticuloSucursal,
 			type: "POST",			
 		   beforeSend: function() {

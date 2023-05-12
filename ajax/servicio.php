@@ -1151,7 +1151,7 @@ switch ($_GET["op"]) {
 										<td><p>$ ".$creditoMiles."</p></td>
 										<td><p>$ ".$mayoreoMiles."</p></td>
 										<td><p>".$fila["stock"]." pz</p></td>										
-										<td><button style='width: 40px' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalleEdit(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["marca"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
+										<td><button style='width: 40px' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalleEdit(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["marca"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\" , \"".$fila["taller"]."\" , \"".$fila["credito_taller"]."\" , \"".$fila["mayoreo"]."\", \"".$fila["taller"]."\" , \"".$fila["credito_taller"]."\" , \"".$fila["mayoreo"]."\" , \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
 									</tr>";
 								} else if($fila["stock"] >=1 && $tipo_precio == null){
 									$precio = "publico";
@@ -1166,7 +1166,7 @@ switch ($_GET["op"]) {
 										<td><p>$ ".$creditoMiles."</p></td>
 										<td><p>$ ".$mayoreoMiles."</p></td>
 										<td><p>".$fila["stock"]." pz</p></td>										
-										<td><button style='width: 40px' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalleEdit(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["marca"]."\", \"".$fila["descripcion"]."\", \"".$fila[$precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
+										<td><button style='width: 40px' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalleEdit(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["marca"]."\", \"".$fila["descripcion"]."\", \"".$fila[$precio]."\" , \"".$fila["taller"]."\" , \"".$fila["credito_taller"]."\" , \"".$fila["mayoreo"]."\", \"".$fila["taller"]."\" , \"".$fila["credito_taller"]."\" , \"".$fila["mayoreo"]."\" , \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
 									</tr>";
 								} else if($fila["stock"] < 1){
 									echo "<tr style='color:red;'>
@@ -1286,17 +1286,23 @@ switch ($_GET["op"]) {
 								<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarDescripcion()'><i class='fa fa-eye-slash'></i></button></th>
 								<th id='thStock' class='bg-info' scope='col'>Stock
 								<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarStock()'><i class='fa fa-eye-slash'></i></button></th>
-								<th id='thMayoreo' class='bg-info' scope='col'>Mayoreo
-									<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarMayoreo()'><i class='fa fa-eye-slash'></i></button></th>
-								<th id='thTaller' class='bg-info' scope='col'>Taller
-								<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarTaller()'><i class='fa fa-eye-slash'></i></button></th>
-								<th id='thCredito' class='bg-info' scope='col'>Crédito Taller
-								<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarCredito()'><i class='fa fa-eye-slash'></i></button></th>
-								<th id='thPublico' class='bg-info' scope='col'>Publico Mostrador
-								<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarPublico()'><i class='fa fa-eye-slash'></i></button></th>
+								
 								<th id='thCosto' class='bg-info' scope='col'>Costo
 								<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarCosto()'><i class='fa fa-eye-slash'></i></button></th>
-									<th class='bg-info' scope='col' style='width: 10px;'>Acciones</th>
+								
+								<th id='thPublico' class='bg-info' scope='col'>Publico Mostrador
+								<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarPublico()'><i class='fa fa-eye-slash'></i></button></th>
+								
+								<th id='thTaller' class='bg-info' scope='col'>Taller
+								<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarTaller()'><i class='fa fa-eye-slash'></i></button></th>
+
+								<th id='thCredito' class='bg-info' scope='col'>Crédito Taller
+								<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarCredito()'><i class='fa fa-eye-slash'></i></button></th>								
+								
+								<th id='thMayoreo' class='bg-info' scope='col'>Mayoreo
+									<button data-trigger='hover' data-placement='top' class='btn btn-primary btn-xs' onclick='ocultarMayoreo()'><i class='fa fa-eye-slash'></i></button></th>																
+								<th class='bg-info' scope='col' style='width: 10px;'>Acciones</th>
+								
 								</tr>
 							</thead>
 						<tbody>";
@@ -1320,12 +1326,12 @@ switch ($_GET["op"]) {
 											<td>".$fila['descripcionMarca']."</td>
 											<td>".$delit."...</td>
 											<td><p>".$fila["stock"]." pz</p></td>
-											<td><p>$ ".$mayoreoMiles."</p></td>
+											<td><p>$ ".$costoMiles."</p></td>
+											<td><p>$ ".$publicMiles."</p></td>
 											<td><p>$ ".$tallerMiles."</p></td>
 											<td><p>$ ".$creditoMiles."</p></td>
-											<td><p>$ ".$publicMiles."</p></td>
-											<td><p>$ ".$costoMiles."</p></td>
-											<td><button style='width: 40px' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["descripcionMarca"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\" )'><span class='fa fa-plus'></span></button></td>
+											<td><p>$ ".$mayoreoMiles."</p></td>
+											<td><button style='width: 40px' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["descripcionMarca"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\" , \"".$fila["taller"]."\" , \"".$fila["credito_taller"]."\" , \"".$fila["mayoreo"]."\" , \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\" )'><span class='fa fa-plus'></span></button></td>
 										</tr>";
 									} else if($fila["stock"] >=1 && $tipo_precio == null){
 										$precio = "publico";
@@ -1340,7 +1346,7 @@ switch ($_GET["op"]) {
 											<td><p>$ ".$creditoMiles."</p></td>
 											<td><p>$ ".$mayoreoMiles."</p></td>
 											<td><p>".$fila["stock"]." pz</p></td>										
-											<td><button style='width: 40px' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["descripcionMarca"]."\", \"".$fila["marca"]."\", \"".$fila[$precio]."\" , \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
+											<td><button style='width: 40px' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["descripcionMarca"]."\", \"".$fila["marca"]."\", \"".$fila[$precio]."\" , \"".$fila["taller"]."\" , \"".$fila["credito_taller"]."\" , \"".$fila["mayoreo"]."\" , \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
 										</tr>";
 									} else if($fila["stock"] < 1){
 										echo "<tr style='color:red;'>
@@ -1538,7 +1544,7 @@ switch ($_GET["op"]) {
 												<td><p>$ ".$creditoMiles."</p></td>
 												<td><p>$ ".$mayoreoMiles."</p></td>
 												<td><p>".$fila["stock"]." pz</p></td>										
-												<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalleEdit(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["marca"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
+												<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalleEdit(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["marca"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\" , \"".$fila["taller"]."\" , \"".$fila["credito_taller"]."\" , \"".$fila["mayoreo"]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
 											</tr>";
 										} else if($fila["stock"] >=1 && $tipo_precio == null){
 											$precio = "publico";
@@ -1553,7 +1559,7 @@ switch ($_GET["op"]) {
 												<td><p>$ ".$creditoMiles."</p></td>
 												<td><p>$ ".$mayoreoMiles."</p></td>
 												<td><p>".$fila["stock"]." pz</p></td>										
-												<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalleEdit(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["marca"]."\", \"".$fila["descripcion"]."\", \"".$fila[$precio]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
+												<td><button class='btn btn-warning' data-dismiss='modal' onclick='agregarDetalleEdit(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["marca"]."\", \"".$fila["descripcion"]."\", \"".$fila[$precio]."\" , \"".$fila["taller"]."\" , \"".$fila["credito_taller"]."\" , \"".$fila["mayoreo"]."\", \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
 											</tr>";
 										} else if($fila["stock"] < 1){
 											echo "<tr style='color:red;'>

@@ -13,20 +13,18 @@ class Articulo{
 	}
 
 	//metodo insertar registro
-	public function insertar($codigo, $costo, $barcode, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $pasillo,$stock, $unidades, $idsucursal, $imagen, $dibujo, $stock_ideal, $bandera_inventariable){						
-				
-		$sql = "SELECT * FROM marca WHERE idMarca='$marca'";
-		$data = ejecutarConsulta($sql);
-		$publico = 0.0;
-		$taller = 0.0;
-		$credito_taller = 0.0;
-		$mayoreo = 0.0;
-		while($fila=$data->fetch_array(MYSQLI_ASSOC)){
-			$publico = ((($fila["utilidad_1"] / 100) * $costo) + $costo);
-			$taller = ((($fila["utilidad_2"] / 100) * $costo) + $costo);
-			$credito_taller = ((($fila["utilidad_3"] / 100) * $costo) + $costo);
-			$mayoreo = ((($fila["utilidad_4"] / 100) * $costo) + $costo);
-		}
+	public function insertar($codigo, $costo, $publico, $taller, $credito_taller, $mayoreo, $barcode, $descripcion, $fmsi, $idcategoria, $idproveedor,$marca, $pasillo,$stock, $unidades, $idsucursal, $imagen, $dibujo, $stock_ideal, $bandera_inventariable){						
+		
+		if ($publico == '' && $taller == '' && $credito_taller == '' && $mayoreo == '') {
+			$sql = "SELECT * FROM marca WHERE idMarca='$marca'";
+			$data = ejecutarConsulta($sql);		
+			while($fila=$data->fetch_array(MYSQLI_ASSOC)){
+				$publico = ((($fila["utilidad_1"] / 100) * $costo) + $costo);
+				$taller = ((($fila["utilidad_2"] / 100) * $costo) + $costo);
+				$credito_taller = ((($fila["utilidad_3"] / 100) * $costo) + $costo);
+				$mayoreo = ((($fila["utilidad_4"] / 100) * $costo) + $costo);
+			}	
+		}		
 		
 		$sql="INSERT INTO articulo (codigo, costo, barcode, credito_taller, descripcion, fmsi, idcategoria, idproveedor, marca, mayoreo, pasillo, publico, stock, stock_ideal, taller, unidades, estado, idsucursal, imagen, dibujo_tecnico, bandera_inventariable) VALUES ('$codigo', '$costo', '$barcode', '$credito_taller', '$descripcion', '$fmsi', $idcategoria, '$idproveedor', '$marca', '$mayoreo', '$pasillo', '$publico', '$stock', '$stock_ideal', '$taller', '$unidades', '1', '$idsucursal', '$imagen', '$dibujo', '$bandera_inventariable')";		
 		return ejecutarConsulta($sql);
@@ -39,20 +37,18 @@ class Articulo{
 		return ejecutarConsulta($sql);
 	}
 		
-	public function editar($idarticulo,$codigo,$costo, $barcode, $descripcion,$fmsi,$idcategoria, $idproveedor, $marca, $pasillo, $stock, $unidades, $imagen, $dibujo, $stock_ideal, $bandera_inventariable){
+	public function editar($idarticulo,$codigo,$costo, $publico, $taller, $credito_taller, $mayoreo, $barcode, $descripcion,$fmsi,$idcategoria, $idproveedor, $marca, $pasillo, $stock, $unidades, $imagen, $dibujo, $stock_ideal, $bandera_inventariable){
 
-		$sql = "SELECT * FROM marca WHERE idMarca='$marca'";
-		$data = ejecutarConsulta($sql);
-		$publico = 0.0;
-		$taller = 0.0;
-		$credito_taller = 0.0;
-		$mayoreo = 0.0;
-		while($fila=$data->fetch_array(MYSQLI_ASSOC)){
-			$publico = ((($fila["utilidad_1"] / 100) * $costo) + $costo);
-			$taller = ((($fila["utilidad_2"] / 100) * $costo) + $costo);
-			$credito_taller = ((($fila["utilidad_3"] / 100) * $costo) + $costo);
-			$mayoreo = ((($fila["utilidad_4"] / 100) * $costo) + $costo);
-		}
+		if ($publico == '' && $taller == '' && $credito_taller == '' && $mayoreo == '') {			
+			$sql = "SELECT * FROM marca WHERE idMarca='$marca'";
+			$data = ejecutarConsulta($sql);
+			while($fila=$data->fetch_array(MYSQLI_ASSOC)){
+				$publico = ((($fila["utilidad_1"] / 100) * $costo) + $costo);
+				$taller = ((($fila["utilidad_2"] / 100) * $costo) + $costo);
+				$credito_taller = ((($fila["utilidad_3"] / 100) * $costo) + $costo);
+				$mayoreo = ((($fila["utilidad_4"] / 100) * $costo) + $costo);
+			}	
+		}		
 
 		$sql="UPDATE articulo SET codigo='$codigo', costo='$costo', barcode='$barcode', credito_taller='$credito_taller', descripcion='$descripcion', fmsi='$fmsi', idcategoria='$idcategoria', idproveedor='$idproveedor', marca='$marca', mayoreo='$mayoreo', pasillo='$pasillo', publico='$publico', stock='$stock', stock_ideal='$stock_ideal', taller='$taller', unidades='$unidades', imagen='$imagen', dibujo_tecnico='$dibujo', bandera_inventariable='$bandera_inventariable'
 		WHERE idarticulo='$idarticulo'";
@@ -110,6 +106,20 @@ class Articulo{
 
 	public function articulosPagination($limit, $limit2, $busqueda, $busqueda2) {
 
+		$sql = "SELECT c.nombre AS nombreCategoria, m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
+				a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
+				a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock
+				FROM articulo a INNER JOIN categoria c ON a.idcategoria=c.idcategoria
+				INNER JOIN marca m ON a.marca = m.idmarca
+				WHERE
+				(a.codigo LIKE '%$busqueda%' OR
+				a.fmsi LIKE '%$busqueda%' OR
+				m.descripcion LIKE '%$busqueda%' OR
+				a.descripcion LIKE '%$busqueda%')
+				AND estado = 1
+				ORDER BY a.stock > 0 DESC, a.marca ASC LIMIT $limit OFFSET $limit2";
+				return ejecutarConsulta($sql);	
+
 		if ($busqueda != '' && $busqueda2 == '') {			
 			$sql = "SELECT c.nombre AS nombreCategoria, m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
 			a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
@@ -156,23 +166,7 @@ class Articulo{
 					ORDER BY ar.stock > 0 DESC, ar.marca ASC LIMIT $limit OFFSET $limit2
 					) AS tabla2;";
 					return ejecutarConsulta($sql);
-		} else {		
-		$sql = "SELECT c.nombre AS nombreCategoria, m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
-				a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
-				a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock
-				FROM articulo a INNER JOIN categoria c ON a.idcategoria=c.idcategoria
-				INNER JOIN marca m ON a.marca = m.idmarca
-				WHERE
-				(a.codigo LIKE '%$busqueda%' OR
-				a.fmsi LIKE '%$busqueda%' OR
-				m.descripcion LIKE '%$busqueda%' OR
-				a.descripcion LIKE '%$busqueda%')
-				AND estado = 1
-				ORDER BY a.stock > 0 DESC, a.marca ASC LIMIT $limit OFFSET $limit2";
-				return ejecutarConsulta($sql);	
-		}
-
-				
+		}				
 	}
 
 	public function filtroArticulosCopy($busqueda) {
