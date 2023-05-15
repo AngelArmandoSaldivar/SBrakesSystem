@@ -260,9 +260,9 @@ if ($_SESSION['servicios']==1) {
                       <center><h4 aling="center">Detalle cobro</h4></center>
                     </div>              
                     <div class="form-group col-lg-12 col-md-4 col-xs-12">
-                      <a data-toggle="modal" href="#modalAddCobro">
+                      <!--<a data-toggle="modal" href="#modalAddCobro">
                         <button class="btn btn-primary" type="submit" id="btnAddPago" onclick="infoPago()"> + </i>  Añadir método de pago</button>
-                      </a>
+                      </a>-->
                     </div>
                     <div class="form-group col-lg-12 col-md-12 col-xs-12">
                       <div class="panel-body table-responsive">
@@ -672,7 +672,7 @@ if ($_SESSION['servicios']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/servicioB1.js"></script>
+ <script src="scripts/servicios.js"></script>
  <?php 
 }
 

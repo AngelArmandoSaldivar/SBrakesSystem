@@ -961,8 +961,13 @@ function obtener_registros(articulos, articulos2){
 		busqueda = extraida;
 	}
 
+	console.log("BUSQUEDA 1 : " + articulos);
+	console.log("BUSQUEDA 2 : " + articulos2);
+	console.log("LIMITE REGISTROS : " + limitesRegistros);
+	console.log("PAGINADO : " + paginado);	
 
-	if(articulos == undefined && articulos2 == undefined && limitesRegistros == null && paginado == 1) {		
+
+	if(articulos == undefined && articulos2 == '' && limitesRegistros == null && paginado == 1) {		
 		//var ContainerElement = document.getElementById("container");
 		//var y = ContainerElement.scrollTop;
 		//ContainerElement.scroll(0,1000)
@@ -1170,17 +1175,14 @@ $(document).ready(function() {
 		var posicionCaracter = valorBusqueda.indexOf("/");
 
 		if (posicionCaracter > 0) {									
-			let extraida = valorBusqueda.substring(posicionCaracter + 1, 100).trim();	
-			/*console.log("BUSQUEDA 1: " + extraida);
-			console.log("BUSQUEDA 2: " + valorBusqueda);*/
+			let extraida = valorBusqueda.substring(posicionCaracter + 1, 100).trim();		
 			obtener_registros(valorBusqueda, extraida);		
 		}
 
 		if (valorBusqueda!="")
-		{		
-			obtener_registros(valorBusqueda, "");
-
-		} else {				
+		{
+			obtener_registros(valorBusqueda, "");			
+		} else {					
 			obtener_registros();
 		}
     });

@@ -38,19 +38,21 @@ if ($_SESSION['almacen']==1) {
                   </a>
                 </div>
                 <div class="btn-group" role="group" id="movimientos_caja">
-                  <form onsubmit="event.preventDefault();">                  
-                   
+                  <div class="form-group col-lg-12 col-md-2 col-xs-6" id="divImpuesto"></div>
+                  <div class="form-group col-lg-12 col-md-2 col-xs-6" id="divImpuesto"></div>                  
+                </div>
+                <div class="btn-group" role="group" id="movimientos_caja">
+                  <form onsubmit="event.preventDefault();">                                     
                       <div class="form-group col-lg-12 col-md-2 col-xs-6" id="divImpuesto">
                           <div class="form-group">
                               <div class="input-group bootstrap-touchspin">
                                   <span class="input-group-btn">                                
                                   </span><span class="input-group-addon bootstrap-touchspin-prefix">Buscar: </span>                                                                            
-                                  <input class="form-control" type="input" name="busqueda" id="busqueda"></input>
+                                  <center><input class="form-control" type="input" name="busqueda" id="busqueda"></input></center>
                                   <span class="input-group-addon bootstrap-touchspin-postfix"><i class="fa fa-search pull-right" aria-hidden="true"></i></span>                                                    
                               </div>
                           </div>                                           
-                      </div> 
-                    
+                      </div>                     
                   </form>    
                 </div>
               </div>            
@@ -344,7 +346,7 @@ require 'footer.php'
  ?>
  <script src="../public/js/JsBarcode.all.min.js"></script>
  <script src="../public/js/jquery.PrintArea.js"></script>
- <script src="scripts/articulo.js"></script>
+ <script src="scripts/articulos.js"></script>
  <?php 
 }
 

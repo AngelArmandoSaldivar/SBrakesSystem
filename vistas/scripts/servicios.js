@@ -2004,10 +2004,10 @@ function eliminarCobro(idcobro, importe, idservicio) {
 		
 }
 function cobrarServicio(idservicio){
-	mostrarform(true);
+	//mostrarform(true);
 	$('.loader').show();
 	viewClient(idservicio);
-	$("#btnAgregarArt").hide();
+	/*$("#btnAgregarArt").hide();
 	$("#btnAgregarArticulosEdit").hide();
 	$("#btnAgregarArticulo").hide();
 	$("#btnEliminarCobro").hide();
@@ -2018,14 +2018,15 @@ function cobrarServicio(idservicio){
 	$("#detalleAuto").hide();
 
 	$("#btnGuardar").hide();
-	$("#btnAddPago").show();	
+	$("#btnAddPago").show();*/
 
 	detallesServicio(idservicio);
 	mostrarPagosEdit(idservicio);
 }
-function infoPago() {
+function infoPago(idservicio) {
 	//$('#modalAddCobro').modal({backdrop: 'static', keyboard: false})
-	let idservicio = document.getElementById("idservicio").value;
+	//let idservicio = document.getElementById("idservicio").value;
+	$("#idServicioCobro").val(idservicio);
 	console.log("ID SERVICIO: ", idservicio);
 	$.post("../ajax/servicio.php?op=mostrar",{idservicio : idservicio},
 	function(data,status)
@@ -2035,9 +2036,10 @@ function infoPago() {
 		data=JSON.parse(data);		
 		console.log(data);	
 		let totalPagar = data.total_servicio - data.pagado;
-		$("#clienteCobro").val(data.cliente).prop("disabled", true);
+		$("#clienteCobro").val(data.cliente);
+		$("#idClienteCobro").val(data.idcliente);
 		$("#totalCobro").val(pesosMexicanos.format(data.total_servicio)).prop("disabled", true);
-		$("#importeCobro").val(Number(data.total_servicio)).prop("disabled", false);
+		$("#importeCobro").val(Number(totalPagar)).prop("disabled", false);
 		$("#porPagar").val(pesosMexicanos.format(totalPagar)).prop("disabled", true);
 
 		if(totalPagar == 0) {
@@ -2055,16 +2057,18 @@ function mostrarPagoEdit(idpago) {
 	{
 		data=JSON.parse(data);
 		let totalPagar = data.total_servicio - data.pagado;
+		$("#idServicioCobro").val(idservicio);
+		$("#idClienteCobro").val(data.idcliente);
 		$("#clienteCobro").val(data.cliente).prop("disabled", true);
-		$("#totalCobro").val("$" + data.total_servicio).prop("disabled", true);			
-		$("#porPagar").val(pesosMexicanos.format(totalPagar)).prop("disabled", true);		
+		$("#totalCobro").val("$" + data.total_servicio).prop("disabled", true);
+		$("#porPagar").val(pesosMexicanos.format(totalPagar)).prop("disabled", true);
 		$("#btnGuardarCobro").show();
 	});
 
 	$.post("../ajax/servicio.php?op=mostrarPagoEdit&" + "idpago=" + idpago,
 	function(data,status)
 	{
-		data=JSON.parse(data);		
+		data=JSON.parse(data);
 		console.log(data);
 		
 		$("#importeCobro").val(data.importe).prop("disabled", false);
@@ -2088,8 +2092,8 @@ function guardarCobro() {
 
 	//limpiarPagoForm();
 	
-	let idservicio = document.getElementById("idservicio").value;
-	let idcliente = document.getElementById("idcliente").value;
+	let idservicio = document.getElementById("idServicioCobro").value;
+	let idcliente = document.getElementById("idClienteCobro").value;
 	let importeCobro = document.getElementById("importeCobro").value;
 	let metodoPago = document.getElementById("metodoPago").value;
 	let banco = document.getElementById("banco").value;
@@ -2100,6 +2104,12 @@ function guardarCobro() {
 	var today=now.getFullYear()+"-"+(month)+"-"+(day);	
 	var formData=new FormData($("#formularioAddCobro")[0]);
 
+	if (idservicio == '' || idcliente == '' || importeCobro == '' || metodoPago == '' || today == '') {
+		alert("UPS, ALGO SALIO MAL!");
+		return null;
+	}
+	
+ 
 	if(idPago == "") {
 		$.ajax({
 			url: "../ajax/servicio.php?op=guardarCobro&idservicio="+idservicio+"&idcliente="+idcliente
@@ -2110,12 +2120,13 @@ function guardarCobro() {
 			contentType: false,
 			processData: false,
 	
-			success: function(datos){				
+			success: function(datos){	
+				console.log("LLEGASTE!!");			
+				$("#modal-cobrar-servicio").modal('hide');
 				alert(datos)
-				$("#formularioAddCobro")[0].reset();
-				$("#modalAddCobro").modal('hide');
-				mostrarPagosEdit(idservicio);
-				limpiarPagoForm();
+				//$("#formularioAddCobro")[0].reset();				
+				//mostrarPagosEdit(idservicio);
+				limpiarPagoForm();				
 			},
 		});
 	} else {
@@ -2135,7 +2146,7 @@ function guardarCobro() {
 		
 				success: function(datos){				
 					alert("Se actualizo correctamente el pago")			
-					$("#formularioAddCobro")[0].reset();
+					//$("#formularioAddCobro")[0].reset();
 					$("#modalAddCobro").modal('hide');
 					mostrarPagosEdit(idservicio);
 					limpiarPagoForm();

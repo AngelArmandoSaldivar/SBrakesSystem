@@ -293,7 +293,7 @@ switch ($_GET["op"]) {
 				<td>'.$reg->forma_pago.'</td>
 				<td>'.$reg->banco.'</td>
 				<td>'.$reg->referencia.'</td>
-				<td><a data-toggle="modal" href="#modalAddCobro"><button style="width: 40px;" type="button" title="editar" class="btn btn-warning" onclick="mostrarPagoEdit('.$reg->idpago.')"><i class="fa fa-pencil"></i></button></a></td>';
+				<td><a data-toggle="modal" href="#modal-cobrar-servicio"><button style="width: 40px;" type="button" title="editar" class="btn btn-warning" onclick="mostrarPagoEdit('.$reg->idpago.')"><i class="fa fa-pencil"></i></button></a></td>';
 				$total = $total + $reg->importe;
 			}
 			echo '<tfoot font-size: 12px;">
@@ -872,7 +872,9 @@ switch ($_GET["op"]) {
 								$botones = "<button title='Editar' data-toggle='popover' data-trigger='hover' data-content='Editar servicio' data-placement='top' class='btn btn-warning btn-xs' onclick='editar(".$fila["idservicio"].")'><i class='fa fa-pencil'></i></button>
 											<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
 											<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
-											<button title='Cobrar' data-toggle='popover' data-trigger='hover' data-content='Cobrar servicio' data-placement='top' class='btn btn-default btn-xs' onclick='cobrarServicio(".$fila["idservicio"].")'><i class='fa fa-credit-card'></i></button>
+											<a data-toggle='modal' href='#modal-cobrar-servicio'>
+												<button title='Cobrar' data-toggle='popover' data-trigger='hover' data-content='Cobrar servicio' data-placement='top' class='btn btn-default btn-xs' onclick='infoPago(".$fila["idservicio"].")'><i class='fa fa-credit-card'></i></button>
+											</a>	
 											<a data-toggle='modal' href='#TipoImpresion'>
 												<button title='Imprimir' data-toggle='popover' data-trigger='hover' data-content='Imprimir ticket o Factura' data-placement='top' class='btn btn-primary btn-xs' onclick='ticketFactura(".$fila["idservicio"].")'><i class='fa fa-print'></i></button>
 											</a>											
@@ -993,7 +995,9 @@ switch ($_GET["op"]) {
 								$fechaSalida = $fila["fecha_salida"];								
 								$botones = "<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrar(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
 											<button title='Anular' data-toggle='popover' data-trigger='hover' data-content='Anular servicio' data-placement='top' class='btn btn-danger btn-xs' onclick='anular(".$fila["idservicio"].")'><i class='fa fa-close'></i></button>
-											<button title='Cobrar' data-toggle='popover' data-trigger='hover' data-content='Cobrar servicio' data-placement='top' class='btn btn-default btn-xs' onclick='cobrarServicio(".$fila["idservicio"].")'><i class='fa fa-credit-card'></i></button>
+											<a data-toggle='modal' href='#modal-cobrar-servicio'>
+												<button title='Cobrar' data-toggle='popover' data-trigger='hover' data-content='Cobrar servicio' data-placement='top' class='btn btn-default btn-xs' onclick='infoPago(".$fila["idservicio"].")'><i class='fa fa-credit-card'></i></button>
+											</a>
 											<a data-toggle='modal' href='#TipoImpresion'>
 												<button title='Imprimir' data-toggle='popover' data-trigger='hover' data-content='Imprimir ticket o Factura' data-placement='top' class='btn btn-primary btn-xs' onclick='ticketFactura(".$fila["idservicio"].")'><i class='fa fa-print'></i></button>
 											</a>											

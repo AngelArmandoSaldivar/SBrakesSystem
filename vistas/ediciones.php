@@ -173,7 +173,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="modalAddCobro" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<!--<div class="modal fade" id="modalAddCobro" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" style="width: 100% !important;">
     <div class="modal-content" style="border-radius: 20px;">
       <div class="modal-header">
@@ -197,8 +197,7 @@
           <label for="">Por pagar </label>
           <input class="form-control" style="border:none; background-color: transparent; padding: 0;" id="porPagar" name="porPagar" type=""></input>
         </div>     
-      </div>
-      <!--<div class="modal-body">-->
+      </div>      
       <form action="" name="formularioAddCobro" id="formularioAddCobro" method="POST">
         <div class="panel-body table-responsive">
             <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
@@ -241,14 +240,13 @@
           <button class="btn btn-success" type="submit" name="btnGuardarCobro" id="btnGuardarCobro" onclick="guardarCobro()">Guardar</button>
           <button class="btn btn-danger" type="button" data-dismiss="modal" onclick="cancelarFormPago()"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
         </div>
-      </div>
-      <!--</div>-->
+      </div>      
       <div class="modal-footer">
         <button class="btn btn-default" type="button" data-dismiss="modal" onclick="cancelarFormPago()">Cerrar</button>
       </div>
     </div>
   </div>
-</div>
+</div>-->
 
 <div class="modal fade" id="myModalProductsAlmacenEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" style="width: 100% !important;">
@@ -1484,6 +1482,137 @@
       </form>          
       <div class="modal-footer">        
         <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="modal-cobrar-servicio" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" style="width: 60% !important;">
+    <div class="modal-content" style="border-radius: 20px;">
+      <div class="modal-header">
+        <h4 class="modal-title">Cobro Servicio </h4>
+        <button name="addProduct" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>       
+      </div>
+      <form action="" name="formularioProductoServicio" id="formularioProductoServicio" method="POST">
+        <div class="panel-body table-responsive">      
+                      
+          <div class="form-group col-lg-6 col-md-2 col-xs-6" id="divImpuesto">              
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-12">
+                  <label>Fecha<span class="text-danger">*</span></label>
+                  <div class="input-group bootstrap-touchspin"><span class="input-group-btn">                      
+                    <input class="form-control" type="date" value="<?php echo date("Y-m-d"); ?>" disabled>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group col-lg-6 col-md-2 col-xs-6" id="divImpuesto">       
+            <div class="form-group">                                      
+              <label>Cliente<span class="text-danger">*</span></label>
+              <div class="input-group bootstrap-touchspin">
+                <span class="input-group-btn">                                
+                </span><span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-user pull-right" aria-hidden="true"></i></span>                                                
+                <input class="form-control" type="hidden" name="idServicioCobro" id="idServicioCobro"></input>
+                <input class="form-control" type="hidden" name="idClienteCobro" id="idClienteCobro"></input>
+                <input class="form-control" type="input" name="clienteCobro" id="clienteCobro" readonly="true"></input>
+                <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>
+              </div>               
+            </div>
+          </div>
+
+          <div class="form-group col-lg-6 col-md-2 col-xs-6" id="divImpuesto">       
+            <div class="form-group">                                      
+              <label>Total importe<span class="text-danger">*</span></label>
+              <div class="input-group bootstrap-touchspin">
+                <span class="input-group-btn">                                
+                </span><span class="input-group-addon bootstrap-touchspin-prefix">$</span>                                
+                <input class="form-control" type="input" name="totalCobro" id="totalCobro" readonly="false"></input>
+                <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>                                                    
+              </div>               
+            </div>                                           
+          </div>
+
+          <div class="form-group col-lg- col-md-6 col-xs-6" id="divImpuesto">       
+            <div class="form-group">                                      
+              <label>Por pagar<span class="text-danger">*</span></label>
+              <div class="input-group bootstrap-touchspin">
+                <span class="input-group-btn">                                
+                </span><span class="input-group-addon bootstrap-touchspin-prefix">$</span>                                
+                <input class="form-control" type="input" name="porPagar" id="porPagar" readonly="false"></input>
+                <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>                                                    
+              </div>               
+            </div>                                           
+          </div>             
+
+        </div>      
+
+        <form action="" name="formularioAddCobro" id="formularioAddCobro" method="POST">
+          <div class="panel-body table-responsive">
+              <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divImpuesto">
+                <label for="">Importe </label>
+                <input class="form-control" type="hidden" name="idpago" id="idpago">
+                <input class="form-control" id="importeCobro" name="importeCobro" type="number" placeholder="$" required></input>
+              </div>             
+
+              <div class="form-group col-lg-4 col-md-2 col-xs-6" id="divMetodoPago">              
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <label>Método pago:<span class="text-danger">*</span></label>
+                      <div class="input-group bootstrap-touchspin"><span class="input-group-btn">                      
+                        <select name="metodoPago" id="metodoPago" class="form-control selectpicker" required>
+                          <option value="" selected disabled hidden>Forma de pago</option>
+                          <option value="Cheque">CHEQUE</option>
+                          <option value="Tarjeta">TARJETA</option>
+                          <option value="Efectivo">EFECTIVO</option>
+                          <option value="Deposito">DEPÓSITO</option>
+                          <option value="Tarjeta">TARJETA</option>
+                          <option value="Transferencia">TRASFERENCIA</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group col-lg-4 col-md-6 col-xs-12">
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <label>Banco(*):<span class="text-danger">*</span></label>
+                      <div class="input-group bootstrap-touchspin"><span class="input-group-btn">                      
+                      <select name="banco" id="banco" class="form-control selectpicker">     
+                        <option value="" selected disabled hidden>Banco</option>                       
+                          <option value="IXE">IXE</option>
+                          <option value="HSBC">HSBC</option>
+                          <option value="BANORTE">BANORTE</option>
+                          <option value="BANAMEX">BANCOMER</option>
+                          <option value="SANTANDER">SANTANDER</option>
+                          <option value="SCOTIA BANK">SCOTIA BANK</option>                    
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>              
+              </div>
+
+              <div class="form-group col-lg-12 col-md-2 col-xs-6" id="divImpuesto">
+                <label for="">Referencia </label>
+                <textarea class="form-control" id="referenciaCobro" name="referenciaCobro" rows="2" style="width: 100%;"></textarea>
+              </div>              
+          </div>
+        </form>         
+        <div class="form-group col-lg-12 col-md-2 col-xs-6" id="divImpuesto"></div>
+        <div class="form-group col-lg-12 col-md-2 col-xs-6" id="divImpuesto"></div>
+      </form>          
+      <div class="modal-footer">        
+        <button class="btn btn-success" type="submit" name="btnGuardarCobro" id="btnGuardarCobro" onclick="guardarCobro()">Guardar</button>
+        <button class="btn btn-danger" type="button" data-dismiss="modal" onclick="cancelarFormPago()"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
       </div>
     </div>
   </div>
