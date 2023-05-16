@@ -106,7 +106,8 @@ class Articulo{
 
 	public function articulosPagination($limit, $limit2, $busqueda, $busqueda2) {
 
-		$sql = "SELECT c.nombre AS nombreCategoria, m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
+		if ($busqueda == '' && $busqueda2 == '') {
+			$sql = "SELECT c.nombre AS nombreCategoria, m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
 				a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
 				a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock
 				FROM articulo a INNER JOIN categoria c ON a.idcategoria=c.idcategoria
@@ -118,9 +119,10 @@ class Articulo{
 				a.descripcion LIKE '%$busqueda%')
 				AND estado = 1
 				ORDER BY a.stock > 0 DESC, a.marca ASC LIMIT $limit OFFSET $limit2";
-				return ejecutarConsulta($sql);	
+				return ejecutarConsulta($sql);		
+		}		
 
-		if ($busqueda != '' && $busqueda2 == '') {			
+		if ($busqueda != '' && $busqueda2 == '') {					
 			$sql = "SELECT c.nombre AS nombreCategoria, m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
 			a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
 			a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock
@@ -136,7 +138,7 @@ class Articulo{
 			return ejecutarConsulta($sql);	
 		} else 						
 		
-		if ($busqueda != '' && $busqueda2 != '') {				
+		if ($busqueda != '' && $busqueda2 != '') {					
 			$sql = "SELECT * FROM (SELECT c.nombre AS nombreCategoria, m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
 					a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
 					a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock
@@ -149,8 +151,7 @@ class Articulo{
 					a.descripcion LIKE '%$busqueda%')
 					AND a.estado = 1
 					ORDER BY a.stock > 0 DESC, a.marca ASC LIMIT $limit OFFSET $limit2
-					) AS tabla1
-					
+					) AS tabla1					
 					UNION ALL
 					SELECT * FROM (SELECT cat.nombre AS nombreCategoria, mar.descripcion AS descripcionMarca, cat.nombre, ar.codigo, ar.fmsi, ar.idarticulo, ar.idcategoria, ar.descripcion, ar.estado,
 					ar.marca, ar.publico, ar.taller, ar.credito_taller, ar.mayoreo, ar.costo, ar.idproveedor, ar.stock_ideal,

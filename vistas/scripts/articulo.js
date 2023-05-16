@@ -991,7 +991,7 @@ function obtener_registros(articulos, articulos2){
 		
 	}	
 		
-	if(articulos != undefined && limitesRegistros == null && paginado == 1 && articulos2 == undefined) {
+	if(articulos != undefined && limitesRegistros == null && paginado == 1 && articulos2 == '') {
 
 		console.log("Busqueda: ", articulos);
 
@@ -1019,9 +1019,9 @@ function obtener_registros(articulos, articulos2){
 
 	}
 
-	if(articulos != undefined && limitesRegistros == null && paginado == 1 && articulos2 != undefined) {
+	if(articulos != undefined && limitesRegistros == null && paginado == 1 && articulos2 != '') {
 
-		console.log("Entraste: ", articulos + " / " + articulos2);
+		console.log("Entraste: ", busqueda + " / " + articulos2);
 
 		$("#siguiente").show();
 		$('.loaderSearch').show();
@@ -1063,7 +1063,7 @@ function obtener_registros(articulos, articulos2){
 		})
 	} 
 
-	if(articulos != undefined && limitesRegistros > 0 && paginado == 1 && articulos2 != undefined) {			
+	if(articulos != undefined && limitesRegistros > 0 && paginado == 1 && articulos2 != '') {			
 		$('.loaderSearch').show();
 		$("#siguiente").show();
 		$.ajax({
@@ -1079,7 +1079,7 @@ function obtener_registros(articulos, articulos2){
 		})
 	}
 	
-	if(articulos != undefined && limitesRegistros > 0 && paginado > 1 && articulos2 != undefined) {			
+	if(articulos != undefined && limitesRegistros > 0 && paginado > 1 && articulos2 != '') {			
 		let total_registros = Number(((limitesRegistros * paginado) - paginado) + 1);		
 		let inicio_registros = (total_registros - limitesRegistros) + 1;
 	
@@ -1097,7 +1097,7 @@ function obtener_registros(articulos, articulos2){
 
 	} 
 
-	if(articulos != undefined && limitesRegistros > 0 && paginado > 1 && articulos2 != undefined && articulos2 != undefined) {			
+	if(articulos != undefined && limitesRegistros > 0 && paginado > 1 && articulos2 != '') {			
 		let total_registros = Number(((limitesRegistros * paginado) - paginado) + 1);		
 		let inicio_registros = (total_registros - limitesRegistros) + 1;
 	
@@ -1115,7 +1115,7 @@ function obtener_registros(articulos, articulos2){
 
 	}
 
-	if(articulos != "" && limitesRegistros == null && paginado > 1 && articulos2 != undefined) {			
+	if(articulos != "" && limitesRegistros == null && paginado > 1 && articulos2 != '') {			
 		let total_registros = Number(50 * paginado);
 		let inicio_registros = (total_registros - 50);
 
@@ -1133,7 +1133,7 @@ function obtener_registros(articulos, articulos2){
 
 	}
 
-	if(articulos != "" && limitesRegistros == null && paginado > 1 && articulos2 != undefined) {			
+	if(articulos != "" && limitesRegistros == null && paginado > 1 && articulos2 != '') {			
 		let total_registros = Number(50 * paginado);
 		let inicio_registros = (total_registros - 50);
 
@@ -1176,7 +1176,7 @@ $(document).ready(function() {
 
 		if (posicionCaracter > 0) {									
 			let extraida = valorBusqueda.substring(posicionCaracter + 1, 100).trim();		
-			obtener_registros(valorBusqueda, extraida);		
+			obtener_registros(valorBusqueda, extraida);
 		}
 
 		if (valorBusqueda!="")

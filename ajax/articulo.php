@@ -148,6 +148,7 @@ if(!isset($_SESSION["nombre"])) {
 			$consulta = $articulo->articulosPagination(20, 0, "", "");
 
 			if(!empty($_POST['articulos']) 
+				&& empty($_POST['busqueda2']) 
 				&& empty($_POST['limites']) 
 				&& empty($_POST['inicio_registros']) 
 				&& empty($_POST["total_registros"])) {				
@@ -166,7 +167,9 @@ if(!isset($_SESSION["nombre"])) {
 				$consulta=$articulo->articulosPagination(50,0, $termino, $termino2);
 			}
 
-			else if(!empty($_POST['articulos']) && !empty($_POST['limites'])) {	
+			else if(!empty($_POST['articulos']) 
+					&& !empty($_POST['limites'])
+					&& empty($_POST['busqueda2']) ) {	
 				$termino=$conexion->real_escape_string($_POST['articulos']);
 				//$termino2=$conexion->real_escape_string($_POST['busqueda2']);
 				$limites=$conexion->real_escape_string($_POST['limites']);
@@ -177,7 +180,7 @@ if(!isset($_SESSION["nombre"])) {
 				$termino2=$conexion->real_escape_string($_POST['busqueda2']);
 				$limites=$conexion->real_escape_string($_POST['limites']);
 				$consulta=$articulo->articulosPagination($limites,0, $termino, $termino2);
-			} else if(!empty($_POST['busqueda']) && !empty($_POST['inicio_registros']) && !empty($_POST["total_registros"])) {											
+			} else if(!empty($_POST['busqueda']) && !empty($_POST['inicio_registros']) && !empty($_POST["total_registros"]) && empty($_POST['busqueda2'])) {											
 				$busqueda=$conexion->real_escape_string($_POST['busqueda']);
 				//$termino2=$conexion->real_escape_string($_POST['busqueda2']);
 				$inicio=$conexion->real_escape_string($_POST['inicio_registros']);
