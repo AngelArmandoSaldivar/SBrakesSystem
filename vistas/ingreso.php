@@ -31,12 +31,6 @@ if ($_SESSION['recepciones']==1) {
                 </div>
               </section>
 
-              <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                <div class="loaderSearch">
-                  <img src="../files/images/loader.gif" alt="" width="35px">
-                </div>
-              </div>            
-
               <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <label>Fecha Inicio</label>
                 <input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" value="">

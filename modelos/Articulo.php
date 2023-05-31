@@ -106,19 +106,13 @@ class Articulo{
 
 	public function articulosPagination($limit, $limit2, $busqueda, $busqueda2) {
 
-		if ($busqueda == '' && $busqueda2 == '') {
+		if ($busqueda == '' && $busqueda2 == '') {			
 			$sql = "SELECT c.nombre AS nombreCategoria, m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
 				a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
 				a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock
 				FROM articulo a INNER JOIN categoria c ON a.idcategoria=c.idcategoria
-				INNER JOIN marca m ON a.marca = m.idmarca
-				WHERE
-				(a.codigo LIKE '%$busqueda%' OR
-				a.fmsi LIKE '%$busqueda%' OR
-				m.descripcion LIKE '%$busqueda%' OR
-				a.descripcion LIKE '%$busqueda%')
-				AND estado = 1
-				ORDER BY a.stock > 0 DESC, a.marca ASC LIMIT $limit OFFSET $limit2";
+				INNER JOIN marca m ON a.marca = m.idmarca		
+				";
 				return ejecutarConsulta($sql);		
 		}		
 
@@ -183,8 +177,8 @@ class Articulo{
 		return ejecutarConsulta($sql);
 	}
 
-	public function listarArticulos() {
-		$sql = "SELECT * FROM articulo limit 2";
+	public function listarArticulos($idsucursal) {
+		$sql = "SELECT * FROM articulo WHERE idsucursal='$idsucursal'";
 		return ejecutarConsulta($sql);
 	}
 

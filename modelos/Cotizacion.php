@@ -22,10 +22,10 @@ public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_hora,$im
 		$sql="INSERT INTO cotizacion (idcliente,idusuario,tipo_comprobante,fecha_hora ,total_cotizacion,idsucursal) 
 		VALUES ('$idcliente','$idusuario','$tipo_comprobante','$fecha_hora' ,'$total_cotizacion','$idsucursal')";	
 		$idservicionew=ejecutarConsulta_retornarID($sql) or $sw = false;
-	}
+	}	
 	
 	 $num_elementos=0;	 
-	 while ($num_elementos < count($idarticulo)) {      		
+	 while ($num_elementos < count($idarticulo)) {     		
 	 	$sql_detalle="INSERT INTO detalle_cotizacion (idcotizacion,idarticulo,codigo,fmsi,descripcion,tipoMov,cantidad,precio_cotizacion,descuento, marca) 
                                             VALUES( $idservicionew,'$idarticulo[$num_elementos]', '$clave[$num_elementos]','$fmsi[$num_elementos]','$descripcion[$num_elementos]','COTIZACION','$cantidad[$num_elementos]', '$precio_cotizacion[$num_elementos]' ,'$descuento[$num_elementos]', '$marcaArticulo[$num_elementos]')";
 	 	ejecutarConsulta($sql_detalle) or $sw=false;

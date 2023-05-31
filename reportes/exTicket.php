@@ -28,17 +28,19 @@ $servicio = new Servicios();
 $rspta = $servicio->serviciocabecera($_GET["id"]);
 
 $reg=$rspta->fetch_object();
+$idsucursal = $_SESSION['idsucursal'];
 
 //establecemos los datos de la empresa
-$calle = "SARATOGA 313-C";
-$colonia = "COL. PORTALES NORTE";
-$direccion = "ALCALDIA BENITO JUAREZ";
-$ciudad = "CDMX";
-$cp = "C.P. 03303";
-$phone1 = "(55) 7653-6116";
-$phone2 = "(55) 68402850";
-$phone3 = "(55) 52733450";
-$phone4 = "(55) 43834342";
+$calle = $idsucursal == 1 ? "SARATOGA 313-C" : "Belisario Dominguez 81";
+$colonia = $idsucursal == 1 ? "COL. PORTALES NORTE" : "Las Misiones 76030";
+$direccion = $idsucursal == 1 ? "ALCALDIA BENITO JUAREZ" : "Santiago de Queretaro, Qro";
+$ciudad = $idsucursal == 1 ? "CDMX" : "QRO";
+$cp = $idsucursal == 1 ? "C.P. 03303" : "76030";
+$phone1 = $idsucursal == 1 ? "(55) 7653-6116" : "(77) 3157-8877";
+$phone2 = $idsucursal == 1 ? "(55) 68402850" : "(77) 3125-5749";
+$phone3 = $idsucursal == 1 ? "(55) 52733450" : "(55) 4563-2063";
+$phone4 = $idsucursal == 1 ? "(55) 43834342" : "";
+
 	 ?>
 <div class="zona_impresion">
 	<!--codigo imprimir-->

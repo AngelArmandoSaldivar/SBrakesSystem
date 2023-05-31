@@ -127,7 +127,7 @@ if(!isset($_SESSION["nombre"])) {
 			break;	
 		case 'listarArticulos': 
 			$array = array();
-			$rspta=$articulo->listarArticulos();			
+			$rspta=$articulo->listarArticulos($idsucursal);			
 			while ($reg=$rspta->fetch_object()) {
 				array_push($array, $reg->codigo);
 			}

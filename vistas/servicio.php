@@ -23,29 +23,33 @@ if ($_SESSION['servicios']==1) {
             <br />
             <center><h4 class="box-title">VENTAS </h4></center>
             <div class="box-tools pull-right"></div>          
-            <div class="panel-body table-responsive" id="listadoregistros">
-              <section>
+            <div class="panel-body table-responsive" id="listadoregistros">            
+
                 <div class="form-group col-lg-4 col-md-6 col-xs-12">
                   <button title="Registrar"  id="btnagregarservicio" title='Editar' data-toggle='popover' data-trigger='hover' data-content='Registrar nuevo servicio' data-placement='right' class='btn btn-success' onclick="crearServicio()"><i class="fa fa-plus-circle"></i> Agregar Nuevo</button>
                 </div>
+
                 <div class="form-group col-lg-4 col-md-6 col-xs-12">
                   <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;"></center>
                 </div>
-              </section>
-              <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                <div class="loaderSearch">
-                  <img src="../files/images/loader.gif" alt="" width="35px">
+                <div class="form-group col-lg-4 col-md-6 col-xs-12">                  
+                </div>                            
+                <div class="form-group col-lg-4 col-md-6 col-xs-12">                  
+                </div>                            
+                <div class="form-group col-lg-4 col-md-6 col-xs-12">                  
+                </div>                            
+                <div class="form-group col-lg-4 col-md-6 col-xs-12">                  
+                </div>                            
+              
+                <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <label>Fecha Inicio</label>
+                  <input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" value="">
                 </div>
-              </div>
-              <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                <label>Fecha Inicio</label>
-                <input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" value="">
-              </div>
               <div class="form-group col-lg-4 col-md-6 col-sm-6 col-xs-12">
                 <label>Fecha Fin</label>
                 <input type="date" class="form-control" name="fecha_fin" id="fecha_fin" value="">
-              </div>          
-            <div class="form-group col-lg-2 col-md-6 col-xs-12" style="text-align:left;">
+              </div>
+            <div class="form-group col-lg-2 col-md-12 col-xs-12" style="text-align:left;">
               <label>Limite de registros</label>
               <select name="limite_registros" id="limite_registros" class="form-control selectpicker" >
                 <option value="" disabled selected>Seleccionar limite</option>                  
@@ -69,6 +73,11 @@ if ($_SESSION['servicios']==1) {
                   <input type="submit" title="Siguiente" data-toggle='popover' data-trigger='hover' data-content='Pagina siguiente' data-placement='top' class='btn btn-primary me-md-2' value="Siguiente" id="siguiente" name="siguiente" onclick="paginaSiguiente()">                
                 </ul>
               </nav>
+            </div>
+            <div class="form-group col-lg-12 col-md-6 col-xs-12">
+              <div class="loaderSearch">
+                <img src="../files/images/loader.gif" alt="" width="35px">
+              </div>
             </div>
           </div>   
           <div class="box-header with-border" id="formularioregistros"> 
@@ -672,7 +681,7 @@ if ($_SESSION['servicios']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/servicios.js"></script>
+ <script src="scripts/servicioB1.js"></script>
  <?php 
 }
 

@@ -621,7 +621,7 @@ if ($_SESSION['cotizaciones']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/cotizaciones.js"></script>
+ <script src="scripts/cotizacion.js"></script>
  <?php 
 }
 

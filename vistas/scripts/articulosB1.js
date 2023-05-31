@@ -88,7 +88,8 @@ function displayHTMLTable(results) {
 	table += "<tbody>";	
     for (i = 0; i < data.length; i++) {		
 		for (let index = 0; index < data[i].length; index++) {
-			let extraccion = data[i][0].split(";");
+			let extraccion = data[i][0].split(";");			
+			if(extraccion[3] != '' && extraccion[3] != undefined) {				
 				table += "<tr style='font-size:11px; width:15px;' class='filas' name='fila"+[i]+"' id='fila"+[i]+"'>";
 				table += "<td id='claveArt[]' name='claveArt[]' value='"+extraccion[0]+"'>"; table += extraccion[0]; table += "</td>";
 				table += "<td id='fmsiArt[]' name='fmsiArt[]' value='"+extraccion[1]+"'>"; table += extraccion[1]; table += "</td>";
@@ -105,6 +106,7 @@ function displayHTMLTable(results) {
 				table += "<td id='creditoArt[]' name='creditoArt[]' value='"+extraccion[12]+"'>"; table += extraccion[12]; table += "</td>";
 				table += "<td id='mayoreoArt[]' name='mayoreoArt[]' value='"+extraccion[13]+"'>"; table += extraccion[13]; table += "</td>";
 				table += "</tr>";
+			}
 		}		
     }	
 	table += "</tbody>";
