@@ -36,9 +36,9 @@ $colonia = $idsucursal == 1 ? "COL. PORTALES NORTE" : "Las Misiones 76030";
 $direccion = $idsucursal == 1 ? "ALCALDIA BENITO JUAREZ" : "Santiago de Queretaro, Qro";
 $ciudad = $idsucursal == 1 ? "CDMX" : "QRO";
 $cp = $idsucursal == 1 ? "C.P. 03303" : "76030";
-$phone1 = $idsucursal == 1 ? "(55) 7653-6116" : "(77) 3157-8877";
-$phone2 = $idsucursal == 1 ? "(55) 68402850" : "(77) 3125-5749";
-$phone3 = $idsucursal == 1 ? "(55) 52733450" : "(55) 4563-2063";
+$phone1 = $idsucursal == 1 ? "(55) 7653-6116" : "(44) 2738-5075";
+$phone2 = $idsucursal == 1 ? "(55) 68402850" : "(55) 4563-2063";
+$phone3 = $idsucursal == 1 ? "(55) 52733450" : "";
 $phone4 = $idsucursal == 1 ? "(55) 43834342" : "";
 
 	 ?>
