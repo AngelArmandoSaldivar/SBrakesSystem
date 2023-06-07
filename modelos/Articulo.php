@@ -127,8 +127,8 @@ class Articulo{
 			WHERE
 			(a.codigo LIKE '%$busqueda%' OR
 			a.fmsi LIKE '%$busqueda%' OR
-			m.descripcion LIKE '%$busqueda%' OR
-			a.descripcion LIKE '%$busqueda%')
+			m.descripcion LIKE '%$busqueda%' /*OR
+			a.descripcion LIKE '%$busqueda%'*/)
 			AND a.estado = 1
 			AND a.idsucursal = '$idsucursal'
 			ORDER BY a.stock > 0 DESC, a.marca ASC LIMIT $limit OFFSET $limit2";
@@ -144,8 +144,8 @@ class Articulo{
 					WHERE
 					(a.codigo LIKE '%$busqueda%' OR
 					a.fmsi LIKE '%$busqueda%' OR
-					m.descripcion LIKE '%$busqueda%' OR
-					a.descripcion LIKE '%$busqueda%')
+					m.descripcion LIKE '%$busqueda%' /*OR
+					a.descripcion LIKE '%$busqueda%'*/)
 					AND a.estado = 1
 					AND a.idsucursal = '$idsucursal'
 					ORDER BY a.stock > 0 DESC, a.marca ASC LIMIT $limit OFFSET $limit2
@@ -159,8 +159,8 @@ class Articulo{
 					WHERE
 					(ar.codigo LIKE '%$busqueda2%' OR
 					ar.fmsi LIKE '%$busqueda2%' OR
-					mar.descripcion LIKE '%$busqueda2%' OR
-					ar.descripcion LIKE '%$busqueda2%')
+					mar.descripcion LIKE '%$busqueda2%' /*OR
+					ar.descripcion LIKE '%$busqueda2%'*/)
 					AND ar.estado = 1
 					AND ar.idsucursal = '$idsucursal'
 					ORDER BY ar.stock > 0 DESC, ar.marca ASC LIMIT $limit OFFSET $limit2
