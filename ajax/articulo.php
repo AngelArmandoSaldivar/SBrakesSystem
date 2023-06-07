@@ -145,7 +145,7 @@ if(!isset($_SESSION["nombre"])) {
 			$termino= "";
 			$termino2 = "";
 
-			$consulta = $articulo->articulosPagination(20, 0, "", "");
+			$consulta = $articulo->articulosPagination(20, 0, "", "", $idsucursal);
 
 			if(!empty($_POST['articulos']) 
 				&& empty($_POST['busqueda2']) 
@@ -154,7 +154,7 @@ if(!isset($_SESSION["nombre"])) {
 				&& empty($_POST["total_registros"])) {				
 				$termino=$conexion->real_escape_string($_POST['articulos']);
 				//$termino2=$conexion->real_escape_string($_POST['busqueda2']);
-				$consulta=$articulo->articulosPagination(50,0, $termino, $termino2);
+				$consulta=$articulo->articulosPagination(50,0, $termino, $termino2, $idsucursal);
 			} 
 
 			if(!empty($_POST['articulos'])
@@ -164,7 +164,7 @@ if(!isset($_SESSION["nombre"])) {
 				&& !empty($_POST['busqueda2'])) {				
 				$termino=$conexion->real_escape_string($_POST['articulos']);
 				$termino2=$conexion->real_escape_string($_POST['busqueda2']);
-				$consulta=$articulo->articulosPagination(50,0, $termino, $termino2);
+				$consulta=$articulo->articulosPagination(50,0, $termino, $termino2, $idsucursal);
 			}
 
 			else if(!empty($_POST['articulos']) 
@@ -173,31 +173,31 @@ if(!isset($_SESSION["nombre"])) {
 				$termino=$conexion->real_escape_string($_POST['articulos']);
 				//$termino2=$conexion->real_escape_string($_POST['busqueda2']);
 				$limites=$conexion->real_escape_string($_POST['limites']);
-				$consulta=$articulo->articulosPagination($limites,0, $termino, $termino2);
+				$consulta=$articulo->articulosPagination($limites,0, $termino, $termino2, $idsucursal);
 
 			} else if(!empty($_POST['articulos']) && !empty($_POST['busqueda2']) && !empty($_POST['limites'])) {	
 				$termino=$conexion->real_escape_string($_POST['articulos']);
 				$termino2=$conexion->real_escape_string($_POST['busqueda2']);
 				$limites=$conexion->real_escape_string($_POST['limites']);
-				$consulta=$articulo->articulosPagination($limites,0, $termino, $termino2);
+				$consulta=$articulo->articulosPagination($limites,0, $termino, $termino2, $idsucursal);
 			} else if(!empty($_POST['busqueda']) && !empty($_POST['inicio_registros']) && !empty($_POST["total_registros"]) && empty($_POST['busqueda2'])) {											
 				$busqueda=$conexion->real_escape_string($_POST['busqueda']);
 				//$termino2=$conexion->real_escape_string($_POST['busqueda2']);
 				$inicio=$conexion->real_escape_string($_POST['inicio_registros']);
 				$fin=$conexion->real_escape_string($_POST['total_registros']);				
-				$consulta=$articulo->articulosPagination($fin,$inicio, $busqueda, $termino2);
+				$consulta=$articulo->articulosPagination($fin,$inicio, $busqueda, $termino2, $idsucursal);
 
 			} else if(!empty($_POST['busqueda']) && !empty($_POST['busqueda2']) && !empty($_POST['inicio_registros']) && !empty($_POST["total_registros"])) {								
 				$busqueda=$conexion->real_escape_string($_POST['busqueda']);
 				$termino2=$conexion->real_escape_string($_POST['busqueda2']);
 				$inicio=$conexion->real_escape_string($_POST['inicio_registros']);
 				$fin=$conexion->real_escape_string($_POST['total_registros']);				
-				$consulta=$articulo->articulosPagination($fin,$inicio, $busqueda, $termino2);
+				$consulta=$articulo->articulosPagination($fin,$inicio, $busqueda, $termino2, $idsucursal);
 
 			} else if(!empty($_POST['inicio_registros']) && !empty($_POST["total_registros"])) {
 				$inicio=$conexion->real_escape_string($_POST['inicio_registros']);
 				$fin=$conexion->real_escape_string($_POST['total_registros']);				
-				$consulta=$articulo->articulosPagination($fin,$inicio, "", "");
+				$consulta=$articulo->articulosPagination($fin,$inicio, "", "", $idsucursal);
 
 			}
 
@@ -269,7 +269,7 @@ if(!isset($_SESSION["nombre"])) {
 					} else {
 						$formulacionExtra = $fila["nombreCategoria"];
 					}
-					if($fila["idsucursal"] == $idsucursal && $acceso == "1") {
+					if($acceso == "1") {
 						if($fila["stock"] >= $fila["stock_ideal"]) {
 								echo "<tr style='color:blue; font-size:11px;'>
 								<td style='width:20px'>".$fila['codigo']."</td>								
@@ -324,7 +324,7 @@ if(!isset($_SESSION["nombre"])) {
 							</tr>";								
 						}
 					}
-					else if($fila["idsucursal"] == $idsucursal && $acceso != "1"){
+					else if($acceso != "1"){
 						if($fila["stock"] >= $fila["stock_ideal"]) {
 							echo "<tr style='color:blue; font-size:11px;'>
 								<td style='width:20px'>".$fila['codigo']."</td>								

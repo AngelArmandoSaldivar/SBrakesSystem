@@ -104,14 +104,16 @@ class Articulo{
 		return ejecutarConsulta($sql);
 	}
 
-	public function articulosPagination($limit, $limit2, $busqueda, $busqueda2) {
+	public function articulosPagination($limit, $limit2, $busqueda, $busqueda2, $idsucursal) {
 
 		if ($busqueda == '' && $busqueda2 == '') {			
 			$sql = "SELECT c.nombre AS nombreCategoria, m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
 				a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
 				a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock
 				FROM articulo a INNER JOIN categoria c ON a.idcategoria=c.idcategoria
-				INNER JOIN marca m ON a.marca = m.idmarca		
+				INNER JOIN marca m ON a.marca = m.idmarca	
+				WHERE a.idsucursal = '$idsucursal'
+				LIMIT 50	
 				";
 				return ejecutarConsulta($sql);		
 		}		
@@ -127,7 +129,8 @@ class Articulo{
 			a.fmsi LIKE '%$busqueda%' OR
 			m.descripcion LIKE '%$busqueda%' OR
 			a.descripcion LIKE '%$busqueda%')
-			AND estado = 1
+			AND a.estado = 1
+			AND a.idsucursal = '$idsucursal'
 			ORDER BY a.stock > 0 DESC, a.marca ASC LIMIT $limit OFFSET $limit2";
 			return ejecutarConsulta($sql);	
 		} else 						
@@ -144,6 +147,7 @@ class Articulo{
 					m.descripcion LIKE '%$busqueda%' OR
 					a.descripcion LIKE '%$busqueda%')
 					AND a.estado = 1
+					AND a.idsucursal = '$idsucursal'
 					ORDER BY a.stock > 0 DESC, a.marca ASC LIMIT $limit OFFSET $limit2
 					) AS tabla1					
 					UNION ALL
@@ -158,6 +162,7 @@ class Articulo{
 					mar.descripcion LIKE '%$busqueda2%' OR
 					ar.descripcion LIKE '%$busqueda2%')
 					AND ar.estado = 1
+					AND ar.idsucursal = '$idsucursal'
 					ORDER BY ar.stock > 0 DESC, ar.marca ASC LIMIT $limit OFFSET $limit2
 					) AS tabla2;";
 					return ejecutarConsulta($sql);
