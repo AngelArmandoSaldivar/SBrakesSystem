@@ -4,6 +4,8 @@
 
     use PhpOffice\PhpSpreadsheet\Spreadsheet;
     use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+    session_start();
+	$idsucursal = $_SESSION['idsucursal'];
 
     $articulo = new Articulo();
         
@@ -18,15 +20,18 @@
     $hojaActiva->setCellValue("E1", "MARCA");
     $hojaActiva->setCellValue("F1", "PROVEEDOR");
     $hojaActiva->setCellValue("G1", "STOCK");
-    $hojaActiva->setCellValue("H1", "PASILLO");
-    $hojaActiva->setCellValue("I1", "DESCRIPCIÓN");
-    $hojaActiva->setCellValue("J1", "COSTO");
-    $hojaActiva->setCellValue("K1", "PUBLICO");
-    $hojaActiva->setCellValue("L1", "TALLER");
-    $hojaActiva->setCellValue("M1", "CREDITO TALLER");
-    $hojaActiva->setCellValue("N1", "MAYOREO");    
+    $hojaActiva->setCellValue("H1", "STOCK IDEAL");
+    $hojaActiva->setCellValue("I1", "PASILLO");
+    $hojaActiva->setCellValue("J1", "DESCRIPCIÓN");
+    $hojaActiva->setCellValue("K1", "COSTO");
+    $hojaActiva->setCellValue("L1", "PUBLICO");
+    $hojaActiva->setCellValue("M1", "TALLER");
+    $hojaActiva->setCellValue("N1", "CREDITO TALLER");
+    $hojaActiva->setCellValue("O1", "MAYOREO");
+    $hojaActiva->setCellValue("P1", "CODIGO DE BARRAS");
 
-    $rspta=$articulo->listarArticulos();
+
+    $rspta=$articulo->listarArticulos($idsucursal);
     $fila = 2;
 
     while($rows = $rspta->fetch_assoc()) {
@@ -37,13 +42,15 @@
         $hojaActiva->setCellValue("E".$fila, $rows["marca"]);
         $hojaActiva->setCellValue("F".$fila, $rows["idproveedor"]);
         $hojaActiva->setCellValue("G".$fila, $rows["stock"]);
-        $hojaActiva->setCellValue("H".$fila, $rows["pasillo"]);
-        $hojaActiva->setCellValue("I".$fila, $rows["descripcion"]);
-        $hojaActiva->setCellValue("J".$fila, $rows["costo"]);
-        $hojaActiva->setCellValue("K".$fila, $rows["publico"]);
-        $hojaActiva->setCellValue("L".$fila, $rows["taller"]);
-        $hojaActiva->setCellValue("M".$fila, $rows["credito_taller"]);
-        $hojaActiva->setCellValue("N".$fila, $rows["mayoreo"]);
+        $hojaActiva->setCellValue("H".$fila, $rows["stock_ideal"]);
+        $hojaActiva->setCellValue("I".$fila, $rows["pasillo"]);
+        $hojaActiva->setCellValue("J".$fila, $rows["descripcion"]);
+        $hojaActiva->setCellValue("K".$fila, $rows["costo"]);
+        $hojaActiva->setCellValue("L".$fila, $rows["publico"]);
+        $hojaActiva->setCellValue("M".$fila, $rows["taller"]);
+        $hojaActiva->setCellValue("N".$fila, $rows["credito_taller"]);
+        $hojaActiva->setCellValue("O".$fila, $rows["mayoreo"]);
+        $hojaActiva->setCellValue("P    ".$fila, $rows["barcode"]);
         $fila ++;
     }
     $fileName="ArticulosB1S.xlsx";
