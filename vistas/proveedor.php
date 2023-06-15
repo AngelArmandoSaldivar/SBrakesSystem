@@ -90,7 +90,7 @@ if ($_SESSION['proveedores']==1) {
 }
 require 'footer.php';
  ?>
- <script src="scripts/proveedor.js"></script>
+ <script src="scripts/proveedores.js"></script>
  <?php 
 }
 

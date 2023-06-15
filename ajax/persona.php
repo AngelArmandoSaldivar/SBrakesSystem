@@ -22,23 +22,41 @@ if(!isset($_SESSION["nombre"])) {
 	switch ($_GET["op"]) {
 		case 'guardaryeditar':
 		//SOLO INSERTA A LA PERSONA
-		if (empty($idpersona) && !empty($_POST["placas"])) {			
+		if (empty($idpersona) && !empty($_POST["placas"])) {	
+			echo "LLEGASTE";		
 			$rspta=$persona->insertar($idpersona,$tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$telefono_local,$email, $rfc, $credito, $_POST["placas"],$_POST["marca"],$_POST["modelo"],$_POST["ano"],$_POST["color"],$_POST["kms"]);			
 			echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
 		}
-		else if (empty($idpersona) && empty($_POST["placas"])) {			
+		/*else if (empty($idpersona) && empty($_POST["placas"])) {		
+			echo "LLEGASTE";	
 			$rspta=$persona->insertar($idpersona,$tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$telefono_local,$email, $rfc, $credito, "","","","","","");			
 			echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
-		}		
-		else if(!empty($idpersona) && !empty($_POST["placas"])){	
+		}*/
+		else if(!empty($idpersona) && !empty($_POST["placas"])){
+			echo "LLEGASTE";
 			$rspta = $persona->editar($idpersona,$tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$telefono_local,$email, $rfc, $credito, $_POST["placas"],$_POST["marca"],$_POST["modelo"],$_POST["ano"],$_POST["color"],$_POST["kms"]);
 			echo $rspta ? "Datos guardados correctamente" : "No se pudo actualizar los datos";
 		}
-		else if(!empty($idpersona) && empty($_POST["placas"])) {
+		/*else if(!empty($idpersona) && empty($_POST["placas"])) {
+			echo "LLEGASTE";
 			$rspta = $persona->editar($idpersona,$tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$telefono_local,$email, $rfc, $credito, "","","","","","");
 			echo $rspta ? "Datos guardados correctamente" : "No se pudo actualizar los datos";
-		}
+		}*/
 		break;
+
+		case 'guardareditarproveedor':
+			if (empty($idpersona)) {
+				$rspta=$persona->insertar($idpersona,$tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$telefono_local,$email, $rfc, $credito, "","","","","","");
+				echo "ID PERSONA: " . $idpersona. "\n";
+				echo "TIPO PERSONA: " . $tipo_persona;
+				echo "NOMBRE: " . $nombre;
+				
+				echo $rspta ? "Proveedor registrado correctamente" : "No se pudo registrar el proveedor";
+			} else {
+				$rspta = $persona->editar($idpersona,$tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$telefono_local,$email, $rfc, $credito, "","","","","","");
+				echo $rspta ? "Proveedor guardado correctamente" : "No se pudo actualizar el proveedor";
+			}
+			break;
 		
 		case 'eliminar':
 			$rspta=$persona->eliminar($idpersona);

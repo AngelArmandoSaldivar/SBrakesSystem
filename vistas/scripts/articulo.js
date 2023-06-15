@@ -88,7 +88,7 @@ function displayHTMLTable(results) {
 	table += "<tbody>";	
     for (i = 0; i < data.length; i++) {		
 		for (let index = 0; index < data[i].length; index++) {
-			let extraccion = data[i][0].split(";");			
+			let extraccion = data[i][0].split(";");
 			if(extraccion[3] != '' && extraccion[3] != undefined) {				
 				table += "<tr style='font-size:11px; width:15px;' class='filas' name='fila"+[i]+"' id='fila"+[i]+"'>";
 				table += "<td id='claveArt[]' name='claveArt[]' value='"+extraccion[0]+"'>"; table += extraccion[0]; table += "</td>";
@@ -1396,6 +1396,7 @@ function mostrar(idarticulo){
 
 			data=JSON.parse(data);
 			console.log("DATA PRODUCTO: ", data);
+			console.log("DESCRIPCION: " + data.descripcionArticulo);
 			
 			publico = numberFormat.format(data.publico);
 			taller = numberFormat.format(data.taller);
@@ -1407,7 +1408,7 @@ function mostrar(idarticulo){
 			$("#idcategoria").selectpicker('refresh');
 			$("#idproveedor").val(data.idproveedor).prop("disabled", true);
 			$("#idproveedor").selectpicker('refresh');			
-			$("#marca").val(data.idmarca).prop("disabled", true);
+			$("#marca").val(data.marca).prop("disabled", true);
 			$("#marca").selectpicker('refresh');
 
 			$("#bandera_inventariable").val(data.bandera_inventariable).prop("disabled", true);
@@ -1425,7 +1426,7 @@ function mostrar(idarticulo){
 			$("#taller").val(taller).prop("disabled", true);
 			$("#credito_taller").val(credito).prop("disabled", true);
 			$("#mayoreo").val(mayoreo).prop("disabled", true);
-			$("#descripcion").val(data.descripcionArticulo).prop("disabled", true);
+			$("#descripcion").val(data.descripcion).prop("disabled", true);
 			$("#barcode").val(data.barcode).prop("disabled", true);
 			$("#idarticulo").val(data.idarticulo).prop("disabled", true);
 			$("#btnGuardar").hide();
@@ -1479,7 +1480,7 @@ function editarArticulo(idarticulo){
 			$("#bandera_inventariable").selectpicker('refresh');
 			$("#codigo").val(data.codigo);
 			$("#fmsi").val(data.fmsi);
-			$("#marca").val(data.idmarca).prop("disabled", false);
+			$("#marca").val(data.marca).prop("disabled", false);
 			$("#marca").selectpicker('refresh');
 			//$("#marca").val(data.marca);
 			$("#unidades").val(data.unidades);

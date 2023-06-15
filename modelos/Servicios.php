@@ -24,7 +24,7 @@ public function insertar($idcliente,$idusuario,$tipo_comprobante,$fecha_entrada,
 	 $idservicionew=ejecutarConsulta_retornarID($sql) or $sw = false;	 
 	 $num_elementos=0;	 
 	 while ($num_elementos < count($idarticulo)) {
-	 	$sql_detalle="INSERT INTO detalle_servicio (idservicio,idarticulo,codigo,fmsi,descripcion,tipoMov,cantidad,precio_servicio,descuento, marca) VALUES('$idservicionew','$idarticulo[$num_elementos]', '$clave[$num_elementos]','$fmsi[$num_elementos]','$descripcion[$num_elementos]','SERVICIO','$cantidad[$num_elementos]','$precio_servicio[$num_elementos]','$descuento[$num_elementos]', '$marcaArticulo[$num_elementos]')";
+	 	$sql_detalle="INSERT INTO detalle_servicio (idservicio,idarticulo,codigo,fmsi,descripcion,tipoMov,cantidad,precio_servicio,descuento, marca, idsucursal) VALUES('$idservicionew','$idarticulo[$num_elementos]', '$clave[$num_elementos]','$fmsi[$num_elementos]','$descripcion[$num_elementos]','SERVICIO','$cantidad[$num_elementos]','$precio_servicio[$num_elementos]','$descuento[$num_elementos]', '$marcaArticulo[$num_elementos]', '$idsucursal')";
 	 	ejecutarConsulta($sql_detalle) or $sw=false;
 
 		 $sql_kardex = "INSERT INTO kardex (fecha_entrada, folio, clave, fmsi, idcliente_proveedor, cantidad, importe, tipoMov, estado, idsucursalArticulo, idsucursalVenta) VALUES ('$fecha_entrada', $idservicionew, '$clave[$num_elementos]', '$fmsi[$num_elementos]', '$idcliente', '$cantidad[$num_elementos]', '$precio_servicio[$num_elementos]', 'SERVICIO', 'ACTIVO', '$idsucursalproducto[$num_elementos]', '$idsucursal')";
@@ -114,8 +114,8 @@ public function guardarCobro($metodoPago, $banco, $importeCobro, $referenciaCobr
 public function addProductoServicio($idarticulo,$articulo,$fmsi,$marca,$descripcion,$publico,$stock,$idServicio, $fecha, $idcliente, $idsucursalArticulo, $idsucursal) {
 	$bandera = true;
 	$sql = "INSERT INTO detalle_servicio 
-			(idservicio,idarticulo,codigo,fmsi,marca, descripcion,tipoMov,cantidad,precio_servicio,descuento) 
-			VALUES('$idServicio','$idarticulo', '$articulo','$fmsi','$marca','$descripcion','SERVICIO','$stock','$publico','0')";			
+			(idservicio,idarticulo,codigo,fmsi,marca, descripcion,tipoMov,cantidad,precio_servicio,descuento, idsucursal) 
+			VALUES('$idServicio','$idarticulo', '$articulo','$fmsi','$marca','$descripcion','SERVICIO','$stock','$publico','0', '$idsucursal')";			
 	ejecutarConsulta($sql);
 	$sql_servicio = "UPDATE servicio SET total_servicio=total_servicio+'$publico' WHERE idservicio='$idServicio'";
 	ejecutarConsulta($sql_servicio);

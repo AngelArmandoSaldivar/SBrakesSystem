@@ -69,9 +69,9 @@ class Articulo{
 	//metodo para mostrar registros
 	public function mostrar($idarticulo){
 		$sql="SELECT *, a.descripcion AS descripcionArticulo FROM articulo a
-		INNER JOIN marca m
-		ON a.marca = m.idmarca
-		WHERE idarticulo='$idarticulo'";
+		/*INNER JOIN marca m
+		ON a.marca = m.idmarca*/
+		WHERE a.idarticulo='$idarticulo'";
 		usleep(140000);
 		return ejecutarConsultaSimpleFila($sql);
 	}
@@ -131,7 +131,7 @@ class Articulo{
 			a.descripcion LIKE '%$busqueda%'*/)
 			AND a.estado = 1
 			AND a.idsucursal = '$idsucursal'
-			ORDER BY a.stock > 0 DESC, a.marca ASC LIMIT $limit OFFSET $limit2";
+			ORDER BY a.stock > 0 DESC, a.marca ASC LIMIT 500";
 			return ejecutarConsulta($sql);	
 		} else 						
 		
@@ -148,7 +148,7 @@ class Articulo{
 					a.descripcion LIKE '%$busqueda%'*/)
 					AND a.estado = 1
 					AND a.idsucursal = '$idsucursal'
-					ORDER BY a.stock > 0 DESC, a.marca ASC LIMIT $limit OFFSET $limit2
+					ORDER BY a.stock > 0 DESC, a.marca ASC LIMIT 500
 					) AS tabla1					
 					UNION ALL
 					SELECT * FROM (SELECT cat.nombre AS nombreCategoria, mar.descripcion AS descripcionMarca, cat.nombre, ar.codigo, ar.fmsi, ar.idarticulo, ar.idcategoria, ar.descripcion, ar.estado,
@@ -163,10 +163,10 @@ class Articulo{
 					ar.descripcion LIKE '%$busqueda2%'*/)
 					AND ar.estado = 1
 					AND ar.idsucursal = '$idsucursal'
-					ORDER BY ar.stock > 0 DESC, ar.marca ASC LIMIT $limit OFFSET $limit2
+					ORDER BY ar.stock > 0 DESC, ar.marca ASC LIMIT 500
 					) AS tabla2;";
 					return ejecutarConsulta($sql);
-		}				
+		}
 	}
 
 	public function filtroArticulosCopy($busqueda) {

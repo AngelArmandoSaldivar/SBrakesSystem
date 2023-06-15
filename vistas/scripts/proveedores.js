@@ -82,7 +82,7 @@ function guardaryeditar(e){
      var formData=new FormData($("#formulario")[0]);
 
      $.ajax({
-     	url: "../ajax/persona.php?op=guardaryeditar",
+     	url: "../ajax/persona.php?op=guardareditarproveedor",
      	type: "POST",
      	data: formData,
      	contentType: false,
@@ -91,7 +91,7 @@ function guardaryeditar(e){
 			swal({
 				position: 'top-end',
 				type: 'success',
-				title: 'Se guardo correctamente el proveedor',
+				title: datos,
 				showConfirmButton: false,
 				timer: 1500
 			});

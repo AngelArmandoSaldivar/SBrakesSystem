@@ -27,7 +27,7 @@ public function insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_compro
 	 $num_elementos=0;
 	 $sw=true;
 	 while ($num_elementos < count($idarticulo)) {				
-	 	$sql_detalle="INSERT INTO detalle_ingreso (idingreso,idproveedor,idusuario,serie_comprobante,tipo_comprobante,idarticulo,clave,fmsi,descripcion,cantidad,precio_compra,tipoMov, descuento) VALUES('$idingresonew','$idproveedor','$idusuario','$serie_comprobante','$tipo_comprobante','$idarticulo[$num_elementos]','$clave[$num_elementos]','$fmsi[$num_elementos]','$descripcion[$num_elementos]','$cantidad[$num_elementos]','$precio_compra[$num_elementos]','RECEPCIÓN', '$descuento[$num_elementos]')";		
+	 	$sql_detalle="INSERT INTO detalle_ingreso (idingreso,idproveedor,idusuario,serie_comprobante,tipo_comprobante,idarticulo,clave,fmsi,descripcion,cantidad,precio_compra,tipoMov, descuento, idsucursal) VALUES('$idingresonew','$idproveedor','$idusuario','$serie_comprobante','$tipo_comprobante','$idarticulo[$num_elementos]','$clave[$num_elementos]','$fmsi[$num_elementos]','$descripcion[$num_elementos]','$cantidad[$num_elementos]','$precio_compra[$num_elementos]','RECEPCIÓN', '$descuento[$num_elementos]', '$idsucursal')";		
 	 	ejecutarConsulta($sql_detalle) or $sw=false;
 
 		$sql_kardex = "INSERT INTO kardex (fecha_entrada, folio, clave, fmsi, idcliente_proveedor, cantidad, importe, tipoMov, estado, idventa, idarticulo, idsucursalArticulo, idsucursalVenta) VALUES ('$fecha_hora', '$serie_comprobante', '$clave[$num_elementos]', '$fmsi[$num_elementos]', '$idproveedor', '$cantidad[$num_elementos]', '$precio_compra[$num_elementos]', 'RECEPCION','ACTIVO', '$idingresonew', '$idarticulo[$num_elementos]', '$idsucursalArticulo[$num_elementos]', '$idsucursal')";
@@ -41,8 +41,8 @@ public function insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_compro
 public function addProductoIngreso($idarticulo,$articulo,$fmsi,$marca,$descripcion,$publico,$stock,$idIngreso, $idproveedor, $datetime, $folio, $idsucursal, $idarticuloSucursal) {
 	$bandera = true;	
 	$sql = "INSERT INTO detalle_ingreso
-			(idingreso,idarticulo,clave,fmsi,marca, descripcion,tipoMov,cantidad,precio_compra,descuento) 
-			VALUES('$idIngreso','$idarticulo', '$articulo','$fmsi','$marca','$descripcion','RECEPCIÓN','$stock','$publico','0')";
+			(idingreso,idarticulo,clave,fmsi,marca, descripcion,tipoMov,cantidad,precio_compra,descuento, idsucursal) 
+			VALUES('$idIngreso','$idarticulo', '$articulo','$fmsi','$marca','$descripcion','RECEPCIÓN','$stock','$publico','0', '$idsucursal')";
 	ejecutarConsulta($sql) or $bandera=false;
 	
 	$sql_ingreso = "UPDATE ingreso SET total_compra=total_compra+'$publico' WHERE idingreso='$idIngreso'";
