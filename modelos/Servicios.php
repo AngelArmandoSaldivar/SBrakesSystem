@@ -224,7 +224,7 @@ public function mostrarInfoAuto($idauto){
 
 //Lista los articulos de la servicio
 public function listarDetalle($idservicio){
-	$sql="SELECT m.descripcion AS descripcionMarca, dv.idservicio,dv.idarticulo,a.codigo,dv.cantidad,dv.fmsi, dv.descripcion,dv.precio_servicio,dv.descuento,(dv.cantidad*dv.precio_servicio-dv.descuento) as subtotal, dv.marca FROM detalle_servicio dv INNER JOIN articulo a ON dv.idarticulo=a.idarticulo INNER JOIN marca m ON a.marca = m.idmarca WHERE dv.idservicio='$idservicio' AND dv.estado='0'";
+	$sql="SELECT m.descripcion AS descripcionMarca, a.descripcion AS descripcionArticulo, dv.idservicio,dv.idarticulo,a.codigo,dv.cantidad,dv.fmsi, dv.descripcion,dv.precio_servicio,dv.descuento,(dv.cantidad*dv.precio_servicio-dv.descuento) as subtotal, dv.marca FROM detalle_servicio dv INNER JOIN articulo a ON dv.idarticulo=a.idarticulo INNER JOIN marca m ON a.marca = m.idmarca WHERE dv.idservicio='$idservicio' AND dv.estado='0'";
 	return ejecutarConsulta($sql);
 }
 

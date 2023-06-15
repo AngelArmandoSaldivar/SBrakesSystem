@@ -456,7 +456,7 @@ switch ($_GET["op"]) {
         <th>Cantidad</th>
         <th>Precio Unitario</th>
         <th>Descuento</th>
-        <th>Subtotal</th>		
+        <th>SubtotalSSS</th>		
        </thead>';
 		while ($reg=$rspta->fetch_object()) {
 			$des = $reg->descuento / 100;
@@ -466,8 +466,8 @@ switch ($_GET["op"]) {
 			<td></td>			
 			<td><input type="hidden" value="'.$reg->idarticulo.'" id="idarticulo" name="idarticulo"></input>'.$reg->codigo.'</td>
 			<td>'.$reg->fmsi.'</td>
-			<td>'.$reg->descripcionMarca.'</td>			
-			<td>'.$reg->descripcion.'</td>
+			<td>'.$reg->descripcionMarca.'</td>
+			<td>'.$reg->descripcionArticulo.'</td>
 			<td>'.$reg->cantidad.'</td>
 			<td>$'.number_format($reg->precio_servicio, 2).'</td>
 			<td>'.$reg->descuento.'</td>
@@ -1084,7 +1084,7 @@ switch ($_GET["op"]) {
 
 				$consulta = "";
 				if(!isset($_POST["productoEdit"])) {
-					$consulta="SELECT m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
+					$consulta="SELECT m.descripcion AS descripcionMarca, a.descripcion AS descripcionArticulo, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
 					a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
 					a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock, a.imagen
 					FROM articulo a INNER JOIN categoria c ON a.idcategoria=c.idcategoria
@@ -1096,7 +1096,7 @@ switch ($_GET["op"]) {
 				{
 					$termino=$conexion->real_escape_string($_POST['productosEdit']);
 					usleep(10000);
-					$consulta="SELECT m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
+					$consulta="SELECT m.descripcion AS descripcionMarca, a.descripcion AS descripcionArticulo, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
 					a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
 					a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock, a.imagen
 					FROM articulo a INNER JOIN categoria c ON a.idcategoria=c.idcategoria
@@ -1155,7 +1155,7 @@ switch ($_GET["op"]) {
 										<td><p>$ ".$creditoMiles."</p></td>
 										<td><p>$ ".$mayoreoMiles."</p></td>
 										<td><p>".$fila["stock"]." pz</p></td>										
-										<td><button style='width: 40px' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalleEdit(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["marca"]."\", \"".$fila["descripcion"]."\", \"".$fila[$tipo_precio]."\" , \"".$fila["taller"]."\" , \"".$fila["credito_taller"]."\" , \"".$fila["mayoreo"]."\", \"".$fila["taller"]."\" , \"".$fila["credito_taller"]."\" , \"".$fila["mayoreo"]."\" , \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
+										<td><button style='width: 40px' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalleEdit(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["marca"]."\", \"".$fila["descripcionArticulo"]."\", \"".$fila[$tipo_precio]."\" , \"".$fila["taller"]."\" , \"".$fila["credito_taller"]."\" , \"".$fila["mayoreo"]."\", \"".$fila["taller"]."\" , \"".$fila["credito_taller"]."\" , \"".$fila["mayoreo"]."\" , \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
 									</tr>";
 								} else if($fila["stock"] >=1 && $tipo_precio == null){
 									$precio = "publico";
@@ -1170,7 +1170,7 @@ switch ($_GET["op"]) {
 										<td><p>$ ".$creditoMiles."</p></td>
 										<td><p>$ ".$mayoreoMiles."</p></td>
 										<td><p>".$fila["stock"]." pz</p></td>										
-										<td><button style='width: 40px' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalleEdit(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["marca"]."\", \"".$fila["descripcion"]."\", \"".$fila[$precio]."\" , \"".$fila["taller"]."\" , \"".$fila["credito_taller"]."\" , \"".$fila["mayoreo"]."\", \"".$fila["taller"]."\" , \"".$fila["credito_taller"]."\" , \"".$fila["mayoreo"]."\" , \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
+										<td><button style='width: 40px' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalleEdit(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["marca"]."\", \"".$fila["descripcionArticulo"]."\", \"".$fila[$precio]."\" , \"".$fila["taller"]."\" , \"".$fila["credito_taller"]."\" , \"".$fila["mayoreo"]."\", \"".$fila["taller"]."\" , \"".$fila["credito_taller"]."\" , \"".$fila["mayoreo"]."\" , \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
 									</tr>";
 								} else if($fila["stock"] < 1){
 									echo "<tr style='color:red;'>
@@ -1240,7 +1240,7 @@ switch ($_GET["op"]) {
 
 			case 'listarProductos':
 	
-				$consulta="SELECT m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
+				$consulta="SELECT m.descripcion AS descripcionMarca,a.descripcion AS descripcionArticulo, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
 				a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
 				a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock, a.imagen
 				FROM articulo a INNER JOIN categoria c ON a.idcategoria=c.idcategoria
@@ -1251,7 +1251,7 @@ switch ($_GET["op"]) {
 					{
 						$termino=$conexion->real_escape_string($_POST['productos']);
 						//usleep(10000);
-						$consulta="SELECT m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
+						$consulta="SELECT m.descripcion AS descripcionMarca, a.descripcion AS descripcionArticulo, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
 						a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
 						a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock, a.imagen
 						FROM articulo a INNER JOIN categoria c ON a.idcategoria=c.idcategoria
@@ -1316,7 +1316,7 @@ switch ($_GET["op"]) {
 							$tallerMiles = number_format($fila['taller']);
 							$creditoMiles = number_format($fila['credito_taller']);
 							$mayoreoMiles = number_format($fila['mayoreo']);
-							$descrip = $fila['descripcion'];
+							$descrip = $fila['descripcionArticulo'];
 							$delit = substr($descrip, 0,30);
 							
 							if(isset($_POST["types"])) {
@@ -1335,7 +1335,7 @@ switch ($_GET["op"]) {
 											<td><p>$ ".$tallerMiles."</p></td>
 											<td><p>$ ".$creditoMiles."</p></td>
 											<td><p>$ ".$mayoreoMiles."</p></td>
-											<td><button style='width: 40px' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["descripcionMarca"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\" , \"".$fila["taller"]."\" , \"".$fila["credito_taller"]."\" , \"".$fila["mayoreo"]."\" , \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\" )'><span class='fa fa-plus'></span></button></td>
+											<td><button style='width: 40px' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcionArticulo"]."\", \"".$fila["descripcionMarca"]."\", \"".$fila["marca"]."\", \"".$fila[$tipo_precio]."\" , \"".$fila["taller"]."\" , \"".$fila["credito_taller"]."\" , \"".$fila["mayoreo"]."\" , \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\" )'><span class='fa fa-plus'></span></button></td>
 										</tr>";
 									} else if($fila["stock"] >=1 && $tipo_precio == null){
 										$precio = "publico";
@@ -1350,7 +1350,7 @@ switch ($_GET["op"]) {
 											<td><p>$ ".$tallerMiles."</p></td>
 											<td><p>$ ".$creditoMiles."</p></td>
 											<td><p>$ ".$mayoreoMiles."</p></td>																					
-											<td><button style='width: 40px' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcion"]."\", \"".$fila["descripcionMarca"]."\", \"".$fila["marca"]."\", \"".$fila[$precio]."\" , \"".$fila["taller"]."\" , \"".$fila["credito_taller"]."\" , \"".$fila["mayoreo"]."\" , \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
+											<td><button style='width: 40px' class='btn btn-warning btn-xs' data-dismiss='modal' onclick='agregarDetalle(".$fila["idarticulo"].",\"".$fila["codigo"]."\", \"".$fila["fmsi"]."\", \"".$fila["descripcionArticulo"]."\", \"".$fila["descripcionMarca"]."\", \"".$fila["marca"]."\", \"".$fila[$precio]."\" , \"".$fila["taller"]."\" , \"".$fila["credito_taller"]."\" , \"".$fila["mayoreo"]."\" , \"".$fila["stock"]."\", \"".$fila["idsucursal"]."\")'><span class='fa fa-plus'></span></button></td>
 										</tr>";
 									} else if($fila["stock"] < 1){
 										echo "<tr style='color:red;'>
