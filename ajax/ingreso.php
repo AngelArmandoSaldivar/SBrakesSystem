@@ -24,7 +24,26 @@ switch ($_GET["op"]) {
 	}else{
         
 	}
-		break;		
+	break;
+	
+	case 'registroTemporal':
+		$rspta = $ingreso->registroTemporal($idsucursal, $idusuario);
+		echo $rspta;
+		break;
+
+	case 'actualizaProveedorIngreso':
+		$idproveedor = $_POST["idProveedor"];
+		$idRecepcion = $_POST["idIngreso"];
+		$rspta = $ingreso->actualizaProveedorIngreso($idRecepcion, $idproveedor);
+		echo $rspta ? "Proveedor actualizado correctamente" : "No se pudo actualizar el proveedor";
+		break;
+
+	case 'actualizaSerieIngreso':
+		$idRecepcion = $_POST["idIngreso"];
+		$serie = $_POST["serie"];
+		$rspta = $ingreso->actualizaSerieIngreso($idRecepcion, $serie);
+		echo $rspta ? "Serie actualizada correctamente" : "No se pudo actualizar la serie";
+		break;
 
 	case 'guardarProductoIngreso':
 		$idIngreso=$_GET['idingreso'];

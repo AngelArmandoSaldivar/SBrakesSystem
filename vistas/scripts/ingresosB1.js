@@ -26,6 +26,67 @@ function init(){
 	evaluarCaja();	
 }
 
+function cancelarRecepcion() {
+	
+	var idingreso = $("#idingreso").val();	
+	$.post("../ajax/ingreso.php?op=anular", {idingreso : idingreso}, function(e){
+		swal({
+			title:'Recepción eliminada!',
+			text: 'Se elimino correctamente la recepción.',
+			type: 'success',
+			showConfirmButton: false,
+			timer: 1500
+		})
+		obtener_registros();
+	});
+}
+
+function actualizarProveedor(idProveedor) {
+
+	var idIngreso = $("#idingreso").val();
+
+	$.ajax({
+        url : '../ajax/ingreso.php?op=actualizaProveedorIngreso',
+        type : 'POST',
+        data: {"idProveedor" : idProveedor, "idIngreso" : idIngreso},
+        error: () => {
+            swal({
+                title: 'Error!',
+                html: 'Ha surgido un error',
+                timer: 1000,					
+                showConfirmButton: false,
+                type: 'warning',					
+            })
+        },
+        success: (data) => {
+            console.log(data)
+		}
+	})
+	
+}
+
+function actualizaSerie(serie) {
+	var idIngreso = $("#idingreso").val();
+
+	$.ajax({
+        url : '../ajax/ingreso.php?op=actualizaSerieIngreso',
+        type : 'POST',
+        data: {"serie" : serie, "idIngreso" : idIngreso},
+        error: () => {
+            swal({
+                title: 'Error!',
+                html: 'Ha surgido un error',
+                timer: 1000,					
+                showConfirmButton: false,
+                type: 'warning',					
+            })
+        },
+        success: (data) => {
+            console.log(data)
+		}
+	})
+}
+
 function evaluarCaja() {
 	$.ajax({
         url : '../ajax/caja.php?op=mostrarCaja',
@@ -747,12 +808,42 @@ function salirForm() {
 }
 
 function agregarRecepcion() {
-	mostrarform(true);
-	$("#btnAgregarArt").show();
-	$("#btnAgregarArticulosEdit").hide();
-	$("#btnAgregarArticulo").show();
-	$("#btnGuardar").show();
-	$("#btnAgregarProveedor").show();
+
+	//e.preventDefault();//no se activara la accion predeterminada      
+	var formData=new FormData($("#formulario")[0]);	
+	 	
+     $.ajax({
+     	url: "../ajax/ingreso.php?op=registroTemporal",
+     	type: "POST",
+     	data: formData,
+		 beforeSend: function() {
+			//$('.loader').show();
+		},
+     	contentType: false,
+     	processData: false,
+
+     	success: function(datos){
+			console.log("REGISTRO TEMPORAL ID: " + datos);
+			if(datos != null || datos != '') {
+				mostrarform(true);
+				$("#idingreso").val(datos);
+				$("#btnAgregarProveedor").show();
+				$("#btnAgregarArt").hide();
+				$("#btnAgregarArticulosEdit").show();
+				$("#btnGuardar").hide();
+			}
+			/*swal({
+				position: 'top-end',
+				type: 'success',
+				title: datos,
+				showConfirmButton: false,
+				//timer: 1500
+				timer: false
+			});*/
+     	}
+     });
+	 //limpiar();
+
 }
 
 
@@ -937,6 +1028,7 @@ function mostrar(idingreso){
 	$("#btnAgregarArticulo").hide();
 	$("#btnGuardar").hide();
 	$("#btnAgregarProveedor").hide();
+	$("#btnCancelar").hide();
 	detalleMostrar(idingreso);
 }
 
@@ -991,30 +1083,32 @@ function editarGuardarProductoRecepcion() {
 			contentType: false,
 			processData: false,
    
-			success: function(datos){   				
-			   swal({
-				   title: datos,
-				   text: 'Se actualizo correctamente el articulo del ingreso.',
-				   type: 'success',
-				   showConfirmButton: true,
-				   //timer: 1500
-			   })			
-			   $("#formularioProductoRecepcion")[0].reset();
-			   $("#editProductRecepcion").modal('hide');
-			   detallesRecepcionEditar(idIngreso);
+			success: function(datos){   
+				alert("Se actualizo correctamente el articulo del ingreso.");				
+				/*swal({
+					title: datos,
+					text: 'Se actualizo correctamente el articulo del ingreso.',
+					type: 'success',
+					showConfirmButton: true,
+					//timer: 1500
+				})*/			
+				$("#formularioProductoRecepcion")[0].reset();
+				$("#editProductRecepcion").modal('hide');
+				detallesRecepcionEditar(idIngreso);
 			},			
 	   });				
 	});
 }
 
-function editar(idingreso){		
-	mostrarform(true);	
+function editar(idingreso){
+	mostrarform(true);
 	$("#btnAgregarProveedor").show();
 	$("#btnAgregarArt").hide();
-	$("#btnAgregarArticulosEdit").show();	
-	viewClient(idingreso);	
+	$("#btnAgregarArticulosEdit").show();
+	viewClient(idingreso);
 	$("#btnGuardar").hide();
-	detallesRecepcionEditar(idingreso);		
+	$("#btnCancelar").hide();
+	detallesRecepcionEditar(idingreso);
 }
 
 function eliminarProductoIngreso(idingreso, idarticulo, stock, precio_compra) {
@@ -1179,7 +1273,7 @@ function agregarDetalleEdit(idarticulo,articulo,fmsi, marca, descripcion,publico
 	var idingreso = document.getElementById("idingreso").value;
 	var folio = document.getElementById("serie_comprobante").value;
 	var idproveedor = document.getElementById("idproveedor").value;
-
+	
 	if (idarticulo!="") {
 
 		$.ajax({
@@ -1208,6 +1302,7 @@ function agregarDetalleEdit(idarticulo,articulo,fmsi, marca, descripcion,publico
 				   title: data,
 				   showConfirmButton: true,				   
 			   });			   
+			   console.log("DETALLE INGRESO ID: " + idingreso);
 			   detallesRecepcionEditar(idingreso);
 			}
 		});

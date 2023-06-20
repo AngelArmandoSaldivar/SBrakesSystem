@@ -9,6 +9,30 @@ public function __construct(){
 
 }
 
+public function registroTemporal($idsucursal, $idusuario) {
+
+	$sw = true;
+	$sqlUltimoIngreso = "SELECT * FROM ingreso WHERE idsucursal = '$idsucursal' ORDER BY idingreso DESC limit 1";
+	$consultarIngreso = ejecutarConsulta($sqlUltimoIngreso) or $sw = false;
+	$sql;
+	$idingreso;
+	$nuevoFolio = 0;
+
+	while($reg=$consultarIngreso->fetch_object()) {
+		$nuevoFolio = $reg->folio + 1;
+	}
+	if ($nuevoFolio == '' || $nuevoFolio == null || $nuevoFolio == 0) {
+		$sql = "INSERT INTO ingreso (idsucursal, tipo_comprobante, impuesto, descuento, tipoMov, estado, idusuario, folio, fecha_hora) 
+			VALUES ('$idsucursal', 'RECEPCIÓN', 0, 0, 'RECEPCIÓN', 'NORMAL', '$idusuario', 1, NOW());";
+		$idIngreso = ejecutarConsulta_retornarID($sql) or $sw = false;
+	} else {
+		$sql = "INSERT INTO ingreso (idsucursal, tipo_comprobante, impuesto, descuento, tipoMov, estado, idusuario, folio, fecha_hora) 
+			VALUES ('$idsucursal', 'RECEPCIÓN', 0, 0, 'RECEPCIÓN', 'NORMAL', '$idusuario', '$nuevoFolio', NOW());";
+		$idIngreso = ejecutarConsulta_retornarID($sql) or $sw = false;
+	}
+	return $idIngreso;
+}
+
 //metodo insertar registro
 public function insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_comprobante,$fecha_hora,$impuesto,$total_compra,$idarticulo,$clave,$fmsi,$descripcion,$cantidad,$precio_compra, $idsucursal, $idsucursalArticulo, $descuento){	
 	$impuesto = 0.0;
@@ -20,13 +44,12 @@ public function insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_compro
 	$extraer2 = $posicion > 0 ? substr($total_compra, $posicion + 1, 50) : "";
 	$nuevo_total = $extraer2 != "" ? intval($extraer1.$extraer2) : $total_compra;
 
-
 	$sql="INSERT INTO ingreso (idproveedor,idusuario,tipo_comprobante,serie_comprobante,fecha_hora,impuesto,total_compra,tipoMov,estado, idsucursal) VALUES ('$idproveedor','$idusuario','$tipo_comprobante','$serie_comprobante','$fecha_hora','$impuesto','$nuevo_total','RECEPCIÓN','NORMAL', '$idsucursal')";
 	//return ejecutarConsulta($sql);
 	 $idingresonew=ejecutarConsulta_retornarID($sql);
 	 $num_elementos=0;
 	 $sw=true;
-	 while ($num_elementos < count($idarticulo)) {				
+	 while ($num_elementos < count($idarticulo)) {
 	 	$sql_detalle="INSERT INTO detalle_ingreso (idingreso,idproveedor,idusuario,serie_comprobante,tipo_comprobante,idarticulo,clave,fmsi,descripcion,cantidad,precio_compra,tipoMov, descuento, idsucursal) VALUES('$idingresonew','$idproveedor','$idusuario','$serie_comprobante','$tipo_comprobante','$idarticulo[$num_elementos]','$clave[$num_elementos]','$fmsi[$num_elementos]','$descripcion[$num_elementos]','$cantidad[$num_elementos]','$precio_compra[$num_elementos]','RECEPCIÓN', '$descuento[$num_elementos]', '$idsucursal')";		
 	 	ejecutarConsulta($sql_detalle) or $sw=false;
 
@@ -38,17 +61,28 @@ public function insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_compro
 	 return $sw;
 }
 
-public function addProductoIngreso($idarticulo,$articulo,$fmsi,$marca,$descripcion,$publico,$stock,$idIngreso, $idproveedor, $datetime, $folio, $idsucursal, $idarticuloSucursal) {
+public function addProductoIngreso($idarticulo,$articulo,$fmsi,$marca,$descripcion,$publico,$stock,$idIngreso, $idproveedor, $datetime, $folio, $idsucursal, $idarticuloSucursal) {	
+
 	$bandera = true;	
+	$impuesto = 0.0;	
+	$caracter = ",";
+	$posicion = strpos($publico, $caracter);
+
+	$extraer1 = $posicion > 0 ? substr($publico, 0, $posicion) : $publico;
+	$extraer2 = $posicion > 0 ? substr($publico, $posicion + 1, 50) : "";	
+	$nuevo_total = $extraer2 != "" ? intval($extraer1.$extraer2) : $publico;
+
+
 	$sql = "INSERT INTO detalle_ingreso
-			(idingreso,idarticulo,clave,fmsi,marca, descripcion,tipoMov,cantidad,precio_compra,descuento, idsucursal) 
-			VALUES('$idIngreso','$idarticulo', '$articulo','$fmsi','$marca','$descripcion','RECEPCIÓN','$stock','$publico','0', '$idsucursal')";
+			(idingreso,idarticulo,clave,fmsi,marca, descripcion,tipoMov,cantidad,precio_compra, idsucursal) 
+			VALUES('$idIngreso','$idarticulo', '$articulo','$fmsi','$marca','$descripcion','RECEPCIÓN','$stock','$nuevo_total', '$idsucursal')";
 	ejecutarConsulta($sql) or $bandera=false;
 	
-	$sql_ingreso = "UPDATE ingreso SET total_compra=total_compra+'$publico' WHERE idingreso='$idIngreso'";
-	ejecutarConsulta($sql_ingreso) or $bandera=false;
+	$sql_ingreso = "UPDATE ingreso SET total_compra=total_compra+'$nuevo_total' WHERE idingreso='$idIngreso'";
+	ejecutarConsulta($sql_ingreso) or $bandera=false;	
 	
-	$sql_kardex = "INSERT INTO kardex (fecha_hora, folio, clave, fmsi, idcliente_proveedor, cantidad, importe, tipoMov, estado, idarticulo, idventa, idsucursalArticulo, idsucursalVenta) VALUES ('$datetime', '$folio', '$articulo', '$fmsi', '$idproveedor', '$stock', '$publico', 'RECEPCION','ACTIVO', '$idarticulo', '$idIngreso', '$idarticuloSucursal', '$idsucursal')";
+	$sql_kardex = "INSERT INTO kardex (fecha_entrada, folio, clave, fmsi, idcliente_proveedor, cantidad, importe, tipoMov, estado, idarticulo, idventa, idsucursalArticulo, idsucursalVenta) 
+					VALUES ('$datetime', '$folio', '$articulo', '$fmsi', '$idproveedor', '$stock', '$nuevo_total', 'RECEPCION','ACTIVO', '$idarticulo', '$idIngreso', '$idarticuloSucursal', '$idsucursal')";
 		 ejecutarConsulta($sql_kardex) or $bandera=false;
 	
 	return $bandera;
@@ -72,6 +106,20 @@ public function editarGuardarProductoIngreso($p1, $p2, $p3, $idarticulo, $idingr
 
 	$sql_articuloStockNew = "UPDATE articulo SET stock=stock+$p2 WHERE idarticulo='$idarticulo'";
 	ejecutarConsulta($sql_articuloStockNew) or $bandera=false;	
+	return $bandera;
+}
+
+public function actualizaProveedorIngreso($idingreso, $idproveedor) {
+	$bandera = true;
+	$sql = "UPDATE ingreso SET idproveedor='$idproveedor' WHERE idingreso='$idingreso'";
+	ejecutarConsulta($sql) or $bandera = false;
+	return $bandera;
+}
+
+public function actualizaSerieIngreso($idingreso, $serie) {
+	$bandera = true;
+	$sql = "UPDATE ingreso SET serie_comprobante='$serie' WHERE idingreso='$idingreso'";
+	ejecutarConsulta($sql) or $bandera = false;
 	return $bandera;
 }
 

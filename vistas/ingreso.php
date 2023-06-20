@@ -85,7 +85,7 @@ if ($_SESSION['recepciones']==1) {
                     <span class="input-group-btn"></span>
                     <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-hand-o-right"></i></span>
                       <input class="form-control" type="hidden" name="idingreso" id="idingreso">
-                      <select name="idproveedor" id="idproveedor" class="form-control selectpicker" data-live-search="true" required>        
+                      <select name="idproveedor" id="idproveedor" class="form-control selectpicker" onchange="actualizarProveedor(this.value)" data-live-search="true" required>        
                       </select>
                   </div>
                 </div>
@@ -100,7 +100,7 @@ if ($_SESSION['recepciones']==1) {
                   <div class="input-group bootstrap-touchspin">
                     <span class="input-group-btn"></span>
                     <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-calendar"></i></span>
-                      <input class="form-control" type="date" name="fecha_hora" id="fecha_hora" required>
+                      <input class="form-control" type="date" name="fecha_hora" id="fecha_hora" value="<?php echo date("Y-m-d"); ?>" required>
                   </div>      
                 </div>
                 <div class="form-group col-lg-6 col-md-6 col-xs-12">
@@ -118,14 +118,14 @@ if ($_SESSION['recepciones']==1) {
                   <div class="input-group bootstrap-touchspin">
                     <span class="input-group-btn"></span>
                     <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-keyboard-o"></i></span>
-                      <input class="form-control" type="text" name="serie_comprobante" id="serie_comprobante" maxlength="50" placeholder="Serie" required>
+                      <input class="form-control" type="text" name="serie_comprobante" id="serie_comprobante" onchange="actualizaSerie(this.value)" maxlength="50" placeholder="Serie" required>
                   </div>
                 </div>
                 <div class="form-group col-lg-3 col-md-2 col-xs-6">
                   <label>Impuesto <span class="text-danger">*</span></label>
                   <div class="input-group bootstrap-touchspin">                  
                     <span class="input-group-addon bootstrap-touchspin-prefix">$</span>
-                    <input class="form-control" type="text" name="impuesto" id="impuesto">
+                    <input class="form-control" type="text" name="impuesto" id="impuesto" value="0" readonly="true">
                   </div>
                 </div>
                 <div class="form-group col-lg-3 col-md-3 col-sm-6 col-xs-12" id="btnAgregarArt">
@@ -174,8 +174,9 @@ if ($_SESSION['recepciones']==1) {
 
                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i>  Guardar</button>
+                  <button class="btn btn-danger" onclick="cancelarRecepcion()" id="btnCancelar"><i class="fa fa-times"></i>  Cancelar</button>
                   <button class="btn btn-info" onclick="salirForm()" type="button" id="btnRegresar"><i class="fa fa-arrow-circle-left"></i> Regresar</button>
-                  <?php 
+                  <?php
                     require('loader.php');
                   ?>
                 </div>
@@ -435,7 +436,7 @@ if ($_SESSION['recepciones']==1) {
 
 require 'footer.php';
  ?>
- <script src="scripts/ingresos.js"></script>
+ <script src="scripts/ingresosB1.js"></script>
  <?php 
 }
 
