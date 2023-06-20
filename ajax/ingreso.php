@@ -433,7 +433,7 @@ switch ($_GET["op"]) {
 							$paginas = 13;
 
 							echo "<tr>								
-								<td>".$fila['idingreso']."</td>
+								<td>".$fila['folio']."</td>
 								<td>".$fila['fecha']."</td>
 								<td>".$fila['estado']."</td>
 								<td><p>".$fila['proveedor']."</td>
@@ -458,7 +458,7 @@ switch ($_GET["op"]) {
 							$paginas = 13;
 
 							echo "<tr>								
-								<td>".$fila['idingreso']."</td>
+								<td>".$fila['folio']."</td>
 								<td>".$fila['fecha']."</td>
 								<td>".$fila['estado']."</td>
 								<td><p>".$fila['proveedor']."</td>
