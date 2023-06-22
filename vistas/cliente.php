@@ -184,7 +184,7 @@ if ($_SESSION['clientes']==1) {
 }
 require 'footer.php';
  ?>
- <script src="scripts/clientesB1S.js"></script>
+ <script src="scripts/cliente.js"></script>
  <?php 
 }
 

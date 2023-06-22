@@ -11,13 +11,16 @@ public function __construct(){
 
 //metodo insertar regiustro
 public function insertar($idpersona,$tipo_persona,$nombre,$tipo_precio,$direccion,$telefono,$telefono_local,$email, $rfc, $credito, $placas, $marca, $modelo, $ano, $color, $kms){	
+	/*echo "ID PERSONA: ".$idpersona."\n" . "TIPO DE PERSONA: " . $tipo_persona . "\n" . "NOMBRE: " . $nombre."\n" . "TIPO PRECIO: " . $tipo_precio;
+	echo "\n" . "DIRECCION: " . $direccion . "\n" . "TELEFONO: " . $telefono."\n"."TELEFONO LOCAL: ".$telefono_local."\n"."EMAIL: ".$email."\n";
+	echo "RFC: " . $rfc. "\n". "CREDITO: ". $credito. "\n". "PLACAS: ". $placas. "\n". "MARCA: ". $marca. "\n". "MODELO: ". $modelo. "\n". "ANO: ". $ano. "\n". "COLOR: ". $color. "\n". "KMS: " . $kms;*/
 	$sw=true;
 	$num_elementos=0;
 	$idPersonaNew="";
 
 	if($nombre != "") {		
 		$sql="INSERT INTO persona (tipo_persona,nombre,tipo_precio,direccion,telefono,telefono_local,email, rfc, credito) VALUES ('$tipo_persona','$nombre','$tipo_precio','$direccion','$telefono','$telefono_local','$email', '$rfc', '$credito')";
-		$idPersonaNew=ejecutarConsulta_retornarID($sql);
+		$idPersonaNew=ejecutarConsulta_retornarID($sql) or $sw = false;
 	}
 	
 	if($placas != "") {

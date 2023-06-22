@@ -92,8 +92,8 @@ function guardaryeditar(e){
 				position: 'top-end',
 				type: 'success',
 				title: datos,
-				showConfirmButton: false,
-				timer: 1500
+				showConfirmButton: true,
+				//timer: 1500
 			});
      		mostrarform(false);     		
 			obtener_registros();
