@@ -1572,9 +1572,7 @@
                           <option value="Efectivo">EFECTIVO</option>
                           <option value="Deposito">DEPÓSITO</option>
                           <option value="Tarjeta">TARJETA</option>
-                          <option value="Transferencia">TRASFERENCIA</option>
-                          <option value="Banamex">BANAMEX</option>
-                          <option value="Inbursa">INBURSA</option>
+                          <option value="Transferencia">TRASFERENCIA</option>                          
                         </select>
                       </div>
                     </div>
@@ -1595,7 +1593,9 @@
                           <option value="BANORTE">BANORTE</option>
                           <option value="BANAMEX">BANCOMER</option>
                           <option value="SANTANDER">SANTANDER</option>
-                          <option value="SCOTIA BANK">SCOTIA BANK</option>                    
+                          <option value="SCOTIA BANK">SCOTIA BANK</option>        
+                          <option value="Banamex">BANAMEX</option>
+                          <option value="Inbursa">INBURSA</option>            
                         </select>
                       </div>
                     </div>
