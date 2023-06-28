@@ -1573,6 +1573,8 @@
                           <option value="Deposito">DEPÓSITO</option>
                           <option value="Tarjeta">TARJETA</option>
                           <option value="Transferencia">TRASFERENCIA</option>
+                          <option value="Banamex">BANAMEX</option>
+                          <option value="Inbursa">INBURSA</option>
                         </select>
                       </div>
                     </div>
