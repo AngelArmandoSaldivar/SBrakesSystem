@@ -8,6 +8,8 @@ if (!isset($_SESSION['nombre'])) {
 }else{
 
 if ($_SESSION['servicios']==1) {
+  
+$idsucursal = $_SESSION['idsucursal'];
 
 require('HistorialServicios.php');
 $logo="logo.png";
@@ -110,7 +112,7 @@ while ($reg=$rspta->fetch_object()) {
 }
 
 
-$pdf->addTVAs( $impuesto, array_sum($totalArray), "$");
+$pdf->addTVAs( $impuesto, array_sum($totalArray), "$", $idsucursal);
 $pdf->addCadreEurosFrancs("IGV"." $impuesto %");
 $pdf->Output('Reporte de Servicio' ,'I');
 

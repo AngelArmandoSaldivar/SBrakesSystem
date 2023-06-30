@@ -102,7 +102,7 @@ while ($reg=$rspta->fetch_object()) {
 }
 
 
-$pdf->addTVAs( $impuesto, array_sum($totalArray), "$");
+$pdf->addTVAs( $impuesto, array_sum($totalArray), "$", $idsucursal);
 $pdf->addCadreEurosFrancs("IGV"." $impuesto %");
 $pdf->Output('Reporte de Servicios' ,'I');
 

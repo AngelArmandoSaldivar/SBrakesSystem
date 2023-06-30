@@ -131,7 +131,7 @@ class Articulo{
 			a.descripcion LIKE '%$busqueda%'*/)
 			AND a.estado = 1
 			AND a.idsucursal = '$idsucursal'
-			ORDER BY FIELD (marca,'2') DESC, a.stock > 0 DESC LIMIT 500";
+			ORDER BY (a.stock > 0) DESC, (FIELD (marca,'2', a.stock > 0)) DESC LIMIT 500";
 			return ejecutarConsulta($sql);	
 		} else 						
 		
@@ -148,7 +148,7 @@ class Articulo{
 					a.descripcion LIKE '%$busqueda%'*/)
 					AND a.estado = 1
 					AND a.idsucursal = '$idsucursal'
-					ORDER BY FIELD (marca,'2') DESC, a.stock > 0 DESC LIMIT 500
+					ORDER BY (a.stock > 0) DESC, (FIELD (marca,'2', a.stock > 0)) DESC LIMIT 500
 					) AS tabla1					
 					UNION ALL
 					SELECT * FROM (SELECT cat.nombre AS nombreCategoria, mar.descripcion AS descripcionMarca, cat.nombre, ar.codigo, ar.fmsi, ar.idarticulo, ar.idcategoria, ar.descripcion, ar.estado,
@@ -163,7 +163,7 @@ class Articulo{
 					ar.descripcion LIKE '%$busqueda2%'*/)
 					AND ar.estado = 1
 					AND ar.idsucursal = '$idsucursal'
-					ORDER BY FIELD (marca,'2') DESC, ar.stock > 0 DESC LIMIT 500
+					ORDER BY (ar.stock > 0) DESC, (FIELD (marca,'2' , ar.stock > 0 )) DESC LIMIT 500
 					) AS tabla2;";
 					return ejecutarConsulta($sql);
 		}

@@ -13,12 +13,13 @@ if ($_SESSION['servicios']==1) {
 //incluimos el archivo factura
 require('FacturaServicios.php');
 
+$idsucursal = $_SESSION['idsucursal'];
 //establecemos los datos de la empresa
 $logo="logo.png";
 $ext_logo="png";
 $empresa="BrakeOne";
 $documento="1074528547";
-$direccion="Calle Portales";
+$direccion= $idsucursal == 1 "Calle Portales" ? "";
 $telefono="958524158";
 $email="brakeone@gmail.com";
 

@@ -166,7 +166,7 @@ function LoadData($file)
 function fact_dev($num )
 {
 
-    $rt  = $this->w - 150;
+    $rt  = $this->w - 155;
     $rt2  = $rt + 0;
     $this->SetXY( $rt+2, 30,6+2);
     $this->SetFont( "Arial", "B", 16 );
@@ -364,17 +364,14 @@ function addCadreTVAs($letras)
 
 function addCadreEurosFrancs($impuesto)
 {
-    $r1  = $this->w - 75;
-    $r2  = $r1 + 60;
-    $y1  = $this->h - 75;
-    $y2  = $y1+20;
-    $this->SetXY( $r1, $y1 + 55 );
+
+    $this->SetXY( $this->w - 68, $this->h - 178 );
     $this->SetFont( "Arial", "B", 8);
-    $this->SetXY( $r1+22, $y1 );
-    $this->Cell(35,4, "TOTAL SERVICIOS", 0, 0, "C");
+    $this->Cell( 5, 1, "TOTAL SERVICIOS", 0, 0, "C"); 
+      
 }
 
-function addTVAs( $impuesto, $total_venta, $simbolo )
+function addTVAs( $impuesto, $total_venta, $simbolo, $idsucursal)
 {
     $this->SetFont('Arial','',8);
     
@@ -383,25 +380,27 @@ function addTVAs( $impuesto, $total_venta, $simbolo )
     $rei  = $this->w - 0;
     $rf  = $this->w - 0;
     $y1  = $this->h - 74;
-    $this->SetFont( "Arial", "", 9);
+    /*$this->SetFont( "Arial", "", 9);
+    $this->Line( $re+20, $y1+35, 12, $y1+35);*/
+    
+    $this->SetXY( $this->w - 50, $this->h - 185 );
+    $this->SetFont( "Arial", "B", 8);
 
-     $this->Line( $re+20, $y1+25, 12, $y1+25);
+    $length = $this->GetStringWidth( $total_venta );
+    $formatTotal = number_format($total_venta, 2);
+    $this->Cell(5, 15, "$ ".$formatTotal); 
 
     // mostrando el total
     $this->SetXY( $re, $y1+10 );
-    $length = $this->GetStringWidth( $simbolo );
-    $this->Cell( $length, 2, $simbolo);
-    $length = $this->GetStringWidth( $total_venta );
-    $formatTotal = number_format($total_venta, 2);
-    $this->Cell( $length, 2, $formatTotal);   
+ 
     
-    $this->SetXY( $this->w - 165, $this->h - 59+19 );
+    /*$this->SetXY( $this->w - 580, $this->h - 59+20 );
     $this->SetFont( "Arial", "", 8);
-    $this->Cell( 5, 15, "SARATOGA #313-C, COL. PORTALES NORTE C.P. 03300 ALCALDIA BENITO JUAREZ, CDMX."); 
+    $this->Cell( 5, 15, $idsucursal == 1 ? "SARATOGA #313-C, COL. PORTALES NORTE C.P. 03300 ALCALDIA BENITO JUAREZ, CDMX." : "Belisario Dominguez 81, Las Misiones 76030, Santiago de Queretaro, Qro 76030"); 
 
-    $this->SetXY( $this->w - 150, $this->h - 59+23 );
+    $this->SetXY( $this->w - 580, $this->h - 59+23 );
     $this->SetFont( "Arial", "", 8);
-    $this->Cell( 5, 15, "TELS. (55) 4563 / 2063 (55) 6840 / 2850 (55) 7653 / 6116 (55) 5273 / 3450"); 
+    $this->Cell( 5, 15, $idsucursal == 1 ? "TELS. (55) 4563 / 2063 (55) 6840 / 2850 (55) 7653 / 6116 (55) 5273 / 3450" : "(44) 2738-5075 / (55) 4563-2063"); */
 }
 
 // add a watermark (temporary estimate, DUPLICATA...)

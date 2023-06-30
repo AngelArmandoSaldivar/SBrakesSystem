@@ -376,7 +376,7 @@ function addCadreEurosFrancs($impuesto)
     $this->Cell(35,4, "TOTAL SERVICIOS", 0, 0, "C");
 }
 
-function addTVAs( $impuesto, $total_venta, $simbolo )
+function addTVAs( $impuesto, $total_venta, $simbolo, $idsucursal)
 {
     $this->SetFont('Arial','',8);
     
@@ -399,11 +399,12 @@ function addTVAs( $impuesto, $total_venta, $simbolo )
     
     $this->SetXY( $this->w - 165, $this->h - 59+19 );
     $this->SetFont( "Arial", "", 8);
-    $this->Cell( 5, 15, "SARATOGA #313-C, COL. PORTALES NORTE C.P. 03300 ALCALDIA BENITO JUAREZ, CDMX."); 
+    $direccion = $idsucursal == 1 ? "SARATOGA #313-C, COL. PORTALES NORTE C.P. 03300 ALCALDIA BENITO JUAREZ, CDMX." : "Belisario Dominguez 81, Las Misiones 76030, Santiago de Queretaro, Qro 76030";
+    $this->Cell( 5, 15, $direccion);
 
     $this->SetXY( $this->w - 150, $this->h - 59+23 );
     $this->SetFont( "Arial", "", 8);
-    $this->Cell( 5, 15, "TELS. (55) 4563 / 2063 (55) 6840 / 2850 (55) 7653 / 6116 (55) 5273 / 3450"); 
+    $this->Cell( 5, 15, $idsucursal == 1 ? "TELS. (55) 4563 / 2063 (55) 6840 / 2850 (55) 7653 / 6116 (55) 5273 / 3450" : "(44) 2738-5075 / (55) 4563-2063"); 
 }
 
 // add a watermark (temporary estimate, DUPLICATA...)
