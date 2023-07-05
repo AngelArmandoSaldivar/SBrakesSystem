@@ -1580,8 +1580,8 @@ function imprimir(){
 
 function exportarExcel() {
 	window.open(
-		`../reportes/exportExcel.php`,
-		'_blank');
+		`../reportes/exportExcel.php`, 
+		'_self')
 }
 
 function mostrarImagen(id) {
