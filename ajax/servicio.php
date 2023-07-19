@@ -49,6 +49,11 @@ switch ($_GET["op"]) {
 	}
 	break;
 
+	case 'registroTemporal':
+		$rspta = $servicio->registroTemporal($idsucursal, $idusuario);
+		echo $rspta;
+		break;
+
 	case 'registrarOrdenCompra':
 		$ìdArticulo=$_POST['ìdArticulo'];
 		$fecha_orden=$_POST['fecha_orden'];

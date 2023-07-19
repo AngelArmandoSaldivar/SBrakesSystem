@@ -271,7 +271,7 @@ if(!isset($_SESSION["nombre"])) {
 					}
 					if($acceso == "1") {
 						if($fila["stock"] >= $fila["stock_ideal"]) {
-								echo "<tr style='color:blue; font-size:11px;'>
+								echo "<tr style='color:blue; font-size:11px;' id=".'fila_'.$fila["idarticulo"].">
 								<td style='width:20px'>".$fila['codigo']."</td>								
 								<td style='width:5px; height:5px;'>".$delitFmsi."</td>
 								<td style='width:20px'>".$formulacionExtra."</td>
@@ -284,7 +284,7 @@ if(!isset($_SESSION["nombre"])) {
 								<td><p>$ ".$creditoMiles."</p></td>
 								<td id='thStock'><p>$ ".$mayoreoMiles."</p></td>
 								<td>
-									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
+									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-info btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
 									<a data-toggle='modal' href='#modalImagenArticulo'>
 										<button title='Mostrar Imagen Articulo' data-toggle='popover' data-trigger='hover' data-content='Mostrar Imagen Articulo' data-placement='top' class='btn btn-success btn-xs' onclick='mostrarImagen(".$fila["idarticulo"].")'><i class='fa fa-camera'></i></button>
 									</a>
@@ -294,11 +294,12 @@ if(!isset($_SESSION["nombre"])) {
 										<button title='Solicitar' data-toggle='popover' data-trigger='hover' data-content='Solicitar articulo' data-placement='bottom' class='btn btn-info btn-xs' onclick='mostrarArticuloSolicitud(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button>
 									</a>	-->									
 									<!--<span data-tooltip='Activar articulo'><button class='btn btn-primary btn-xs' onclick='activar(".$fila["idarticulo"].")'><i class='fa fa-check'></i></button></span>-->									
+									<button onclick='ocultarFila(".$fila["idarticulo"].")' id='eliminarFila' name='eliminarFila' title='Ocultar' data-toggle='popover' data-trigger='hover' data-content='Ocultar fila' data-placement='bottom' class='btn btn-primary btn-xs'><i class='fa fa-eye-slash'></i></button>
 								</td>
 							</tr>
 							";
 						} else if($fila["stock"] < $fila["stock_ideal"]){							
-								echo "<tr style='color:red; font-size:11px;'>
+								echo "<tr style='color:red; font-size:11px;' id=".'fila_'.$fila["idarticulo"].">
 								<td style='width:20px'>".$fila['codigo']."</td>								
 								<td style='width:80px;'>".$delitFmsi."</td>
 								<td style='width:20px'>".$formulacionExtra."</td>
@@ -320,13 +321,14 @@ if(!isset($_SESSION["nombre"])) {
 									<!--<a data-toggle='modal' href='#solicitarArticulo'>
 										<button title='Solicitar' data-toggle='popover' data-trigger='hover' data-content='Solicitar articulo' data-placement='bottom' class='btn btn-info btn-xs' onclick='mostrarArticuloSolicitud(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button>
 									</a>-->
+									<button onclick='ocultarFila(".$fila["idarticulo"].")' id='eliminarFila' name='eliminarFila' title='Ocultar' data-toggle='popover' data-trigger='hover' data-content='Ocultar fila' data-placement='bottom' class='btn btn-primary btn-xs'><i class='fa fa-eye-slash'></i></button>
 								</td>
 							</tr>";								
 						}
 					}
 					else if($acceso != "1"){
 						if($fila["stock"] >= $fila["stock_ideal"]) {
-							echo "<tr style='color:blue; font-size:11px;'>
+							echo "<tr style='color:blue; font-size:11px;' id=".'fila_'.$fila["idarticulo"].">
 								<td style='width:20px'>".$fila['codigo']."</td>								
 								<td style='width:10px;'>".$delitFmsi."</td>
 								<td style='width:20px'>".$formulacionExtra."</td>
@@ -346,10 +348,11 @@ if(!isset($_SESSION["nombre"])) {
 									<!--<a data-toggle='modal' href='#solicitarArticulo'>
 										<button title='Solicitar' data-toggle='popover' data-trigger='hover' data-content='Solicitar articulo' data-placement='bottom' class='btn btn-info btn-xs' onclick='mostrarArticuloSolicitud(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button>
 									</a>-->
+									<button onclick='ocultarFila(".$fila["idarticulo"].")' id='eliminarFila' name='eliminarFila' title='Ocultar' data-toggle='popover' data-trigger='hover' data-content='Ocultar fila' data-placement='bottom' class='btn btn-primary btn-xs'><i class='fa fa-eye-slash'></i></button>
 							</tr>";
 						} 						
 						else if($fila["stock"] < $fila["stock_ideal"]) {
-							echo "<tr style='color:red; font-size:11px;'>
+							echo "<tr style='color:red; font-size:11px;' id=".'fila_'.$fila["idarticulo"].">
 								<td style='width:20px'>".$fila['codigo']."</td>								
 								<td style='width:10px;'>".$delitFmsi."</td>
 								<td style='width:20px'>".$formulacionExtra."</td>
@@ -369,6 +372,7 @@ if(!isset($_SESSION["nombre"])) {
 								<!--<a data-toggle='modal' href='#solicitarArticulo'>
 									<button title='Solicitar' data-toggle='popover' data-trigger='hover' data-content='Solicitar articulo' data-placement='bottom' class='btn btn-info btn-xs' onclick='solicitar(".$fila["idarticulo"].")')><i class='fa fa-paper-plane'></i></button>
 								</a>-->
+								<button onclick='ocultarFila(".$fila["idarticulo"].")' id='eliminarFila' name='eliminarFila' title='Ocultar' data-toggle='popover' data-trigger='hover' data-content='Ocultar fila' data-placement='bottom' class='btn btn-primary btn-xs'><i class='fa fa-eye-slash'></i></button>
 							</tr>";	
 						}	
 					}

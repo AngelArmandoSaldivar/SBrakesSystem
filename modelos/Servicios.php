@@ -291,6 +291,39 @@ public function filtroPaginado($limit, $limit2, $busqueda, $fecha_inicio, $fecha
 	return ejecutarConsulta($sql);
 }
 
+public function registroTemporal($idsucursal, $idusuario) {
+
+	$sw = true;
+	$sqlUltimoServicio = "SELECT * FROM servicio WHERE idsucursal = '$idsucursal' ORDER BY remision DESC limit 1";
+	$consultarServicio = ejecutarConsulta($sqlUltimoServicio) or $sw = false;
+	$sql;
+	$idingreso;
+	$nuevoFolio = 0;
+	$contador = 0;
+
+	while($reg=$consultarServicio->fetch_object()) {
+		echo "ULTIMA REMISION: " . $reg->remision."\n";
+		echo "SUMA DE REMISION: " . ($reg->remision + 1) . "\n";
+		$nuevoFolio = intval($reg->remision) + 1;
+		$contador ++;
+	}
+
+	echo "CONTADOR: " . $contador. "\n";
+
+	echo "NUEVO FOLIO: " . $nuevoFolio;
+	if ($nuevoFolio == '' || $nuevoFolio == null || $nuevoFolio == 0) {
+		$sql = "INSERT INTO servicio (idsucursal, impuesto, estado, status, idusuario, folio, fecha_entrada, fecha_salida 
+			VALUES ('$idsucursal', 0, 'PENDIENTE', 'PENDIENTE', '$idusuario', 1, NOW(), NOW());";
+		$idIngreso = ejecutarConsulta_retornarID($sql) or $sw = false;
+	} else {
+		$sql = "INSERT INTO servicio (idsucursal, impuesto, estado, status, idusuario, folio, fecha_entrada, fecha_salida 
+			VALUES ('$idsucursal', 0, 'PENDIENTE', 'PENDIENTE', '$idusuario', '$nuevoFolio', NOW(), NOW());";
+		$idIngreso = ejecutarConsulta_retornarID($sql) or $sw = false;
+	}
+	return $nuevoFolio;
+}
+
+
 public function guardarAuto($idcliente, $placas, $marca, $modelo, $ano, $color, $kms, $vin) {
 	$sql_auto="INSERT INTO autos (placas, marca, modelo, ano, color, kms, idcliente, vin) VALUES('$placas', '$marca', '$modelo', '$ano', '$color', '$kms', '$idcliente', '$vin')";
 	return ejecutarConsulta($sql_auto);

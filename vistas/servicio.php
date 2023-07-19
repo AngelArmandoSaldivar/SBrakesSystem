@@ -687,4 +687,3 @@ require 'footer.php';
 
 ob_end_flush();
   ?>
-

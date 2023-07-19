@@ -1580,7 +1580,7 @@ function imprimir(){
 
 function exportarExcel() {
 	window.open(
-		`../reportes/exportExcel.php`, 
+		`../reportes/exportExcel.php`,
 		'_self')
 }
 
@@ -1592,6 +1592,11 @@ function mostrarImagen(id) {
 		$("#modalDibujoProducrto").attr("src","../files/dibujos/"+data.dibujo_tecnico);
 		$("#claveProductoModal").val(data.codigo);		
 	});
+}
+
+function ocultarFila(idArticulo) {
+	let tr = document.querySelector("#fila_" + idArticulo);
+	tr.remove();	
 }
 
 init();
