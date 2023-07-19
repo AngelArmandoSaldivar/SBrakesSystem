@@ -312,7 +312,7 @@ if(!isset($_SESSION["nombre"])) {
 								<td><p>$ ".$creditoMiles."</p></td>
 								<td id='thStock'><p>$ ".$mayoreoMiles."</p></td>
 								<td>
-									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
+									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-info btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
 									<a data-toggle='modal' href='#modalImagenArticulo'>
 										<button title='Mostrar Imagen Articulo' data-toggle='popover' data-trigger='hover' data-content='Mostrar Imagen Articulo' data-placement='top' class='btn btn-success btn-xs' onclick='mostrarImagen(".$fila["idarticulo"].")'><i class='fa fa-camera'></i></button>
 									</a>
@@ -341,7 +341,7 @@ if(!isset($_SESSION["nombre"])) {
 								<td><p>$ ".$creditoMiles."</p></td>
 								<td id='thStock'><p>$ ".$mayoreoMiles."</p></td>
 								<td>
-									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
+									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-info btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
 									<a data-toggle='modal' href='#modalImagenArticulo'>
 										<button title='Mostrar Imagen Articulo' data-toggle='popover' data-trigger='hover' data-content='Mostrar Imagen Articulo' data-placement='top' class='btn btn-success btn-xs' onclick='mostrarImagen(".$fila["idarticulo"].")'><i class='fa fa-camera'></i></button>
 									</a>
@@ -365,7 +365,7 @@ if(!isset($_SESSION["nombre"])) {
 								<td><p>$ ".$creditoMiles."</p></td>
 								<td id='thStock'><p>$ ".$mayoreoMiles."</p></td>
 								<td>
-								<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-warning btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
+								<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar articulo' data-placement='top' class='btn btn-info btn-xs' onclick='mostrar(".$fila["idarticulo"].")'><i class='fa fa-eye'></i></button>
 								<a data-toggle='modal' href='#modalImagenArticulo'>
 									<button title='Mostrar Imagen Articulo' data-toggle='popover' data-trigger='hover' data-content='Mostrar Imagen Articulo' data-placement='top' class='btn btn-success btn-xs' onclick='mostrarImagen(".$fila["idarticulo"].")'><i class='fa fa-camera'></i></button>
 								</a>
