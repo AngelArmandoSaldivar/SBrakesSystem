@@ -30,8 +30,8 @@ class pdf extends FPDF
 		//$this->Write(5, 'BRAKEONE');
         $this->Image('../files/images/BrakeOneBrembo.png',68,8,80);
         $this->SetFont('Arial', 'B', 12);
-        $this->Cell(200,10, "HOSTORIAL DE SERVICIOS", 'B', 0, "C", );
-
+        $this->Cell(200,10, "HISTORIAL DE SERVICIOS", 'B', 0, "C", );
+		$this->Ln(20);
 	}
 
 	public function footer()
@@ -194,7 +194,7 @@ $V = new EnLetras();
 $total=$regv->total_servicio;
 $con_letra=strtoupper($V->convertir(array_sum($totalArray)));
 
-$fpdf->Ln(40);
+//$fpdf->Ln(60);
 $fpdf->SetFont('Arial', 'B', 8);
 $fpdf->Cell(30, 10, 'IMPORTE CON LETRA', 0, 0,'C');
 $fpdf->SetFont('Arial', '', 8);

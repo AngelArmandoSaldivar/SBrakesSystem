@@ -357,6 +357,14 @@ public function reporteServicios($fecha_inicio, $fecha_fin) {
 	return ejecutarConsulta($sql);
 }
 
+public function totalServiciosPorfecha($fecha_inicio, $fecha_fin) {
+	$sql = "SELECT * FROM servicio v 
+			WHERE DATE(fecha_entrada) >= '$fecha_inicio' 
+			AND DATE(fecha_entrada) <= '$fecha_fin'
+			AND status != 'ANULADO' ORDER BY idservicio DESC;";
+	return ejecutarConsulta($sql);
+}
+
 
 //======================================//
 //=============== ORDEN COMPRA==================//
