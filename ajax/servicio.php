@@ -796,7 +796,7 @@ switch ($_GET["op"]) {
 							<th class='bg-info' scope='col'>Salida</th>
 							<th class='bg-info' scope='col'>Estatus</th>
 							<th class='bg-info' scope='col'>Cliente</th>
-							<th class='bg-info' scope='col'>Vendedor</th>							
+							<th class='bg-info' scope='col'>Vendedor</th>
 							<th class='bg-info' scope='col'>Auto</th>
 							<th class='bg-info' scope='col'>Saldo pendiente</th>
 							<th class='bg-info' scope='col'>Total</th>
@@ -901,6 +901,20 @@ switch ($_GET["op"]) {
 								$remision = "";
 							} 
 
+							$pendiente = '';
+							$totalImporte = '';
+
+							/*if ($fila["status"] == 'ANULADO') {
+								$pendiente = 0.0;
+								$totalImporte = 0.0;
+								echo "LLEGASTE";
+							} else*/ if($fila["status"] != 'ANULADO'){
+								$totalImporte = $miles;
+								$pendiente = number_format($totalServicio=$fila["sumaTotalServicio"] - $fila["pagado"], 2);
+							}
+
+							//$pendiente = $estadoVenta == "ANULADO" ? " ": number_format($totalServicio=$fila["total_servicio"] - $fila["pagado"], 2);
+
 							echo "
 							<tr style='color:".$color."'>
 								<td>".$fila['idservicio']."</td>
@@ -910,14 +924,14 @@ switch ($_GET["op"]) {
 								<td><p>".$fila['cliente']."</td>
 								<td><p>".$fila['usuario']."</td>								
 								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
-								<td><p>$ ".number_format($totalServicio=$fila["total_servicio"] - $fila["pagado"], 2)."</td>
-								<td><p>$ ".$miles."</td>
+								<td><p>$ ".$pendiente."</td>
+								<td><p>$ ".$fila["sumaTotalServicio"]."</td>
 								<td><p> ".$remision."</td>
 								<td>.$botones.</td>
 							</tr>
 							";		
 						} else {
-							$miles = number_format($fila['total_servicio'], 2);														
+							$miles = number_format($fila["sumaTotalServicio"], 2);														
 							$totalServicio = 0;							
 							echo "<tr style='color:black'>
 								<td>".$fila['idservicio']."</td>
@@ -927,8 +941,8 @@ switch ($_GET["op"]) {
 								<td><p>".$fila['cliente']."</td>
 								<td><p>".$fila['usuario']."</td>								
 								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
-								<td><p>$ ".number_format($totalServicio=$fila["total_servicio"] - $fila["pagado"])."</td>
-								<td><p>$ ".$miles."</td>
+								<td><p>".''."</td>
+								<td><p>".''."</td>
 								<td><p> ".""."</td>
 								<td>
 									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrarAnulado(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>
@@ -1032,8 +1046,8 @@ switch ($_GET["op"]) {
 								<td><p>".$fila['cliente']."</td>
 								<td><p>".$fila['usuario']."</td>								
 								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
-								<td><p>$ ".number_format($totalServicio=$fila["total_servicio"] - $fila["pagado"], 2)."</td>
-								<td><p>$ ".$miles."</td>
+								<td><p>$ ".$pendiente."</td>
+								<td><p>$ ".$fila["sumaTotalServicio"]."</td>
 								<td><p> ".$remision."</td>
 								<td>.$botones.</td>
 							</tr>
@@ -1050,8 +1064,8 @@ switch ($_GET["op"]) {
 								<td><p>".$fila['cliente']."</td>
 								<td><p>".$fila['usuario']."</td>								
 								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
-								<td><p>$ ".number_format($totalServicio=$fila["total_servicio"] - $fila["pagado"])."</td>
-								<td><p>$ ".$miles."</td>
+								<td><p>$ ".$pendiente."</td>
+								<td><p>$ ".$fila["sumaTotalServicio"]."</td>
 								<td>R-".$fila['remision']."</td>	
 								<td>
 									<button title='Mostrar' data-toggle='popover' data-trigger='hover' data-content='Mostrar servicio' data-placement='top' class='btn btn-success btn-xs' onclick='mostrarAnulado(".$fila["idservicio"].")'><i class='fa fa-eye'></i></button>

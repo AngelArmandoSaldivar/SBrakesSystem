@@ -4,12 +4,21 @@ var now = new Date();
 var day =("0"+now.getDate()).slice(-2);
 var month=("0"+(now.getMonth()+1)).slice(-2);
 const TODAY = now.getFullYear()+"-"+(month)+"-"+(day);
+
+function altaIngreso() {	
+	window.location = 'alta-ingreso.php';
+}
+
+function editar(idIngreso) {
+	window.location = './editar-ingreso.php' + '?idIngreso=' + idIngreso;
+}
 //funcion que se ejecuta al inicio
 function init(){
    mostrarform(false);
    obtener_registros();
    obtener_registrosProductos();
    obtener_registrosProductosEdit();
+   $("#btnCancelar").hide();
 
    $("#formulario").on("submit",function(e){
    	guardaryeditar(e);
@@ -26,20 +35,6 @@ function init(){
 	evaluarCaja();	
 }
 
-function cancelarRecepcion() {
-	
-	var idingreso = $("#idingreso").val();	
-	$.post("../ajax/ingreso.php?op=anular", {idingreso : idingreso}, function(e){
-		swal({
-			title:'Recepción eliminada!',
-			text: 'Se elimino correctamente la recepción.',
-			type: 'success',
-			showConfirmButton: false,
-			timer: 1500
-		})
-		obtener_registros();
-	});
-}
 
 function actualizarProveedor(idProveedor) {
 
@@ -824,13 +819,8 @@ function agregarRecepcion() {
 
      	success: function(datos){
 			console.log("REGISTRO TEMPORAL ID: " + datos);
-			if(datos != null || datos != '') {
-				mostrarform(true);
-				$("#idingreso").val(datos);
-				$("#btnAgregarProveedor").show();
-				$("#btnAgregarArt").hide();
-				$("#btnAgregarArticulosEdit").show();
-				$("#btnGuardar").hide();
+			if(datos != null || datos != '') {						
+				window.location = './alta-ingreso.php' + '?idIngreso=' + datos;				
 			}
 			/*swal({
 				position: 'top-end',
@@ -1100,7 +1090,7 @@ function editarGuardarProductoRecepcion() {
 	});
 }
 
-function editar(idingreso){
+/*function editar(idingreso){
 	mostrarform(true);
 	$("#btnAgregarProveedor").show();
 	$("#btnAgregarArt").hide();
@@ -1109,7 +1099,7 @@ function editar(idingreso){
 	$("#btnGuardar").hide();
 	$("#btnCancelar").hide();
 	detallesRecepcionEditar(idingreso);
-}
+}*/
 
 function eliminarProductoIngreso(idingreso, idarticulo, stock, precio_compra) {
 

@@ -57,7 +57,7 @@ public function insertar($idproveedor,$idusuario,$tipo_comprobante,$serie_compro
 		ejecutarConsulta($sql_kardex) or $sw=false;
 
 	 	$num_elementos=$num_elementos+1;
-	 }	 
+	 }
 	 return $sw;
 }
 

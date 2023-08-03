@@ -24,63 +24,19 @@ if ($_SESSION['recepciones']==1) {
             <div class="panel-body table-responsive" id="listadoregistros">
               <section>
                 <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                  <button title="Registrar" id="btnagregarservicio" data-toggle='popover' data-trigger='hover' data-content='Registrar nueva recepción' data-placement='right' class='btn btn-success' onclick="agregarRecepcion();"><i class="fa fa-plus-circle"></i> Agregar Nuevo</button>
-                </div>
-                <div class="form-group col-lg-4 col-md-6 col-xs-12">
-                  <center><input class="form-control me-2" type="text" name="busqueda" id="busqueda" placeholder="Buscar..." style="width:250px; border-radius: 8px; box-shadow: -2px 2px 5px #3300ff99;"></center>
-                </div>
+                  <button title="Registrar" id="btnagregarservicio" data-toggle='popover' data-trigger='hover' data-content='Registrar nueva recepción' data-placement='right' class='btn btn-success' onclick="agregarRecepcion()"><i class="fa fa-plus-circle"></i> Agregar Nuevo</button>
+                </div>  
               </section>
-
-              <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                <label>Fecha Inicio</label>
-                <input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" value="">
-              </div>
-
-            <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <label>Fecha Fin</label>
-              <input type="date" class="form-control" name="fecha_fin" id="fecha_fin" value="">
-            </div>
-
-            <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
-            <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;"></div>
-            <div class="form-group col-lg-4 col-md-6 col-xs-12" style="text-align:left;">
-              <select name="limite_registros" id="limite_registros" class="form-control selectpicker">
-                <option value="" disabled selected>Seleccionar limite</option>                  
-                <option value="5">50 / Registros</option>
-                <option value="10">100 / Registros</option>
-                <option value="20">200 / Registros</option>
-                <option value="50">500 / Registros</option>
-                <option value="100">1000 / Registros</option>
-              </select>
-            </div>
-
-            <br><br><br>
-            <div id="global">
-              <div id="tablaResultados">
-                <section id="tabla_resultado">                
-                </section>
-              </div>
-            </div>
-
-            <div class="form-group col-lg-12 col-md-6 col-xs-12">
-              <nav aria-label="Page navigation example" style="text-align:right; margin-right:5px">
-                <ul class="pagination">
-                  <input type="button" title="Anterior" data-toggle='popover' data-trigger='hover' data-content='Pagina anterior' data-placement='top' class='btn btn-primary me-md-2' value="Anterior" id="anterior" name="anterior" onclick="paginaAnterior();">
-                  <li class="page-item"><input title="Pagina" data-toggle='popover' data-trigger='hover' data-content='Pagina actual' data-placement='top' class='btn btn-primary me-md-2' type="submit" id="pagina" name="pagina" value="1" onclick="paginasClick(<?php echo $i;?>)"></li>
-                  <input type="submit" title="Siguiente" data-toggle='popover' data-trigger='hover' data-content='Pagina siguiente' data-placement='top' class='btn btn-primary me-md-2' value="Siguiente" id="siguiente" name="siguiente" onclick="paginaSiguiente()">                
-                </ul>
-              </nav>
-            </div>
           </div>
 
-          <div class="box-header with-border" id="formularioregistros"> 
-            <div class="panel-body table-responsive">   
+          <div class="box-header with-border" id="formularioregistros">
+            <div class="panel-body table-responsive">
               <form action="" name="formulario" id="formulario" method="POST">
                 <div class="form-group col-lg-12 col-md-6 col-xs-12">
                   <center><h4 aling="center">Información del cliente</h4></center>
                 </div>
                 <div class="form-group col-lg-4 col-md-8 col-xs-12">
-                <label for="">Proveedor <span class="text-danger">*</span></label>                  
+                <label for="">Proveedor <span class="text-danger">*</span></label>
                   <div class="input-group bootstrap-touchspin">
                     <span class="input-group-btn"></span>
                     <span class="input-group-addon bootstrap-touchspin-prefix"><i class="fa fa-hand-o-right"></i></span>
@@ -128,11 +84,6 @@ if ($_SESSION['recepciones']==1) {
                     <input class="form-control" type="text" name="impuesto" id="impuesto" value="0" readonly="true">
                   </div>
                 </div>
-                <div class="form-group col-lg-3 col-md-3 col-sm-6 col-xs-12" id="btnAgregarArt">
-                  <a data-toggle="modal" href="#myModal" >
-                    <button id="btnAgregarArt" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Articulos</button>
-                  </a>
-                </div>
                 <div class="form-group col-lg-3 col-md-3 col-sm-6 col-xs-12" id="btnAgregarArticulosEdit">
                   <a data-toggle="modal" href="#myModalProductsEdit" >
                     <button id="btnAgregarArticulosEdit" type="button" class="btn btn-primary"><span class="fa fa-plus"></span>Agregar Articulos</button>
@@ -174,7 +125,7 @@ if ($_SESSION['recepciones']==1) {
 
                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i>  Guardar</button>
-                  <button class="btn btn-danger" onclick="cancelarRecepcion()" id="btnCancelar"><i class="fa fa-times"></i>  Cancelar</button>
+                  <button class="btn btn-danger" type='button' onclick="cancelarRecepcion()" id="btnCancelar"><i class="fa fa-times"></i>  Cancelar</button>
                   <button class="btn btn-info" onclick="salirForm()" type="button" id="btnRegresar"><i class="fa fa-arrow-circle-left"></i> Regresar</button>
                   <?php
                     require('loader.php');
@@ -191,57 +142,7 @@ if ($_SESSION['recepciones']==1) {
 
 <?php 
   require("ediciones.php");
-?>
-
-   <!--Modal registrar nuevo proveedor-->
-  <div class="modal fade" id="agregarProveedor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="width: 50% !important; box-shadow:5px 5px 5px 5px rgba(0, 0, 0, 0.2);">
-      <div class="modal-content" style="border-radius: 20px;">
-        <div class="modal-header">
-          <h4 class="modal-title">Agregar Proveedor</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>          
-        </div>
-        <div class="modal-body">
-        <div class="modal-body">
-          <div class="panel-body table-responsive">
-          <form action="" name="formularioProve" id="formularioProve" method="POST">
-            <div class="form-group col-lg-6 col-md-6 col-xs-12">
-              <label for="">Nombre</label>
-              <input class="form-control" type="hidden" name="idpersona" id="idpersona">
-              <input class="form-control" type="hidden" name="tipo_persona" id="tipo_persona" value="Proveedor">
-              <input class="form-control" type="text" name="nombre" id="nombre" maxlength="100" placeholder="Nombre del proveedor" required>
-            </div>            
-            <div class="form-group col-lg-6 col-md-6 col-xs-12">
-              <label for="">Direccion</label>
-              <input class="form-control" type="text" name="direccion" id="direccion" maxlength="70" placeholder="Direccion">
-            </div>
-            <div class="form-group col-lg-6 col-md-6 col-xs-12">
-              <label for="">Telefono</label>
-              <input class="form-control" type="text" name="telefono" id="telefono" maxlength="20" placeholder="Número de Telefono">
-            </div>
-                <div class="form-group col-lg-6 col-md-6 col-xs-12">
-              <label for="">Email</label>
-              <input class="form-control" type="email" name="email" id="email" maxlength="50" placeholder="Email">
-            </div>
-            <div class="form-group col-lg-6 col-md-6 col-xs-12">
-              <label for="">RFC</label>
-              <input class="form-control" type="text" name="rfc" id="rfc" maxlength="50" placeholder="RFC">
-            </div>            
-          </form>
-          <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <button class="btn btn-success" type="submit" name="btnGuardarProveedor" onclick="guardaryeditarProveedor()">Guardar</button>
-            <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
-          </div>
-          </div>
-        </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-   <!-- fin Modal-->
+?>   
 
   <!--Modal agregar producto a la venta-->
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -431,12 +332,12 @@ if ($_SESSION['recepciones']==1) {
 
 <?php 
 }else{
- require 'noacceso.php'; 
+ require 'noacceso.php';
 }
 
 require 'footer.php';
  ?>
- <script src="scripts/ingresos.js"></script>
+ <script src="scripts/editar-ingreso.js"></script>
  <?php 
 }
 

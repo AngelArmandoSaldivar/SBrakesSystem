@@ -1620,6 +1620,56 @@
   </div>
 </div>
 
+<!--Modal registrar nuevo proveedor-->
+<div class="modal fade" id="agregarProveedor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="width: 50% !important; box-shadow:5px 5px 5px 5px rgba(0, 0, 0, 0.2);">
+      <div class="modal-content" style="border-radius: 20px;">
+        <div class="modal-header">
+          <h4 class="modal-title">Agregar Proveedor</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>          
+        </div>
+        <div class="modal-body">
+        <div class="modal-body">
+          <div class="panel-body table-responsive">
+          <form action="" name="formularioProve" id="formularioProve" method="POST">
+            <div class="form-group col-lg-6 col-md-6 col-xs-12">
+              <label for="">Nombre</label>
+              <input class="form-control" type="hidden" name="idpersona" id="idpersona">
+              <input class="form-control" type="hidden" name="tipo_persona" id="tipo_persona" value="Proveedor">
+              <input class="form-control" type="text" name="nombre" id="nombre" maxlength="100" placeholder="Nombre del proveedor" required>
+            </div>            
+            <div class="form-group col-lg-6 col-md-6 col-xs-12">
+              <label for="">Direccion</label>
+              <input class="form-control" type="text" name="direccion" id="direccion" maxlength="70" placeholder="Direccion">
+            </div>
+            <div class="form-group col-lg-6 col-md-6 col-xs-12">
+              <label for="">Telefono</label>
+              <input class="form-control" type="text" name="telefono" id="telefono" maxlength="20" placeholder="Número de Telefono">
+            </div>
+                <div class="form-group col-lg-6 col-md-6 col-xs-12">
+              <label for="">Email</label>
+              <input class="form-control" type="email" name="email" id="email" maxlength="50" placeholder="Email">
+            </div>
+            <div class="form-group col-lg-6 col-md-6 col-xs-12">
+              <label for="">RFC</label>
+              <input class="form-control" type="text" name="rfc" id="rfc" maxlength="50" placeholder="RFC">
+            </div>            
+          </form>
+          <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <button class="btn btn-success" type="submit" name="btnGuardarProveedor" onclick="guardaryeditarProveedor()">Guardar</button>
+            <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
+          </div>
+          </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-default" type="button" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+   <!-- fin Modal-->
+
 <script>
 
 function mostrarCliente() {

@@ -309,8 +309,6 @@ switch ($_GET["op"]) {
 
 			}
 
-			//FECHAS FIN
-
 			//Solo fecha fin, pagina 1
 			else if(empty($_POST['busqueda']) && !empty($_POST["fecha_fin"]) && empty($_POST['inicio_registros']) && empty($_POST['total_registros']) && empty($_POST["fecha_inicio"])) {				
 				$fecha_fin=$conexion->real_escape_string($_POST['fecha_fin']);				

@@ -263,31 +263,118 @@ public function ultimoServicio() {
 
 public function filtroPaginado($limit, $limit2, $busqueda, $fecha_inicio, $fecha_fin) {
 
-	$sql = "SELECT DATE(v.fecha_entrada) as fecha_entrada,v.remision,v.is_remision,DATE(v.fecha_salida) as fecha_salida,v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_entrada) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario ORDER BY v.idservicio DESC LIMIT $limit OFFSET $limit2";	
+	$sql = "SELECT SUM(precio_servicio * ds.cantidad) AS sumaTotalServicio, DATE(v.fecha_entrada) as fecha_entrada,v.remision,v.is_remision,DATE(v.fecha_salida) as fecha_salida,v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_entrada) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano
+			FROM detalle_servicio ds
+			INNER JOIN servicio v ON ds.idservicio=v.idservicio
+			INNER JOIN persona p ON v.idcliente=p.idpersona
+			INNER JOIN usuario u ON v.idusuario=u.idusuario
+			GROUP BY v.idservicio, v.idservicio 
+			ORDER BY v.idservicio DESC LIMIT $limit OFFSET $limit2";
 
 	if($busqueda != "" && $fecha_inicio == "" && $fecha_fin == "") {		
-		$sql = "SELECT DATE(v.fecha_entrada) as fecha_entrada,v.remision,v.is_remision,DATE(v.fecha_salida) as fecha_salida,v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_entrada) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE  tipo_comprobante LIKE '%$busqueda%' OR v.idservicio LIKE '%$busqueda%' OR p.nombre LIKE '%$busqueda%' OR v.modelo LIKE '%$busqueda%' OR v.marca LIKE '%$busqueda%' OR v.ano LIKE '%$busqueda%' ORDER BY v.idservicio DESC LIMIT $limit OFFSET $limit2";
+		$sql = "SELECT SUM(precio_servicio * ds.cantidad) AS sumaTotalServicio, DATE(v.fecha_entrada) as fecha_entrada,v.remision,v.is_remision,DATE(v.fecha_salida) as fecha_salida,v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_entrada) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano 
+				FROM detalle_servicio ds
+				INNER JOIN servicio v ON ds.idservicio=v.idservicio
+				INNER JOIN persona p ON v.idcliente=p.idpersona
+				INNER JOIN usuario u ON v.idusuario=u.idusuario
+				WHERE  tipo_comprobante LIKE '%$busqueda%' 
+				OR v.idservicio LIKE '%$busqueda%' 
+				OR p.nombre LIKE '%$busqueda%' 
+				OR v.modelo LIKE '%$busqueda%' 
+				OR v.marca LIKE '%$busqueda%' 
+				OR v.ano LIKE '%$busqueda%' 
+				GROUP BY v.idservicio, v.idservicio 
+				ORDER BY v.idservicio DESC 
+				LIMIT $limit OFFSET $limit2";
 		
 	}
 	if($busqueda != "" && $fecha_inicio != "" && $fecha_fin == "") {		
-		$sql = "SELECT DATE(v.fecha_entrada) as fecha_entrada,v.remision,v.is_remision,DATE(v.fecha_salida) as fecha_salida,v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_entrada) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE DATE(v.fecha_entrada) >= '$fecha_inicio' AND  tipo_comprobante LIKE '%$busqueda%' OR v.idservicio LIKE '%$busqueda%' OR p.nombre LIKE '%$busqueda%' OR v.modelo LIKE '%$busqueda%' OR v.marca LIKE '%$busqueda%' OR v.ano LIKE '%$busqueda%' ORDER BY v.idservicio DESC LIMIT $limit OFFSET $limit2";
+		$sql = "SELECT SUM(precio_servicio * ds.cantidad) AS sumaTotalServicio, DATE(v.fecha_entrada) as fecha_entrada,v.remision,v.is_remision,DATE(v.fecha_salida) as fecha_salida,v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_entrada) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano 
+				FROM detalle_servicio ds
+				INNER JOIN servicio v ON ds.idservicio=v.idservicio
+				INNER JOIN persona p ON v.idcliente=p.idpersona
+				INNER JOIN usuario u ON v.idusuario=u.idusuario
+				WHERE DATE(v.fecha_entrada) >= '$fecha_inicio' 
+				AND  tipo_comprobante LIKE '%$busqueda%' 
+				OR v.idservicio LIKE '%$busqueda%' 
+				OR p.nombre LIKE '%$busqueda%' 
+				OR v.modelo LIKE '%$busqueda%' .
+				OR v.marca LIKE '%$busqueda%' 
+				OR v.ano LIKE '%$busqueda%' 
+				GROUP BY v.idservicio, v.idservicio 
+				ORDER BY v.idservicio DESC 
+				LIMIT $limit OFFSET $limit2";
 	}
 	if($busqueda == "" && $fecha_inicio != "" && $fecha_fin == "") {
-		$sql = "SELECT DATE(v.fecha_entrada) as fecha_entrada,v.remision,v.is_remision,DATE(v.fecha_salida) as fecha_salida,v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_entrada) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE DATE(v.fecha_entrada) >= '$fecha_inicio' ORDER BY v.idservicio DESC LIMIT $limit OFFSET $limit2";		
+		$sql = "SELECT SUM(precio_servicio * ds.cantidad) AS sumaTotalServicio, DATE(v.fecha_entrada) as fecha_entrada,v.remision,v.is_remision,DATE(v.fecha_salida) as fecha_salida,v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_entrada) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano  
+				FROM detalle_servicio ds
+				INNER JOIN servicio v ON ds.idservicio=v.idservicio
+				INNER JOIN persona p ON v.idcliente=p.idpersona
+				INNER JOIN usuario u ON v.idusuario=u.idusuario
+				WHERE DATE(v.fecha_entrada) >= '$fecha_inicio' 
+				GROUP BY v.idservicio, v.idservicio 
+				ORDER BY v.idservicio DESC 
+				LIMIT $limit OFFSET $limit2";		
 	}
 	if($busqueda == "" && $fecha_inicio == "" && $fecha_fin != "") {
-		$sql = "SELECT DATE(v.fecha_entrada) as fecha_entrada,v.remision,v.is_remision,DATE(v.fecha_salida) as fecha_salida,v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_entrada) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario WHERE DATE(v.fecha_entrada) <= '$fecha_fin' ORDER BY v.idservicio DESC LIMIT $limit OFFSET $limit2";
+		$sql = "SELECT SUM(precio_servicio * ds.cantidad) AS sumaTotalServicio, DATE(v.fecha_entrada) as fecha_entrada,v.remision,v.is_remision,DATE(v.fecha_salida) as fecha_salida,v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_entrada) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano 
+				FROM detalle_servicio ds
+				INNER JOIN servicio v ON ds.idservicio=v.idservicio
+				INNER JOIN persona p ON v.idcliente=p.idpersona
+				INNER JOIN usuario u ON v.idusuario=u.idusuario
+				WHERE DATE(v.fecha_entrada) <= '$fecha_fin' 
+				GROUP BY v.idservicio, v.idservicio 
+				ORDER BY v.idservicio DESC 
+				LIMIT $limit OFFSET $limit2";
 	}
 	if($busqueda != "" && $fecha_inicio == "" && $fecha_fin != "") {
-		$sql = "SELECT DATE(v.fecha_entrada) as fecha_entrada,v.remision,v.is_remision,DATE(v.fecha_salida) as fecha_salida,v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_entrada) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario  WHERE DATE(v.fecha_entrada) <= '$fecha_fin' AND  tipo_comprobante LIKE '%$busqueda%' OR v.idservicio LIKE '%$busqueda%' OR p.nombre LIKE '%$busqueda%' OR v.modelo LIKE '%$busqueda%' OR v.marca LIKE '%$busqueda%' OR v.ano LIKE '%$busqueda%' ORDER BY v.idservicio DESC LIMIT $limit OFFSET $limit2";
+		$sql = "SELECT SUM(precio_servicio * ds.cantidad) AS sumaTotalServicio, DATE(v.fecha_entrada) as fecha_entrada,v.remision,v.is_remision,DATE(v.fecha_salida) as fecha_salida,v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_entrada) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano 
+				FROM detalle_servicio ds
+				INNER JOIN servicio v ON ds.idservicio=v.idservicio
+				INNER JOIN persona p ON v.idcliente=p.idpersona
+				INNER JOIN usuario u ON v.idusuario=u.idusuario
+				WHERE DATE(v.fecha_entrada) <= '$fecha_fin' 
+				AND  tipo_comprobante LIKE '%$busqueda%' 
+				OR v.idservicio LIKE '%$busqueda%' 
+				OR p.nombre LIKE '%$busqueda%' OR v.modelo 
+				LIKE '%$busqueda%' OR v.marca 
+				LIKE '%$busqueda%' OR v.ano 
+				LIKE '%$busqueda%' 
+				GROUP BY v.idservicio, v.idservicio 
+				ORDER BY v.idservicio DESC 
+				LIMIT $limit OFFSET $limit2";
 	}
 	if($busqueda == "" && $fecha_inicio != "" && $fecha_fin != "") {				
-		$sql = "SELECT DATE(v.fecha_entrada) as fecha_entrada,v.remision,v.is_remision,DATE(v.fecha_salida) as fecha_salida,v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_entrada) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario  WHERE DATE(v.fecha_entrada) <= '$fecha_fin' AND DATE(v.fecha_entrada) <= '$fecha_fin' ORDER BY v.idservicio DESC LIMIT $limit OFFSET $limit2";
+		$sql = "SELECT SUM(precio_servicio * ds.cantidad) AS sumaTotalServicio, DATE(v.fecha_entrada) as fecha_entrada,v.remision,v.is_remision,DATE(v.fecha_salida) as fecha_salida,v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_entrada) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano 
+				FROM detalle_servicio ds
+				INNER JOIN servicio v ON ds.idservicio=v.idservicio
+				INNER JOIN persona p ON v.idcliente=p.idpersona
+				INNER JOIN usuario u ON v.idusuario=u.idusuario
+				WHERE DATE(v.fecha_entrada) <= '$fecha_fin'
+				AND DATE(v.fecha_entrada) <= '$fecha_fin' 
+				GROUP BY v.idservicio, v.idservicio 
+				ORDER BY v.idservicio DESC 
+				LIMIT $limit OFFSET $limit2";
 	}
 	if($busqueda != "" && $fecha_inicio != "" && $fecha_fin != "") {		
-		$sql = "SELECT DATE(v.fecha_entrada) as fecha_entrada,v.remision,v.is_remision,DATE(v.fecha_salida) as fecha_salida,v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_entrada) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano FROM servicio v INNER JOIN persona p ON v.idcliente=p.idpersona INNER JOIN usuario u ON v.idusuario=u.idusuario  WHERE DATE(v.fecha_entrada) <= '$fecha_fin' AND DATE(v.fecha_entrada) <= '$fecha_fin' AND tipo_comprobante LIKE '%$busqueda%' OR v.idservicio LIKE '%$busqueda%' OR p.nombre LIKE '%$busqueda%' OR v.modelo LIKE '%$busqueda%' OR v.marca LIKE '%$busqueda%' OR v.ano LIKE '%$busqueda%' ORDER BY v.idservicio DESC LIMIT $limit OFFSET $limit2";
+		$sql = "SELECT SUM(precio_servicio * ds.cantidad) AS sumaTotalServicio, DATE(v.fecha_entrada) as fecha_entrada,v.remision,v.is_remision,DATE(v.fecha_salida) as fecha_salida,v.pagado,v.status,v.idsucursal,v.idservicio,DATE(v.fecha_entrada) as fecha,v.idcliente,p.nombre as cliente,u.idusuario,u.nombre as usuario, v.tipo_comprobante,v.total_servicio,v.impuesto,v.estado,v.modelo, v.marca, v.ano 
+				FROM detalle_servicio ds
+				INNER JOIN servicio v ON ds.idservicio=v.idservicio
+				INNER JOIN persona p ON v.idcliente=p.idpersona
+				INNER JOIN usuario u ON v.idusuario=u.idusuario
+				WHERE DATE(v.fecha_entrada) <= '$fecha_fin' 
+				AND DATE(v.fecha_entrada) <= '$fecha_fin' 
+				AND tipo_comprobante LIKE '%$busqueda%' 
+				OR v.idservicio LIKE '%$busqueda%' 
+				OR p.nombre LIKE '%$busqueda%' 
+				OR v.modelo LIKE '%$busqueda%' 
+				OR v.marca LIKE '%$busqueda%' 
+				OR v.ano LIKE '%$busqueda%' 
+				GROUP BY v.idservicio, v.idservicio 
+				ORDER BY v.idservicio DESC 
+				LIMIT $limit OFFSET $limit2";
 	}
-	usleep(80000);
+	//usleep(80000);
 	return ejecutarConsulta($sql);
 }
 
