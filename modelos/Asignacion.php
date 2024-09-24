@@ -46,7 +46,9 @@ public function select(){
 }
 
 public function consultarPorRol($rol){
-	$sql="SELECT * FROM rel_rol_modulo r INNER JOIN permiso s ON r.idmodulo = s.idpermiso WHERE idrol='$rol' AND r.condicion = 1";
+	$sql="SELECT * FROM rel_rol_modulo r
+		  INNER JOIN permiso s ON r.idmodulo = s.idpermiso 
+		  WHERE r.idrol='$rol' AND r.condicion = 1";
 	return ejecutarConsulta($sql);
 }
 

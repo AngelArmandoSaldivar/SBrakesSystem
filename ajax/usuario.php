@@ -278,18 +278,24 @@ switch ($_GET["op"]) {
 			//array_push($valores, $per->nombre);			
 			if ($per->nombre == "Escritorio") { $escritorio = 1;}
 			if ($per->nombre == "Almacen") { $almacen = 1; }
-			if ($per->nombre == "Recepciones") { $recepciones = 1; }
-			if ($per->nombre == "Cotizaciones") { $cotizaciones = 1; }
-			if ($per->nombre == "Caja") { $caja = 1; }
+			if ($per->nombre == "Compras") { $compras = 1; }
+			if ($per->nombre == "Ventas") { $ventas = 1; }
+			if ($per->nombre == "Acceso") { $acceso = 1; }
+			if ($per->nombre == "Consulta Compras") { $consulta_compras = 1; }
+			if ($per->nombre == "Consulta Ventas") { $consulta_ventas = 1; }
 			if ($per->nombre == "Kardex") { $kardex = 1; }
+			if ($per->nombre == "Caja") { $caja = 1; }		
+			if ($per->nombre == "Servicios") { $servicios = 1; }
+			if ($per->nombre == "Cotizaciones") { $cotizaciones = 1; }
+			if ($per->nombre == "Sucursales") { $sucursales = 1; }
+			if ($per->nombre == "Recepciones") { $recepciones = 1; }
 			if ($per->nombre == "Categoria") { $categoria = 1; }
 			if ($per->nombre == "Marcas") { $marcas = 1; }
 			if ($per->nombre == "Pedidos") { $pedidos = 1; }
 			if ($per->nombre == "Gastos") { $gastos = 1; }
 			if ($per->nombre == "Garantias") { $garantias = 1; }
 			if ($per->nombre == "Proveedores") { $proveedores = 1; }
-			if ($per->nombre == "Orden_Compra") { $ordenCompra = 1; }
-			if ($per->nombre == "Servicios") { $servicios = 1; }
+			if ($per->nombre == "Orden_Compra") { $ordenCompra = 1; }			
 			if ($per->nombre == "Clientes") { $clientes = 1; }
 			if ($per->nombre == "Usuarios") { $usuarios = 1; }
 			if ($per->nombre == "Permisos") { $permisos = 1; }
@@ -300,6 +306,11 @@ switch ($_GET["op"]) {
 
 		$escritorio == 1 ? $_SESSION['escritorio'] = 1 : $_SESSION['escritorio'] = 0;
 		$almacen == 1 ? $_SESSION['almacen'] = 1 : $_SESSION['almacen'] = 0;
+		$compras == 1 ? $_SESSION['compras'] = 1 : $_SESSION['compras'] = 0;
+		$ventas == 1 ? $_SESSION['ventas'] = 1 : $_SESSION['ventas'] = 0;
+		$acceso == 1 ? $_SESSION['acceso'] = 1 : $_SESSION['acceso'] = 0;
+		$consulta_compras == 1 ? $_SESSION['consulta_compras'] = 1 : $_SESSION['consulta_compras'] = 0;
+		$consulta_ventas == 1 ? $_SESSION['consulta_ventas'] = 1 : $_SESSION['consulta_ventas'] = 0;
 		$recepciones == 1 ? $_SESSION['recepciones'] = 1 : $_SESSION['recepciones'] = 0;
 		$cotizaciones == 1 ? $_SESSION['cotizaciones'] = 1 : $_SESSION['cotizaciones'] = 0;
 		$caja == 1 ? $_SESSION['caja'] = 1 : $_SESSION['caja'] = 0;			

@@ -31,13 +31,13 @@ $reg=$rspta->fetch_object();
 $idsucursal = $_SESSION['idsucursal'];
 
 //establecemos los datos de la empresa
-$calle = $idsucursal == 1 ? "SARATOGA 313-C" : "Belisario Dominguez 81";
-$colonia = $idsucursal == 1 ? "COL. PORTALES NORTE" : "Las Misiones 76030";
-$direccion = $idsucursal == 1 ? "ALCALDIA BENITO JUAREZ" : "Santiago de Queretaro, Qro";
-$ciudad = $idsucursal == 1 ? "CDMX" : "QRO";
-$cp = $idsucursal == 1 ? "C.P. 03303" : "76030";
-$phone1 = $idsucursal == 1 ? "(55) 7653-6116" : "(44) 2738-5075";
-$phone2 = $idsucursal == 1 ? "(55) 68402850" : "(55) 4563-2063";
+$calle = $idsucursal == 1 ? "***********" : "*********";
+$colonia = $idsucursal == 1 ? "**********" : "*****";
+$direccion = $idsucursal == 1 ? "******" : "*****";
+$ciudad = $idsucursal == 1 ? "****" : "***";
+$cp = $idsucursal == 1 ? "C.P. ****" : "****";
+$phone1 = $idsucursal == 1 ? "*****" : "*****";
+$phone2 = $idsucursal == 1 ? "****" : "*****";
 $phone3 = $idsucursal == 1 ? "(55) 52733450" : "";
 $phone4 = $idsucursal == 1 ? "(55) 43834342" : "";
 
@@ -49,7 +49,7 @@ $phone4 = $idsucursal == 1 ? "(55) 43834342" : "";
 		<tr>
 			<td align="center" style="font-size:12px;">
 				<!--mostramos los datos de la empresa en el doc HTML-->
-				<strong> <img src="../files/images/BrakeOneBrembo.png" alt="BrakeOne" style="width: 280px;"></strong><br><br>
+				<strong> <img src="../files/images/logo-sbrakes.png" alt="BrakeOne" style="width: 160px;"></strong><br><br>
 				<?php echo $calle; ?><br>
 				<?php echo $colonia; ?><br>
 				<?php echo $direccion; ?><br>
@@ -145,7 +145,7 @@ $phone4 = $idsucursal == 1 ? "(55) 43834342" : "";
 			<td colspan="4" align="center">Aviso de privacidad / Términos y condiciones en:</td>
 		</tr>
 		<tr>
-			<td colspan="4" align="center">www.brakeone.mx</td>
+			<td colspan="4" align="center">www.sbrakes.mx</td>
 		</tr>
 		<tr>
 			<td colspan="4" align="center"> <img src="../files/images/QR.jpeg" alt="" style="width:180px;"> </td>

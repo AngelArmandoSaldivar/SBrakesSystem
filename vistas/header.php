@@ -8,8 +8,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BrakeOneSystem</title>
-  <link rel="shortcut icon" href="../files/images/favicon.ico"> 
+  <title>S-Brakes System</title>
+  <link rel="shortcut icon" href="../files/images/logo-sbrakes.png"> 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">  
   <link rel="stylesheet" href="plugins/fontawesome-free/css/alls.min.css">  
   <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbar.min.css">  
@@ -190,9 +190,9 @@
   </nav>
   <aside class="main-sidebar sidebar-dark-primary elevation-4" style="height: 890px;">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
-      <img src="../files/images/BrakeOneBrembo.png" alt="B1S" class="" style="opacity: .8" height="20" width="100">
-      <span class="brand-text font-weight-light">BrakeOne System</span>
+    <a href="https://angelarmandosaldivar.github.io/sbrakes/" class="brand-link">
+      <img src="../files/images/logo-sbrakes.png" alt="B1S" class="" style="opacity: .8" height="25" width="100">
+      <span class="brand-text font-weight-light">S-Brakes System</span>
     </a>
 
     <!-- Sidebar -->

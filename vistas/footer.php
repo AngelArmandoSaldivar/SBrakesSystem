@@ -24,7 +24,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9/sha256.js"></script>
 <link href="../public/js/select2.min.css" rel="stylesheet" />
 <script src="../public/css/select2.min.js"></script>
-<script src="scripts/footer.js"></script>
+<script src="scripts/footer2.js"></script>
 
 <!-- SCRIPT MATERIAL UI -->
 <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>

@@ -43,7 +43,7 @@ $("#frmAcceso").on('submit', function(e)
                             lat,
                             data.lng,
                             data.lat
-                        );                        
+                        );                     
 
                         if (distance <= 7) {
                             console.log("DATA: ", data);
@@ -77,7 +77,7 @@ $("#frmAcceso").on('submit', function(e)
                             });  
                             setTimeout(() => {
                                 $(location).attr("href","sucursales.php?idusuario="+data.idusuario);
-                            }, 1100);
+                            }, 1000);
                     }
                 
                 }, function(error) {                    
@@ -93,7 +93,7 @@ $("#frmAcceso").on('submit', function(e)
                         });
                     }                    
                 });
-            }                        
+            }
         });
         
     })

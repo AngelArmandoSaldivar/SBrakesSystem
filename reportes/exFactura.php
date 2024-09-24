@@ -16,11 +16,11 @@ require('Factura.php');
 //establecemos los datos de la empresa
 $logo="logo.png";
 $ext_logo="png";
-$empresa="BrakeOne";
+$empresa="S-BRAKES";
 $documento="1074528547";
-$direccion="Calle Portales";
+$direccion="Calle ...";
 $telefono="958524158";
-$email="brakeone@gmail.com";
+$email="sbrakesmexico@gmail.com";
 
 //obtenemos los datos de la cabecera de la venta actual
 require_once "../modelos/Venta.php";

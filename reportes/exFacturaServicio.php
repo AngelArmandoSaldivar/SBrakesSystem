@@ -29,7 +29,7 @@ class pdf extends FPDF
 		$this->SetFont('Arial', 'B', 8);
 		$this->SetTextColor(0,0,0);
 		//$this->Write(5, 'BRAKEONE');
-        $this->Image('../files/images/BrakeOneBrembo.png',68,8,80);
+        $this->Image('../files/images/logo-sbrakes.png',85,8,50);
         $this->SetFont('Arial', 'B', 12);
         $this->Cell(200,10, "TICKET SIN VALOR FISCAL", 'B', 0, "C", );
 
@@ -50,11 +50,11 @@ class pdf extends FPDF
 		$this->Write(4, 'DEFECTOS DE FABRICACION, RECOMENDACION: NO ABUSE DE LOS FRENOS DURANTE LOS PRIMEROS 200-300 KMS.');
 		$this->Ln();
 		$this->SetX(68);    
-		$this->Write(4, $idsucursal == 1 ? 'SARATOGA #313-C, COL. PORTALES NORTE ALCALDIA BENITO JUAREZ, CDMX. CP. 03303' : 'BELISARIO DOMINGUEZ 81, LAS MISIONES 76030, SANTIAGO DE QUERETARO, QRO 76030');
+		$this->Write(4, $idsucursal == 1 ? 'Dirección 1' : 'Dirección 2');
 		$this->SetX(120);
 		$this->Ln();
 		$this->SetX(141);
-		$this->Write(5, 'TELS. (55) 7653-6116 / (55) 684-02850');
+		$this->Write(5, 'TELS. **** / *****');
 	}
 }
 

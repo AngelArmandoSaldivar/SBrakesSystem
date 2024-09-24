@@ -806,6 +806,7 @@ function agregarRecepcion() {
 
 	//e.preventDefault();//no se activara la accion predeterminada      
 	var formData=new FormData($("#formulario")[0]);	
+	console.log("FORM DATAS: " + formData);
 	 	
      $.ajax({
      	url: "../ajax/ingreso.php?op=registroTemporal",

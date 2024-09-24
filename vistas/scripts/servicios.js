@@ -1667,7 +1667,7 @@ function guardaryeditar(e){
 					timer: 1500
 				});				   
 				mostrarform(false);
-				obtener_registros();				
+				obtener_registros();
 			},
 			complete: function() {			   
 				$('.loader').hide();
@@ -1703,7 +1703,7 @@ function agregarRemision(idservicio) {
 			$("#remOrSalida").modal('hide');
 			obtener_registrosProductos();
 			var tipoComprobante = $("#tipo_comprobante").val();
-			console.log("TIPO: " + tipoComprobante);			
+			console.log("TIPO: " + tipoComprobante);
 			window.open(
 				`../reportes/exTicket.php?id=${idservicio}`,
 				'_blank'

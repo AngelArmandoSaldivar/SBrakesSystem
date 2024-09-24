@@ -10,7 +10,7 @@ public function __construct(){
 }
 
 public function registroTemporal($idsucursal, $idusuario) {
-
+	
 	$sw = true;
 	$sqlUltimoIngreso = "SELECT * FROM ingreso WHERE idsucursal = '$idsucursal' ORDER BY idingreso DESC limit 1";
 	$consultarIngreso = ejecutarConsulta($sqlUltimoIngreso) or $sw = false;
@@ -20,14 +20,14 @@ public function registroTemporal($idsucursal, $idusuario) {
 
 	while($reg=$consultarIngreso->fetch_object()) {
 		$nuevoFolio = $reg->folio + 1;
-	}
+	}	
 	if ($nuevoFolio == '' || $nuevoFolio == null || $nuevoFolio == 0) {
-		$sql = "INSERT INTO ingreso (idsucursal, tipo_comprobante, impuesto, descuento, tipoMov, estado, idusuario, folio, fecha_hora) 
-			VALUES ('$idsucursal', 'RECEPCIÓN', 0, 0, 'RECEPCIÓN', 'NORMAL', '$idusuario', 1, NOW());";
+		$sql = "INSERT INTO ingreso (idsucursal, tipo_comprobante, impuesto, descuento, tipoMov, estado, idusuario, idproveedor, folio, fecha_hora) 
+			VALUES ('$idsucursal', 'RECEPCIÓN', 0, 0, 'RECEPCIÓN', 'NORMAL', '$idusuario', '91', 1, NOW());";
 		$idIngreso = ejecutarConsulta_retornarID($sql) or $sw = false;
 	} else {
-		$sql = "INSERT INTO ingreso (idsucursal, tipo_comprobante, impuesto, descuento, tipoMov, estado, idusuario, folio, fecha_hora) 
-			VALUES ('$idsucursal', 'RECEPCIÓN', 0, 0, 'RECEPCIÓN', 'NORMAL', '$idusuario', '$nuevoFolio', NOW());";
+		$sql = "INSERT INTO ingreso (idsucursal, tipo_comprobante, impuesto, descuento, tipoMov, estado, idusuario, idproveedor, folio, fecha_hora) 
+			VALUES ('$idsucursal', 'RECEPCIÓN', 0, 0, 'RECEPCIÓN', 'NORMAL', '$idusuario', '91', '$nuevoFolio', NOW());";
 		$idIngreso = ejecutarConsulta_retornarID($sql) or $sw = false;
 	}
 	return $idIngreso;

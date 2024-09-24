@@ -616,7 +616,7 @@ switch ($_GET["op"]) {
 		break;
 
 		case 'listarProductosEdit':
-
+				$termino = '';
 				$consulta="SELECT m.descripcion AS descripcionMarca, c.nombre, a.codigo, a.fmsi, a.idarticulo, a.idcategoria, a.descripcion, a.estado,
 				a.marca, a.publico, a.taller, a.credito_taller, a.mayoreo, a.costo, a.idproveedor, a.stock_ideal,
 				a.pasillo, a.unidades, a.barcode, a.fecha_ingreso, a.ventas, a.idsucursal, a.stock, a.imagen

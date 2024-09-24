@@ -787,6 +787,7 @@ switch ($_GET["op"]) {
 		
 			$consultaBD=$consulta;
 			if($consultaBD->num_rows>=1){
+				$pendiente = '';
 				echo "
 				<table class='responsive-table table table-hover table-bordered' style='font-size:11px' id='tableArticulos'>
 					<thead class='table-light'>
@@ -900,8 +901,7 @@ switch ($_GET["op"]) {
 								$estadoVenta = "PENDIENTE";
 								$remision = "";
 							} 
-
-							$pendiente = '';
+							
 							$totalImporte = '';
 
 							/*if ($fila["status"] == 'ANULADO') {
@@ -924,7 +924,7 @@ switch ($_GET["op"]) {
 								<td><p>".$fila['cliente']."</td>
 								<td><p>".$fila['usuario']."</td>								
 								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
-								<td><p>$ ".$pendiente."</td>
+								<td><p>$ ".$pendiente = number_format($totalServicio=$fila["sumaTotalServicio"] - $fila["pagado"], 2)."</td>
 								<td><p>$ ".$fila["sumaTotalServicio"]."</td>
 								<td><p> ".$remision."</td>
 								<td>.$botones.</td>
@@ -1046,7 +1046,7 @@ switch ($_GET["op"]) {
 								<td><p>".$fila['cliente']."</td>
 								<td><p>".$fila['usuario']."</td>								
 								<td><p>".$fila["marca"]." ".$fila["modelo"]." ".$fila["ano"]."</td>
-								<td><p>$ ".$pendiente."</td>
+								<td><p>$ ".$pendiente = number_format($totalServicio=$fila["sumaTotalServicio"] - $fila["pagado"], 2)."</td>
 								<td><p>$ ".$fila["sumaTotalServicio"]."</td>
 								<td><p> ".$remision."</td>
 								<td>.$botones.</td>
