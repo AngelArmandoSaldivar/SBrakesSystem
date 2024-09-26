@@ -1312,7 +1312,7 @@ function guardaryeditar(e){
 				type: 'success',
 				title: respuesta,
 				showConfirmButton: false,
-				timer: 1500
+				timer: 1600
 			})
 			window.location.href = "articulo.php";
 			// tabla.ajax.reload();

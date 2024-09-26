@@ -30,7 +30,7 @@ if(!isset($_SESSION["nombre"])) {
 	$bandera_inventariable=isset($_POST["bandera_inventariable"])? limpiarCadena($_POST["bandera_inventariable"]):"";
 
 	switch ($_GET["op"]) {
-		case 'guardaryeditar':
+		case 'guardaryeditar':			
 			if (!file_exists($_FILES['imagen']['tmp_name'])|| !is_uploaded_file($_FILES['imagen']['tmp_name'])) {
 				$imagen=$_POST["imagenactual"];
 			}else{

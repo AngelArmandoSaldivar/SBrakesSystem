@@ -72,7 +72,7 @@
   <div class="wrapper">
    <!-- Preloader -->
    <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__shake" src="../files/images/BrakeOneBrembo.png" alt="BrakeOneSystem" height="30" width="250">
+    <img class="animation__shake" src="../files/images/logo-sbrakes.png" alt="SBrakesSystem" height="80" width="250">
   </div>
 
   <!-- Navbar -->
