@@ -18,7 +18,7 @@ class pdf extends FPDF
 		$this->SetFont('Arial', 'B', 8);
 		$this->SetTextColor(0,0,0);
 		//$this->Write(5, 'BRAKEONE');
-        $this->Image('../files/images/BrakeOneBrembo.png',68,8,80);
+        $this->Image('../files/images/S-BRAKES.PNG',68,8,80);
         $this->SetFont('Arial', 'B', 12);
         $this->Cell(200,10, "TICKET SIN VALOR FISCAL", 'B', 0, "C", );
 

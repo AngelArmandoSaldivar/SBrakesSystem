@@ -298,7 +298,7 @@ function addClientAdresse( $cliente, $domicilio ,$email, $telefono, $marca, $mod
     $r2E = $this->w - 145;
     $r2     = $r1 + 68;
     $y1     = 60;
-    $this->Image('../files/images/BrakeOneBrembo.png',68,8,80);
+    $this->Image('../files/images/S-BRAKES.PNG',68,8,80);
     $this->SetXY( $r1, $y1);
     $this->SetFont("Arial","B",2);
     $this->SetFont('Arial','',9);

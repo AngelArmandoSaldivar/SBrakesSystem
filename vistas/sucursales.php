@@ -30,7 +30,7 @@
 </head>
 <body>
     <div class="preloader flex-column justify-content-center align-items-center">
-        <img class="animation__shake" src="../files/images/BrakeOneBrembo.png" alt="BrakeOneSystem" height="30" width="250">
+        <img class="animation__shake" src="../files/images/S-BRAKES.PNG" alt="BrakeOneSystem" height="30" width="250">
     </div>
     <div style="color: white; text-align: center; font-size: 20px; padding: 0 50px; height: 64px; line-height: 64px; background: #001529">Selecciona la sucursal</div>
     <div class="row" style="margin-left: -8px; margin-right: -8px; height: 100%;">
