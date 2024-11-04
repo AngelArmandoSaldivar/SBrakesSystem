@@ -82,4 +82,4 @@ $(document).ready(function(){
     $('[data-toggle="popover"]').popover();   
 });
 </script>
-<script src="scripts/login_user1.js"></script>
+<script src="scripts/login_user.js"></script>

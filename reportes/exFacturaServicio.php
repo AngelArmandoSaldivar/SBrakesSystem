@@ -154,7 +154,7 @@ if (!isset($_SESSION['nombre'])) {
 		$fpdf->Cell(20, 10, 'CANTIDAD', 0, 0, 'C', 1);
 		$fpdf->Cell(30, 10, 'IMPORTE', 0, 0, 'C', 1);
 		$fpdf->Ln();
-		
+
 		$fpdf->SetLineWidth(0.5);
 		$fpdf->SetTextColor(0, 0, 0);
 		$fpdf->SetFillColor(255, 255, 255);
@@ -162,71 +162,69 @@ if (!isset($_SESSION['nombre'])) {
 		$total = 0;
 		$totalArticulos = 0;
 
-		// while($regd=$rsptav->fetch_object()){
-		//     $extrae = substr($regd->descripcion, 0,27);
-		//     $importe = $regd->precio_servicio * $regd->cantidad;
-		// 	$fpdf->Cell(60, 10, $regd->codigo, 'B', 0, 'C', 1);
-		// 	$fpdf->Cell(60, 10, $extrae, 'B', 0, 'C', 1);
-		// 	$fpdf->Cell(20, 10, "$". number_format($regd->precio_servicio, 2), 'B', 0, 'C', 1);
-		// 	$fpdf->Cell(20, 10, doubleval($regd->cantidad), 'B', 0, 'C', 1);
-		// 	$fpdf->Cell(30, 10, "$". number_format($importe, 2), 'B', 0, 'C', 1);
-		// 	$fpdf->Ln();
-		// 	$total += $regd->precio_servicio * $regd->precio_servicio;
-		//     $totalArticulos += $regd->cantidad;
-		// }
-
 		while ($regd = $rsptav->fetch_object()) {
 			// Guardamos la posición Y inicial
 			$startY = $fpdf->GetY();
 
 			if ($startY > $limiteY) {
 				$fpdf->AddPage(); // Saltamos a una nueva página
-				$startY = 60; // Reiniciamos la posición Y
+				// Reiniciamos la posición Y y reimprimimos el encabezado
+				$fpdf->SetY(50);
+				$fpdf->SetTextColor(255, 255, 255);
+				$fpdf->SetFillColor(100, 100, 100);
+				$fpdf->Cell(60, 10, 'CLAVE', 0, 0, 'C', 1);
+				$fpdf->Cell(60, 10, 'CONCEPTO', 0, 0, 'C', 1);
+				$fpdf->Cell(20, 10, 'P. UNITARIO', 0, 0, 'C', 1);
+				$fpdf->Cell(20, 10, 'CANTIDAD', 0, 0, 'C', 1);
+				$fpdf->Cell(30, 10, 'IMPORTE', 0, 0, 'C', 1);
+				$fpdf->Ln();
+				$fpdf->SetTextColor(0, 0, 0);
+        		$fpdf->SetFillColor(255, 255, 255);
+				$startY = $fpdf->GetY(); // Reiniciamos el Y después de imprimir el encabezado
 			}
-		
+
 			// Extraemos y calculamos los valores
 			$porcentaje = $regd->descuento / 100;
 			$calculo1 = ($regd->precio_servicio * $regd->cantidad);
 			$totalDescuento = $calculo1 * $porcentaje;
 			$importe = ($regd->precio_servicio * $regd->cantidad) - $totalDescuento;
-		
+
 			// MultiCell para la clave (código)
 			$fpdf->MultiCell(60, 6, $regd->codigo, 0, 'C', 1);
-			
+
 			// Altura después de la celda del código
 			$codigoHeight = $fpdf->GetY() - $startY;
-		
+
 			// Regresamos a la posición Y inicial para la descripción
 			$fpdf->SetXY(70, $startY);
 			// MultiCell para la descripción
 			$fpdf->MultiCell(60, 6, $regd->descripcion, 0, 'L', 1);
-			
+
 			// Nueva posición Y después de MultiCell para descripción
 			$descriptionHeight = $fpdf->GetY() - $startY; // Altura de la descripción
-		
+
 			// Ajustamos la posición para las celdas restantes
 			$fpdf->SetXY(130, $startY); // Regresamos a la misma fila para las siguientes celdas
-		
+
 			// Usar la altura máxima para todas las celdas
 			$height = max($codigoHeight, $descriptionHeight, 10); // Altura mínima de 10
-		
+
 			// Colocamos el precio unitario
 			$fpdf->Cell(20, 6, "$" . number_format($regd->precio_servicio, 2), 0, 0, 'C', 1);
 			// Colocamos la cantidad
 			$fpdf->Cell(20, 6, doubleval($regd->cantidad), 0, 0, 'C', 1);
 			// Colocamos el importe
 			$fpdf->Cell(30, 6, "$" . number_format($importe, 2), 0, 0, 'C', 1);
-		
+
 			// Hacemos un salto de línea usando la altura calculada
 			$fpdf->Ln($height);
 
 			$fpdf->Line(10, $fpdf->GetY(), 200, $fpdf->GetY());
-			$fpdf->Line(10, $fpdf->GetY(), 200, $fpdf->GetY());
-		
+
 			$total += $importe; // Cálculo del total
 			$totalArticulos += $regd->cantidad;
 		}
-		
+
 
 		$iva = $total * 0.13;
 
